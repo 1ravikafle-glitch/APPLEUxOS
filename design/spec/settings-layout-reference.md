@@ -79,10 +79,51 @@ each still needs its permission and call-site checked when the row is built.
    is one of the five flagged entries, the row is display-only until a real
    backend is found.
 
+## Second board adopted: grouped capsule cards
+
+`design-reference/inbox/settings-capsule-ios27.html` (saved 2026-10-15,
+33 KB) supersedes the first board as the visual reference. Same schema, one
+change that matters: whole categories wrapped in one container at **26dp
+radius** with an inner top highlight for the glass look, section margin
+**12dp**, divider at **57dp** (16dp for icon-less rows), badge **29dp /
+r6.5** with **18dp** white glyph, title tracking **-0.41px**, sub **-0.08px**.
+Its icon library is 38 stroke glyphs (18×18 viewBox, 2dp white stroke) plus
+the two the native app needs that the board implies: Quick Share
+(share-nodes) and NFC (tag + N + waves).
+
+Validation: 38/38 row icons defined; 29 root nav targets (sub-page trees were
+not part of this board — rows to unwritten screens render its "Screen not
+found" stub, which is the board's own behavior, not a defect).
+
+Its 36-entry backend map was checked against `frameworks/base` row by row and
+is embedded in the file with verdicts. New findings over the first board:
+`AirplaneModeEnabler.setAirplaneMode()` exists (stock Settings,
+`WRITE_SECURE_SETTINGS`) but is not callable from a debug-signed app, so the
+Airplane row navigates; `setDataEnabled()` is deprecated in favor of
+`setDataEnabledForReason(REASON_USER)`; no `MASTER_CLEAR` action exists in the
+Settings provider, so reset rows are omitted rather than deep-linked blind.
+
+## Implemented in appleux-settings (2026-10-15)
+
+`SettingsListActivity` now renders the capsule board natively: 26dp capsule
+groups, 12dp section inset, badges tinted per row, conditional divider,
+system-sans type with the board's tracking. SF Pro is not shipped (Apple
+license) — the board contributes its numbers, not its font file.
+
+The catalog follows the board's root order with iOS names replaced by their
+AOSP equivalents: Siri → Voice input, StandBy → Screen saver, Wallet &
+Apple Pay → NFC & payments, AirDrop → Quick Share (ACTION_SEND chooser;
+transport is Bluetooth/nearby on AOSP). Omitted with reasons in the catalog
+header: Game Center, iCloud cloud rows, Search settings page, Transfer/Reset,
+Shut Down. No placeholder values anywhere — the board's demo data (HomeWiFi,
+names, percentages) is not copied. Four rows fall back to the stock Settings
+root (General, Camera, Wallpaper, Emergency SOS: no precise public action
+exists) and say so in code.
+
 ## Open
 
-- Our `SettingsListActivity` currently ships 3 sections (AppleUX, display,
-  security). This tree has 136 screens. The gap between them is the work, and
-  it is tracked per-row, not per-screen.
-- The reference's demo values (contact names, percentages, MAC addresses) are
-  placeholders. Nothing in it reads a real device.
+- Sub-pages are stock Settings activities reached by deep link, plus our three
+  internal pages. A native AppleUX sub-page per section is future work, tracked
+  per-row, not per-screen.
+- The reference's remaining demo values are placeholders. Nothing in it reads
+  a real device.

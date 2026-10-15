@@ -98,6 +98,34 @@ object AppleuxIconRegistry {
         put("system_wallet", R.drawable.sf_wallet)
         put("system_wifi", R.drawable.sf_wifi)
         put("system_xmark", R.drawable.sf_xmark)
+        // Hand-drawn badge glyphs (il_ic_* stroke set) for symbols the SF
+        // fallback font does not ship. Same 24dp white-stroke convention as
+        // the rest of the il_ic_* set; the badge background is tinted by the
+        // caller to the iOS system colour for the row.
+        put("system_bluetooth", R.drawable.il_ic_bluetooth)
+        put("system_moon", R.drawable.il_ic_moon)
+        put("system_display", R.drawable.il_ic_display)
+        put("system_appearance", R.drawable.il_ic_appearance)
+        put("system_control_center", R.drawable.il_ic_controlcenter)
+        put("system_hourglass", R.drawable.il_ic_hourglass)
+        put("system_faceid", R.drawable.il_ic_faceid)
+        put("system_sos", R.drawable.il_ic_sos)
+        put("system_nfc", R.drawable.il_ic_nfc)
+        put("system_reset", R.drawable.il_ic_reset)
+        // Existing il_ic_* badge glyphs, exposed for the Settings capsule rows.
+        // (The canvas-path map above reuses some of these names for Path
+        // objects; the two maps are independent, so there is no clash.)
+        put("system_person", R.drawable.il_ic_person)
+        put("system_airplane", R.drawable.il_ic_airplane)
+        put("system_battery", R.drawable.il_ic_battery)
+        put("system_search", R.drawable.il_ic_search)
+        put("system_shield", R.drawable.il_ic_shield)
+        put("system_info", R.drawable.il_ic_info)
+        put("system_photos", R.drawable.il_ic_photos)
+        put("system_grid", R.drawable.il_ic_grid)
+        put("system_share", R.drawable.il_ic_share)
+        put("system_accessibility", R.drawable.il_ic_accessibility)
+        put("system_dnd", R.drawable.il_ic_dnd)
     }
 
     fun getDrawableRes(name: String): Int? = vectorDrawables[name]

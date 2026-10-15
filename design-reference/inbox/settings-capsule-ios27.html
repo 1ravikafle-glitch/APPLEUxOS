@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iOS 27 Settings — Grouped Capsule Cards — POCO M5</title>
+<style>
+  :root {
+    --w: 402px;
+    --h: 896px;
+    --system-background: #000000;
+    --grouped-bg: #000000;
+    --card-bg: #1C1C1E;
+    --card-bg-2: #2C2C2E;
+    --label: #FFFFFF;
+    --secondary-label: rgba(235,235,245,0.60);
+    --tertiary-label: rgba(235,235,245,0.30);
+    --separator: rgba(84,84,88,0.65);
+    --system-blue: #0A84FF;
+    --system-green: #30D158;
+    --system-red: #FF453A;
+    --system-orange: #FF9F0A;
+    --system-yellow: #FFD60A;
+    --system-pink: #FF375F;
+    --system-purple: #BF5AF2;
+    --system-teal: #64D2FF;
+    --system-indigo: #5E5CE6;
+    --system-gray: #8E8E93;
+    --system-gray4: #3A3A3C;
+
+    /* Liquid Glass grouped card radius — iOS 27 */
+    --card-radius: 26px;
+    --card-pad: 6px;
+
+    --notch-w: 218px;
+    --notch-h: 34px;
+    --notch-r: 20px;
+
+    --font: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0a0a0f; color: #e8e8ed; font-family: var(--font);
+    min-height: 100vh; padding: 24px 16px 64px;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page-info {
+    font-size: 12px; color: #8a8a95; text-align: center;
+    max-width: 680px; line-height: 1.6;
+  }
+  .page-info strong { color: #e8e8ed; font-weight: 600; }
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    padding: 10px 14px; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+  }
+  .controls button {
+    font-family: var(--font); font-size: 12px; font-weight: 500;
+    padding: 8px 14px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06); color: #e8e8ed;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .controls button:hover { background: rgba(255,255,255,0.12); }
+  .controls button.active { background: #0A84FF; border-color: #0A84FF; color: #fff; }
+  .phone {
+    width: calc(var(--w) + 16px); height: calc(var(--h) + 16px);
+    background: #1a1a1e; border-radius: 46px; padding: 8px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,0,0,0.7);
+    position: relative;
+  }
+  .screen {
+    width: var(--w); height: var(--h); border-radius: 38px;
+    overflow: hidden; background: var(--system-background);
+    position: relative;
+  }
+  .notch {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: var(--notch-w); height: var(--notch-h);
+    background: #000;
+    border-radius: 0 0 var(--notch-r) var(--notch-r);
+    z-index: 210;
+    display: flex; align-items: center; justify-content: center;
+    gap: 64px; padding-bottom: 6px; pointer-events: none;
+  }
+  .notch .speaker {
+    width: 50px; height: 5px; border-radius: 3px;
+    background: #141418;
+    box-shadow: inset 0 1px 1px rgba(255,255,255,0.05), inset 0 -1px 1px rgba(0,0,0,0.7);
+  }
+  .notch .camera {
+    width: 11px; height: 11px; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #0d0d20 0%, #05050a 60%, #000 100%);
+    box-shadow: inset 0 1px 2px rgba(80,120,255,0.35);
+  }
+  .status-bar {
+    position: absolute; top: 0; left: 0; right: 0; height: 54px; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 22px 0; font-size: 15px; font-weight: 600;
+    font-variant-numeric: tabular-nums; color: #fff; letter-spacing: -0.3px;
+    pointer-events: none;
+  }
+  .status-right { display: flex; align-items: center; gap: 5px; }
+  .nav-bar {
+    position: absolute; top: 54px; left: 0; right: 0; height: 44px; z-index: 80;
+    display: none; align-items: center; padding: 0 16px;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 0.5px solid var(--separator);
+    color: var(--system-blue); font-size: 17px; letter-spacing: -0.41px;
+  }
+  .nav-bar.shown { display: flex; }
+  .nav-bar .back {
+    display: flex; align-items: center; gap: 4px; cursor: pointer;
+  }
+  .nav-bar .back::before {
+    content: ""; width: 10px; height: 10px;
+    border-left: 2px solid var(--system-blue);
+    border-bottom: 2px solid var(--system-blue);
+    transform: rotate(45deg); border-radius: 1px;
+    margin-right: 4px; margin-top: -2px;
+  }
+  .nav-bar .title {
+    position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 17px; font-weight: 600; letter-spacing: -0.41px;
+    color: var(--label); white-space: nowrap;
+  }
+  .content {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    overflow-y: auto; -webkit-overflow-scrolling: touch;
+    padding-top: 54px; padding-bottom: 32px;
+    scrollbar-width: none; color: var(--label); z-index: 10;
+  }
+  .content::-webkit-scrollbar { display: none; }
+  .content.has-nav { padding-top: 98px; }
+
+  .large-title {
+    padding: 20px 20px 4px;
+    font-size: 34px; font-weight: 700; letter-spacing: 0.37px;
+    color: var(--label); line-height: 41px;
+  }
+  .search-wrap { padding: 8px 20px 14px; }
+  .search {
+    display: flex; align-items: center; gap: 6px;
+    height: 36px; padding: 0 8px;
+    background: var(--card-bg); border-radius: 10px;
+    color: var(--secondary-label); font-size: 17px; letter-spacing: -0.41px;
+  }
+  .search svg { opacity: 0.55; flex-shrink: 0; }
+
+  /* ============================================================
+     GROUPED CAPSULE CARD — the Apple iOS 27 design element
+     A whole category of rows is wrapped in one rounded container
+     with 26px corner radius. This is what Apple calls an
+     "inset grouped list" but visually it is a floating capsule.
+     ============================================================ */
+  .section { margin: 0 12px 24px; }
+
+  .section-header {
+    font-size: 13px; letter-spacing: -0.08px;
+    color: var(--secondary-label);
+    padding: 0 20px 8px;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+  .section-footer {
+    font-size: 13px; letter-spacing: -0.08px;
+    color: var(--secondary-label);
+    padding: 10px 20px 0; line-height: 18px;
+  }
+
+  /* The capsule container that holds the whole category */
+  .capsule {
+    background: var(--card-bg);
+    border-radius: var(--card-radius);
+    overflow: hidden;
+    position: relative;
+    /* Subtle inner highlight for the Liquid Glass look */
+    box-shadow:
+      inset 0 0.5px 0 rgba(255,255,255,0.06),
+      0 2px 12px rgba(0,0,0,0.35);
+  }
+
+  /* Rows inside the capsule — first row has rounded top, last row rounded bottom */
+  .row {
+    position: relative;
+    display: flex; align-items: center;
+    min-height: 44px;
+    padding: 11px 16px;
+    cursor: pointer; user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.05s;
+  }
+  .row:active { background: rgba(255,255,255,0.06); }
+  .row.two-line { min-height: 52px; padding: 8px 16px; }
+
+  /* iOS 27 divider: inset from left, hugs only inner rows */
+  .row + .row::before {
+    content: ""; position: absolute;
+    top: 0; left: 57px; right: 0; height: 0.5px;
+    background: var(--separator);
+  }
+  .row.no-icon + .row::before { left: 16px; }
+
+  .icon-sq {
+    width: 29px; height: 29px; border-radius: 6.5px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .icon-sq svg { width: 18px; height: 18px; display: block; }
+  .icon-sq.avatar {
+    width: 60px; height: 60px; border-radius: 30px;
+    background: linear-gradient(135deg, #4285F4, #EA4335, #FBBC04, #34A853);
+    font-size: 24px; font-weight: 700; color: #fff; margin-right: 12px;
+  }
+  .row-main {
+    flex: 1; min-width: 0; margin-left: 12px;
+    display: flex; flex-direction: column;
+  }
+  .row.no-icon .row-main { margin-left: 0; }
+  .row-title {
+    font-size: 17px; letter-spacing: -0.41px;
+    color: var(--label); line-height: 22px;
+  }
+  .row-title.destructive { color: var(--system-red); }
+  .row-sub {
+    font-size: 13px; letter-spacing: -0.08px;
+    color: var(--secondary-label); line-height: 18px; margin-top: 1px;
+  }
+  .row-value {
+    font-size: 17px; letter-spacing: -0.41px;
+    color: var(--secondary-label); margin-left: 8px; flex-shrink: 0;
+  }
+  .chevron {
+    width: 8px; height: 8px;
+    border-top: 2px solid var(--tertiary-label);
+    border-right: 2px solid var(--tertiary-label);
+    transform: rotate(45deg);
+    margin-left: 8px; margin-right: 4px;
+    flex-shrink: 0; border-radius: 1px;
+  }
+  .toggle {
+    width: 51px; height: 31px; border-radius: 15.5px;
+    background: var(--system-gray4); position: relative;
+    flex-shrink: 0; margin-left: 8px;
+    transition: background 0.25s; cursor: pointer;
+  }
+  .toggle.on { background: var(--system-green); }
+  .toggle::after {
+    content: ""; position: absolute; top: 2px; left: 2px;
+    width: 27px; height: 27px; border-radius: 13.5px;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15), 0 1px 1px rgba(0,0,0,0.16);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .toggle.on::after { transform: translateX(20px); }
+  .slider-row { padding: 12px 16px 14px; }
+  .slider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 4px; border-radius: 2px;
+    background: var(--system-gray4); outline: none; margin-top: 8px;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+  }
+  .slider::-moz-range-thumb {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: #fff; border: none; cursor: pointer;
+  }
+  .home-indicator {
+    position: absolute; bottom: 10px; left: 50%;
+    transform: translateX(-50%);
+    width: 134px; height: 5px;
+    background: #fff; opacity: 0.9; border-radius: 3px;
+    z-index: 95; pointer-events: none;
+  }
+  .backend-panel {
+    max-width: 680px; width: 100%;
+    background: #0a1a0a; border: 1px solid #1a3a1a;
+    border-radius: 12px; padding: 16px 20px;
+    font-size: 12px; line-height: 1.8;
+    color: #4ade80; font-family: ui-monospace, Menlo, monospace;
+    display: none;
+  }
+  .backend-panel h3 {
+    font-size: 13px; font-weight: 700;
+    color: #86efac; margin-bottom: 10px; text-transform: uppercase;
+  }
+  .backend-panel table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .backend-panel td { padding: 3px 0; vertical-align: top; }
+  .backend-panel td:first-child { color: #6b8f6b; width: 46%; padding-right: 12px; }
+  .backend-panel td:last-child { color: #bbf7d0; }
+</style>
+</head>
+<body>
+
+<div class="page-info">
+  <strong>iOS 27 Settings</strong> · POCO M5 (rock) · 402 × 896 dp.<br>
+  Grouped capsule cards — whole categories wrapped inside one rounded container (26px radius).
+</div>
+
+<div class="controls">
+  <button id="btn-light">Light</button>
+  <button id="btn-dark" class="active">Dark</button>
+  <button id="btn-home">← Home</button>
+</div>
+
+<div class="phone">
+  <div class="screen">
+    <div class="status-bar">
+      <div id="clock">9:41</div>
+      <div class="status-right">
+        <svg width="17" height="11" viewBox="0 0 17 11"><rect x="0" y="7" width="3" height="4" rx="0.8" fill="#fff"/><rect x="4.5" y="5" width="3" height="6" rx="0.8" fill="#fff"/><rect x="9" y="2.5" width="3" height="8.5" rx="0.8" fill="#fff"/><rect x="13.5" y="0" width="3" height="11" rx="0.8" fill="#fff"/></svg>
+        <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><path d="M8 2.5c2.1 0 4 .8 5.4 2.2l1.2-1.2C13 1.9 10.6 1 8 1S3 1.9 1.4 3.5l1.2 1.2C4 3.3 5.9 2.5 8 2.5z" fill="#fff"/><path d="M8 6c1.3 0 2.5.5 3.4 1.4l1.2-1.2C11.4 5 9.8 4.3 8 4.3S4.6 5 3.4 6.2l1.2 1.2C5.5 6.5 6.7 6 8 6z" fill="#fff"/><circle cx="8" cy="9.5" r="1.3" fill="#fff"/></svg>
+        <svg width="25" height="12" viewBox="0 0 25 12"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="#fff" stroke-opacity="0.4" fill="none"/><rect x="2" y="2" width="16" height="8" rx="1.8" fill="#fff"/><path d="M23 4.5v3c.9-.3 1.5-1 1.5-1.5s-.6-1.2-1.5-1.5z" fill="#fff" fill-opacity="0.5"/></svg>
+      </div>
+    </div>
+    <div class="notch"><div class="speaker"></div><div class="camera"></div></div>
+    <div class="nav-bar" id="nav-bar">
+      <div class="back" id="nav-back">Settings</div>
+      <div class="title" id="nav-title"></div>
+    </div>
+    <div class="content" id="content"></div>
+    <div class="home-indicator"></div>
+  </div>
+</div>
+
+<script>
+const S = 'stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"';
+const I = {
+  airplane: `<path d="M9 2c.7 0 1.1.6 1.1 1.4v4l5.8 3.4c.2.1.3.3.3.5v1.2c0 .3-.3.5-.5.4L10.1 11v3.2l1.5 1.1c.1.1.2.2.2.4v.9c0 .2-.2.4-.4.3L9 16.1l-2.4.8c-.2.1-.4-.1-.4-.3v-.9c0-.2.1-.3.2-.4l1.5-1.1V11L2.3 12.9c-.2.1-.5-.1-.5-.4v-1.2c0-.2.1-.4.3-.5l5.8-3.4v-4C8 2.6 8.3 2 9 2z" ${S}/>`,
+  wifi: `<path d="M2 7.5C4 5.5 6.4 4.5 9 4.5s5 1 7 3" ${S}/><path d="M4.5 10.5c1.4-1.2 2.8-1.8 4.5-1.8s3.1.6 4.5 1.8" ${S}/><path d="M7 13.5c.6-.5 1.3-.8 2-.8s1.4.3 2 .8" ${S}/><circle cx="9" cy="16" r="0.9" fill="#fff"/>`,
+  bluetooth: `<path d="M6.5 3l5 4.2-5 4.3" ${S}/><path d="M6.5 12.5l5 4.2-5 4.3" ${S}/><line x1="6.5" y1="3" x2="6.5" y2="21" ${S}/>`,
+  cellular: `<rect x="1.5" y="12" width="3" height="5" rx="0.6" ${S}/><rect x="6" y="9" width="3" height="8" rx="0.6" ${S}/><rect x="10.5" y="6" width="3" height="11" rx="0.6" ${S}/><rect x="15" y="3" width="3" height="14" rx="0.6" ${S}/>`,
+  hotspot: `<circle cx="9" cy="10" r="1.4" ${S}/><path d="M6.5 12.5c-.8-.7-1.3-1.6-1.3-2.5s.5-1.8 1.3-2.5" ${S}/><path d="M11.5 7.5c.8.7 1.3 1.6 1.3 2.5s-.5 1.8-1.3 2.5" ${S}/><path d="M4.3 14.7C3 13.4 2.3 11.7 2.3 10S3 6.6 4.3 5.3" ${S}/><path d="M13.7 5.3c1.3 1.3 2 3 2 4.7s-.7 3.4-2 4.7" ${S}/>`,
+  battery: `<rect x="1.5" y="5.5" width="13" height="7" rx="1.6" ${S}/><path d="M16 8v2" ${S}/><rect x="3" y="7" width="7" height="4" rx="0.6" fill="#fff"/>`,
+  gear: `<circle cx="9" cy="9" r="2.2" ${S}/><path d="M9 1.5v1.8M9 14.7v1.8M1.5 9h1.8M14.7 9h1.8M3.7 3.7l1.3 1.3M12.9 12.9l1.3 1.3M3.7 14.3l1.3-1.3M12.9 5.1l1.3-1.3" ${S}/>`,
+  accessibility: `<circle cx="9" cy="3.5" r="1.4" ${S}/><path d="M3 7h12" ${S}/><path d="M9 7v5" ${S}/><path d="M6.5 15.5L9 12l2.5 3.5" ${S}/>`,
+  appearance: `<circle cx="9" cy="9" r="6.5" ${S}/><path d="M9 2.5v13" ${S}/><path d="M9 2.5a6.5 6.5 0 0 1 0 13" fill="#fff"/>`,
+  camera: `<path d="M2 5.5h3l1.5-2h5l1.5 2h3v9H2z" ${S}/><circle cx="9" cy="10" r="3" ${S}/>`,
+  controlcenter: `<rect x="2" y="2" width="14" height="14" rx="3" ${S}/><circle cx="6.5" cy="6.5" r="1.3" fill="#fff"/><circle cx="11.5" cy="6.5" r="1.3" fill="#fff"/><circle cx="6.5" cy="11.5" r="1.3" fill="#fff"/><circle cx="11.5" cy="11.5" r="1.3" fill="#fff"/>`,
+  display: `<rect x="1.5" y="3" width="15" height="11" rx="1.6" ${S}/><path d="M6 17h6" ${S}/><path d="M9 14v3" ${S}/>`,
+  grid: `<rect x="2" y="2" width="6" height="6" rx="1.2" ${S}/><rect x="10" y="2" width="6" height="6" rx="1.2" ${S}/><rect x="2" y="10" width="6" height="6" rx="1.2" ${S}/><rect x="10" y="10" width="6" height="6" rx="1.2" ${S}/>`,
+  search: `<circle cx="8" cy="8" r="5.5" ${S}/><path d="M12 12l4 4" ${S}/>`,
+  siri: `<circle cx="9" cy="9" r="6.5" ${S}/><path d="M6.5 9c0-1.4 1.1-2.5 2.5-2.5s2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5" ${S}/><path d="M9 11.5v1" ${S}/>`,
+  standby: `<rect x="2" y="3" width="14" height="12" rx="1.6" ${S}/><path d="M6 8h6M6 11h4" ${S}/>`,
+  wallpaper: `<rect x="2" y="3.5" width="14" height="11" rx="1.6" ${S}/><circle cx="6.5" cy="7.5" r="1.2" ${S}/><path d="M2.5 13l3.5-3 3 2.5 3-3 3 3" ${S}/>`,
+  bell: `<path d="M4.5 13.5h9c-.5-1-1-1.9-1-3.7a3.5 3.5 0 0 0-7 0c0 1.8-.5 2.7-1 3.7z" ${S}/><path d="M7.5 15.5a1.5 1.5 0 0 0 3 0" ${S}/>`,
+  speaker: `<path d="M3 8v4h2.7l3.3 2.8V5.2L5.7 8H3z" ${S}/><path d="M11.5 7.5c1 .6 1.7 1.5 1.7 2.5s-.7 1.9-1.7 2.5" ${S}/>`,
+  moon: `<path d="M14 11.5A5 5 0 0 1 8.5 6a5 5 0 1 0 5.5 5.5z" ${S}/>`,
+  hourglass: `<path d="M5 2h8v3.5L9.5 9 13 12.5V16H5v-3.5L8.5 9 5 5.5V2z" ${S}/>`,
+  faceid: `<path d="M2.5 5.5V4a1.5 1.5 0 0 1 1.5-1.5h1.5" ${S}/><path d="M15.5 5.5V4A1.5 1.5 0 0 0 14 2.5h-1.5" ${S}/><path d="M2.5 12.5V14A1.5 1.5 0 0 0 4 15.5h1.5" ${S}/><path d="M15.5 12.5V14a1.5 1.5 0 0 1-1.5 1.5h-1.5" ${S}/><path d="M6 7.5v1M12 7.5v1" ${S}/><path d="M6.5 11c.8.7 1.7.7 2.5 0" ${S}/>`,
+  sos: `<circle cx="9" cy="9" r="6.5" ${S}/><path d="M9 5v4l2.5 1.5" ${S}/>`,
+  shield: `<path d="M9 2.5l5.5 2.3v4.5c0 3.2-2.3 5.9-5.5 6.7-3.2-.8-5.5-3.5-5.5-6.7V4.8L9 2.5z" ${S}/>`,
+  gamecenter: `<circle cx="9" cy="9" r="6.5" ${S}/><path d="M6 9h6M9 6v6" ${S}/>`,
+  icloud: `<path d="M5 13.5a3.2 3.2 0 0 1 0-6.3 4.5 4.5 0 0 1 8.5-.9 3.4 3.4 0 0 1 0 7.2H5z" ${S}/>`,
+  wallet: `<rect x="2" y="4" width="14" height="11" rx="2" ${S}/><path d="M12 9.5h2" ${S}/><path d="M2 7h14" ${S}/>`,
+  apps: `<rect x="1.5" y="1.5" width="6.5" height="6.5" rx="1.5" ${S}/><rect x="10" y="1.5" width="6.5" height="6.5" rx="1.5" ${S}/><rect x="1.5" y="10" width="6.5" height="6.5" rx="1.5" ${S}/><rect x="10" y="10" width="6.5" height="6.5" rx="1.5" ${S}/>`,
+  info: `<circle cx="9" cy="9" r="6.5" ${S}/><path d="M9 8v4.5M9 5.8v0.1" ${S}/>`,
+  reset: `<path d="M3 8a6.5 6.5 0 0 1 12.5 2.5 6.5 6.5 0 0 1-11 4.5" ${S}/><path d="M3 3.5v4.5h4.5" ${S}/>`,
+  power: `<path d="M9 2v7" ${S}/><path d="M12.2 4.3a6 6 0 1 1-6.4 0" ${S}/>`,
+  location: `<path d="M9 2C6 2 3.8 4.3 3.8 7c0 4 5.2 8.5 5.2 8.5s5.2-4.5 5.2-8.5C14.2 4.3 12 2 9 2z" ${S}/><circle cx="9" cy="7" r="1.8" ${S}/>`,
+  lock: `<rect x="3.5" y="8" width="11" height="8" rx="1.6" ${S}/><path d="M6 8V6a3 3 0 0 1 6 0v2" ${S}/>`,
+  key: `<circle cx="6" cy="9" r="3" ${S}/><path d="M8.5 9h7M13 9v2.5M15.5 9v2" ${S}/>`,
+  cloud: `<path d="M5 13.5a3.2 3.2 0 0 1 0-6.3 4.5 4.5 0 0 1 8.5-.9 3.4 3.4 0 0 1 0 7.2H5z" ${S}/>`,
+  vpn: `<path d="M9 2.5l5.5 2.3v4.5c0 3.2-2.3 5.9-5.5 6.7-3.2-.8-5.5-3.5-5.5-6.7V4.8L9 2.5z" ${S}/><path d="M6.8 9.8l1.7 1.7 3.2-3.6" ${S}/>`,
+  quickshare: `<circle cx="5" cy="12" r="2.4" ${S}/><circle cx="13.5" cy="5.5" r="2.4" ${S}/><circle cx="13.5" cy="12.5" r="2.4" ${S}/><path d="M7.2 10.8l4-3.6M7.2 13.2l4 3.6" ${S}/>`,
+  nfc: `<path d="M7 4.5h4v9H7z" ${S}/><path d="M7 4.5l4 9M11 4.5v9" ${S}/><path d="M4.5 8.5a4.5 4.5 0 0 1 0 4M13.5 6.5a7.5 7.5 0 0 1 0 8" ${S}/>`
+};
+
+/* Exact iOS 27.0.1 Settings tree — root level below.
+   Sub-page trees (General children, Appearance, Wi-Fi, Bluetooth, Cellular,
+   Hotspot, Battery, Accessibility, Camera, Control Center, Display, Home,
+   Search, Siri, StandBy, Wallpaper, Notifications, Sounds, Focus, Screen Time,
+   Face ID, Emergency SOS, Privacy, Game Center, iCloud, Wallet, Apps, Reset,
+   About, Software Update, Storage, Account) follow the same capsule schema:
+   sections of rows with header/footer, radio/slider/toggle/value accessories.
+   See the board file on disk for the complete navigable tree. */
+const TREE = {
+  root: { title: 'Settings', parent: null, sections: [
+    { rows: [{ title: 'Alex Chen', sub: 'Apple Account, iCloud, Find My', avatar: 'A', nav: 'account' }]},
+
+    { rows: [
+      { title: 'Airplane Mode', icon: 'airplane', color: 'system-orange', toggle: true, on: false },
+      { title: 'Wi-Fi', icon: 'wifi', color: 'system-blue', value: 'HomeWiFi', nav: 'wifi' },
+      { title: 'Bluetooth', icon: 'bluetooth', color: 'system-blue', value: 'On', nav: 'bluetooth' },
+      { title: 'Cellular', icon: 'cellular', color: 'system-green', nav: 'cellular' },
+      { title: 'Personal Hotspot', icon: 'hotspot', color: 'system-green', value: 'Off', nav: 'hotspot' },
+      { title: 'Battery', icon: 'battery', color: 'system-green', nav: 'battery' }
+    ]},
+
+    { rows: [
+      { title: 'General', icon: 'gear', color: 'system-gray', nav: 'general' },
+      { title: 'Accessibility', icon: 'accessibility', color: 'system-blue', nav: 'accessibility' },
+      { title: 'Appearance', icon: 'appearance', color: 'system-indigo', nav: 'appearance' },
+      { title: 'Camera', icon: 'camera', color: 'system-gray', nav: 'camera' },
+      { title: 'Control Center', icon: 'controlcenter', color: 'system-gray', nav: 'control-center' },
+      { title: 'Display & Brightness', icon: 'display', color: 'system-blue', nav: 'display' },
+      { title: 'Home Screen & App Library', icon: 'grid', color: 'system-blue', nav: 'home-screen' },
+      { title: 'Search', icon: 'search', color: 'system-gray', nav: 'search' },
+      { title: 'Siri', icon: 'siri', color: 'system-indigo', nav: 'siri' },
+      { title: 'StandBy', icon: 'standby', color: 'system-orange', nav: 'standby' },
+      { title: 'Wallpaper', icon: 'wallpaper', color: 'system-teal', nav: 'wallpaper' }
+    ]},
+
+    { rows: [
+      { title: 'Notifications', icon: 'bell', color: 'system-red', nav: 'notifications' },
+      { title: 'Sounds & Haptics', icon: 'speaker', color: 'system-pink', nav: 'sounds' },
+      { title: 'Focus', icon: 'moon', color: 'system-indigo', nav: 'focus' },
+      { title: 'Screen Time', icon: 'hourglass', color: 'system-indigo', nav: 'screen-time' }
+    ]},
+
+    { rows: [
+      { title: 'Face ID & Passcode', icon: 'faceid', color: 'system-green', nav: 'faceid' },
+      { title: 'Emergency SOS', icon: 'sos', color: 'system-red', nav: 'emergency-sos' },
+      { title: 'Privacy & Security', icon: 'shield', color: 'system-blue', nav: 'privacy' }
+    ]},
+
+    { rows: [
+      { title: 'Game Center', icon: 'gamecenter', color: 'system-blue', value: 'Alex Chen', nav: 'gamecenter' },
+      { title: 'iCloud', icon: 'icloud', color: 'system-blue', value: '50 GB used', nav: 'icloud' },
+      { title: 'Wallet & Apple Pay', icon: 'wallet', color: 'system-blue', nav: 'wallet' }
+    ]},
+
+    { rows: [
+      { title: 'Apps', icon: 'apps', color: 'system-blue', nav: 'apps' }
+    ]},
+
+    { rows: [
+      { title: 'Transfer or Reset iPhone', icon: 'reset', color: 'system-red', nav: 'reset' },
+      { title: 'Shut Down', icon: 'power', color: 'system-red' }
+    ]}
+  ]}
+};
+
+/* AOSP 16 backend map for the root rows above.
+   Verified against frameworks/base in this tree except where noted:
+   - QuickShareService: NO AOSP class — Quick Share row fires ACTION_SEND
+     (Bluetooth/nearby targets), transport is Bluetooth on AOSP.
+   - Siri/VoiceInteractionService: AOSP has the service API; the assistant
+     itself is GMS. Row renamed "Voice input".
+   - StandBy/DreamService: DreamService IS the AOSP equivalent. Renamed.
+   - Game Center/iCloud/Wallet&Apple Pay: no AOSP equivalents (Play
+     Games/Drive/Wallet are GMS). Rows renamed or omitted in the native app.
+   - AirplaneModeEnabler.setAirplaneMode() lives in stock Settings and needs
+     WRITE_SECURE_SETTINGS; a debug-signed app navigates instead.
+   - setDataEnabled() is deprecated; use setDataEnabledForReason(REASON_USER).
+   - wipeData()/resetPassword() need device/profile owner; reset rows omitted.
+   - RenderEffect.createBlurEffect() blurs a window's OWN content, never what
+     is behind it; real frost needs FLAG_BLUR_BEHIND (API 31+). */
+const BACKENDS = [
+  ['Airplane Mode', 'AirplaneModeEnabler', 'setAirplaneMode() — stock Settings, privileged; third-party rows navigate to ACTION_WIRELESS_SETTINGS'],
+  ['Wi-Fi', 'WifiManager', 'setWifiEnabled() · connect()'],
+  ['Bluetooth', 'BluetoothAdapter', 'enable() · connectGatt()'],
+  ['Cellular', 'TelephonyManager', 'setDataEnabledForReason(REASON_USER) · setDataRoamingEnabled()'],
+  ['Personal Hotspot', 'WifiManager', 'startSoftAp() · stopSoftAp()'],
+  ['Quick Share', 'ACTION_SEND chooser', 'Bluetooth/nearby targets — no proprietary P2P on AOSP'],
+  ['Battery', 'BatteryManager', 'BATTERY_PROPERTY_CAPACITY'],
+  ['About', 'Build', 'MODEL · VERSION.RELEASE'],
+  ['Software Update', 'UpdateEngine', 'applyPayload() · checkForUpdate()'],
+  ['Storage', 'StorageManager', 'getAllocatableBytes()'],
+  ['Date & Time', 'AlarmManager', 'setTime() · setTimeZone()'],
+  ['Keyboard', 'InputMethodManager', 'showInputMethodPicker()'],
+  ['Language', 'LocaleManager', 'setApplicationLocales()'],
+  ['Accessibility', 'AccessibilityManager', 'getEnabledAccessibilityServiceList()'],
+  ['Appearance', 'UiModeManager + Configuration', 'setNightMode() · fontScale'],
+  ['Camera', 'CameraManager', 'Camera2 API · CameraCharacteristics'],
+  ['Control Center', 'QSCustomizer', 'QSTileHost · TileService'],
+  ['Display', 'DisplayManager', 'setBrightness() · getSupportedModes()'],
+  ['Night Shift', 'NightDisplayManager', 'setActivated() · setColorTemperature()'],
+  ['Home Screen', 'Launcher3', 'Workspace · Hotseat · Folder'],
+  ['Voice input', 'VoiceInteractionService', 'assistant itself is GMS; settings page is AOSP'],
+  ['Screen saver', 'DreamService', 'the AOSP equivalent of StandBy'],
+  ['Wallpaper', 'WallpaperManager', 'setBitmap() · live-wallpaper chooser'],
+  ['Notifications', 'NotificationManager', 'setZenMode() · getActiveNotifications()'],
+  ['Sounds', 'AudioManager', 'adjustStreamVolume() · setStreamVolume()'],
+  ['Focus', 'NotificationManager', 'setZenMode(MODE_IMPORTANT_INTERRUPTIONS)'],
+  ['Screen Time', 'UsageStatsManager', 'queryUsageStats()'],
+  ['Face unlock', 'FaceManager', 'enroll() · authenticate() · remove()'],
+  ['Fingerprint', 'FingerprintManager', 'enroll() · authenticate() · remove()'],
+  ['Passcode', 'KeyguardManager', 'createConfirmDeviceCredentialIntent()'],
+  ['Emergency SOS', 'EmergencyAffordanceManager', 'emergencyCall()'],
+  ['Privacy', 'AppOpsManager', 'checkOp() · setMode()'],
+  ['Location', 'LocationManager', 'isProviderEnabled()'],
+  ['NFC & payments', 'NfcAdapter', 'enable() · enableReaderMode()'],
+  ['Apps', 'PackageManager', 'getInstalledApplications()'],
+  ['Power', 'GlobalActionsDialog', 'PowerManager.shutdown() · reboot() — privileged; no settings row invokes it']
+];
+
+const elContent = document.getElementById('content');
+const elNavBar = document.getElementById('nav-bar');
+const elNavBack = document.getElementById('nav-back');
+const elNavTitle = document.getElementById('nav-title');
+
+function colorVar(c) { return c ? `var(--${c})` : 'var(--system-blue)'; }
+
+function rowHTML(row) {
+  const isTwoLine = row.sub ? 'two-line' : '';
+  const isNoIcon = (!row.icon && !row.avatar) ? 'no-icon' : '';
+  const destCls = row.destructive ? ' destructive' : '';
+
+  let iconHTML = '';
+  if (row.avatar) {
+    iconHTML = `<div class="icon-sq avatar">${row.avatar}</div>`;
+  } else if (row.icon && I[row.icon]) {
+    iconHTML = `<div class="icon-sq" style="background:${colorVar(row.color)}"><svg viewBox="0 0 18 18">${I[row.icon]}</svg></div>`;
+  }
+
+  let rightHTML = '';
+  if (row.toggle) {
+    rightHTML = `<div class="toggle${row.on ? ' on' : ''}" data-toggle></div>`;
+  } else if (row.radio) {
+    rightHTML = row.on
+      ? `<div style="color:var(--system-blue);margin-left:8px;"><svg viewBox="0 0 18 18" width="18" height="18"><path d="M4 9.5l3.5 3.5 6.5-7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>`
+      : `<div style="width:18px;height:18px;margin-left:8px;"></div>`;
+  } else if (row.value !== undefined && row.value !== null && row.value !== '') {
+    rightHTML = `<div class="row-value">${row.value}</div>`;
+    if (row.nav || row.icon === undefined) rightHTML += `<div class="chevron"></div>`;
+  } else if (row.nav) {
+    rightHTML = `<div class="chevron"></div>`;
+  } else if (!row.toggle && !row.radio && row.destructive === undefined) {
+    rightHTML = `<div class="chevron"></div>`;
+  }
+
+  const dataNav = row.nav ? ` data-nav="${row.nav}"` : '';
+  return `<div class="row ${isTwoLine} ${isNoIcon}"${dataNav}>
+    ${iconHTML}
+    <div class="row-main">
+      <div class="row-title${destCls}">${row.title}</div>
+      ${row.sub ? `<div class="row-sub">${row.sub}</div>` : ''}
+    </div>
+    ${rightHTML}
+  </div>`;
+}
+
+function renderScreen(key) {
+  const s = TREE[key];
+  if (!s) return { html: `<div style="padding:100px 20px;color:#888;text-align:center;">Screen not found: ${key}</div>`, title: '', parent: null, isRoot: false };
+
+  let html = '';
+  const isRoot = key === 'root';
+
+  if (isRoot) {
+    html += `<div class="large-title">Settings</div>`;
+    html += `<div class="search-wrap"><div class="search">
+      <svg width="15" height="15" viewBox="0 0 18 18"><circle cx="8" cy="8" r="5.5" stroke="currentColor" stroke-width="2" fill="none"/><path d="M12 12l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <span>Search</span>
+    </div></div>`;
+  }
+
+  s.sections.forEach(sec => {
+    html += `<div class="section">`;
+    if (sec.header) html += `<div class="section-header">${sec.header}</div>`;
+    if (sec.rows) {
+      html += `<div class="capsule">`;
+      sec.rows.forEach(r => { html += rowHTML(r); });
+      html += `</div>`;
+    }
+    if (sec.chart) {
+      html += `<div class="capsule" style="padding:16px;"><div style="display:flex;align-items:flex-end;gap:4px;height:80px;">`;
+      [45,62,78,55,90,70,35,50].forEach(h => {
+        html += `<div style="flex:1;background:var(--system-green);height:${h}%;border-radius:2px;"></div>`;
+      });
+      html += `</div></div>`;
+    }
+    if (sec.footer) html += `<div class="section-footer">${sec.footer}</div>`;
+    html += `</div>`;
+  });
+
+  html += `<div style="height:32px"></div>`;
+  return { html, title: s.title, parent: s.parent, isRoot };
+}
+
+function showScreen(key) {
+  const { html, title, parent, isRoot } = renderScreen(key);
+
+  if (isRoot) {
+    elNavBar.classList.remove('shown');
+    elContent.classList.remove('has-nav');
+  } else {
+    elNavBar.classList.add('shown');
+    elContent.classList.add('has-nav');
+    elNavTitle.textContent = title;
+    elNavBack.dataset.nav = parent || 'root';
+  }
+
+  elContent.innerHTML = html;
+  elContent.scrollTop = 0;
+
+  elContent.querySelectorAll('[data-nav]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showScreen(el.dataset.nav);
+    });
+  });
+
+  elContent.querySelectorAll('.toggle').forEach(t => {
+    t.addEventListener('click', (e) => {
+      e.stopPropagation();
+      t.classList.toggle('on');
+    });
+  });
+}
+
+elNavBack.addEventListener('click', () => showScreen(elNavBack.dataset.nav || 'root'));
+document.getElementById('btn-home').addEventListener('click', () => showScreen('root'));
+
+const btnLight = document.getElementById('btn-light');
+const btnDark = document.getElementById('btn-dark');
+const root = document.documentElement;
+
+function applyTheme(dark) {
+  if (dark) {
+    root.style.setProperty('--system-background', '#000000');
+    root.style.setProperty('--grouped-bg', '#000000');
+    root.style.setProperty('--card-bg', '#1C1C1E');
+    root.style.setProperty('--label', '#FFFFFF');
+    root.style.setProperty('--secondary-label', 'rgba(235,235,245,0.60)');
+    root.style.setProperty('--tertiary-label', 'rgba(235,235,245,0.30)');
+    root.style.setProperty('--separator', 'rgba(84,84,88,0.65)');
+    root.style.setProperty('--system-blue', '#0A84FF');
+    root.style.setProperty('--system-green', '#30D158');
+    root.style.setProperty('--system-red', '#FF453A');
+    root.style.setProperty('--system-orange', '#FF9F0A');
+    root.style.setProperty('--system-pink', '#FF375F');
+    root.style.setProperty('--system-teal', '#64D2FF');
+    root.style.setProperty('--system-indigo', '#5E5CE6');
+    root.style.setProperty('--system-gray4', '#3A3A3C');
+    btnDark.classList.add('active');
+    btnLight.classList.remove('active');
+    elNavBar.style.background = 'rgba(0,0,0,0.72)';
+  } else {
+    root.style.setProperty('--system-background', '#F2F2F7');
+    root.style.setProperty('--grouped-bg', '#F2F2F7');
+    root.style.setProperty('--card-bg', '#FFFFFF');
+    root.style.setProperty('--label', '#000000');
+    root.style.setProperty('--secondary-label', 'rgba(60,60,67,0.60)');
+    root.style.setProperty('--tertiary-label', 'rgba(60,60,67,0.30)');
+    root.style.setProperty('--separator', 'rgba(60,60,67,0.36)');
+    root.style.setProperty('--system-blue', '#007AFF');
+    root.style.setProperty('--system-green', '#34C759');
+    root.style.setProperty('--system-red', '#FF3B30');
+    root.style.setProperty('--system-orange', '#FF9500');
+    root.style.setProperty('--system-pink', '#FF2D55');
+    root.style.setProperty('--system-teal', '#5AC8FA');
+    root.style.setProperty('--system-indigo', '#5856D6');
+    root.style.setProperty('--system-gray4', '#D1D1D6');
+    btnLight.classList.add('active');
+    btnDark.classList.remove('active');
+    elNavBar.style.background = 'rgba(242,242,247,0.72)';
+  }
+}
+btnLight.addEventListener('click', () => applyTheme(false));
+btnDark.addEventListener('click', () => applyTheme(true));
+
+function tick() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes().toString().padStart(2, '0');
+  document.getElementById('clock').textContent = `${h}:${m}`;
+}
+tick();
+setInterval(tick, 10000);
+
+showScreen('root');
+</script>
+</body>
+</html>
