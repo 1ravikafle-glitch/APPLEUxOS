@@ -5,10 +5,11 @@ device.
 
 ## Why this exists
 
-Every visual number we shipped before this was taken from Apple's screenshots
-(390 pt-class logical screen, 3x) or from the 1080x2400 emulator at 420 dpi.
-The target is different in ways that change layout **and** that cannot be
-derived from a constant:
+Every visual number shipped before the 2026-10-15 on-device measurement was
+taken from Apple's screenshots (390 pt-class logical screen, 3x) or from the
+emulator at an assumed 420 dpi. The measured target (401.9 × 896.0 dp at
+effective 430 dpi — see ../README-needs.md) is different in ways that change
+layout **and** that cannot be derived from a constant:
 
 | Property | What we used to assume | POCO M5 (rock) |
 |---|---|---|
