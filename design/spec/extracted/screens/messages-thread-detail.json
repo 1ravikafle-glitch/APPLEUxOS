@@ -1,0 +1,126 @@
+{
+  "_spec_section": "11.2 messages-thread-detail.json",
+  "_spec_line": 2121,
+  "screen": {
+    "screen": "messages-thread-detail",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Alex Chen",
+        "backButton": "Messages",
+        "trailingButton": "info.circle"
+      },
+      {
+        "id": "message-list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.75
+        },
+        "messages": [
+          {
+            "id": "msg-1",
+            "type": "bubble-out",
+            "text": "Hey! How's it going?",
+            "frame": {
+              "x": 0.55,
+              "y": 0.1,
+              "w": 0.4,
+              "h": 0.06
+            },
+            "color": "#007AFF",
+            "textColor": "#FFFFFF"
+          },
+          {
+            "id": "msg-2",
+            "type": "bubble-in",
+            "text": "Pretty good! Working on the new project.",
+            "frame": {
+              "x": 0.05,
+              "y": 0.18,
+              "w": 0.55,
+              "h": 0.08
+            },
+            "color": "#E9E9EB",
+            "textColor": "#000000"
+          },
+          {
+            "id": "msg-3",
+            "type": "bubble-out",
+            "text": "Nice! Need any help?",
+            "frame": {
+              "x": 0.55,
+              "y": 0.28,
+              "w": 0.4,
+              "h": 0.06
+            },
+            "color": "#007AFF",
+            "textColor": "#FFFFFF"
+          },
+          {
+            "id": "msg-4",
+            "type": "bubble-in",
+            "text": "Maybe later. Are we still on for tomorrow?",
+            "frame": {
+              "x": 0.05,
+              "y": 0.36,
+              "w": 0.6,
+              "h": 0.08
+            },
+            "color": "#E9E9EB",
+            "textColor": "#000000"
+          }
+        ]
+      },
+      {
+        "id": "input-bar",
+        "type": "input-bar",
+        "frame": {
+          "x": 0,
+          "y": 0.85,
+          "w": 1,
+          "h": 0.07
+        },
+        "placeholder": "iMessage",
+        "cornerRadiusPt": 18,
+        "material": "liquidGlassRegular",
+        "icon": "plus.circle.fill",
+        "sendIcon": "arrow.up.circle.fill",
+        "sendColor": "#007AFF"
+      },
+      {
+        "id": "home-indicator",
+        "type": "indicator",
+        "frame": {
+          "x": 0.35,
+          "y": 0.97,
+          "w": 0.3,
+          "h": 0.005
+        }
+      }
+    ],
+    "gestures": [
+      {
+        "from": "bubble",
+        "action": "add-reaction"
+      },
+      {
+        "from": "bubble",
+        "action": "show-actions"
+      },
+      {
+        "from": "input-bar",
+        "action": "compose-message"
+      }
+    ]
+  }
+}

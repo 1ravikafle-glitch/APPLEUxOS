@@ -1,0 +1,133 @@
+{
+  "_spec_section": "5.4 settings-bluetooth.json",
+  "_spec_line": 1462,
+  "screen": {
+    "screen": "settings-bluetooth",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Bluetooth",
+        "backButton": "Settings"
+      },
+      {
+        "id": "bt-toggle",
+        "type": "toggle-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.1,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "title": "Bluetooth",
+        "value": true,
+        "icon": "bluetooth",
+        "iconColor": "#007AFF"
+      },
+      {
+        "id": "my-devices-header",
+        "type": "section-header",
+        "frame": {
+          "x": 0.05,
+          "y": 0.17,
+          "w": 0.9,
+          "h": 0.03
+        },
+        "title": "My Devices"
+      },
+      {
+        "id": "device-list",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.21,
+          "w": 0.9,
+          "h": 0.35
+        },
+        "rows": [
+          {
+            "id": "dev-airpods",
+            "title": "AirPods Pro",
+            "subtitle": "Connected",
+            "icon": "airpods",
+            "iconColor": "#FFFFFF",
+            "infoButton": true,
+            "destination": "settings-bluetooth-detail"
+          },
+          {
+            "id": "dev-watch",
+            "title": "Apple Watch",
+            "subtitle": "Not Connected",
+            "icon": "applewatch",
+            "iconColor": "#FFFFFF",
+            "infoButton": true,
+            "destination": "settings-bluetooth-detail"
+          },
+          {
+            "id": "dev-car",
+            "title": "CarPlay",
+            "subtitle": "Not Connected",
+            "icon": "car.fill",
+            "iconColor": "#FFFFFF",
+            "infoButton": true,
+            "destination": "settings-bluetooth-detail"
+          }
+        ]
+      },
+      {
+        "id": "other-devices-header",
+        "type": "section-header",
+        "frame": {
+          "x": 0.05,
+          "y": 0.58,
+          "w": 0.9,
+          "h": 0.03
+        },
+        "title": "Other Devices"
+      },
+      {
+        "id": "other-devices",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.62,
+          "w": 0.9,
+          "h": 0.2
+        },
+        "rows": [
+          {
+            "id": "dev-speaker",
+            "title": "JBL Speaker",
+            "subtitle": "",
+            "icon": "hifispeaker.fill",
+            "iconColor": "#8E8E93"
+          },
+          {
+            "id": "dev-keyboard",
+            "title": "Logitech Keyboard",
+            "subtitle": "",
+            "icon": "keyboard.fill",
+            "iconColor": "#8E8E93"
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "device-row",
+        "action": "connect-or-detail"
+      },
+      {
+        "from": "info-button",
+        "action": "tap",
+        "opens": "settings-bluetooth-detail"
+      }
+    ]
+  }
+}

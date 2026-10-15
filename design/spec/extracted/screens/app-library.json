@@ -1,0 +1,196 @@
+{
+  "_spec_section": "2.8 app-library.json",
+  "_spec_line": 810,
+  "screen": {
+    "screen": "app-library",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "blurRadiusProvenance": "AppleUX-CHOSEN (C06). The Figma GLASS effect does not expose its radius over REST and Apple publishes no numeric spec for Liquid Glass. This value is ours; tune it per surface against the real Mali-G57 GPU.",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 50
+      },
+      {
+        "id": "search-bar",
+        "type": "search-bar",
+        "frame": {
+          "x": 0.05,
+          "y": 0.06,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "placeholder": "App Library",
+        "cornerRadiusPt": 10,
+        "material": "liquidGlassRegular"
+      },
+      {
+        "id": "category-grid",
+        "type": "grid",
+        "frame": {
+          "x": 0.05,
+          "y": 0.14,
+          "w": 0.9,
+          "h": 0.8
+        },
+        "gridColumns": 2,
+        "gridRows": 4,
+        "children": [
+          {
+            "id": "cat-suggestions",
+            "type": "category-card",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 0.45,
+              "h": 0.22
+            },
+            "title": "Suggestions",
+            "apps": [
+              "Safari",
+              "Messages",
+              "Photos",
+              "Camera"
+            ]
+          },
+          {
+            "id": "cat-recent",
+            "type": "category-card",
+            "frame": {
+              "x": 0.5,
+              "y": 0,
+              "w": 0.45,
+              "h": 0.22
+            },
+            "title": "Recently Added",
+            "apps": [
+              "Files",
+              "Notes",
+              "Reminders"
+            ]
+          },
+          {
+            "id": "cat-social",
+            "type": "category-card",
+            "frame": {
+              "x": 0,
+              "y": 0.25,
+              "w": 0.45,
+              "h": 0.22
+            },
+            "title": "Social",
+            "apps": [
+              "Messages",
+              "FaceTime",
+              "Mail"
+            ]
+          },
+          {
+            "id": "cat-utilities",
+            "type": "category-card",
+            "frame": {
+              "x": 0.5,
+              "y": 0.25,
+              "w": 0.45,
+              "h": 0.22
+            },
+            "title": "Utilities",
+            "apps": [
+              "Calculator",
+              "Clock",
+              "Compass",
+              "Voice Memos"
+            ]
+          },
+          {
+            "id": "cat-productivity",
+            "type": "category-card",
+            "frame": {
+              "x": 0,
+              "y": 0.5,
+              "w": 0.45,
+              "h": 0.22
+            },
+            "title": "Productivity",
+            "apps": [
+              "Notes",
+              "Reminders",
+              "Calendar",
+              "Files"
+            ]
+          },
+          {
+            "id": "cat-entertainment",
+            "type": "category-card",
+            "frame": {
+              "x": 0.5,
+              "y": 0.5,
+              "w": 0.45,
+              "h": 0.22
+            },
+            "title": "Entertainment",
+            "apps": [
+              "Music",
+              "Podcasts",
+              "TV",
+              "Books"
+            ]
+          },
+          {
+            "id": "cat-health",
+            "type": "category-card",
+            "frame": {
+              "x": 0,
+              "y": 0.75,
+              "w": 0.45,
+              "h": 0.22
+            },
+            "title": "Health",
+            "apps": [
+              "Health",
+              "Fitness",
+              "Cycle Tracking"
+            ]
+          },
+          {
+            "id": "cat-finance",
+            "type": "category-card",
+            "frame": {
+              "x": 0.5,
+              "y": 0.75,
+              "w": 0.45,
+              "h": 0.22
+            },
+            "title": "Finance",
+            "apps": [
+              "Wallet",
+              "Stocks"
+            ]
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "home",
+        "action": "swipe-left",
+        "opens": "app-library"
+      },
+      {
+        "from": "app-library",
+        "action": "swipe-right",
+        "opens": "home"
+      },
+      {
+        "from": "category-card",
+        "action": "tap",
+        "opens": "app-library-category"
+      }
+    ]
+  }
+}

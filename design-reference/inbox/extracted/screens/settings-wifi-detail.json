@@ -1,0 +1,125 @@
+{
+  "_spec_section": "5.3 settings-wifi-detail.json",
+  "_spec_line": 1427,
+  "screen": {
+    "screen": "settings-wifi-detail",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "HomeWiFi",
+        "backButton": "Wi-Fi"
+      },
+      {
+        "id": "network-info",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.1,
+          "w": 0.9,
+          "h": 0.3
+        },
+        "rows": [
+          {
+            "id": "info-connected",
+            "title": "Connected",
+            "value": "Yes"
+          },
+          {
+            "id": "info-ip",
+            "title": "IP Address",
+            "value": "192.168.1.42"
+          },
+          {
+            "id": "info-subnet",
+            "title": "Subnet Mask",
+            "value": "255.255.255.0"
+          },
+          {
+            "id": "info-router",
+            "title": "Router",
+            "value": "192.168.1.1"
+          },
+          {
+            "id": "info-dns",
+            "title": "DNS",
+            "value": "8.8.8.8, 8.8.4.4"
+          },
+          {
+            "id": "info-bssid",
+            "title": "BSSID",
+            "value": "a4:5e:60:12:34:56"
+          },
+          {
+            "id": "info-security",
+            "title": "Security",
+            "value": "WPA2/WPA3"
+          }
+        ]
+      },
+      {
+        "id": "actions",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.42,
+          "w": 0.9,
+          "h": 0.15
+        },
+        "rows": [
+          {
+            "id": "action-forget",
+            "title": "Forget This Network",
+            "destructive": true
+          },
+          {
+            "id": "action-renew-lease",
+            "title": "Renew Lease"
+          }
+        ]
+      },
+      {
+        "id": "auto-join",
+        "type": "toggle-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.6,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "title": "Auto-Join",
+        "value": true
+      },
+      {
+        "id": "low-data-mode",
+        "type": "toggle-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.67,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "title": "Low Data Mode",
+        "value": false
+      },
+      {
+        "id": "private-wifi",
+        "type": "toggle-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.74,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "title": "Private Wi-Fi Address",
+        "value": true
+      }
+    ]
+  }
+}

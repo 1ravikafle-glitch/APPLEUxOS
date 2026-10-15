@@ -1,0 +1,67 @@
+{
+  "meta": {
+    "extractionDate": "2026-10-15",
+    "sources": [
+      "Apple Developer Design Resources (developer.apple.com/design/resources/)",
+      "Apple iOS 27 Figma UI Kit (figma.com/community/file/1651309003795292092)",
+      "Apple HIG (developer.apple.com/design/human-interface-guidelines)",
+      "iOS 27 iPhone User Guide (support.apple.com/guide/iphone)",
+      "WWDC 2026 Platforms State of the Union",
+      "AOSP 16 source (android.googlesource.com)",
+      "Android 16 Quick Settings tile categories (source.android.com)",
+      "MacRumors Liquid Glass iOS 27 article (macrumors.com)"
+    ],
+    "figmaKitReachable": "token-required",
+    "figmaKitNote": "Apple kit 1651309003795292092 is reachable through the Figma REST API WITH A TOKEN (ios27-ds did this 2026-07-29, kit 27.0.2). An anonymous fetch of a kit URL returns 403. Do not conflate the two. Values below marked inferred were NOT measured from Figma nodes."
+  },
+  "fields": {
+    "color.systemBackground": {
+      "source": "hig",
+      "inferred": false
+    },
+    "color.liquidGlassFill": {
+      "source": "kit",
+      "inferred": true,
+      "note": "Apple publishes NO numeric spec for Liquid Glass"
+    },
+    "typography.largeTitle": {
+      "source": "hig",
+      "inferred": false
+    },
+    "typography.body": {
+      "source": "hig",
+      "inferred": false
+    },
+    "spacing.inset": {
+      "source": "hig",
+      "inferred": true
+    },
+    "radius.liquidGlassRegular": {
+      "source": "kit",
+      "inferred": true
+    },
+    "radius.appIconCornerRadius": {
+      "source": "icon-template",
+      "inferred": false
+    },
+    "icon.appIconSuperellipseN": {
+      "source": "icon-template",
+      "inferred": false,
+      "note": "n\u22484.4"
+    },
+    "material.liquidGlassRegular": {
+      "source": "kit",
+      "inferred": true,
+      "note": "Apple publishes NO numeric spec"
+    },
+    "material.transparencySlider": {
+      "source": "wwdc26",
+      "inferred": false,
+      "note": "Ultraclear to fully tinted"
+    },
+    "animation.standardDuration": {
+      "source": "hig",
+      "inferred": true
+    }
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "_spec_section": "10.2 settings-photos.json",
+  "_spec_line": 2016,
+  "screen": {
+    "screen": "settings-photos",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Photos",
+        "backButton": "Settings"
+      },
+      {
+        "id": "list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.91
+        },
+        "sections": [
+          {
+            "id": "icloud",
+            "rows": [
+              {
+                "id": "photos-icloud",
+                "title": "iCloud Photos",
+                "valueType": "toggle",
+                "value": false,
+                "destination": "settings-photos-icloud"
+              },
+              {
+                "id": "photos-shared-albums",
+                "title": "Shared Albums",
+                "valueType": "toggle",
+                "value": false,
+                "destination": "settings-photos-shared-albums"
+              }
+            ]
+          },
+          {
+            "id": "memories",
+            "rows": [
+              {
+                "id": "photos-memories",
+                "title": "Memories",
+                "valueType": "toggle",
+                "value": true,
+                "destination": "settings-photos-memories"
+              },
+              {
+                "id": "photos-slideshow",
+                "title": "Slideshow",
+                "destination": "settings-photos-slideshow"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

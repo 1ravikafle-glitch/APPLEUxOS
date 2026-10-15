@@ -1,0 +1,18 @@
+package {
+    default_applicable_licenses: ["Android-src-setup"],
+}
+
+// Device-specific adapters. Device-support/rock holds the runtime display
+// profile (cutout inset, live refresh rate, density) and the frame-budget
+// derivation. It is a plain android_library so one APK adapts at runtime
+// instead of forking per device — see device-support/rock/README.md.
+android_library {
+    name: "appleux-device-support-rock",
+    srcs: ["src/main/java/**/*.kt"],
+    manifest: "src/main/AndroidManifest.xml",
+    sdk_version: "current",
+    kotlin: {
+        enabled: true,
+    },
+    libs: ["android.framework"],
+}

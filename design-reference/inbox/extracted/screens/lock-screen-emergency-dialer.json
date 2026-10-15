@@ -1,0 +1,154 @@
+{
+  "_spec_section": "1.5 lock-screen-emergency-dialer.json",
+  "_spec_line": 215,
+  "screen": {
+    "screen": "lock-screen-emergency-dialer",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 40
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "text": "Emergency Call",
+        "frame": {
+          "x": 0.1,
+          "y": 0.1,
+          "w": 0.8,
+          "h": 0.06
+        },
+        "font": "title2",
+        "size": 22,
+        "weight": "bold",
+        "textAlign": "center",
+        "color": "#FF3B30"
+      },
+      {
+        "id": "number-display",
+        "type": "text",
+        "text": "",
+        "frame": {
+          "x": 0.1,
+          "y": 0.2,
+          "w": 0.8,
+          "h": 0.08
+        },
+        "font": "largeTitle",
+        "size": 34,
+        "textAlign": "center",
+        "color": "#FFFFFF",
+        "placeholder": "Enter number"
+      },
+      {
+        "id": "keypad",
+        "type": "keypad",
+        "frame": {
+          "x": 0.15,
+          "y": 0.35,
+          "w": 0.7,
+          "h": 0.45
+        },
+        "keys": [
+          {
+            "label": "1",
+            "sub": null
+          },
+          {
+            "label": "2",
+            "sub": "ABC"
+          },
+          {
+            "label": "3",
+            "sub": "DEF"
+          },
+          {
+            "label": "4",
+            "sub": "GHI"
+          },
+          {
+            "label": "5",
+            "sub": "JKL"
+          },
+          {
+            "label": "6",
+            "sub": "MNO"
+          },
+          {
+            "label": "7",
+            "sub": "PQRS"
+          },
+          {
+            "label": "8",
+            "sub": "TUV"
+          },
+          {
+            "label": "9",
+            "sub": "WXYZ"
+          },
+          {
+            "label": "*",
+            "sub": null
+          },
+          {
+            "label": "0",
+            "sub": "+"
+          },
+          {
+            "label": "#",
+            "sub": null
+          }
+        ],
+        "keyShape": "circle",
+        "keyDiameterPt": 75,
+        "keySpacingPt": 20,
+        "keyBackground": "rgba(255,255,255,0.15)",
+        "keyTextColor": "#FFFFFF"
+      },
+      {
+        "id": "call-button",
+        "type": "button",
+        "shape": "circle",
+        "centre": {
+          "x": 0.5,
+          "y": 0.85
+        },
+        "diameterPt": 70,
+        "icon": "phone.fill",
+        "iconColor": "#FFFFFF",
+        "background": "#FF3B30"
+      },
+      {
+        "id": "cancel",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.93,
+          "w": 0.3,
+          "h": 0.04
+        },
+        "label": "Cancel",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "keypad-key",
+        "action": "append-digit"
+      },
+      {
+        "from": "call-button",
+        "action": "emergency-call"
+      }
+    ],
+    "notes": "Emergency dialer accessible from lock screen without passcode. Call button is large red circle. Medical ID accessible via 'Emergency' \u2192 'Medical ID'."
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "_spec_section": "2.2 home-edit-jiggle.json",
+  "_spec_line": 592,
+  "screen": {
+    "screen": "home-edit-jiggle",
+    "elements": [
+      {
+        "id": "banner",
+        "type": "banner",
+        "frame": {
+          "x": 0,
+          "y": 0.054,
+          "w": 1,
+          "h": 0.05
+        },
+        "text": "Drag to move, tap \u2715 to remove",
+        "font": "footnote",
+        "textAlign": "center",
+        "background": "rgba(0,0,0,0.3)",
+        "textColor": "#FFFFFF"
+      },
+      {
+        "id": "app-grid",
+        "type": "grid",
+        "frame": {
+          "x": 0.054,
+          "y": 0.12,
+          "w": 0.892,
+          "h": 0.7
+        },
+        "jiggleAnimation": true,
+        "children": [
+          {
+            "id": "app-messages",
+            "type": "app-icon",
+            "position": {
+              "col": 0,
+              "row": 0
+            },
+            "label": "Messages",
+            "icon": "message.fill",
+            "color": "#34C759",
+            "removeButton": {
+              "x": 0.95,
+              "y": 0.0,
+              "w": 0.15,
+              "h": 0.15
+            },
+            "removeIcon": "close.circle.fill"
+          }
+        ]
+      },
+      {
+        "id": "done-button",
+        "type": "button",
+        "frame": {
+          "x": 0.4,
+          "y": 0.88,
+          "w": 0.2,
+          "h": 0.05
+        },
+        "label": "Done",
+        "style": "prominent"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "app-icon",
+        "action": "reposition"
+      },
+      {
+        "from": "removeButton",
+        "action": "remove-app"
+      },
+      {
+        "from": "done-button",
+        "action": "exit-edit-mode"
+      }
+    ],
+    "notes": "Jiggle animation: rotation \u00b12 degrees, 0.4s cycle. Remove button: red circle with white \u2715. Done button exits edit mode."
+  }
+}

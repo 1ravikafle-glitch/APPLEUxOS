@@ -1,0 +1,75 @@
+{
+  "_spec_section": "1.13 lock-screen-flashlight-long-press.json",
+  "_spec_line": 446,
+  "screen": {
+    "screen": "lock-screen-flashlight-long-press",
+    "elements": [
+      {
+        "id": "overlay",
+        "type": "container",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "background": "rgba(0,0,0,0.6)"
+      },
+      {
+        "id": "flashlight-icon",
+        "type": "icon",
+        "frame": {
+          "x": 0.4,
+          "y": 0.35,
+          "w": 0.2,
+          "h": 0.1
+        },
+        "icon": "flashlight.on.fill",
+        "size": 48,
+        "color": "#FFCC00"
+      },
+      {
+        "id": "intensity-slider",
+        "type": "slider",
+        "frame": {
+          "x": 0.2,
+          "y": 0.55,
+          "w": 0.6,
+          "h": 0.08
+        },
+        "value": 0.8,
+        "trackColor": "#FFFFFF33",
+        "fillColor": "#FFCC00",
+        "icon": "sun.max.fill"
+      },
+      {
+        "id": "label",
+        "type": "text",
+        "text": "Intensity",
+        "frame": {
+          "x": 0.2,
+          "y": 0.64,
+          "w": 0.6,
+          "h": 0.04
+        },
+        "font": "caption1",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "done",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.8,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Done",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      }
+    ],
+    "notes": "Adjusts flashlight brightness. Only available on devices with adjustable torch (POCO M5 supports on/off only)."
+  }
+}

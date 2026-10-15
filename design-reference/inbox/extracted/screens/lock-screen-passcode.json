@@ -1,0 +1,265 @@
+{
+  "_spec_section": "1.2 lock-screen-passcode.json",
+  "_spec_line": 86,
+  "screen": {
+    "screen": "lock-screen-passcode",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 40,
+        "alpha": 0.85
+      },
+      {
+        "id": "time",
+        "type": "text",
+        "text": "9:41",
+        "frame": {
+          "x": 0.1,
+          "y": 0.06,
+          "w": 0.8,
+          "h": 0.06
+        },
+        "font": "largeTitle",
+        "size": 34,
+        "weight": "bold",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "date",
+        "type": "text",
+        "text": "Monday, October 15",
+        "frame": {
+          "x": 0.1,
+          "y": 0.12,
+          "w": 0.8,
+          "h": 0.03
+        },
+        "font": "subhead",
+        "size": 15,
+        "textAlign": "center",
+        "color": "#FFFFFF",
+        "opacity": 0.7
+      },
+      {
+        "id": "prompt",
+        "type": "text",
+        "text": "Enter Passcode",
+        "frame": {
+          "x": 0.1,
+          "y": 0.22,
+          "w": 0.8,
+          "h": 0.04
+        },
+        "font": "headline",
+        "size": 17,
+        "weight": "600",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "dots",
+        "type": "dots",
+        "frame": {
+          "x": 0.35,
+          "y": 0.28,
+          "w": 0.3,
+          "h": 0.03
+        },
+        "count": 6,
+        "filled": 0,
+        "dotSize": 10,
+        "dotSpacing": 14,
+        "dotColor": "#FFFFFF",
+        "filledColor": "#FFFFFF"
+      },
+      {
+        "id": "keypad",
+        "type": "keypad",
+        "frame": {
+          "x": 0.15,
+          "y": 0.38,
+          "w": 0.7,
+          "h": 0.42
+        },
+        "keys": [
+          {
+            "id": "key-1",
+            "label": "1",
+            "sub": null,
+            "position": {
+              "col": 0,
+              "row": 0
+            }
+          },
+          {
+            "id": "key-2",
+            "label": "2",
+            "sub": "ABC",
+            "position": {
+              "col": 1,
+              "row": 0
+            }
+          },
+          {
+            "id": "key-3",
+            "label": "3",
+            "sub": "DEF",
+            "position": {
+              "col": 2,
+              "row": 0
+            }
+          },
+          {
+            "id": "key-4",
+            "label": "4",
+            "sub": "GHI",
+            "position": {
+              "col": 0,
+              "row": 1
+            }
+          },
+          {
+            "id": "key-5",
+            "label": "5",
+            "sub": "JKL",
+            "position": {
+              "col": 1,
+              "row": 1
+            }
+          },
+          {
+            "id": "key-6",
+            "label": "6",
+            "sub": "MNO",
+            "position": {
+              "col": 2,
+              "row": 1
+            }
+          },
+          {
+            "id": "key-7",
+            "label": "7",
+            "sub": "PQRS",
+            "position": {
+              "col": 0,
+              "row": 2
+            }
+          },
+          {
+            "id": "key-8",
+            "label": "8",
+            "sub": "TUV",
+            "position": {
+              "col": 1,
+              "row": 2
+            }
+          },
+          {
+            "id": "key-9",
+            "label": "9",
+            "sub": "WXYZ",
+            "position": {
+              "col": 2,
+              "row": 2
+            }
+          },
+          {
+            "id": "key-0",
+            "label": "0",
+            "sub": null,
+            "position": {
+              "col": 1,
+              "row": 3
+            }
+          },
+          {
+            "id": "key-emergency",
+            "label": "Emergency",
+            "sub": null,
+            "position": {
+              "col": 0,
+              "row": 3
+            },
+            "textColor": "#FF3B30"
+          },
+          {
+            "id": "key-delete",
+            "label": "Delete",
+            "sub": null,
+            "position": {
+              "col": 2,
+              "row": 3
+            },
+            "icon": "delete.left.fill"
+          }
+        ],
+        "keyShape": "circle",
+        "keyDiameterPt": 75,
+        "keySpacingPt": 20,
+        "keyBackground": "liquidGlassRegular",
+        "keyTextColor": "#FFFFFF",
+        "keySubTextColor": "#FFFFFF",
+        "keySubOpacity": 0.6,
+        "keyFont": {
+          "label": 36,
+          "sub": 10
+        }
+      },
+      {
+        "id": "cancel",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.85,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Cancel",
+        "style": "plain",
+        "font": "body",
+        "textColor": "#FFFFFF",
+        "gestures": [
+          {
+            "action": "dismiss"
+          }
+        ]
+      },
+      {
+        "id": "biometric-prompt",
+        "type": "biometric",
+        "frame": {
+          "x": 0.4,
+          "y": 0.9,
+          "w": 0.2,
+          "h": 0.05
+        },
+        "icon": "faceid",
+        "iconColor": "#FFFFFF",
+        "notes": "Maps to fingerprint on POCO M5"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "keypad-key",
+        "action": "append-digit"
+      },
+      {
+        "from": "key-delete",
+        "action": "clear-all"
+      },
+      {
+        "from": "biometric-prompt",
+        "action": "fingerprint-auth"
+      }
+    ],
+    "notes": "Keypad keys use circular Liquid Glass buttons. Emergency key text is systemRed. Delete key shows backspace icon. Dots fill left-to-right. On 6 failed attempts, shows 'iPhone Unavailable' timer (lock-screen-unavailable-timer)."
+  }
+}

@@ -12,6 +12,12 @@
     <string name="app_menu_info">App Info</string>
     <string name="app_menu_remove">Remove App</string>
     <string name="app_menu_widgets">Widgets</string>
+    <string name="app_menu_add_to_dock">Add to Dock</string>
+    <string name="dock_menu_title">Dock</string>
+    <string name="dock_menu_replace">Replace with…</string>
+    <string name="dock_menu_remove">Remove from Dock</string>
+    <string name="dock_menu_reset">Reset Dock to Defaults</string>
+    <string name="dock_picker_title">Choose an App</string>
     <string name="app_info_unavailable">No app details screen for %1$s</string>
     <string name="app_remove_unavailable">%1$s cannot be removed</string>
 </resources>

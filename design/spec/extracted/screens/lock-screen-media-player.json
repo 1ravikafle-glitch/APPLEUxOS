@@ -1,0 +1,142 @@
+{
+  "_spec_section": "1.4 lock-screen-media-player.json",
+  "_spec_line": 189,
+  "screen": {
+    "screen": "lock-screen-media-player",
+    "elements": [
+      {
+        "id": "card",
+        "type": "container",
+        "frame": {
+          "x": 0.05,
+          "y": 0.6,
+          "w": 0.9,
+          "h": 0.28
+        },
+        "cornerRadiusPt": 20,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "album-art",
+            "type": "image",
+            "frame": {
+              "x": 0.05,
+              "y": 0.1,
+              "w": 0.25,
+              "h": 0.8
+            },
+            "cornerRadiusPt": 8,
+            "notes": "Album artwork"
+          },
+          {
+            "id": "track-title",
+            "type": "text",
+            "text": "Blinding Lights",
+            "frame": {
+              "x": 0.35,
+              "y": 0.15,
+              "w": 0.55,
+              "h": 0.15
+            },
+            "font": "body",
+            "weight": "600",
+            "color": "#FFFFFF"
+          },
+          {
+            "id": "artist",
+            "type": "text",
+            "text": "The Weeknd",
+            "frame": {
+              "x": 0.35,
+              "y": 0.32,
+              "w": 0.55,
+              "h": 0.12
+            },
+            "font": "subhead",
+            "color": "secondaryLabel"
+          },
+          {
+            "id": "progress",
+            "type": "progress-bar",
+            "frame": {
+              "x": 0.35,
+              "y": 0.52,
+              "w": 0.55,
+              "h": 0.03
+            },
+            "value": 0.45,
+            "trackColor": "#FFFFFF33",
+            "fillColor": "#FFFFFF"
+          },
+          {
+            "id": "time-elapsed",
+            "type": "text",
+            "text": "1:42",
+            "frame": {
+              "x": 0.35,
+              "y": 0.58,
+              "w": 0.1,
+              "h": 0.06
+            },
+            "font": "caption2",
+            "color": "secondaryLabel"
+          },
+          {
+            "id": "time-total",
+            "type": "text",
+            "text": "3:20",
+            "frame": {
+              "x": 0.8,
+              "y": 0.58,
+              "w": 0.1,
+              "h": 0.06
+            },
+            "font": "caption2",
+            "color": "secondaryLabel"
+          },
+          {
+            "id": "controls",
+            "type": "button-row",
+            "frame": {
+              "x": 0.35,
+              "y": 0.68,
+              "w": 0.55,
+              "h": 0.22
+            },
+            "buttons": [
+              {
+                "id": "prev",
+                "type": "control",
+                "icon": "backward.fill",
+                "size": 24
+              },
+              {
+                "id": "play-pause",
+                "type": "control",
+                "icon": "play.fill",
+                "size": 32
+              },
+              {
+                "id": "next",
+                "type": "control",
+                "icon": "forward.fill",
+                "size": 24
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "play-pause",
+        "action": "play-pause"
+      },
+      {
+        "from": "card",
+        "action": "tap",
+        "opens": "now-playing-expanded"
+      }
+    ]
+  }
+}

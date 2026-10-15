@@ -1,0 +1,123 @@
+{
+  "_spec_section": "1.10 lock-screen-wallpaper-picker.json",
+  "_spec_line": 382,
+  "screen": {
+    "screen": "lock-screen-wallpaper-picker",
+    "elements": [
+      {
+        "id": "title",
+        "type": "text",
+        "text": "Wallpaper",
+        "frame": {
+          "x": 0.05,
+          "y": 0.08,
+          "w": 0.9,
+          "h": 0.06
+        },
+        "font": "title2",
+        "size": 22,
+        "weight": "bold"
+      },
+      {
+        "id": "preview",
+        "type": "image",
+        "frame": {
+          "x": 0.1,
+          "y": 0.16,
+          "w": 0.8,
+          "h": 0.4
+        },
+        "cornerRadiusPt": 22,
+        "notes": "Live preview of selected wallpaper"
+      },
+      {
+        "id": "categories",
+        "type": "scroll-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.6,
+          "w": 0.9,
+          "h": 0.08
+        },
+        "items": [
+          "Featured",
+          "Weather",
+          "Astronomy",
+          "Emoji",
+          "Collections",
+          "Color"
+        ],
+        "selected": "Featured"
+      },
+      {
+        "id": "grid",
+        "type": "grid",
+        "frame": {
+          "x": 0.05,
+          "y": 0.7,
+          "w": 0.9,
+          "h": 0.22
+        },
+        "gridColumns": 3,
+        "gridRows": 1,
+        "children": [
+          {
+            "id": "wp-1",
+            "type": "wallpaper-thumb",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 0.3,
+              "h": 1
+            },
+            "selected": true
+          },
+          {
+            "id": "wp-2",
+            "type": "wallpaper-thumb",
+            "frame": {
+              "x": 0.35,
+              "y": 0,
+              "w": 0.3,
+              "h": 1
+            }
+          },
+          {
+            "id": "wp-3",
+            "type": "wallpaper-thumb",
+            "frame": {
+              "x": 0.7,
+              "y": 0,
+              "w": 0.3,
+              "h": 1
+            }
+          }
+        ]
+      },
+      {
+        "id": "depth-effect",
+        "type": "toggle-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.93,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "title": "Depth Effect",
+        "value": true
+      },
+      {
+        "id": "set-button",
+        "type": "button",
+        "frame": {
+          "x": 0.55,
+          "y": 0.98,
+          "w": 0.4,
+          "h": 0.05
+        },
+        "label": "Set",
+        "style": "prominent"
+      }
+    ]
+  }
+}

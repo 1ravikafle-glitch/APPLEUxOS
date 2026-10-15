@@ -1,0 +1,91 @@
+{
+  "_spec_section": "4.5 screenshot-toolbar.json",
+  "_spec_line": 1242,
+  "screen": {
+    "screen": "screenshot-toolbar",
+    "elements": [
+      {
+        "id": "thumbnail",
+        "type": "image",
+        "frame": {
+          "x": 0.05,
+          "y": 0.85,
+          "w": 0.15,
+          "h": 0.1
+        },
+        "cornerRadiusPt": 8,
+        "notes": "Screenshot thumbnail"
+      },
+      {
+        "id": "actions",
+        "type": "button-row",
+        "frame": {
+          "x": 0.25,
+          "y": 0.88,
+          "w": 0.5,
+          "h": 0.05
+        },
+        "buttons": [
+          {
+            "id": "action-markup",
+            "type": "button",
+            "label": "Markup",
+            "icon": "pencil.tip",
+            "style": "gray"
+          },
+          {
+            "id": "action-share",
+            "type": "button",
+            "label": "Share",
+            "icon": "square.and.arrow.up",
+            "style": "gray"
+          },
+          {
+            "id": "action-save",
+            "type": "button",
+            "label": "Save",
+            "icon": "square.and.arrow.down",
+            "style": "gray"
+          },
+          {
+            "id": "action-delete",
+            "type": "button",
+            "label": "Delete",
+            "icon": "trash",
+            "style": "gray",
+            "destructive": true
+          }
+        ]
+      },
+      {
+        "id": "dismiss",
+        "type": "button",
+        "frame": {
+          "x": 0.85,
+          "y": 0.88,
+          "w": 0.1,
+          "h": 0.05
+        },
+        "label": "\u2715",
+        "style": "plain"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "thumbnail",
+        "action": "tap",
+        "opens": "screenshot-markup"
+      },
+      {
+        "from": "action-share",
+        "action": "tap",
+        "opens": "share-sheet"
+      },
+      {
+        "from": "dismiss",
+        "action": "dismiss"
+      }
+    ],
+    "notes": "Appears after screenshot capture. Auto-dismisses after 5 seconds. Thumbnail animates in from bottom-left."
+  }
+}

@@ -1,0 +1,111 @@
+{
+  "_spec_section": "4.3 power-off-slider.json",
+  "_spec_line": 1187,
+  "screen": {
+    "screen": "power-off-slider",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "blurRadiusProvenance": "AppleUX-CHOSEN (C06). The Figma GLASS effect does not expose its radius over REST and Apple publishes no numeric spec for Liquid Glass. This value is ours; tune it per surface against the real Mali-G57 GPU.",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 40
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "text": "Slide to power off",
+        "frame": {
+          "x": 0.1,
+          "y": 0.15,
+          "w": 0.8,
+          "h": 0.05
+        },
+        "font": "headline",
+        "size": 17,
+        "weight": "600",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "slider",
+        "type": "slider",
+        "frame": {
+          "x": 0.1,
+          "y": 0.25,
+          "w": 0.8,
+          "h": 0.08
+        },
+        "label": "slide to power off",
+        "trackColor": "#FF3B30",
+        "thumbColor": "#FFFFFF",
+        "icon": "power",
+        "value": 0,
+        "max": 1
+      },
+      {
+        "id": "restart-option",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.5,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Restart",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      },
+      {
+        "id": "sos-option",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.58,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Emergency SOS",
+        "style": "plain",
+        "textColor": "#FF3B30"
+      },
+      {
+        "id": "cancel",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.75,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Cancel",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "slider",
+        "action": "power-off"
+      },
+      {
+        "from": "restart-option",
+        "action": "restart"
+      },
+      {
+        "from": "sos-option",
+        "action": "tap",
+        "opens": "sos-slider"
+      },
+      {
+        "from": "cancel",
+        "action": "dismiss"
+      }
+    ]
+  }
+}

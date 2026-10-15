@@ -1,0 +1,105 @@
+{
+  "_spec_section": "2.9 app-library-category.json",
+  "_spec_line": 851,
+  "screen": {
+    "screen": "app-library-category",
+    "elements": [
+      {
+        "id": "title",
+        "type": "text",
+        "text": "Utilities",
+        "frame": {
+          "x": 0.05,
+          "y": 0.08,
+          "w": 0.9,
+          "h": 0.06
+        },
+        "font": "title2",
+        "size": 22,
+        "weight": "bold"
+      },
+      {
+        "id": "app-list",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.16,
+          "w": 0.9,
+          "h": 0.75
+        },
+        "rows": [
+          {
+            "id": "app-calc",
+            "title": "Calculator",
+            "icon": "calculator",
+            "iconColor": "#8E8E93"
+          },
+          {
+            "id": "app-clock",
+            "title": "Clock",
+            "icon": "clock.fill",
+            "iconColor": "#000000"
+          },
+          {
+            "id": "app-compass",
+            "title": "Compass",
+            "icon": "safari.fill",
+            "iconColor": "#000000"
+          },
+          {
+            "id": "app-voice",
+            "title": "Voice Memos",
+            "icon": "mic.fill",
+            "iconColor": "#FF3B30"
+          },
+          {
+            "id": "app-measure",
+            "title": "Measure",
+            "icon": "ruler.fill",
+            "iconColor": "#8E8E93"
+          },
+          {
+            "id": "app-translate",
+            "title": "Translate",
+            "icon": "character.bubble",
+            "iconColor": "#007AFF"
+          },
+          {
+            "id": "app-magnifier",
+            "title": "Magnifier",
+            "icon": "magnifyingglass",
+            "iconColor": "#8E8E93"
+          },
+          {
+            "id": "app-shortcuts",
+            "title": "Shortcuts",
+            "icon": "square.stack.3d.up",
+            "iconColor": "#AF52DE"
+          }
+        ]
+      },
+      {
+        "id": "back",
+        "type": "button",
+        "frame": {
+          "x": 0.05,
+          "y": 0.93,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Back",
+        "style": "plain"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "app-row",
+        "action": "launch-app"
+      },
+      {
+        "from": "back",
+        "action": "back-to-app-library"
+      }
+    ]
+  }
+}

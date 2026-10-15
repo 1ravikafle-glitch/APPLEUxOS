@@ -1,0 +1,309 @@
+{
+  "_spec_section": "5.1 settings-root.json",
+  "_spec_line": 1337,
+  "screen": {
+    "screen": "settings-root",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Settings",
+        "largeTitle": true,
+        "material": "liquidGlassRegular"
+      },
+      {
+        "id": "search",
+        "type": "search-bar",
+        "frame": {
+          "x": 0.05,
+          "y": 0.1,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "placeholder": "Search",
+        "cornerRadiusPt": 10,
+        "material": "liquidGlassRegular"
+      },
+      {
+        "id": "settings-list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.17,
+          "w": 1,
+          "h": 0.83
+        },
+        "listStyle": "insetGrouped",
+        "sections": [
+          {
+            "id": "account",
+            "rows": [
+              {
+                "id": "apple-account",
+                "title": "[Your Name]",
+                "subtitle": "Apple Account, iCloud, Find My",
+                "icon": "person.crop.circle.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-account"
+              }
+            ]
+          },
+          {
+            "id": "connectivity",
+            "rows": [
+              {
+                "id": "airplane",
+                "title": "Airplane Mode",
+                "icon": "airplane",
+                "iconColor": "#FF9500",
+                "valueType": "toggle",
+                "value": false
+              },
+              {
+                "id": "wifi",
+                "title": "Wi-Fi",
+                "icon": "wifi",
+                "iconColor": "#007AFF",
+                "valueType": "detail",
+                "value": "HomeWiFi",
+                "destination": "settings-wifi"
+              },
+              {
+                "id": "bluetooth",
+                "title": "Bluetooth",
+                "icon": "bluetooth",
+                "iconColor": "#007AFF",
+                "valueType": "detail",
+                "value": "On",
+                "destination": "settings-bluetooth"
+              },
+              {
+                "id": "cellular",
+                "title": "Cellular",
+                "icon": "antenna.radiowaves.left.and.right",
+                "iconColor": "#34C759",
+                "valueType": "detail",
+                "destination": "settings-cellular"
+              },
+              {
+                "id": "hotspot",
+                "title": "Personal Hotspot",
+                "icon": "personalhotspot",
+                "iconColor": "#34C759",
+                "valueType": "detail",
+                "value": "Off",
+                "destination": "settings-hotspot"
+              }
+            ]
+          },
+          {
+            "id": "notifications-sounds",
+            "rows": [
+              {
+                "id": "notifications",
+                "title": "Notifications",
+                "icon": "bell.fill",
+                "iconColor": "#FF3B30",
+                "destination": "settings-notifications"
+              },
+              {
+                "id": "sounds",
+                "title": "Sounds & Haptics",
+                "icon": "speaker.wave.2.fill",
+                "iconColor": "#FF2D55",
+                "destination": "settings-sounds-haptics"
+              },
+              {
+                "id": "focus",
+                "title": "Focus",
+                "icon": "moon.fill",
+                "iconColor": "#5856D6",
+                "destination": "settings-focus"
+              },
+              {
+                "id": "screen-time",
+                "title": "Screen Time",
+                "icon": "hourglass",
+                "iconColor": "#5856D6",
+                "destination": "settings-screen-time"
+              }
+            ]
+          },
+          {
+            "id": "general",
+            "rows": [
+              {
+                "id": "general",
+                "title": "General",
+                "icon": "gear",
+                "iconColor": "#8E8E93",
+                "destination": "settings-general"
+              },
+              {
+                "id": "appearance",
+                "title": "Appearance",
+                "icon": "circle.lefthalf.filled",
+                "iconColor": "#5856D6",
+                "destination": "settings-appearance"
+              },
+              {
+                "id": "control-center",
+                "title": "Control Center",
+                "icon": "switch.2",
+                "iconColor": "#8E8E93",
+                "destination": "quick-settings-edit"
+              },
+              {
+                "id": "display",
+                "title": "Display & Brightness",
+                "icon": "sun.max.fill",
+                "iconColor": "#007AFF",
+                "destination": "settings-display-brightness"
+              },
+              {
+                "id": "home-screen",
+                "title": "Home Screen & App Library",
+                "icon": "square.grid.2x2",
+                "iconColor": "#007AFF",
+                "destination": "settings-home-screen-app-library"
+              },
+              {
+                "id": "accessibility",
+                "title": "Accessibility",
+                "icon": "figure.arms.open",
+                "iconColor": "#007AFF",
+                "destination": "settings-accessibility"
+              },
+              {
+                "id": "wallpaper",
+                "title": "Wallpaper",
+                "icon": "photo.fill",
+                "iconColor": "#5AC8FA",
+                "destination": "settings-wallpaper"
+              },
+              {
+                "id": "standby",
+                "title": "StandBy",
+                "icon": "clock.fill",
+                "iconColor": "#FF9500",
+                "destination": "settings-standby"
+              },
+              {
+                "id": "action-button",
+                "title": "Action Button",
+                "icon": "button.programmable",
+                "iconColor": "#FF3B30",
+                "destination": "settings-action-button"
+              },
+              {
+                "id": "camera",
+                "title": "Camera",
+                "icon": "camera.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-camera"
+              },
+              {
+                "id": "photos",
+                "title": "Photos",
+                "icon": "photo.on.rectangle",
+                "iconColor": "#FF9500",
+                "destination": "settings-photos"
+              },
+              {
+                "id": "siri",
+                "title": "Siri & Search",
+                "icon": "mic.fill",
+                "iconColor": "#5856D6",
+                "destination": "settings-siri-search"
+              },
+              {
+                "id": "face-id",
+                "title": "Face ID & Passcode",
+                "icon": "faceid",
+                "iconColor": "#34C759",
+                "destination": "settings-face-id-passcode"
+              },
+              {
+                "id": "emergency-sos",
+                "title": "Emergency SOS",
+                "icon": "sos",
+                "iconColor": "#FF3B30",
+                "destination": "settings-emergency-sos"
+              }
+            ]
+          },
+          {
+            "id": "privacy",
+            "rows": [
+              {
+                "id": "privacy",
+                "title": "Privacy & Security",
+                "icon": "hand.raised.fill",
+                "iconColor": "#007AFF",
+                "destination": "settings-privacy-security"
+              },
+              {
+                "id": "battery",
+                "title": "Battery",
+                "icon": "battery.100",
+                "iconColor": "#34C759",
+                "destination": "settings-battery"
+              },
+              {
+                "id": "vpn",
+                "title": "VPN & Device Management",
+                "icon": "lock.shield.fill",
+                "iconColor": "#007AFF",
+                "destination": "settings-vpn-device-management"
+              },
+              {
+                "id": "legal",
+                "title": "Legal & Regulatory",
+                "icon": "doc.text",
+                "iconColor": "#8E8E93",
+                "destination": "settings-legal-regulatory"
+              }
+            ]
+          },
+          {
+            "id": "reset",
+            "rows": [
+              {
+                "id": "transfer-reset",
+                "title": "Transfer or Reset iPhone",
+                "icon": "arrow.triangle.2.circlepath",
+                "iconColor": "#FF3B30",
+                "destination": "settings-transfer-reset"
+              },
+              {
+                "id": "shut-down",
+                "title": "Shut Down",
+                "icon": "power",
+                "iconColor": "#FF3B30",
+                "valueType": "action",
+                "destination": "power-off"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "settings-row",
+        "action": "push-destination"
+      },
+      {
+        "from": "settings-row",
+        "action": "reveal-actions"
+      }
+    ],
+    "notes": "iOS 27 moved Text Size, Bold Text, Display Zoom, and Liquid Glass to new Appearance menu. Display & Brightness now only contains Screen Brightness, Night Shift, Auto-Lock, Raise to Wake."
+  }
+}

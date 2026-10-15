@@ -1,0 +1,94 @@
+{
+  "_spec_section": "4.6 picture-in-picture.json",
+  "_spec_line": 1260,
+  "screen": {
+    "screen": "picture-in-picture",
+    "elements": [
+      {
+        "id": "pip-window",
+        "type": "container",
+        "frame": {
+          "x": 0.55,
+          "y": 0.7,
+          "w": 0.4,
+          "h": 0.22
+        },
+        "cornerRadiusPt": 12,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "video",
+            "type": "video",
+            "frame": {
+              "x": 0.02,
+              "y": 0.02,
+              "w": 0.96,
+              "h": 0.96
+            },
+            "cornerRadiusPt": 10
+          },
+          {
+            "id": "controls",
+            "type": "overlay",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 1,
+              "h": 1
+            },
+            "buttons": [
+              {
+                "id": "pip-expand",
+                "type": "control",
+                "position": {
+                  "x": 0.85,
+                  "y": 0.1
+                },
+                "icon": "arrow.up.left.and.arrow.down.right",
+                "size": 16
+              },
+              {
+                "id": "pip-close",
+                "type": "control",
+                "position": {
+                  "x": 0.1,
+                  "y": 0.1
+                },
+                "icon": "xmark",
+                "size": 16
+              },
+              {
+                "id": "pip-play",
+                "type": "control",
+                "position": {
+                  "x": 0.45,
+                  "y": 0.85
+                },
+                "icon": "play.fill",
+                "size": 24
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "pip-window",
+        "action": "reposition"
+      },
+      {
+        "from": "pip-window",
+        "action": "resize"
+      },
+      {
+        "from": "pip-expand",
+        "action": "expand-fullscreen"
+      },
+      {
+        "from": "pip-close",
+        "action": "close-pip"
+      }
+    ]
+  }
+}

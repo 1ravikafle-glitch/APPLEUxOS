@@ -1,0 +1,27 @@
+android_app {
+    name: "IOSLikeUI",
+    srcs: ["src/**/*.kt"],
+    resource_dirs: ["res"],
+    manifest: "AndroidManifest.xml",
+    platform_apis: true,
+    certificate: "platform",
+    privileged: true,
+    system_ext_specific: true,
+    optimize: { enabled: false },
+
+    // Verified in frameworks/base/packages/SystemUI/Android.bp (android-16.0.0_r3): these module names exist.
+    // material3 brings foundation + animation transitively. NOT verified: the savedstate / activity-compose / kyant names.
+    static_libs: [
+        "androidx.compose.runtime_runtime",
+        "androidx.compose.ui_ui",
+        "androidx.compose.material3_material3",
+        "androidx.lifecycle_lifecycle-runtime-ktx",
+        "kotlinx_coroutines",
+        "kotlinx_coroutines_android",
+        "androidx.savedstate_savedstate",          // unverified name
+        "androidx.activity_activity-compose",      // unverified name
+        "kyant-backdrop",                          // vendored AAR, see README (Maven: io.github.kyant0:backdrop, Apache-2.0)
+        "kyant-capsule",                           // vendored AAR (Capsule, same author)
+    ],
+    kotlincflags: ["-Xjvm-default=all"],
+}

@@ -1,0 +1,79 @@
+{
+  "_note": "Applied corrections to the adopted design baseline. 'awaiting-evidence' items were deliberately NOT applied.",
+  "source": "design-reference/inbox/ios27-android16-spec-2026-10-15.txt",
+  "output": "design/spec/ios27-baseline.md",
+  "applied": [
+    {
+      "id": "C01",
+      "area": "device",
+      "replacements": 1,
+      "evidence": "POCO M5 is MediaTek Helio G99 = MT6765. mt6789 is Dimensity 1080. AGENTS.md 'Project Overview'."
+    },
+    {
+      "id": "C02",
+      "area": "device",
+      "replacements": 1,
+      "evidence": "An earlier revision of this script changed 2408 to 2400 on the strength of a\nremembered spec sheet. The operator's on-device measurement contradicts it:\nthe panel really is 2408 px tall. Reverted; see\ndeliverables/m20/rock-display-measurement.md."
+    },
+    {
+      "id": "C03",
+      "area": "device",
+      "replacements": 1,
+      "evidence": "0x40078000 is the mt6789 kernel load address. Carrying it into an mt6765 BoardConfig would produce an unbootable image with no obvious cause."
+    },
+    {
+      "id": "C04",
+      "area": "device",
+      "replacements": 1,
+      "evidence": "`grep -rn PRODUCT_OVERRIDE_PACKAGES build/make/` returns nothing."
+    },
+    {
+      "id": "C05",
+      "area": "material",
+      "evidence": "5 of 6 measurable Liquid Glass fields disagreed with the measured Apple kit. scripts/compare-glass-tokens.py. ours matches the kit on all six."
+    },
+    {
+      "id": "C06",
+      "area": "material",
+      "replacements": 15,
+      "evidence": "Every screen-level fullscreen blur radius in the incoming file (values 30-60) had no measured counterpart. A sibling key states the provenance inline so no reader can mistake one for Apple's, and the value itself is preserved. A JSON sibling key rather than a /* comment */ because these blocks are parsed as JSON and JSON has no comment syntax."
+    },
+    {
+      "id": "C08",
+      "area": "icon",
+      "replacements": 1,
+      "evidence": "Re-adopting the rounded rect walks back a measured fix. See AppleuxSuperellipse.kt and AppIconView.kt."
+    },
+    {
+      "id": "C09",
+      "area": "geometry",
+      "replacements": 1,
+      "evidence": "Two top-level elements declared the identical rect {0.021,0.55,0.31,0.35}. Detected by duplicate-frame scan over the extracted screens."
+    },
+    {
+      "id": "C10",
+      "area": "screen size",
+      "replacements": 1,
+      "evidence": "411x916 is an iPhone figure and is 9.6 dp wider than this panel. The earlier\nrevision used 411.43 x 914.29, derived from a wrong 2400/420 assumption."
+    },
+    {
+      "id": "C11",
+      "area": "provenance",
+      "replacements": 1,
+      "evidence": "`figmaKitReachable: true` is true only for the token path, false for the anonymous-HTTP path this spec itself exercised."
+    },
+    {
+      "id": "C12",
+      "area": "provenance",
+      "replacements": 1,
+      "evidence": "These URLs return HTTP 404 (lock-screen.png and control-center.png tested). They were constructed, not observed. The local Apple guide screenshots are the real reference; the filename mapping is a guess and is marked as one."
+    },
+    {
+      "id": "C13",
+      "area": "provenance",
+      "replacements": 1,
+      "evidence": "The spec undercounted its own inventory by ~40%."
+    }
+  ],
+  "awaiting-evidence": []
+}

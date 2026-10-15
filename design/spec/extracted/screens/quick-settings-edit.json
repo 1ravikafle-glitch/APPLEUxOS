@@ -1,0 +1,225 @@
+{
+  "_spec_section": "3.3 quick-settings-edit.json",
+  "_spec_line": 1020,
+  "screen": {
+    "screen": "quick-settings-edit",
+    "elements": [
+      {
+        "id": "title",
+        "type": "text",
+        "text": "Control Center",
+        "frame": {
+          "x": 0.05,
+          "y": 0.06,
+          "w": 0.9,
+          "h": 0.06
+        },
+        "font": "title2",
+        "size": 22,
+        "weight": "bold"
+      },
+      {
+        "id": "active-controls",
+        "type": "grid",
+        "frame": {
+          "x": 0.05,
+          "y": 0.14,
+          "w": 0.9,
+          "h": 0.3
+        },
+        "title": "Included Controls",
+        "gridColumns": 3,
+        "gridRows": 2,
+        "children": [
+          {
+            "id": "ctrl-wifi",
+            "type": "control-item",
+            "position": {
+              "col": 0,
+              "row": 0
+            },
+            "icon": "wifi",
+            "label": "Wi-Fi"
+          },
+          {
+            "id": "ctrl-bluetooth",
+            "type": "control-item",
+            "position": {
+              "col": 1,
+              "row": 0
+            },
+            "icon": "bluetooth",
+            "label": "Bluetooth"
+          },
+          {
+            "id": "ctrl-airplane",
+            "type": "control-item",
+            "position": {
+              "col": 2,
+              "row": 0
+            },
+            "icon": "airplane",
+            "label": "Airplane"
+          },
+          {
+            "id": "ctrl-flashlight",
+            "type": "control-item",
+            "position": {
+              "col": 0,
+              "row": 1
+            },
+            "icon": "flashlight.on.fill",
+            "label": "Flashlight"
+          },
+          {
+            "id": "ctrl-timer",
+            "type": "control-item",
+            "position": {
+              "col": 1,
+              "row": 1
+            },
+            "icon": "timer",
+            "label": "Timer"
+          },
+          {
+            "id": "ctrl-camera",
+            "type": "control-item",
+            "position": {
+              "col": 2,
+              "row": 1
+            },
+            "icon": "camera.fill",
+            "label": "Camera"
+          }
+        ]
+      },
+      {
+        "id": "available-controls",
+        "type": "grid",
+        "frame": {
+          "x": 0.05,
+          "y": 0.5,
+          "w": 0.9,
+          "h": 0.4
+        },
+        "title": "More Controls",
+        "gridColumns": 3,
+        "gridRows": 3,
+        "children": [
+          {
+            "id": "ctrl-1",
+            "type": "control-item",
+            "position": {
+              "col": 0,
+              "row": 0
+            },
+            "icon": "sun.max.fill",
+            "label": "Brightness"
+          },
+          {
+            "id": "ctrl-2",
+            "type": "control-item",
+            "position": {
+              "col": 1,
+              "row": 0
+            },
+            "icon": "speaker.wave.2.fill",
+            "label": "Volume"
+          },
+          {
+            "id": "ctrl-3",
+            "type": "control-item",
+            "position": {
+              "col": 2,
+              "row": 0
+            },
+            "icon": "moon.fill",
+            "label": "Focus"
+          },
+          {
+            "id": "ctrl-4",
+            "type": "control-item",
+            "position": {
+              "col": 0,
+              "row": 1
+            },
+            "icon": "record.circle",
+            "label": "Screen Record"
+          },
+          {
+            "id": "ctrl-5",
+            "type": "control-item",
+            "position": {
+              "col": 1,
+              "row": 1
+            },
+            "icon": "airplayvideo",
+            "label": "Screen Mirror"
+          },
+          {
+            "id": "ctrl-6",
+            "type": "control-item",
+            "position": {
+              "col": 2,
+              "row": 1
+            },
+            "icon": "house.fill",
+            "label": "Home"
+          },
+          {
+            "id": "ctrl-7",
+            "type": "control-item",
+            "position": {
+              "col": 0,
+              "row": 2
+            },
+            "icon": "battery.100",
+            "label": "Low Power"
+          },
+          {
+            "id": "ctrl-8",
+            "type": "control-item",
+            "position": {
+              "col": 1,
+              "row": 2
+            },
+            "icon": "accessibility",
+            "label": "Accessibility"
+          },
+          {
+            "id": "ctrl-9",
+            "type": "control-item",
+            "position": {
+              "col": 2,
+              "row": 2
+            },
+            "icon": "qrcode",
+            "label": "QR Scanner"
+          }
+        ]
+      },
+      {
+        "id": "done",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.93,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Done",
+        "style": "prominent"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "control-item",
+        "action": "add-or-remove"
+      },
+      {
+        "from": "control-item",
+        "action": "reorder"
+      }
+    ]
+  }
+}

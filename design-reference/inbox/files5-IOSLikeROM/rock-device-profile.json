@@ -1,0 +1,34 @@
+{
+ "codename": "rock",
+ "model": "POCO M5 (Helio G99, Mali-G57 MC2)",
+ "panel": {
+  "px": [
+   1080,
+   2408
+  ],
+  "ppi": 401,
+  "refreshHz": [
+   30,
+   60,
+   90
+  ],
+  "type": "IPS LCD",
+  "cutout": "waterdrop (DotDrop), top centre",
+  "source": "po.co spec page (2408x1080, 30/60/90Hz) and GSMArena (~401 ppi)"
+ },
+ "density": {
+  "dpi": 440,
+  "measured": false,
+  "note": "440 is an ASSUMPTION until `adb shell wm density` is pasted"
+ },
+ "insets": {
+  "top": 32,
+  "bottom": 24,
+  "measured": false,
+  "note": "ASSUMED: waterdrop status bar and gesture-nav bar; Kotlin reads real insets at runtime"
+ },
+ "frameDp": [
+  392.7,
+  875.6
+ ]
+}

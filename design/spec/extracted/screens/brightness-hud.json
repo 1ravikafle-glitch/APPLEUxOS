@@ -1,0 +1,50 @@
+{
+  "_spec_section": "4.2 brightness-hud.json",
+  "_spec_line": 1166,
+  "screen": {
+    "screen": "brightness-hud",
+    "elements": [
+      {
+        "id": "container",
+        "type": "container",
+        "frame": {
+          "x": 0.35,
+          "y": 0.4,
+          "w": 0.3,
+          "h": 0.2
+        },
+        "cornerRadiusPt": 34,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "icon",
+            "type": "icon",
+            "frame": {
+              "x": 0.4,
+              "y": 0.45,
+              "w": 0.2,
+              "h": 0.05
+            },
+            "icon": "sun.max.fill",
+            "size": 24,
+            "color": "#FFFFFF"
+          },
+          {
+            "id": "level",
+            "type": "progress-bar",
+            "frame": {
+              "x": 0.4,
+              "y": 0.52,
+              "w": 0.2,
+              "h": 0.02
+            },
+            "value": 0.8,
+            "trackColor": "#FFFFFF33",
+            "fillColor": "#FFCC00"
+          }
+        ]
+      }
+    ],
+    "notes": "Appears when brightness slider dragged in Control Center or when auto-brightness changes. Auto-dismisses."
+  }
+}

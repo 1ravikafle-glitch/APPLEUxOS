@@ -57,6 +57,10 @@ class AppleuxControlCenter @JvmOverloads constructor(
             SpacingTokens.PADDING_LARGE, SpacingTokens.PADDING_LARGE,
             SpacingTokens.PADDING_LARGE, SpacingTokens.PADDING_LARGE
         )
+        // The sheet is a fullscreen overlay window drawn edge to edge, so it
+        // lays out under the panel cutout. On the POCO M5 that is a top-centre
+        // waterdrop: without this the connectivity header sits in the notch.
+        AppleuxDisplayInsets.applyTopInset(context, this, extraTopDp = 4f)
 
         headerView = AppleuxControlCenterHeader(context)
         addView(headerView, LinearLayout.LayoutParams(
@@ -84,12 +88,11 @@ class AppleuxControlCenter @JvmOverloads constructor(
         // view's own fill and never what is behind it.
         background = android.graphics.drawable.GradientDrawable().apply {
             shape = android.graphics.drawable.GradientDrawable.RECTANGLE
-            // Sheet with rounded TOP corners only, like an iOS presented sheet.
-            cornerRadii = floatArrayOf(
-                LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP * resources.displayMetrics.density,
-                LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP * resources.displayMetrics.density,
-                0f, 0f, 0f, 0f, 0f, 0f
-            )
+            // No corner radii here on purpose. The sheet is rounded by the
+            // outlineProvider below (superellipse, top edge only) and
+            // clipToOutline clips the background too, so giving the drawable
+            // its own circular corners would intersect with the fuller
+            // squircle and the visible corner would go back to being circular.
             setColor(
                 if (ColorTokens.darkMode) LiquidGlassTokens.REGULAR_BG_DARK
                 else LiquidGlassTokens.REGULAR_BG_LIGHT
@@ -102,19 +105,22 @@ class AppleuxControlCenter @JvmOverloads constructor(
                 if (view.width <= 0 || view.height <= 0) return
                 val r = LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP *
                     view.resources.displayMetrics.density
-                // Outline only offers a symmetric setRoundRect, so the top-rounded
-                // sheet shape goes through a Path.
+                // Only the TOP edge is rounded; the sheet runs to the bottom of
+                // the screen. Outline only offers a symmetric setRoundRect, so
+                // a one-sided corner goes through a Path — and that Path is
+                // built with the same continuous-curvature superellipse the
+                // icons use (AppleuxSuperellipse, exponent measured from
+                // Apple's own icon template), not a quadratic arc. A circular
+                // arc at the same apparent radius is visibly tighter than the
+                // iOS corner.
                 val w = view.width.toFloat()
                 val h = view.height.toFloat()
-                val p = android.graphics.Path().apply {
-                    moveTo(0f, h)
-                    lineTo(0f, r)
-                    quadTo(0f, 0f, r, 0f)
-                    lineTo(w - r, 0f)
-                    quadTo(w, 0f, w, r)
-                    lineTo(w, h)
-                    close()
-                }
+                val p = android.graphics.Path()
+                val sq = AppleuxSuperellipse.path(w.toInt(), h.toInt(), r)
+                // Squircle runs all the way round; clip it back to the sheet by
+                // squaring off the bottom edge.
+                p.addPath(sq)
+                p.addRect(0f, h - r, w, h, android.graphics.Path.Direction.CCW)
                 outline.setPath(p)
             }
         }

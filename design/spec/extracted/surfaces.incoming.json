@@ -1,0 +1,3842 @@
+[
+  {
+    "surface": "lock-screen-camera",
+    "elements": "Full camera preview, shutter button, mode selector",
+    "backend": "Camera2` API, `CameraIntent",
+    "_spec_line": 526
+  },
+  {
+    "surface": "lock-screen-flashlight",
+    "elements": "Flashlight toggle with on/off state",
+    "backend": "CameraManager.setTorchMode()",
+    "_spec_line": 527
+  },
+  {
+    "surface": "lock-screen-notification-collapsed",
+    "elements": "Single collapsed notification card",
+    "backend": "NotificationView` compact",
+    "_spec_line": 528
+  },
+  {
+    "surface": "lock-screen-depth-effect",
+    "elements": "Wallpaper depth effect toggle preview",
+    "backend": "WallpaperManager.setWallpaperComponent()",
+    "_spec_line": 529
+  },
+  {
+    "surface": "lock-screen-passcode-dots",
+    "elements": "Passcode dots (0\u20136 filled)",
+    "backend": "KeyguardPINView",
+    "_spec_line": 530
+  },
+  {
+    "surface": "lock-screen-pattern",
+    "elements": "3\u00d73 pattern dot grid",
+    "backend": "LockPatternView` reskinned",
+    "_spec_line": 531
+  },
+  {
+    "surface": "lock-screen-now-playing-expanded",
+    "elements": "Expanded media player with queue",
+    "backend": "MediaSession`, `MediaController",
+    "_spec_line": 532
+  },
+  {
+    "surface": "home-page-editor",
+    "elements": "Page thumbnails, add/delete page, reorder",
+    "backend": "Workspace.addExtraEmptyScreen()",
+    "_spec_line": 884
+  },
+  {
+    "surface": "home-wallpaper-picker",
+    "elements": "Wallpaper grid, categories, set button",
+    "backend": "WallpaperManager",
+    "_spec_line": 885
+  },
+  {
+    "surface": "home-depth-effect-toggle",
+    "elements": "Toggle depth effect on wallpaper",
+    "backend": "WallpaperManager.setWallpaperComponent()",
+    "_spec_line": 886
+  },
+  {
+    "surface": "home-icon-tint",
+    "elements": "Icon tint color picker",
+    "backend": "LauncherIcons` (Android 16 tint)",
+    "_spec_line": 887
+  },
+  {
+    "surface": "home-app-icon-sizes",
+    "elements": "Small/medium/large icon size selector",
+    "backend": "DeviceProfile",
+    "_spec_line": 888
+  },
+  {
+    "surface": "spotlight-suggestions",
+    "elements": "Siri suggestions list",
+    "backend": "Google Assistant API",
+    "_spec_line": 889
+  },
+  {
+    "surface": "spotlight-siri-suggestions",
+    "elements": "Siri full-screen overlay",
+    "backend": "Gemini / Google Assistant",
+    "_spec_line": 890
+  },
+  {
+    "surface": "home-widget-small",
+    "elements": "Small widget frame (2\u00d72)",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 891
+  },
+  {
+    "surface": "home-widget-medium",
+    "elements": "Medium widget frame (4\u00d72)",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 892
+  },
+  {
+    "surface": "home-widget-large",
+    "elements": "Large widget frame (4\u00d74)",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 893
+  },
+  {
+    "surface": "home-widget-extra-large",
+    "elements": "Extra-large widget (4\u00d76)",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 894
+  },
+  {
+    "surface": "home-widget-stack",
+    "elements": "Stacked widgets (swipeable)",
+    "backend": "AppWidgetHostView` with stack",
+    "_spec_line": 895
+  },
+  {
+    "surface": "home-page-dots",
+    "elements": "Page indicator dots",
+    "backend": "PageIndicatorDots",
+    "_spec_line": 896
+  },
+  {
+    "surface": "app-switcher-card-close",
+    "elements": "Card close animation",
+    "backend": "ActivityManager.removeTask()",
+    "_spec_line": 897
+  },
+  {
+    "surface": "home-folder-collapsed",
+    "elements": "Folder icon preview",
+    "backend": "FolderIcon",
+    "_spec_line": 898
+  },
+  {
+    "surface": "home-folder-rename",
+    "elements": "Folder rename field",
+    "backend": "FolderInfo.title",
+    "_spec_line": 899
+  },
+  {
+    "surface": "home-folder-remove-app",
+    "elements": "Remove app from folder",
+    "backend": "FolderInfo.remove()",
+    "_spec_line": 900
+  },
+  {
+    "surface": "home-app-drag",
+    "elements": "Drag app to new position",
+    "backend": "DragController",
+    "_spec_line": 901
+  },
+  {
+    "surface": "spotlight-siri",
+    "elements": "Siri full-screen conversation",
+    "backend": "Gemini API",
+    "_spec_line": 902
+  },
+  {
+    "surface": "notification-collapsed",
+    "elements": "Single collapsed notification",
+    "backend": "NotificationView` compact",
+    "_spec_line": 1106
+  },
+  {
+    "surface": "notification-group-collapsed",
+    "elements": "Group summary card",
+    "backend": "NotificationGroup",
+    "_spec_line": 1107
+  },
+  {
+    "surface": "notification-group-expanded",
+    "elements": "Expanded group list",
+    "backend": "NotificationGroup.expand()",
+    "_spec_line": 1108
+  },
+  {
+    "surface": "notification-actions",
+    "elements": "Action buttons row",
+    "backend": "Notification.Action",
+    "_spec_line": 1109
+  },
+  {
+    "surface": "notification-long-press",
+    "elements": "Context menu",
+    "backend": "NotificationMenuRow",
+    "_spec_line": 1110
+  },
+  {
+    "surface": "notification-clear-all",
+    "elements": "Clear all button",
+    "backend": "NotificationManager.cancelAll()",
+    "_spec_line": 1111
+  },
+  {
+    "surface": "notification-older",
+    "elements": "Older notifications section",
+    "backend": "NotificationManager` archive",
+    "_spec_line": 1112
+  },
+  {
+    "surface": "notification-summary-scheduled",
+    "elements": "Scheduled summary",
+    "backend": "NotificationManager` summary",
+    "_spec_line": 1113
+  },
+  {
+    "surface": "notification-live-activity",
+    "elements": "Live Activity pill",
+    "backend": "Notification.Builder` ongoing",
+    "_spec_line": 1114
+  },
+  {
+    "surface": "notification-live-activity-expanded",
+    "elements": "Expanded Live Activity",
+    "backend": "RemoteViews` custom",
+    "_spec_line": 1115
+  },
+  {
+    "surface": "quick-settings-expanded",
+    "elements": "Full-page tile view",
+    "backend": "QSPanel` expanded",
+    "_spec_line": 1116
+  },
+  {
+    "surface": "quick-settings-add-control",
+    "elements": "Add control screen",
+    "backend": "QSCustomizer",
+    "_spec_line": 1117
+  },
+  {
+    "surface": "quick-settings-remove-control",
+    "elements": "Remove control",
+    "backend": "QSCustomizer",
+    "_spec_line": 1118
+  },
+  {
+    "surface": "quick-settings-module-connectivity",
+    "elements": "Connectivity module",
+    "backend": "AirplaneModeTile`, `WifiTile`, `BluetoothTile",
+    "_spec_line": 1119
+  },
+  {
+    "surface": "quick-settings-module-media",
+    "elements": "Media module",
+    "backend": "MediaSession",
+    "_spec_line": 1120
+  },
+  {
+    "surface": "quick-settings-module-brightness",
+    "elements": "Brightness slider",
+    "backend": "DisplayManager",
+    "_spec_line": 1121
+  },
+  {
+    "surface": "quick-settings-module-volume",
+    "elements": "Volume slider",
+    "backend": "AudioManager",
+    "_spec_line": 1122
+  },
+  {
+    "surface": "quick-settings-module-focus",
+    "elements": "Focus/DND module",
+    "backend": "ZenModeSettings",
+    "_spec_line": 1123
+  },
+  {
+    "surface": "quick-settings-module-timer",
+    "elements": "Timer tile",
+    "backend": "AlarmClock",
+    "_spec_line": 1124
+  },
+  {
+    "surface": "quick-settings-module-calculator",
+    "elements": "Calculator tile",
+    "backend": "Intent.ACTION_MAIN` calculator",
+    "_spec_line": 1125
+  },
+  {
+    "surface": "quick-settings-module-camera",
+    "elements": "Camera tile",
+    "backend": "Intent.ACTION_OPEN_CAMERA",
+    "_spec_line": 1126
+  },
+  {
+    "surface": "quick-settings-module-flashlight",
+    "elements": "Flashlight tile",
+    "backend": "CameraManager.setTorchMode()",
+    "_spec_line": 1127
+  },
+  {
+    "surface": "quick-settings-module-screen-record",
+    "elements": "Screen record tile",
+    "backend": "ScreenRecordTile",
+    "_spec_line": 1128
+  },
+  {
+    "surface": "quick-settings-module-screen-mirror",
+    "elements": "Screen mirroring",
+    "backend": "MediaProjectionManager",
+    "_spec_line": 1129
+  },
+  {
+    "surface": "quick-settings-module-home",
+    "elements": "Home controls",
+    "backend": "Matter`, `Thread",
+    "_spec_line": 1130
+  },
+  {
+    "surface": "quick-settings-module-low-power",
+    "elements": "Low power mode",
+    "backend": "BatterySaverTile",
+    "_spec_line": 1131
+  },
+  {
+    "surface": "quick-settings-module-accessibility",
+    "elements": "Accessibility shortcut",
+    "backend": "AccessibilityButton",
+    "_spec_line": 1132
+  },
+  {
+    "surface": "quick-settings-module-qr-scanner",
+    "elements": "QR scanner",
+    "backend": "Intent.ACTION_SCAN",
+    "_spec_line": 1133
+  },
+  {
+    "surface": "quick-settings-module-shazam",
+    "elements": "Music recognition",
+    "backend": "SoundSearch",
+    "_spec_line": 1134
+  },
+  {
+    "surface": "status-bar-light",
+    "elements": "Light mode status bar",
+    "backend": "StatusBar`, `PhoneStatusBarView",
+    "_spec_line": 1304
+  },
+  {
+    "surface": "status-bar-dark",
+    "elements": "Dark mode status bar",
+    "backend": "StatusBar",
+    "_spec_line": 1305
+  },
+  {
+    "surface": "status-bar-dynamic-island",
+    "elements": "Dynamic Island with content",
+    "backend": "Custom `View` in StatusBar",
+    "_spec_line": 1306
+  },
+  {
+    "surface": "status-bar-live-activity",
+    "elements": "Live Activity pill",
+    "backend": "Notification.Builder` ongoing",
+    "_spec_line": 1307
+  },
+  {
+    "surface": "status-bar-recording",
+    "elements": "Screen recording indicator",
+    "backend": "ScreenRecordTile",
+    "_spec_line": 1308
+  },
+  {
+    "surface": "status-bar-hotspot",
+    "elements": "Hotspot indicator",
+    "backend": "TetherSettings",
+    "_spec_line": 1309
+  },
+  {
+    "surface": "status-bar-call",
+    "elements": "In-call indicator",
+    "backend": "TelecomManager",
+    "_spec_line": 1310
+  },
+  {
+    "surface": "status-bar-navigation",
+    "elements": "Navigation mode indicator",
+    "backend": "NavigationBarView",
+    "_spec_line": 1311
+  },
+  {
+    "surface": "home-indicator",
+    "elements": "Home indicator pill",
+    "backend": "NavigationBarView",
+    "_spec_line": 1312
+  },
+  {
+    "surface": "screenshot-markup",
+    "elements": "Markup editor",
+    "backend": "Intent.ACTION_EDIT",
+    "_spec_line": 1313
+  },
+  {
+    "surface": "screen-record-countdown",
+    "elements": "3-2-1 countdown",
+    "backend": "ScreenRecordTile",
+    "_spec_line": 1314
+  },
+  {
+    "surface": "screen-record-stop",
+    "elements": "Stop recording button",
+    "backend": "ScreenRecordTile",
+    "_spec_line": 1315
+  },
+  {
+    "surface": "sos-slider",
+    "elements": "SOS slide to call",
+    "backend": "EmergencyAffordanceManager",
+    "_spec_line": 1316
+  },
+  {
+    "surface": "sos-countdown",
+    "elements": "3-2-1 SOS countdown",
+    "backend": "Custom `CountDownTimer",
+    "_spec_line": 1317
+  },
+  {
+    "surface": "text-selection-menu",
+    "elements": "Copy/paste/translate menu",
+    "backend": "SelectionActionModeHelper",
+    "_spec_line": 1318
+  },
+  {
+    "surface": "text-selection-magnifier",
+    "elements": "Magnifier loupe",
+    "backend": "Magnifier",
+    "_spec_line": 1319
+  },
+  {
+    "surface": "emoji-keyboard",
+    "elements": "Emoji picker grid",
+    "backend": "EmojiPicker",
+    "_spec_line": 1320
+  },
+  {
+    "surface": "emoji-keyboard-search",
+    "elements": "Emoji search",
+    "backend": "EmojiPicker",
+    "_spec_line": 1321
+  },
+  {
+    "surface": "emoji-keyboard-categories",
+    "elements": "Emoji categories",
+    "backend": "EmojiPicker",
+    "_spec_line": 1322
+  },
+  {
+    "surface": "emoji-keyboard-recents",
+    "elements": "Recently used emoji",
+    "backend": "EmojiPicker",
+    "_spec_line": 1323
+  },
+  {
+    "surface": "dictation-overlay",
+    "elements": "Voice input overlay",
+    "backend": "VoiceInput",
+    "_spec_line": 1324
+  },
+  {
+    "surface": "dictation-waveform",
+    "elements": "Waveform animation",
+    "backend": "VoiceInput",
+    "_spec_line": 1325
+  },
+  {
+    "surface": "picture-in-picture-controls",
+    "elements": "PiP controls overlay",
+    "backend": "PipController",
+    "_spec_line": 1326
+  },
+  {
+    "surface": "assistive-touch",
+    "elements": "AssistiveTouch floating button",
+    "backend": "AccessibilityButton",
+    "_spec_line": 1327
+  },
+  {
+    "surface": "accessibility-shortcut",
+    "elements": "Accessibility shortcut menu",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1328
+  },
+  {
+    "surface": "cast-hud",
+    "elements": "Screen casting overlay",
+    "backend": "MediaProjectionManager",
+    "_spec_line": 1329
+  },
+  {
+    "surface": "settings-cellular",
+    "elements": "Data toggle, roaming, SIM, carrier",
+    "backend": "MobileNetworkSettings`, `TelephonyManager",
+    "_spec_line": 1511
+  },
+  {
+    "surface": "settings-cellular-data",
+    "elements": "Data toggle, usage",
+    "backend": "TelephonyManager.setDataEnabled()",
+    "_spec_line": 1512
+  },
+  {
+    "surface": "settings-cellular-roaming",
+    "elements": "Roaming toggle",
+    "backend": "TelephonyManager.setDataRoamingEnabled()",
+    "_spec_line": 1513
+  },
+  {
+    "surface": "settings-cellular-app-usage",
+    "elements": "Per-app data usage",
+    "backend": "NetworkStatsManager",
+    "_spec_line": 1514
+  },
+  {
+    "surface": "settings-hotspot",
+    "elements": "Hotspot toggle, password, connected",
+    "backend": "TetherSettings`, `WifiManager.startSoftAp()",
+    "_spec_line": 1515
+  },
+  {
+    "surface": "settings-hotspot-password",
+    "elements": "Password field",
+    "backend": "WifiManager.setSoftApConfiguration()",
+    "_spec_line": 1516
+  },
+  {
+    "surface": "settings-hotspot-connected",
+    "elements": "Connected devices list",
+    "backend": "WifiManager.getSoftApConfiguration()",
+    "_spec_line": 1517
+  },
+  {
+    "surface": "settings-vpn",
+    "elements": "VPN config list",
+    "backend": "VpnSettings`, `VpnManager",
+    "_spec_line": 1518
+  },
+  {
+    "surface": "settings-vpn-add",
+    "elements": "Add VPN config",
+    "backend": "VpnManager",
+    "_spec_line": 1519
+  },
+  {
+    "surface": "settings-vpn-detail",
+    "elements": "VPN detail",
+    "backend": "VpnManager",
+    "_spec_line": 1520
+  },
+  {
+    "surface": "settings-device-management",
+    "elements": "Device admin profiles",
+    "backend": "DevicePolicyManager",
+    "_spec_line": 1521
+  },
+  {
+    "surface": "settings-notifications",
+    "elements": "Per-app notification list",
+    "backend": "ConfigureNotificationSettings",
+    "_spec_line": 1522
+  },
+  {
+    "surface": "settings-notifications-app",
+    "elements": "App notification settings",
+    "backend": "AppNotificationSettings",
+    "_spec_line": 1523
+  },
+  {
+    "surface": "settings-notifications-app-alerts",
+    "elements": "Alert style (banner, sound)",
+    "backend": "NotificationChannel",
+    "_spec_line": 1524
+  },
+  {
+    "surface": "settings-notifications-scheduled-summary",
+    "elements": "Scheduled summary",
+    "backend": "NotificationManager",
+    "_spec_line": 1525
+  },
+  {
+    "surface": "settings-notifications-announce",
+    "elements": "Announce notifications",
+    "backend": "NotificationManager",
+    "_spec_line": 1526
+  },
+  {
+    "surface": "settings-notifications-show-previews",
+    "elements": "Preview options",
+    "backend": "NotificationManager",
+    "_spec_line": 1527
+  },
+  {
+    "surface": "settings-sounds-haptics",
+    "elements": "Ringtone, text tone, vibration",
+    "backend": "SoundSettings`, `RingtoneManager",
+    "_spec_line": 1528
+  },
+  {
+    "surface": "settings-sounds-ringtone",
+    "elements": "Ringtone picker",
+    "backend": "RingtoneManager",
+    "_spec_line": 1529
+  },
+  {
+    "surface": "settings-sounds-text-tone",
+    "elements": "Text tone picker",
+    "backend": "RingtoneManager",
+    "_spec_line": 1530
+  },
+  {
+    "surface": "settings-sounds-volume",
+    "elements": "Volume sliders",
+    "backend": "AudioManager",
+    "_spec_line": 1531
+  },
+  {
+    "surface": "settings-sounds-vibration",
+    "elements": "Vibration patterns",
+    "backend": "Vibrator",
+    "_spec_line": 1532
+  },
+  {
+    "surface": "settings-sounds-keyboard",
+    "elements": "Keyboard sound/haptics",
+    "backend": "InputMethodManager",
+    "_spec_line": 1533
+  },
+  {
+    "surface": "settings-sounds-headphone-safety",
+    "elements": "Headphone safety",
+    "backend": "AudioManager",
+    "_spec_line": 1534
+  },
+  {
+    "surface": "settings-focus",
+    "elements": "Focus modes list",
+    "backend": "ZenModeSettings",
+    "_spec_line": 1535
+  },
+  {
+    "surface": "settings-focus-dnd",
+    "elements": "DND settings",
+    "backend": "ZenModeSettings",
+    "_spec_line": 1536
+  },
+  {
+    "surface": "settings-focus-personal",
+    "elements": "Personal focus",
+    "backend": "ZenModeSettings",
+    "_spec_line": 1537
+  },
+  {
+    "surface": "settings-focus-work",
+    "elements": "Work focus",
+    "backend": "ZenModeSettings",
+    "_spec_line": 1538
+  },
+  {
+    "surface": "settings-focus-sleep",
+    "elements": "Sleep focus",
+    "backend": "ZenModeSettings",
+    "_spec_line": 1539
+  },
+  {
+    "surface": "settings-screen-time",
+    "elements": "Screen time dashboard",
+    "backend": "UsageStatsManager",
+    "_spec_line": 1540
+  },
+  {
+    "surface": "settings-screen-time-app-limits",
+    "elements": "App limits",
+    "backend": "UsageStatsManager",
+    "_spec_line": 1541
+  },
+  {
+    "surface": "settings-screen-time-downtime",
+    "elements": "Downtime schedule",
+    "backend": "UsageStatsManager",
+    "_spec_line": 1542
+  },
+  {
+    "surface": "settings-general-about",
+    "elements": "Name, iOS version, model, serial, IMEI",
+    "backend": "Build.MODEL`, `Build.DISPLAY`, `TelephonyManager.getImei()",
+    "_spec_line": 1588
+  },
+  {
+    "surface": "settings-general-about-name",
+    "elements": "Device name field",
+    "backend": "Settings.Global.DEVICE_NAME",
+    "_spec_line": 1589
+  },
+  {
+    "surface": "settings-general-about-ios-version",
+    "elements": "Version info",
+    "backend": "Build.VERSION.RELEASE",
+    "_spec_line": 1590
+  },
+  {
+    "surface": "settings-general-about-model",
+    "elements": "Model number",
+    "backend": "Build.MODEL",
+    "_spec_line": 1591
+  },
+  {
+    "surface": "settings-general-about-serial",
+    "elements": "Serial number",
+    "backend": "Build.SERIAL",
+    "_spec_line": 1592
+  },
+  {
+    "surface": "settings-general-about-imei",
+    "elements": "IMEI",
+    "backend": "TelephonyManager.getImei()",
+    "_spec_line": 1593
+  },
+  {
+    "surface": "settings-general-about-certificate-trust",
+    "elements": "Certificate trust settings",
+    "backend": "KeyChain",
+    "_spec_line": 1594
+  },
+  {
+    "surface": "settings-general-software-update",
+    "elements": "Check for updates",
+    "backend": "SystemUpdateSettings",
+    "_spec_line": 1595
+  },
+  {
+    "surface": "settings-general-software-update-automatic",
+    "elements": "Automatic updates toggle",
+    "backend": "SystemUpdateSettings",
+    "_spec_line": 1596
+  },
+  {
+    "surface": "settings-general-storage",
+    "elements": "Storage breakdown",
+    "backend": "StorageManager",
+    "_spec_line": 1597
+  },
+  {
+    "surface": "settings-general-storage-category",
+    "elements": "Category detail",
+    "backend": "StorageManager",
+    "_spec_line": 1598
+  },
+  {
+    "surface": "settings-general-storage-app-list",
+    "elements": "App storage list",
+    "backend": "StorageManager",
+    "_spec_line": 1599
+  },
+  {
+    "surface": "settings-general-background-app-refresh",
+    "elements": "App refresh list",
+    "backend": "AppOpsManager",
+    "_spec_line": 1600
+  },
+  {
+    "surface": "settings-general-date-time",
+    "elements": "Date/time settings",
+    "backend": "AlarmManager",
+    "_spec_line": 1601
+  },
+  {
+    "surface": "settings-general-date-time-24-hour",
+    "elements": "24-hour toggle",
+    "backend": "Settings.System.TIME_12_24",
+    "_spec_line": 1602
+  },
+  {
+    "surface": "settings-general-date-time-time-zone",
+    "elements": "Time zone picker",
+    "backend": "AlarmManager.setTimeZone()",
+    "_spec_line": 1603
+  },
+  {
+    "surface": "settings-general-keyboard",
+    "elements": "Keyboard list",
+    "backend": "InputMethodManager",
+    "_spec_line": 1604
+  },
+  {
+    "surface": "settings-general-keyboard-keyboards",
+    "elements": "Installed keyboards",
+    "backend": "InputMethodManager",
+    "_spec_line": 1605
+  },
+  {
+    "surface": "settings-general-keyboard-text-replacement",
+    "elements": "Text replacement",
+    "backend": "UserDictionary",
+    "_spec_line": 1606
+  },
+  {
+    "surface": "settings-general-keyboard-predictive",
+    "elements": "Predictive text toggle",
+    "backend": "InputMethodManager",
+    "_spec_line": 1607
+  },
+  {
+    "surface": "settings-general-keyboard-auto-capitalization",
+    "elements": "Auto-capitalization",
+    "backend": "InputMethodManager",
+    "_spec_line": 1608
+  },
+  {
+    "surface": "settings-general-keyboard-auto-correction",
+    "elements": "Auto-correction",
+    "backend": "InputMethodManager",
+    "_spec_line": 1609
+  },
+  {
+    "surface": "settings-general-keyboard-smart-punctuation",
+    "elements": "Smart punctuation",
+    "backend": "InputMethodManager",
+    "_spec_line": 1610
+  },
+  {
+    "surface": "settings-general-language-region",
+    "elements": "Language & region",
+    "backend": "LocaleManager",
+    "_spec_line": 1611
+  },
+  {
+    "surface": "settings-general-language-region-language",
+    "elements": "Language picker",
+    "backend": "LocalePicker",
+    "_spec_line": 1612
+  },
+  {
+    "surface": "settings-general-language-region-region",
+    "elements": "Region picker",
+    "backend": "LocalePicker",
+    "_spec_line": 1613
+  },
+  {
+    "surface": "settings-general-language-region-calendar",
+    "elements": "Calendar type",
+    "backend": "Settings.System",
+    "_spec_line": 1614
+  },
+  {
+    "surface": "settings-general-language-region-temperature",
+    "elements": "Temperature unit",
+    "backend": "Settings.System",
+    "_spec_line": 1615
+  },
+  {
+    "surface": "settings-general-dictionary",
+    "elements": "Dictionary list",
+    "backend": "UserDictionary",
+    "_spec_line": 1616
+  },
+  {
+    "surface": "settings-appearance-text-size",
+    "elements": "Text size slider",
+    "backend": "Configuration.fontScale",
+    "_spec_line": 1687
+  },
+  {
+    "surface": "settings-appearance-bold-text",
+    "elements": "Bold text toggle",
+    "backend": "Configuration.fontWeightAdjustment",
+    "_spec_line": 1688
+  },
+  {
+    "surface": "settings-appearance-display-zoom",
+    "elements": "Display zoom selector",
+    "backend": "DisplayManager",
+    "_spec_line": 1689
+  },
+  {
+    "surface": "settings-display-brightness",
+    "elements": "Brightness slider, Night Shift, Auto-Lock",
+    "backend": "DisplaySettings`, `DisplayManager",
+    "_spec_line": 1690
+  },
+  {
+    "surface": "settings-display-night-shift",
+    "elements": "Night Shift schedule",
+    "backend": "NightDisplayManager",
+    "_spec_line": 1691
+  },
+  {
+    "surface": "settings-display-night-shift-schedule",
+    "elements": "Schedule picker",
+    "backend": "NightDisplayManager",
+    "_spec_line": 1692
+  },
+  {
+    "surface": "settings-display-auto-lock",
+    "elements": "Auto-lock timer",
+    "backend": "PowerManager",
+    "_spec_line": 1693
+  },
+  {
+    "surface": "settings-display-raise-to-wake",
+    "elements": "Raise to wake toggle",
+    "backend": "PowerManager",
+    "_spec_line": 1694
+  },
+  {
+    "surface": "settings-home-screen-app-library",
+    "elements": "New app destination, badges",
+    "backend": "Launcher3` settings",
+    "_spec_line": 1695
+  },
+  {
+    "surface": "settings-home-screen-new-app-destination",
+    "elements": "New app destination",
+    "backend": "Launcher3",
+    "_spec_line": 1696
+  },
+  {
+    "surface": "settings-home-screen-notification-badges",
+    "elements": "Badge toggle",
+    "backend": "NotificationManager",
+    "_spec_line": 1697
+  },
+  {
+    "surface": "settings-wallpaper",
+    "elements": "Wallpaper picker",
+    "backend": "WallpaperManager",
+    "_spec_line": 1698
+  },
+  {
+    "surface": "settings-wallpaper-lock",
+    "elements": "Lock screen wallpaper",
+    "backend": "WallpaperManager",
+    "_spec_line": 1699
+  },
+  {
+    "surface": "settings-wallpaper-home",
+    "elements": "Home screen wallpaper",
+    "backend": "WallpaperManager",
+    "_spec_line": 1700
+  },
+  {
+    "surface": "settings-wallpaper-pair",
+    "elements": "Wallpaper pair",
+    "backend": "WallpaperManager",
+    "_spec_line": 1701
+  },
+  {
+    "surface": "settings-wallpaper-depth-effect",
+    "elements": "Depth effect toggle",
+    "backend": "WallpaperManager.setWallpaperComponent()",
+    "_spec_line": 1702
+  },
+  {
+    "surface": "settings-wallpaper-blur",
+    "elements": "Blur toggle",
+    "backend": "WallpaperManager",
+    "_spec_line": 1703
+  },
+  {
+    "surface": "settings-standby",
+    "elements": "StandBy settings",
+    "backend": "DreamService",
+    "_spec_line": 1704
+  },
+  {
+    "surface": "settings-standby-night-mode",
+    "elements": "Night mode toggle",
+    "backend": "DreamService",
+    "_spec_line": 1705
+  },
+  {
+    "surface": "settings-action-button",
+    "elements": "Action button function",
+    "backend": "ButtonSettings` (LineageOS)",
+    "_spec_line": 1706
+  },
+  {
+    "surface": "settings-action-button-function",
+    "elements": "Function picker",
+    "backend": "ButtonSettings",
+    "_spec_line": 1707
+  },
+  {
+    "surface": "settings-action-button-shortcut",
+    "elements": "Shortcut picker",
+    "backend": "ButtonSettings",
+    "_spec_line": 1708
+  },
+  {
+    "surface": "settings-accessibility-voiceover",
+    "elements": "VoiceOver settings",
+    "backend": "TalkBackSettings",
+    "_spec_line": 1758
+  },
+  {
+    "surface": "settings-accessibility-voiceover-verbosity",
+    "elements": "Verbosity levels",
+    "backend": "TalkBackSettings",
+    "_spec_line": 1759
+  },
+  {
+    "surface": "settings-accessibility-voiceover-speech",
+    "elements": "Speech rate, pitch",
+    "backend": "TextToSpeech",
+    "_spec_line": 1760
+  },
+  {
+    "surface": "settings-accessibility-voiceover-braille",
+    "elements": "Braille settings",
+    "backend": "BrailleDisplay",
+    "_spec_line": 1761
+  },
+  {
+    "surface": "settings-accessibility-voiceover-audio",
+    "elements": "Audio ducking",
+    "backend": "AudioManager",
+    "_spec_line": 1762
+  },
+  {
+    "surface": "settings-accessibility-voiceover-commands",
+    "elements": "VoiceOver commands",
+    "backend": "TalkBackSettings",
+    "_spec_line": 1763
+  },
+  {
+    "surface": "settings-accessibility-voiceover-activities",
+    "elements": "Activities",
+    "backend": "TalkBackSettings",
+    "_spec_line": 1764
+  },
+  {
+    "surface": "settings-accessibility-voiceover-rotor",
+    "elements": "Rotor settings",
+    "backend": "TalkBackSettings",
+    "_spec_line": 1765
+  },
+  {
+    "surface": "settings-accessibility-zoom",
+    "elements": "Zoom settings",
+    "backend": "MagnificationSettings",
+    "_spec_line": 1766
+  },
+  {
+    "surface": "settings-accessibility-zoom-follow-focus",
+    "elements": "Follow focus",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1767
+  },
+  {
+    "surface": "settings-accessibility-zoom-keyboard-shortcuts",
+    "elements": "Keyboard shortcuts",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1768
+  },
+  {
+    "surface": "settings-accessibility-zoom-controller",
+    "elements": "Zoom controller",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1769
+  },
+  {
+    "surface": "settings-accessibility-display-text",
+    "elements": "Display & text size",
+    "backend": "Configuration.fontScale",
+    "_spec_line": 1770
+  },
+  {
+    "surface": "settings-accessibility-display-text-larger",
+    "elements": "Larger text",
+    "backend": "Configuration.fontScale",
+    "_spec_line": 1771
+  },
+  {
+    "surface": "settings-accessibility-display-text-bold",
+    "elements": "Bold text",
+    "backend": "Configuration.fontWeightAdjustment",
+    "_spec_line": 1772
+  },
+  {
+    "surface": "settings-accessibility-display-text-button-shapes",
+    "elements": "Button shapes",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1773
+  },
+  {
+    "surface": "settings-accessibility-display-text-reduce-transparency",
+    "elements": "Reduce transparency",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1774
+  },
+  {
+    "surface": "settings-accessibility-display-text-increase-contrast",
+    "elements": "Increase contrast",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1775
+  },
+  {
+    "surface": "settings-accessibility-display-text-differentiate-without-color",
+    "elements": "Differentiate without color",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1776
+  },
+  {
+    "surface": "settings-accessibility-motion",
+    "elements": "Motion settings",
+    "backend": "Settings.Global.ANIMATOR_DURATION_SCALE",
+    "_spec_line": 1777
+  },
+  {
+    "surface": "settings-accessibility-motion-reduce",
+    "elements": "Reduce motion",
+    "backend": "Settings.Global.ANIMATOR_DURATION_SCALE",
+    "_spec_line": 1778
+  },
+  {
+    "surface": "settings-accessibility-motion-prefer-cross-fade",
+    "elements": "Prefer cross-fade",
+    "backend": "Settings.Global.TRANSITION_ANIMATION_SCALE",
+    "_spec_line": 1779
+  },
+  {
+    "surface": "settings-accessibility-motion-auto-play",
+    "elements": "Auto-play video previews",
+    "backend": "Settings.Global",
+    "_spec_line": 1780
+  },
+  {
+    "surface": "settings-accessibility-spoken-content",
+    "elements": "Spoken content",
+    "backend": "TextToSpeech",
+    "_spec_line": 1781
+  },
+  {
+    "surface": "settings-accessibility-spoken-content-speak-selection",
+    "elements": "Speak selection",
+    "backend": "TextToSpeech",
+    "_spec_line": 1782
+  },
+  {
+    "surface": "settings-accessibility-spoken-content-speak-screen",
+    "elements": "Speak screen",
+    "backend": "TextToSpeech",
+    "_spec_line": 1783
+  },
+  {
+    "surface": "settings-accessibility-spoken-content-typing-feedback",
+    "elements": "Typing feedback",
+    "backend": "TextToSpeech",
+    "_spec_line": 1784
+  },
+  {
+    "surface": "settings-accessibility-audio-visual",
+    "elements": "Audio & visual",
+    "backend": "AudioManager",
+    "_spec_line": 1785
+  },
+  {
+    "surface": "settings-accessibility-audio-visual-mono",
+    "elements": "Mono audio",
+    "backend": "AudioManager",
+    "_spec_line": 1786
+  },
+  {
+    "surface": "settings-accessibility-audio-visual-balance",
+    "elements": "Balance",
+    "backend": "AudioManager",
+    "_spec_line": 1787
+  },
+  {
+    "surface": "settings-accessibility-audio-visual-headphone-accommodations",
+    "elements": "Headphone accommodations",
+    "backend": "AudioManager",
+    "_spec_line": 1788
+  },
+  {
+    "surface": "settings-accessibility-audio-visual-background-sounds",
+    "elements": "Background sounds",
+    "backend": "AudioManager",
+    "_spec_line": 1789
+  },
+  {
+    "surface": "settings-accessibility-subtitles",
+    "elements": "Subtitles",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1790
+  },
+  {
+    "surface": "settings-accessibility-subtitles-style",
+    "elements": "Subtitle style",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1791
+  },
+  {
+    "surface": "settings-accessibility-touch",
+    "elements": "Touch settings",
+    "backend": "AccessibilityService",
+    "_spec_line": 1792
+  },
+  {
+    "surface": "settings-accessibility-touch-assistive",
+    "elements": "AssistiveTouch",
+    "backend": "AccessibilityButton",
+    "_spec_line": 1793
+  },
+  {
+    "surface": "settings-accessibility-touch-accommodations",
+    "elements": "Touch accommodations",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1794
+  },
+  {
+    "surface": "settings-accessibility-touch-side-button",
+    "elements": "Side button",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1795
+  },
+  {
+    "surface": "settings-accessibility-touch-haptic-touch",
+    "elements": "Haptic touch",
+    "backend": "Vibrator",
+    "_spec_line": 1796
+  },
+  {
+    "surface": "settings-accessibility-face-id",
+    "elements": "Face ID & attention",
+    "backend": "BiometricPrompt",
+    "_spec_line": 1797
+  },
+  {
+    "surface": "settings-accessibility-switch-control",
+    "elements": "Switch Control",
+    "backend": "SwitchAccessSettings",
+    "_spec_line": 1798
+  },
+  {
+    "surface": "settings-accessibility-switch-control-switches",
+    "elements": "Switches",
+    "backend": "SwitchAccessSettings",
+    "_spec_line": 1799
+  },
+  {
+    "surface": "settings-accessibility-switch-control-recipes",
+    "elements": "Recipes",
+    "backend": "SwitchAccessSettings",
+    "_spec_line": 1800
+  },
+  {
+    "surface": "settings-accessibility-voice-control",
+    "elements": "Voice Control",
+    "backend": "VoiceAccessSettings",
+    "_spec_line": 1801
+  },
+  {
+    "surface": "settings-accessibility-voice-control-custom-commands",
+    "elements": "Custom commands",
+    "backend": "VoiceAccessSettings",
+    "_spec_line": 1802
+  },
+  {
+    "surface": "settings-accessibility-voice-control-overlay",
+    "elements": "Overlay",
+    "backend": "VoiceAccessSettings",
+    "_spec_line": 1803
+  },
+  {
+    "surface": "settings-accessibility-guided-access",
+    "elements": "Guided Access",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1804
+  },
+  {
+    "surface": "settings-accessibility-assistive-touch",
+    "elements": "AssistiveTouch",
+    "backend": "AccessibilityButton",
+    "_spec_line": 1805
+  },
+  {
+    "surface": "settings-accessibility-shortcut",
+    "elements": "Accessibility shortcut",
+    "backend": "AccessibilityManager",
+    "_spec_line": 1806
+  },
+  {
+    "surface": "settings-privacy-location",
+    "elements": "Location services list",
+    "backend": "LocationManager",
+    "_spec_line": 1946
+  },
+  {
+    "surface": "settings-privacy-location-per-app",
+    "elements": "Per-app location",
+    "backend": "AppOpsManager",
+    "_spec_line": 1947
+  },
+  {
+    "surface": "settings-privacy-tracking",
+    "elements": "Tracking toggle list",
+    "backend": "AppOpsManager",
+    "_spec_line": 1948
+  },
+  {
+    "surface": "settings-privacy-tracking-per-app",
+    "elements": "Per-app tracking",
+    "backend": "AppOpsManager",
+    "_spec_line": 1949
+  },
+  {
+    "surface": "settings-privacy-analytics",
+    "elements": "Analytics toggles",
+    "backend": "Settings.Global",
+    "_spec_line": 1950
+  },
+  {
+    "surface": "settings-privacy-analytics-share",
+    "elements": "Share analytics",
+    "backend": "Settings.Global",
+    "_spec_line": 1951
+  },
+  {
+    "surface": "settings-privacy-apple-advertising",
+    "elements": "Ad personalization",
+    "backend": "Settings.Global",
+    "_spec_line": 1952
+  },
+  {
+    "surface": "settings-privacy-apple-advertising-personalized",
+    "elements": "Personalized ads",
+    "backend": "Settings.Global",
+    "_spec_line": 1953
+  },
+  {
+    "surface": "settings-privacy-safety-check",
+    "elements": "Safety check dashboard",
+    "backend": "DevicePolicyManager",
+    "_spec_line": 1954
+  },
+  {
+    "surface": "settings-privacy-safety-check-emergency-reset",
+    "elements": "Emergency reset",
+    "backend": "DevicePolicyManager",
+    "_spec_line": 1955
+  },
+  {
+    "surface": "settings-privacy-safety-check-manage-sharing",
+    "elements": "Manage sharing",
+    "backend": "DevicePolicyManager",
+    "_spec_line": 1956
+  },
+  {
+    "surface": "settings-privacy-lockdown-mode",
+    "elements": "Lockdown mode",
+    "backend": "DevicePolicyManager",
+    "_spec_line": 1957
+  },
+  {
+    "surface": "settings-privacy-lockdown-mode-enable",
+    "elements": "Enable lockdown",
+    "backend": "DevicePolicyManager",
+    "_spec_line": 1958
+  },
+  {
+    "surface": "settings-privacy-app-permissions",
+    "elements": "App privacy report",
+    "backend": "AppOpsManager",
+    "_spec_line": 1959
+  },
+  {
+    "surface": "settings-privacy-app-permissions-camera",
+    "elements": "Camera permissions",
+    "backend": "PermissionController",
+    "_spec_line": 1960
+  },
+  {
+    "surface": "settings-privacy-app-permissions-microphone",
+    "elements": "Microphone permissions",
+    "backend": "PermissionController",
+    "_spec_line": 1961
+  },
+  {
+    "surface": "settings-privacy-app-permissions-photos",
+    "elements": "Photos permissions",
+    "backend": "PermissionController",
+    "_spec_line": 1962
+  },
+  {
+    "surface": "settings-privacy-app-permissions-contacts",
+    "elements": "Contacts permissions",
+    "backend": "PermissionController",
+    "_spec_line": 1963
+  },
+  {
+    "surface": "settings-privacy-app-permissions-calendar",
+    "elements": "Calendar permissions",
+    "backend": "PermissionController",
+    "_spec_line": 1964
+  },
+  {
+    "surface": "settings-privacy-app-permissions-bluetooth",
+    "elements": "Bluetooth permissions",
+    "backend": "PermissionController",
+    "_spec_line": 1965
+  },
+  {
+    "surface": "settings-privacy-app-permissions-local-network",
+    "elements": "Local network",
+    "backend": "PermissionController",
+    "_spec_line": 1966
+  },
+  {
+    "surface": "settings-privacy-app-permissions-tracking",
+    "elements": "Tracking permissions",
+    "backend": "PermissionController",
+    "_spec_line": 1967
+  },
+  {
+    "surface": "settings-privacy-app-permissions-files",
+    "elements": "Files permissions",
+    "backend": "PermissionController",
+    "_spec_line": 1968
+  },
+  {
+    "surface": "settings-battery-percentage",
+    "elements": "Battery % toggle",
+    "backend": "BatteryManager",
+    "_spec_line": 1969
+  },
+  {
+    "surface": "settings-battery-low-power-mode",
+    "elements": "Low power toggle",
+    "backend": "BatterySaverTile",
+    "_spec_line": 1970
+  },
+  {
+    "surface": "settings-battery-health",
+    "elements": "Battery health",
+    "backend": "BatteryManager",
+    "_spec_line": 1971
+  },
+  {
+    "surface": "settings-battery-health-maximum-capacity",
+    "elements": "Max capacity",
+    "backend": "BatteryManager.BATTERY_PROPERTY_CAPACITY",
+    "_spec_line": 1972
+  },
+  {
+    "surface": "settings-battery-health-peak-performance",
+    "elements": "Peak performance",
+    "backend": "BatteryManager",
+    "_spec_line": 1973
+  },
+  {
+    "surface": "settings-battery-charging",
+    "elements": "Charging settings",
+    "backend": "BatteryManager",
+    "_spec_line": 1974
+  },
+  {
+    "surface": "settings-battery-charging-optimized",
+    "elements": "Optimized charging",
+    "backend": "BatteryManager",
+    "_spec_line": 1975
+  },
+  {
+    "surface": "settings-battery-charging-limit",
+    "elements": "Charge limit",
+    "backend": "BatteryManager",
+    "_spec_line": 1976
+  },
+  {
+    "surface": "settings-battery-usage-by-app",
+    "elements": "Usage by app",
+    "backend": "UsageStatsManager",
+    "_spec_line": 1977
+  },
+  {
+    "surface": "settings-battery-usage-by-activity",
+    "elements": "Usage by activity",
+    "backend": "UsageStatsManager",
+    "_spec_line": 1978
+  },
+  {
+    "surface": "settings-face-id-passcode-setup",
+    "elements": "Face ID setup",
+    "backend": "FingerprintManager.enroll()",
+    "_spec_line": 1979
+  },
+  {
+    "surface": "settings-face-id-passcode-change",
+    "elements": "Change passcode",
+    "backend": "KeyguardManager",
+    "_spec_line": 1980
+  },
+  {
+    "surface": "settings-face-id-passcode-turn-off",
+    "elements": "Turn off passcode",
+    "backend": "KeyguardManager",
+    "_spec_line": 1981
+  },
+  {
+    "surface": "settings-face-id-passcode-allow-access",
+    "elements": "Allow access",
+    "backend": "KeyguardManager",
+    "_spec_line": 1982
+  },
+  {
+    "surface": "settings-face-id-passcode-erase-data",
+    "elements": "Erase data",
+    "backend": "DevicePolicyManager.wipeData()",
+    "_spec_line": 1983
+  },
+  {
+    "surface": "settings-emergency-sos-auto-call",
+    "elements": "Auto call toggle",
+    "backend": "EmergencyAffordanceManager",
+    "_spec_line": 1984
+  },
+  {
+    "surface": "settings-emergency-sos-countdown",
+    "elements": "Countdown toggle",
+    "backend": "EmergencyAffordanceManager",
+    "_spec_line": 1985
+  },
+  {
+    "surface": "settings-emergency-sos-crash-detection",
+    "elements": "Crash detection",
+    "backend": "SensorManager",
+    "_spec_line": 1986
+  },
+  {
+    "surface": "settings-emergency-sos-contacts",
+    "elements": "Emergency contacts",
+    "backend": "ContactsContract",
+    "_spec_line": 1987
+  },
+  {
+    "surface": "settings-emergency-sos-medical-id",
+    "elements": "Medical ID",
+    "backend": "Custom `Activity",
+    "_spec_line": 1988
+  },
+  {
+    "surface": "settings-emergency-sos-call-with-side-button",
+    "elements": "Side button",
+    "backend": "EmergencyAffordanceManager",
+    "_spec_line": 1989
+  },
+  {
+    "surface": "settings-emergency-sos-call-with-5-presses",
+    "elements": "5 presses",
+    "backend": "EmergencyAffordanceManager",
+    "_spec_line": 1990
+  },
+  {
+    "surface": "settings-camera-formats",
+    "elements": "Format picker",
+    "backend": "Camera2",
+    "_spec_line": 2055
+  },
+  {
+    "surface": "settings-camera-record-video",
+    "elements": "Video resolution",
+    "backend": "MediaRecorder",
+    "_spec_line": 2056
+  },
+  {
+    "surface": "settings-camera-record-slo-mo",
+    "elements": "Slo-mo resolution",
+    "backend": "MediaRecorder",
+    "_spec_line": 2057
+  },
+  {
+    "surface": "settings-camera-preserve-settings",
+    "elements": "Preserve toggles",
+    "backend": "SharedPreferences",
+    "_spec_line": 2058
+  },
+  {
+    "surface": "settings-camera-grid",
+    "elements": "Grid toggle",
+    "backend": "Camera2",
+    "_spec_line": 2059
+  },
+  {
+    "surface": "settings-camera-level",
+    "elements": "Level toggle",
+    "backend": "SensorManager",
+    "_spec_line": 2060
+  },
+  {
+    "surface": "settings-camera-lens-correction",
+    "elements": "Lens correction",
+    "backend": "Camera2",
+    "_spec_line": 2061
+  },
+  {
+    "surface": "settings-photos-icloud",
+    "elements": "iCloud Photos toggle",
+    "backend": "MediaStore",
+    "_spec_line": 2062
+  },
+  {
+    "surface": "settings-photos-shared-albums",
+    "elements": "Shared albums",
+    "backend": "MediaStore",
+    "_spec_line": 2063
+  },
+  {
+    "surface": "settings-photos-memories",
+    "elements": "Memories toggle",
+    "backend": "MediaStore",
+    "_spec_line": 2064
+  },
+  {
+    "surface": "settings-photos-slideshow",
+    "elements": "Slideshow settings",
+    "backend": "MediaStore",
+    "_spec_line": 2065
+  },
+  {
+    "surface": "settings-siri-search",
+    "elements": "Siri & Search",
+    "backend": "Google Assistant / Gemini",
+    "_spec_line": 2066
+  },
+  {
+    "surface": "settings-siri-search-language",
+    "elements": "Language",
+    "backend": "LocaleManager",
+    "_spec_line": 2067
+  },
+  {
+    "surface": "settings-siri-search-voice",
+    "elements": "Voice picker",
+    "backend": "TextToSpeech",
+    "_spec_line": 2068
+  },
+  {
+    "surface": "settings-siri-search-suggestions",
+    "elements": "Suggestions",
+    "backend": "Google Assistant",
+    "_spec_line": 2069
+  },
+  {
+    "surface": "settings-siri-search-search-results",
+    "elements": "Search results",
+    "backend": "Google Assistant",
+    "_spec_line": 2070
+  },
+  {
+    "surface": "settings-standby",
+    "elements": "StandBy settings",
+    "backend": "DreamService",
+    "_spec_line": 2071
+  },
+  {
+    "surface": "settings-standby-night-mode",
+    "elements": "Night mode",
+    "backend": "DreamService",
+    "_spec_line": 2072
+  },
+  {
+    "surface": "settings-action-button",
+    "elements": "Action button",
+    "backend": "ButtonSettings",
+    "_spec_line": 2073
+  },
+  {
+    "surface": "settings-action-button-function",
+    "elements": "Function picker",
+    "backend": "ButtonSettings",
+    "_spec_line": 2074
+  },
+  {
+    "surface": "settings-action-button-shortcut",
+    "elements": "Shortcut picker",
+    "backend": "ButtonSettings",
+    "_spec_line": 2075
+  },
+  {
+    "surface": "settings-legal-regulatory",
+    "elements": "Legal notices",
+    "backend": "Build` info",
+    "_spec_line": 2076
+  },
+  {
+    "surface": "settings-legal-license",
+    "elements": "License",
+    "backend": "Build` info",
+    "_spec_line": 2077
+  },
+  {
+    "surface": "settings-legal-rf-exposure",
+    "elements": "RF exposure",
+    "backend": "Build` info",
+    "_spec_line": 2078
+  },
+  {
+    "surface": "settings-legal-warranty",
+    "elements": "Warranty",
+    "backend": "Build` info",
+    "_spec_line": 2079
+  },
+  {
+    "surface": "settings-transfer-reset-final",
+    "elements": "Transfer or reset",
+    "backend": "ResetSettings",
+    "_spec_line": 2080
+  },
+  {
+    "surface": "settings-shut-down",
+    "elements": "Shut down",
+    "backend": "PowerManager.shutdown()",
+    "_spec_line": 2081
+  },
+  {
+    "surface": "settings-shut-down-slider",
+    "elements": "Slide to shut down",
+    "backend": "GlobalActionsDialog",
+    "_spec_line": 2082
+  },
+  {
+    "surface": "settings-erase-all-content",
+    "elements": "Erase all content",
+    "backend": "DevicePolicyManager.wipeData()",
+    "_spec_line": 2083
+  },
+  {
+    "surface": "messages-bubble-in",
+    "elements": "Incoming bubble",
+    "backend": "SmsManager",
+    "_spec_line": 2154
+  },
+  {
+    "surface": "messages-bubble-out",
+    "elements": "Outgoing bubble",
+    "backend": "SmsManager",
+    "_spec_line": 2155
+  },
+  {
+    "surface": "messages-bubble-rcs",
+    "elements": "RCS bubble (blue)",
+    "backend": "RcsManager",
+    "_spec_line": 2156
+  },
+  {
+    "surface": "messages-bubble-sms",
+    "elements": "SMS bubble (green)",
+    "backend": "SmsManager",
+    "_spec_line": 2157
+  },
+  {
+    "surface": "messages-attachment",
+    "elements": "Attachment preview",
+    "backend": "MediaStore",
+    "_spec_line": 2158
+  },
+  {
+    "surface": "messages-emoji",
+    "elements": "Emoji picker in messages",
+    "backend": "EmojiPicker",
+    "_spec_line": 2159
+  },
+  {
+    "surface": "messages-reaction",
+    "elements": "Tapback reaction",
+    "backend": "Custom overlay",
+    "_spec_line": 2160
+  },
+  {
+    "surface": "messages-reply",
+    "elements": "Inline reply",
+    "backend": "SmsManager",
+    "_spec_line": 2161
+  },
+  {
+    "surface": "messages-edit",
+    "elements": "Edit message",
+    "backend": "RcsManager",
+    "_spec_line": 2162
+  },
+  {
+    "surface": "messages-unsend",
+    "elements": "Unsend message",
+    "backend": "RcsManager",
+    "_spec_line": 2163
+  },
+  {
+    "surface": "messages-search",
+    "elements": "Search messages",
+    "backend": "SmsManager",
+    "_spec_line": 2164
+  },
+  {
+    "surface": "messages-new",
+    "elements": "New message compose",
+    "backend": "SmsManager",
+    "_spec_line": 2165
+  },
+  {
+    "surface": "messages-details",
+    "elements": "Conversation details",
+    "backend": "SmsManager",
+    "_spec_line": 2166
+  },
+  {
+    "surface": "messages-group",
+    "elements": "Group message",
+    "backend": "SmsManager",
+    "_spec_line": 2167
+  },
+  {
+    "surface": "messages-pinned",
+    "elements": "Pinned conversation",
+    "backend": "SmsManager",
+    "_spec_line": 2168
+  },
+  {
+    "surface": "messages-attachment-picker",
+    "elements": "Attachment picker",
+    "backend": "MediaStore",
+    "_spec_line": 2169
+  },
+  {
+    "surface": "mail-mailbox-list",
+    "elements": "Mailbox list",
+    "backend": "Email` app, `JavaMail",
+    "_spec_line": 2170
+  },
+  {
+    "surface": "mail-mailbox-inbox",
+    "elements": "Inbox",
+    "backend": "JavaMail`, `Imap",
+    "_spec_line": 2171
+  },
+  {
+    "surface": "mail-mailbox-thread",
+    "elements": "Thread view",
+    "backend": "JavaMail",
+    "_spec_line": 2172
+  },
+  {
+    "surface": "mail-mailbox-compose",
+    "elements": "Compose email",
+    "backend": "JavaMail`, `Smtp",
+    "_spec_line": 2173
+  },
+  {
+    "surface": "mail-mailbox-reply",
+    "elements": "Reply",
+    "backend": "JavaMail",
+    "_spec_line": 2174
+  },
+  {
+    "surface": "mail-mailbox-attachment",
+    "elements": "Attachment",
+    "backend": "JavaMail",
+    "_spec_line": 2175
+  },
+  {
+    "surface": "mail-mailbox-search",
+    "elements": "Search",
+    "backend": "JavaMail",
+    "_spec_line": 2176
+  },
+  {
+    "surface": "mail-mailbox-filter",
+    "elements": "Filter",
+    "backend": "JavaMail",
+    "_spec_line": 2177
+  },
+  {
+    "surface": "mail-mailbox-swipe-actions",
+    "elements": "Swipe actions",
+    "backend": "JavaMail",
+    "_spec_line": 2178
+  },
+  {
+    "surface": "mail-mailbox-flag",
+    "elements": "Flag",
+    "backend": "JavaMail",
+    "_spec_line": 2179
+  },
+  {
+    "surface": "mail-mailbox-move",
+    "elements": "Move",
+    "backend": "JavaMail",
+    "_spec_line": 2180
+  },
+  {
+    "surface": "mail-mailbox-settings",
+    "elements": "Settings",
+    "backend": "JavaMail",
+    "_spec_line": 2181
+  },
+  {
+    "surface": "safari-browser-start",
+    "elements": "Start page",
+    "backend": "WebView`, `Chromium",
+    "_spec_line": 2182
+  },
+  {
+    "surface": "safari-browser-tab",
+    "elements": "Tab view",
+    "backend": "WebView",
+    "_spec_line": 2183
+  },
+  {
+    "surface": "safari-browser-tab-overview",
+    "elements": "Tab overview",
+    "backend": "WebView",
+    "_spec_line": 2184
+  },
+  {
+    "surface": "safari-browser-bookmarks",
+    "elements": "Bookmarks",
+    "backend": "WebView",
+    "_spec_line": 2185
+  },
+  {
+    "surface": "safari-browser-reading-list",
+    "elements": "Reading list",
+    "backend": "WebView",
+    "_spec_line": 2186
+  },
+  {
+    "surface": "safari-browser-history",
+    "elements": "History",
+    "backend": "WebView",
+    "_spec_line": 2187
+  },
+  {
+    "surface": "safari-browser-share",
+    "elements": "Share sheet",
+    "backend": "Intent.ACTION_SEND",
+    "_spec_line": 2188
+  },
+  {
+    "surface": "safari-browser-find",
+    "elements": "Find in page",
+    "backend": "WebView.findAllAsync()",
+    "_spec_line": 2189
+  },
+  {
+    "surface": "safari-browser-private",
+    "elements": "Private browsing",
+    "backend": "WebView",
+    "_spec_line": 2190
+  },
+  {
+    "surface": "safari-browser-settings",
+    "elements": "Browser settings",
+    "backend": "WebView",
+    "_spec_line": 2191
+  },
+  {
+    "surface": "photos-library-years",
+    "elements": "Years grid",
+    "backend": "MediaStore",
+    "_spec_line": 2232
+  },
+  {
+    "surface": "photos-library-months",
+    "elements": "Months grid",
+    "backend": "MediaStore",
+    "_spec_line": 2233
+  },
+  {
+    "surface": "photos-library-days",
+    "elements": "Days grid",
+    "backend": "MediaStore",
+    "_spec_line": 2234
+  },
+  {
+    "surface": "photos-library-all",
+    "elements": "All photos grid",
+    "backend": "MediaStore",
+    "_spec_line": 2235
+  },
+  {
+    "surface": "photos-albums",
+    "elements": "Albums list",
+    "backend": "MediaStore",
+    "_spec_line": 2236
+  },
+  {
+    "surface": "photos-album-detail",
+    "elements": "Album detail",
+    "backend": "MediaStore",
+    "_spec_line": 2237
+  },
+  {
+    "surface": "photos-memories",
+    "elements": "Memories",
+    "backend": "MediaStore",
+    "_spec_line": 2238
+  },
+  {
+    "surface": "photos-memory-detail",
+    "elements": "Memory detail",
+    "backend": "MediaStore",
+    "_spec_line": 2239
+  },
+  {
+    "surface": "photos-search",
+    "elements": "Search",
+    "backend": "MediaStore",
+    "_spec_line": 2240
+  },
+  {
+    "surface": "photos-for-you",
+    "elements": "For You tab",
+    "backend": "MediaStore",
+    "_spec_line": 2241
+  },
+  {
+    "surface": "photos-editing",
+    "elements": "Edit mode",
+    "backend": "MediaStore",
+    "_spec_line": 2242
+  },
+  {
+    "surface": "photos-editing-crop",
+    "elements": "Crop tool",
+    "backend": "MediaStore",
+    "_spec_line": 2243
+  },
+  {
+    "surface": "photos-editing-filters",
+    "elements": "Filters",
+    "backend": "MediaStore",
+    "_spec_line": 2244
+  },
+  {
+    "surface": "photos-editing-adjust",
+    "elements": "Adjustments",
+    "backend": "MediaStore",
+    "_spec_line": 2245
+  },
+  {
+    "surface": "photos-editing-markup",
+    "elements": "Markup",
+    "backend": "MediaStore",
+    "_spec_line": 2246
+  },
+  {
+    "surface": "photos-sharing",
+    "elements": "Share sheet",
+    "backend": "Intent.ACTION_SEND",
+    "_spec_line": 2247
+  },
+  {
+    "surface": "camera-photo",
+    "elements": "Photo mode",
+    "backend": "Camera2`, `CameraX",
+    "_spec_line": 2248
+  },
+  {
+    "surface": "camera-video",
+    "elements": "Video mode",
+    "backend": "Camera2",
+    "_spec_line": 2249
+  },
+  {
+    "surface": "camera-portrait",
+    "elements": "Portrait mode",
+    "backend": "Camera2",
+    "_spec_line": 2250
+  },
+  {
+    "surface": "camera-panorama",
+    "elements": "Panorama mode",
+    "backend": "Camera2",
+    "_spec_line": 2251
+  },
+  {
+    "surface": "camera-time-lapse",
+    "elements": "Time-lapse",
+    "backend": "Camera2",
+    "_spec_line": 2252
+  },
+  {
+    "surface": "camera-slo-mo",
+    "elements": "Slo-mo",
+    "backend": "Camera2",
+    "_spec_line": 2253
+  },
+  {
+    "surface": "camera-cinematic",
+    "elements": "Cinematic mode",
+    "backend": "Camera2",
+    "_spec_line": 2254
+  },
+  {
+    "surface": "camera-settings",
+    "elements": "Camera settings",
+    "backend": "Camera2",
+    "_spec_line": 2255
+  },
+  {
+    "surface": "clock-world",
+    "elements": "World clock",
+    "backend": "AlarmManager",
+    "_spec_line": 2256
+  },
+  {
+    "surface": "clock-alarm",
+    "elements": "Alarm list",
+    "backend": "AlarmManager",
+    "_spec_line": 2257
+  },
+  {
+    "surface": "clock-stopwatch",
+    "elements": "Stopwatch",
+    "backend": "SystemClock",
+    "_spec_line": 2258
+  },
+  {
+    "surface": "clock-timer",
+    "elements": "Timer",
+    "backend": "CountDownTimer",
+    "_spec_line": 2259
+  },
+  {
+    "surface": "weather-current",
+    "elements": "Current weather",
+    "backend": "OpenWeatherMap` API",
+    "_spec_line": 2269
+  },
+  {
+    "surface": "weather-hourly",
+    "elements": "Hourly forecast",
+    "backend": "OpenWeatherMap` API",
+    "_spec_line": 2270
+  },
+  {
+    "surface": "weather-daily",
+    "elements": "Daily forecast",
+    "backend": "OpenWeatherMap` API",
+    "_spec_line": 2271
+  },
+  {
+    "surface": "weather-map",
+    "elements": "Weather map",
+    "backend": "Google Maps",
+    "_spec_line": 2272
+  },
+  {
+    "surface": "weather-list",
+    "elements": "City list",
+    "backend": "SharedPreferences",
+    "_spec_line": 2273
+  },
+  {
+    "surface": "weather-detail",
+    "elements": "City detail",
+    "backend": "OpenWeatherMap` API",
+    "_spec_line": 2274
+  },
+  {
+    "surface": "maps-explore",
+    "elements": "Explore tab",
+    "backend": "LocationManager`, `FusedLocation",
+    "_spec_line": 2275
+  },
+  {
+    "surface": "maps-search",
+    "elements": "Search",
+    "backend": "Places API",
+    "_spec_line": 2276
+  },
+  {
+    "surface": "maps-directions",
+    "elements": "Directions",
+    "backend": "Directions API",
+    "_spec_line": 2277
+  },
+  {
+    "surface": "maps-route",
+    "elements": "Route view",
+    "backend": "Directions API",
+    "_spec_line": 2278
+  },
+  {
+    "surface": "maps-transit",
+    "elements": "Transit",
+    "backend": "Transit API",
+    "_spec_line": 2279
+  },
+  {
+    "surface": "maps-place",
+    "elements": "Place detail",
+    "backend": "Places API",
+    "_spec_line": 2280
+  },
+  {
+    "surface": "maps-guides",
+    "elements": "Guides",
+    "backend": "Places API",
+    "_spec_line": 2281
+  },
+  {
+    "surface": "maps-recents",
+    "elements": "Recent searches",
+    "backend": "SharedPreferences",
+    "_spec_line": 2282
+  },
+  {
+    "surface": "maps-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2283
+  },
+  {
+    "surface": "maps-look-around",
+    "elements": "Look Around",
+    "backend": "Street View",
+    "_spec_line": 2284
+  },
+  {
+    "surface": "notes-list",
+    "elements": "Notes list",
+    "backend": "SQLite`, `Room",
+    "_spec_line": 2285
+  },
+  {
+    "surface": "notes-detail",
+    "elements": "Note detail",
+    "backend": "SQLite",
+    "_spec_line": 2286
+  },
+  {
+    "surface": "notes-folder",
+    "elements": "Folder view",
+    "backend": "SQLite",
+    "_spec_line": 2287
+  },
+  {
+    "surface": "notes-search",
+    "elements": "Search",
+    "backend": "SQLite",
+    "_spec_line": 2288
+  },
+  {
+    "surface": "notes-attachment",
+    "elements": "Attachment",
+    "backend": "MediaStore",
+    "_spec_line": 2289
+  },
+  {
+    "surface": "notes-drawing",
+    "elements": "Drawing",
+    "backend": "Canvas",
+    "_spec_line": 2290
+  },
+  {
+    "surface": "notes-scan",
+    "elements": "Scan document",
+    "backend": "Camera2",
+    "_spec_line": 2291
+  },
+  {
+    "surface": "notes-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2292
+  },
+  {
+    "surface": "reminders-list",
+    "elements": "Reminders list",
+    "backend": "SQLite`, `AlarmManager",
+    "_spec_line": 2293
+  },
+  {
+    "surface": "reminders-detail",
+    "elements": "Reminder detail",
+    "backend": "SQLite",
+    "_spec_line": 2294
+  },
+  {
+    "surface": "reminders-today",
+    "elements": "Today view",
+    "backend": "SQLite",
+    "_spec_line": 2295
+  },
+  {
+    "surface": "reminders-scheduled",
+    "elements": "Scheduled",
+    "backend": "SQLite",
+    "_spec_line": 2296
+  },
+  {
+    "surface": "reminders-flagged",
+    "elements": "Flagged",
+    "backend": "SQLite",
+    "_spec_line": 2297
+  },
+  {
+    "surface": "reminders-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2298
+  },
+  {
+    "surface": "calendar-day",
+    "elements": "Day view",
+    "backend": "CalendarContract",
+    "_spec_line": 2299
+  },
+  {
+    "surface": "calendar-week",
+    "elements": "Week view",
+    "backend": "CalendarContract",
+    "_spec_line": 2300
+  },
+  {
+    "surface": "calendar-month",
+    "elements": "Month view",
+    "backend": "CalendarContract",
+    "_spec_line": 2301
+  },
+  {
+    "surface": "calendar-year",
+    "elements": "Year view",
+    "backend": "CalendarContract",
+    "_spec_line": 2302
+  },
+  {
+    "surface": "calendar-event",
+    "elements": "Event detail",
+    "backend": "CalendarContract",
+    "_spec_line": 2303
+  },
+  {
+    "surface": "calendar-event-edit",
+    "elements": "Event edit",
+    "backend": "CalendarContract",
+    "_spec_line": 2304
+  },
+  {
+    "surface": "calendar-search",
+    "elements": "Search",
+    "backend": "CalendarContract",
+    "_spec_line": 2305
+  },
+  {
+    "surface": "calendar-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2306
+  },
+  {
+    "surface": "music-listen-now",
+    "elements": "Listen Now",
+    "backend": "MediaStore`, `MediaSession",
+    "_spec_line": 2316
+  },
+  {
+    "surface": "music-browse",
+    "elements": "Browse",
+    "backend": "MediaStore",
+    "_spec_line": 2317
+  },
+  {
+    "surface": "music-radio",
+    "elements": "Radio",
+    "backend": "MediaStore",
+    "_spec_line": 2318
+  },
+  {
+    "surface": "music-library",
+    "elements": "Library",
+    "backend": "MediaStore",
+    "_spec_line": 2319
+  },
+  {
+    "surface": "music-playlist",
+    "elements": "Playlist",
+    "backend": "MediaStore",
+    "_spec_line": 2320
+  },
+  {
+    "surface": "music-album",
+    "elements": "Album",
+    "backend": "MediaStore",
+    "_spec_line": 2321
+  },
+  {
+    "surface": "music-artist",
+    "elements": "Artist",
+    "backend": "MediaStore",
+    "_spec_line": 2322
+  },
+  {
+    "surface": "music-player",
+    "elements": "Now playing",
+    "backend": "MediaSession",
+    "_spec_line": 2323
+  },
+  {
+    "surface": "music-queue",
+    "elements": "Queue",
+    "backend": "MediaSession",
+    "_spec_line": 2324
+  },
+  {
+    "surface": "music-lyrics",
+    "elements": "Lyrics",
+    "backend": "MediaStore",
+    "_spec_line": 2325
+  },
+  {
+    "surface": "music-search",
+    "elements": "Search",
+    "backend": "MediaStore",
+    "_spec_line": 2326
+  },
+  {
+    "surface": "podcasts-listen-now",
+    "elements": "Listen Now",
+    "backend": "RSS parsing",
+    "_spec_line": 2327
+  },
+  {
+    "surface": "podcasts-browse",
+    "elements": "Browse",
+    "backend": "RSS parsing",
+    "_spec_line": 2328
+  },
+  {
+    "surface": "podcasts-library",
+    "elements": "Library",
+    "backend": "SQLite",
+    "_spec_line": 2329
+  },
+  {
+    "surface": "podcasts-show",
+    "elements": "Show detail",
+    "backend": "RSS parsing",
+    "_spec_line": 2330
+  },
+  {
+    "surface": "podcasts-episode",
+    "elements": "Episode",
+    "backend": "MediaPlayer",
+    "_spec_line": 2331
+  },
+  {
+    "surface": "podcasts-player",
+    "elements": "Player",
+    "backend": "MediaPlayer",
+    "_spec_line": 2332
+  },
+  {
+    "surface": "tv-watch-now",
+    "elements": "Watch Now",
+    "backend": "MediaStore",
+    "_spec_line": 2333
+  },
+  {
+    "surface": "tv-library",
+    "elements": "Library",
+    "backend": "MediaStore",
+    "_spec_line": 2334
+  },
+  {
+    "surface": "tv-store",
+    "elements": "Store",
+    "backend": "MediaStore",
+    "_spec_line": 2335
+  },
+  {
+    "surface": "tv-search",
+    "elements": "Search",
+    "backend": "MediaStore",
+    "_spec_line": 2336
+  },
+  {
+    "surface": "tv-player",
+    "elements": "Player",
+    "backend": "MediaPlayer",
+    "_spec_line": 2337
+  },
+  {
+    "surface": "tv-downloads",
+    "elements": "Downloads",
+    "backend": "DownloadManager",
+    "_spec_line": 2338
+  },
+  {
+    "surface": "books-reading-now",
+    "elements": "Reading Now",
+    "backend": "EPUB` parser",
+    "_spec_line": 2339
+  },
+  {
+    "surface": "books-library",
+    "elements": "Library",
+    "backend": "SQLite",
+    "_spec_line": 2340
+  },
+  {
+    "surface": "books-store",
+    "elements": "Store",
+    "backend": "EPUB` parser",
+    "_spec_line": 2341
+  },
+  {
+    "surface": "books-search",
+    "elements": "Search",
+    "backend": "SQLite",
+    "_spec_line": 2342
+  },
+  {
+    "surface": "books-reader",
+    "elements": "Reader",
+    "backend": "EPUB` parser",
+    "_spec_line": 2343
+  },
+  {
+    "surface": "books-audiobook",
+    "elements": "Audiobook",
+    "backend": "MediaPlayer",
+    "_spec_line": 2344
+  },
+  {
+    "surface": "news-today",
+    "elements": "Today",
+    "backend": "RSS / `NewsAPI",
+    "_spec_line": 2345
+  },
+  {
+    "surface": "news-following",
+    "elements": "Following",
+    "backend": "RSS",
+    "_spec_line": 2346
+  },
+  {
+    "surface": "news-search",
+    "elements": "Search",
+    "backend": "NewsAPI",
+    "_spec_line": 2347
+  },
+  {
+    "surface": "news-article",
+    "elements": "Article",
+    "backend": "WebView",
+    "_spec_line": 2348
+  },
+  {
+    "surface": "news-magazine",
+    "elements": "Magazine",
+    "backend": "NewsAPI",
+    "_spec_line": 2349
+  },
+  {
+    "surface": "news-audio",
+    "elements": "Audio",
+    "backend": "MediaPlayer",
+    "_spec_line": 2350
+  },
+  {
+    "surface": "stocks-watchlist",
+    "elements": "Watchlist",
+    "backend": "Yahoo Finance API",
+    "_spec_line": 2351
+  },
+  {
+    "surface": "stocks-detail",
+    "elements": "Stock detail",
+    "backend": "Yahoo Finance API",
+    "_spec_line": 2352
+  },
+  {
+    "surface": "stocks-news",
+    "elements": "News",
+    "backend": "RSS",
+    "_spec_line": 2353
+  },
+  {
+    "surface": "stocks-chart",
+    "elements": "Chart",
+    "backend": "Yahoo Finance API",
+    "_spec_line": 2354
+  },
+  {
+    "surface": "stocks-search",
+    "elements": "Search",
+    "backend": "Yahoo Finance API",
+    "_spec_line": 2355
+  },
+  {
+    "surface": "stocks-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2356
+  },
+  {
+    "surface": "health-summary",
+    "elements": "Summary",
+    "backend": "HealthConnect` API",
+    "_spec_line": 2366
+  },
+  {
+    "surface": "health-browse",
+    "elements": "Browse",
+    "backend": "HealthConnect` API",
+    "_spec_line": 2367
+  },
+  {
+    "surface": "health-sharing",
+    "elements": "Sharing",
+    "backend": "HealthConnect` API",
+    "_spec_line": 2368
+  },
+  {
+    "surface": "health-medical-id",
+    "elements": "Medical ID",
+    "backend": "SQLite",
+    "_spec_line": 2369
+  },
+  {
+    "surface": "health-activity",
+    "elements": "Activity",
+    "backend": "SensorManager",
+    "_spec_line": 2370
+  },
+  {
+    "surface": "health-heart",
+    "elements": "Heart",
+    "backend": "SensorManager",
+    "_spec_line": 2371
+  },
+  {
+    "surface": "health-sleep",
+    "elements": "Sleep",
+    "backend": "Sleep` API",
+    "_spec_line": 2372
+  },
+  {
+    "surface": "health-mindfulness",
+    "elements": "Mindfulness",
+    "backend": "SensorManager",
+    "_spec_line": 2373
+  },
+  {
+    "surface": "health-nutrition",
+    "elements": "Nutrition",
+    "backend": "HealthConnect` API",
+    "_spec_line": 2374
+  },
+  {
+    "surface": "health-records",
+    "elements": "Records",
+    "backend": "HealthConnect` API",
+    "_spec_line": 2375
+  },
+  {
+    "surface": "fitness-summary",
+    "elements": "Summary",
+    "backend": "SensorManager",
+    "_spec_line": 2376
+  },
+  {
+    "surface": "fitness-activity",
+    "elements": "Activity",
+    "backend": "StepCounter",
+    "_spec_line": 2377
+  },
+  {
+    "surface": "fitness-workouts",
+    "elements": "Workouts",
+    "backend": "SensorManager",
+    "_spec_line": 2378
+  },
+  {
+    "surface": "fitness-awards",
+    "elements": "Awards",
+    "backend": "SQLite",
+    "_spec_line": 2379
+  },
+  {
+    "surface": "fitness-sharing",
+    "elements": "Sharing",
+    "backend": "HealthConnect` API",
+    "_spec_line": 2380
+  },
+  {
+    "surface": "fitness-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2381
+  },
+  {
+    "surface": "home-overview",
+    "elements": "Overview",
+    "backend": "Matter`, `Thread",
+    "_spec_line": 2382
+  },
+  {
+    "surface": "home-room",
+    "elements": "Room",
+    "backend": "Matter",
+    "_spec_line": 2383
+  },
+  {
+    "surface": "home-accessory",
+    "elements": "Accessory",
+    "backend": "Matter",
+    "_spec_line": 2384
+  },
+  {
+    "surface": "home-automation",
+    "elements": "Automation",
+    "backend": "Matter",
+    "_spec_line": 2385
+  },
+  {
+    "surface": "home-scene",
+    "elements": "Scene",
+    "backend": "Matter",
+    "_spec_line": 2386
+  },
+  {
+    "surface": "home-add-accessory",
+    "elements": "Add accessory",
+    "backend": "Matter",
+    "_spec_line": 2387
+  },
+  {
+    "surface": "home-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2388
+  },
+  {
+    "surface": "home-camera",
+    "elements": "Camera",
+    "backend": "Matter",
+    "_spec_line": 2389
+  },
+  {
+    "surface": "wallet-overview",
+    "elements": "Overview",
+    "backend": "NfcAdapter",
+    "_spec_line": 2390
+  },
+  {
+    "surface": "wallet-card",
+    "elements": "Card",
+    "backend": "HostApduService",
+    "_spec_line": 2391
+  },
+  {
+    "surface": "wallet-pass",
+    "elements": "Pass",
+    "backend": "NfcAdapter",
+    "_spec_line": 2392
+  },
+  {
+    "surface": "wallet-transaction",
+    "elements": "Transaction",
+    "backend": "NfcAdapter",
+    "_spec_line": 2393
+  },
+  {
+    "surface": "wallet-add-card",
+    "elements": "Add card",
+    "backend": "NfcAdapter",
+    "_spec_line": 2394
+  },
+  {
+    "surface": "wallet-add-pass",
+    "elements": "Add pass",
+    "backend": "NfcAdapter",
+    "_spec_line": 2395
+  },
+  {
+    "surface": "wallet-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2396
+  },
+  {
+    "surface": "wallet-apple-pay",
+    "elements": "Apple Pay",
+    "backend": "NfcAdapter`, Google Wallet",
+    "_spec_line": 2397
+  },
+  {
+    "surface": "files-browse",
+    "elements": "Browse",
+    "backend": "StorageManager",
+    "_spec_line": 2398
+  },
+  {
+    "surface": "files-recents",
+    "elements": "Recents",
+    "backend": "MediaStore",
+    "_spec_line": 2399
+  },
+  {
+    "surface": "files-shared",
+    "elements": "Shared",
+    "backend": "StorageManager",
+    "_spec_line": 2400
+  },
+  {
+    "surface": "files-tags",
+    "elements": "Tags",
+    "backend": "SQLite",
+    "_spec_line": 2401
+  },
+  {
+    "surface": "files-search",
+    "elements": "Search",
+    "backend": "MediaStore",
+    "_spec_line": 2402
+  },
+  {
+    "surface": "files-folder",
+    "elements": "Folder",
+    "backend": "StorageManager",
+    "_spec_line": 2403
+  },
+  {
+    "surface": "files-preview",
+    "elements": "Preview",
+    "backend": "MediaStore",
+    "_spec_line": 2404
+  },
+  {
+    "surface": "files-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2405
+  },
+  {
+    "surface": "compass-main",
+    "elements": "Compass",
+    "backend": "SensorManager",
+    "_spec_line": 2415
+  },
+  {
+    "surface": "compass-level",
+    "elements": "Level",
+    "backend": "SensorManager",
+    "_spec_line": 2416
+  },
+  {
+    "surface": "compass-inclinometer",
+    "elements": "Inclinometer",
+    "backend": "SensorManager",
+    "_spec_line": 2417
+  },
+  {
+    "surface": "compass-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2418
+  },
+  {
+    "surface": "measure-main",
+    "elements": "Measure",
+    "backend": "ARCore",
+    "_spec_line": 2419
+  },
+  {
+    "surface": "measure-level",
+    "elements": "Level",
+    "backend": "ARCore",
+    "_spec_line": 2420
+  },
+  {
+    "surface": "measure-area",
+    "elements": "Area",
+    "backend": "ARCore",
+    "_spec_line": 2421
+  },
+  {
+    "surface": "measure-height",
+    "elements": "Height",
+    "backend": "ARCore",
+    "_spec_line": 2422
+  },
+  {
+    "surface": "measure-history",
+    "elements": "History",
+    "backend": "SQLite",
+    "_spec_line": 2423
+  },
+  {
+    "surface": "measure-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2424
+  },
+  {
+    "surface": "translate-main",
+    "elements": "Main",
+    "backend": "ML Kit",
+    "_spec_line": 2425
+  },
+  {
+    "surface": "translate-conversation",
+    "elements": "Conversation",
+    "backend": "ML Kit",
+    "_spec_line": 2426
+  },
+  {
+    "surface": "translate-camera",
+    "elements": "Camera",
+    "backend": "ML Kit",
+    "_spec_line": 2427
+  },
+  {
+    "surface": "translate-favorites",
+    "elements": "Favorites",
+    "backend": "SQLite",
+    "_spec_line": 2428
+  },
+  {
+    "surface": "translate-history",
+    "elements": "History",
+    "backend": "SQLite",
+    "_spec_line": 2429
+  },
+  {
+    "surface": "translate-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2430
+  },
+  {
+    "surface": "shortcuts-all",
+    "elements": "All",
+    "backend": "AccessibilityService",
+    "_spec_line": 2431
+  },
+  {
+    "surface": "shortcuts-gallery",
+    "elements": "Gallery",
+    "backend": "AccessibilityService",
+    "_spec_line": 2432
+  },
+  {
+    "surface": "shortcuts-editor",
+    "elements": "Editor",
+    "backend": "AccessibilityService",
+    "_spec_line": 2433
+  },
+  {
+    "surface": "shortcuts-run",
+    "elements": "Run",
+    "backend": "AccessibilityService",
+    "_spec_line": 2434
+  },
+  {
+    "surface": "shortcuts-automation",
+    "elements": "Automation",
+    "backend": "AccessibilityService",
+    "_spec_line": 2435
+  },
+  {
+    "surface": "shortcuts-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2436
+  },
+  {
+    "surface": "tips-collections",
+    "elements": "Collections",
+    "backend": "SQLite",
+    "_spec_line": 2437
+  },
+  {
+    "surface": "tips-detail",
+    "elements": "Detail",
+    "backend": "SQLite",
+    "_spec_line": 2438
+  },
+  {
+    "surface": "tips-search",
+    "elements": "Search",
+    "backend": "SQLite",
+    "_spec_line": 2439
+  },
+  {
+    "surface": "tips-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2440
+  },
+  {
+    "surface": "contacts-list",
+    "elements": "List",
+    "backend": "ContactsContract",
+    "_spec_line": 2441
+  },
+  {
+    "surface": "contacts-detail",
+    "elements": "Detail",
+    "backend": "ContactsContract",
+    "_spec_line": 2442
+  },
+  {
+    "surface": "contacts-edit",
+    "elements": "Edit",
+    "backend": "ContactsContract",
+    "_spec_line": 2443
+  },
+  {
+    "surface": "contacts-groups",
+    "elements": "Groups",
+    "backend": "ContactsContract",
+    "_spec_line": 2444
+  },
+  {
+    "surface": "contacts-search",
+    "elements": "Search",
+    "backend": "ContactsContract",
+    "_spec_line": 2445
+  },
+  {
+    "surface": "contacts-my-card",
+    "elements": "My Card",
+    "backend": "ContactsContract",
+    "_spec_line": 2446
+  },
+  {
+    "surface": "contacts-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2447
+  },
+  {
+    "surface": "contacts-duplicates",
+    "elements": "Duplicates",
+    "backend": "ContactsContract",
+    "_spec_line": 2448
+  },
+  {
+    "surface": "phone-keypad",
+    "elements": "Keypad",
+    "backend": "TelecomManager",
+    "_spec_line": 2449
+  },
+  {
+    "surface": "phone-recents",
+    "elements": "Recents",
+    "backend": "CallLog",
+    "_spec_line": 2450
+  },
+  {
+    "surface": "phone-contacts",
+    "elements": "Contacts",
+    "backend": "ContactsContract",
+    "_spec_line": 2451
+  },
+  {
+    "surface": "phone-favorites",
+    "elements": "Favorites",
+    "backend": "ContactsContract",
+    "_spec_line": 2452
+  },
+  {
+    "surface": "phone-voicemail",
+    "elements": "Voicemail",
+    "backend": "TelecomManager",
+    "_spec_line": 2453
+  },
+  {
+    "surface": "phone-in-call",
+    "elements": "In call",
+    "backend": "TelecomManager",
+    "_spec_line": 2454
+  },
+  {
+    "surface": "phone-in-call-actions",
+    "elements": "Actions",
+    "backend": "TelecomManager",
+    "_spec_line": 2455
+  },
+  {
+    "surface": "phone-in-call-keypad",
+    "elements": "Keypad",
+    "backend": "TelecomManager",
+    "_spec_line": 2456
+  },
+  {
+    "surface": "phone-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2457
+  },
+  {
+    "surface": "phone-emergency",
+    "elements": "Emergency",
+    "backend": "EmergencyDialer",
+    "_spec_line": 2458
+  },
+  {
+    "surface": "facetime-recents",
+    "elements": "Recents",
+    "backend": "WebRTC`, Google Meet",
+    "_spec_line": 2468
+  },
+  {
+    "surface": "facetime-new",
+    "elements": "New call",
+    "backend": "WebRTC",
+    "_spec_line": 2469
+  },
+  {
+    "surface": "facetime-in-call",
+    "elements": "In call",
+    "backend": "WebRTC`, `Camera2",
+    "_spec_line": 2470
+  },
+  {
+    "surface": "facetime-in-call-actions",
+    "elements": "Actions",
+    "backend": "WebRTC",
+    "_spec_line": 2471
+  },
+  {
+    "surface": "facetime-effects",
+    "elements": "Effects",
+    "backend": "WebRTC",
+    "_spec_line": 2472
+  },
+  {
+    "surface": "facetime-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2473
+  },
+  {
+    "surface": "freeform-boards",
+    "elements": "Boards",
+    "backend": "Canvas`, `SQLite",
+    "_spec_line": 2474
+  },
+  {
+    "surface": "freeform-board",
+    "elements": "Board",
+    "backend": "Canvas",
+    "_spec_line": 2475
+  },
+  {
+    "surface": "freeform-editor",
+    "elements": "Editor",
+    "backend": "Canvas",
+    "_spec_line": 2476
+  },
+  {
+    "surface": "freeform-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2477
+  },
+  {
+    "surface": "journal-entries",
+    "elements": "Entries",
+    "backend": "Room`, `SQLite",
+    "_spec_line": 2478
+  },
+  {
+    "surface": "journal-new-entry",
+    "elements": "New entry",
+    "backend": "Room",
+    "_spec_line": 2479
+  },
+  {
+    "surface": "journal-suggestions",
+    "elements": "Suggestions",
+    "backend": "Room",
+    "_spec_line": 2480
+  },
+  {
+    "surface": "journal-detail",
+    "elements": "Detail",
+    "backend": "Room",
+    "_spec_line": 2481
+  },
+  {
+    "surface": "journal-search",
+    "elements": "Search",
+    "backend": "Room",
+    "_spec_line": 2482
+  },
+  {
+    "surface": "journal-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2483
+  },
+  {
+    "surface": "passwords-list",
+    "elements": "List",
+    "backend": "AutofillService",
+    "_spec_line": 2484
+  },
+  {
+    "surface": "passwords-detail",
+    "elements": "Detail",
+    "backend": "AutofillService",
+    "_spec_line": 2485
+  },
+  {
+    "surface": "passwords-add",
+    "elements": "Add",
+    "backend": "AutofillService",
+    "_spec_line": 2486
+  },
+  {
+    "surface": "passwords-search",
+    "elements": "Search",
+    "backend": "AutofillService",
+    "_spec_line": 2487
+  },
+  {
+    "surface": "passwords-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2488
+  },
+  {
+    "surface": "passwords-security",
+    "elements": "Security",
+    "backend": "AutofillService",
+    "_spec_line": 2489
+  },
+  {
+    "surface": "magnifier-main",
+    "elements": "Main",
+    "backend": "Camera2`, `AccessibilityService",
+    "_spec_line": 2490
+  },
+  {
+    "surface": "magnifier-controls",
+    "elements": "Controls",
+    "backend": "AccessibilityService",
+    "_spec_line": 2491
+  },
+  {
+    "surface": "magnifier-filters",
+    "elements": "Filters",
+    "backend": "AccessibilityService",
+    "_spec_line": 2492
+  },
+  {
+    "surface": "magnifier-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2493
+  },
+  {
+    "surface": "voice-memos-list",
+    "elements": "List",
+    "backend": "MediaRecorder",
+    "_spec_line": 2494
+  },
+  {
+    "surface": "voice-memos-recording",
+    "elements": "Recording",
+    "backend": "MediaRecorder",
+    "_spec_line": 2495
+  },
+  {
+    "surface": "voice-memos-detail",
+    "elements": "Detail",
+    "backend": "MediaRecorder",
+    "_spec_line": 2496
+  },
+  {
+    "surface": "voice-memos-edit",
+    "elements": "Edit",
+    "backend": "MediaRecorder",
+    "_spec_line": 2497
+  },
+  {
+    "surface": "voice-memos-search",
+    "elements": "Search",
+    "backend": "MediaRecorder",
+    "_spec_line": 2498
+  },
+  {
+    "surface": "voice-memos-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2499
+  },
+  {
+    "surface": "find-my-people",
+    "elements": "People",
+    "backend": "FusedLocationProvider",
+    "_spec_line": 2500
+  },
+  {
+    "surface": "find-my-devices",
+    "elements": "Devices",
+    "backend": "FusedLocationProvider",
+    "_spec_line": 2501
+  },
+  {
+    "surface": "find-my-items",
+    "elements": "Items",
+    "backend": "FusedLocationProvider",
+    "_spec_line": 2502
+  },
+  {
+    "surface": "find-my-detail",
+    "elements": "Detail",
+    "backend": "FusedLocationProvider",
+    "_spec_line": 2503
+  },
+  {
+    "surface": "find-my-actions",
+    "elements": "Actions",
+    "backend": "FusedLocationProvider",
+    "_spec_line": 2504
+  },
+  {
+    "surface": "find-my-settings",
+    "elements": "Settings",
+    "backend": "SharedPreferences",
+    "_spec_line": 2505
+  },
+  {
+    "surface": "app-store-today",
+    "elements": "Today",
+    "backend": "PackageInstaller",
+    "_spec_line": 2506
+  },
+  {
+    "surface": "app-store-games",
+    "elements": "Games",
+    "backend": "PackageInstaller",
+    "_spec_line": 2507
+  },
+  {
+    "surface": "app-store-apps",
+    "elements": "Apps",
+    "backend": "PackageInstaller",
+    "_spec_line": 2508
+  },
+  {
+    "surface": "app-store-arcade",
+    "elements": "Arcade",
+    "backend": "PackageInstaller",
+    "_spec_line": 2509
+  },
+  {
+    "surface": "app-store-search",
+    "elements": "Search",
+    "backend": "PackageInstaller",
+    "_spec_line": 2510
+  },
+  {
+    "surface": "app-store-app-detail",
+    "elements": "App detail",
+    "backend": "PackageInstaller",
+    "_spec_line": 2511
+  },
+  {
+    "surface": "app-store-updates",
+    "elements": "Updates",
+    "backend": "PackageInstaller",
+    "_spec_line": 2512
+  },
+  {
+    "surface": "app-store-account",
+    "elements": "Account",
+    "backend": "PackageInstaller",
+    "_spec_line": 2513
+  },
+  {
+    "surface": "widget-small",
+    "elements": "2\u00d72 widget",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2523
+  },
+  {
+    "surface": "widget-medium",
+    "elements": "4\u00d72 widget",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2524
+  },
+  {
+    "surface": "widget-large",
+    "elements": "4\u00d74 widget",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2525
+  },
+  {
+    "surface": "widget-extra-large",
+    "elements": "4\u00d76 widget",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2526
+  },
+  {
+    "surface": "widget-stack",
+    "elements": "Stacked widgets",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2527
+  },
+  {
+    "surface": "widget-lockscreen-circular",
+    "elements": "Circular lock widget",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2528
+  },
+  {
+    "surface": "widget-lockscreen-rectangular",
+    "elements": "Rectangular lock widget",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2529
+  },
+  {
+    "surface": "widget-lockscreen-inline",
+    "elements": "Inline lock widget",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2530
+  },
+  {
+    "surface": "widget-standby",
+    "elements": "StandBy widget",
+    "backend": "DreamService",
+    "_spec_line": 2531
+  },
+  {
+    "surface": "live-activity-compact",
+    "elements": "Compact Live Activity",
+    "backend": "Notification.Builder",
+    "_spec_line": 2532
+  },
+  {
+    "surface": "live-activity-minimal",
+    "elements": "Minimal Live Activity",
+    "backend": "Notification.Builder",
+    "_spec_line": 2533
+  },
+  {
+    "surface": "live-activity-expanded",
+    "elements": "Expanded Live Activity",
+    "backend": "RemoteViews",
+    "_spec_line": 2534
+  },
+  {
+    "surface": "live-activity-lockscreen",
+    "elements": "Lock screen Live Activity",
+    "backend": "Notification.Builder",
+    "_spec_line": 2535
+  },
+  {
+    "surface": "dynamic-island-compact",
+    "elements": "Compact Dynamic Island",
+    "backend": "Custom `View",
+    "_spec_line": 2536
+  },
+  {
+    "surface": "dynamic-island-minimal",
+    "elements": "Minimal Dynamic Island",
+    "backend": "Custom `View",
+    "_spec_line": 2537
+  },
+  {
+    "surface": "dynamic-island-expanded",
+    "elements": "Expanded Dynamic Island",
+    "backend": "Custom `View",
+    "_spec_line": 2538
+  },
+  {
+    "surface": "dynamic-island-call",
+    "elements": "Call Dynamic Island",
+    "backend": "Custom `View",
+    "_spec_line": 2539
+  },
+  {
+    "surface": "dynamic-island-music",
+    "elements": "Music Dynamic Island",
+    "backend": "Custom `View",
+    "_spec_line": 2540
+  },
+  {
+    "surface": "dynamic-island-timer",
+    "elements": "Timer Dynamic Island",
+    "backend": "Custom `View",
+    "_spec_line": 2541
+  },
+  {
+    "surface": "dynamic-island-maps",
+    "elements": "Maps Dynamic Island",
+    "backend": "Custom `View",
+    "_spec_line": 2542
+  },
+  {
+    "surface": "dialog-alert-text-field",
+    "elements": "Text field dialog",
+    "backend": "AlertDialog` with `EditText",
+    "_spec_line": 2584
+  },
+  {
+    "surface": "dialog-confirm",
+    "elements": "Confirm dialog",
+    "backend": "AlertDialog",
+    "_spec_line": 2585
+  },
+  {
+    "surface": "dialog-destructive",
+    "elements": "Destructive dialog",
+    "backend": "AlertDialog",
+    "_spec_line": 2586
+  },
+  {
+    "surface": "action-sheet",
+    "elements": "Action sheet",
+    "backend": "ModalBottomSheet",
+    "_spec_line": 2587
+  },
+  {
+    "surface": "action-sheet-destructive",
+    "elements": "Destructive action",
+    "backend": "ModalBottomSheet",
+    "_spec_line": 2588
+  },
+  {
+    "surface": "action-sheet-cancel",
+    "elements": "Cancel action",
+    "backend": "ModalBottomSheet",
+    "_spec_line": 2589
+  },
+  {
+    "surface": "popover",
+    "elements": "Popover",
+    "backend": "PopupWindow",
+    "_spec_line": 2590
+  },
+  {
+    "surface": "popover-menu",
+    "elements": "Popover menu",
+    "backend": "PopupMenu",
+    "_spec_line": 2591
+  },
+  {
+    "surface": "popover-context",
+    "elements": "Context popover",
+    "backend": "PopupWindow",
+    "_spec_line": 2592
+  },
+  {
+    "surface": "banner-toast",
+    "elements": "Toast banner",
+    "backend": "Toast",
+    "_spec_line": 2593
+  },
+  {
+    "surface": "banner-heads-up",
+    "elements": "Heads-up notification",
+    "backend": "Notification",
+    "_spec_line": 2594
+  },
+  {
+    "surface": "banner-system",
+    "elements": "System banner",
+    "backend": "Notification",
+    "_spec_line": 2595
+  },
+  {
+    "surface": "banner-error",
+    "elements": "Error banner",
+    "backend": "Toast",
+    "_spec_line": 2596
+  },
+  {
+    "surface": "text-field-single",
+    "elements": "Single-line text field",
+    "backend": "EditText`, Compose `TextField",
+    "_spec_line": 2597
+  },
+  {
+    "surface": "text-field-multiline",
+    "elements": "Multi-line text field",
+    "backend": "EditText",
+    "_spec_line": 2598
+  },
+  {
+    "surface": "text-field-secure",
+    "elements": "Secure text field",
+    "backend": "EditText` with `InputType.TYPE_TEXT_VARIATION_PASSWORD",
+    "_spec_line": 2599
+  },
+  {
+    "surface": "text-selection-menu",
+    "elements": "Text selection menu",
+    "backend": "SelectionActionModeHelper",
+    "_spec_line": 2600
+  },
+  {
+    "surface": "text-selection-magnifier",
+    "elements": "Selection magnifier",
+    "backend": "Magnifier",
+    "_spec_line": 2601
+  },
+  {
+    "surface": "text-selection-loupe",
+    "elements": "Loupe",
+    "backend": "Magnifier",
+    "_spec_line": 2602
+  },
+  {
+    "surface": "autocorrect-suggestion",
+    "elements": "Autocorrect bar",
+    "backend": "InputMethodManager",
+    "_spec_line": 2603
+  },
+  {
+    "surface": "predictive-text-bar",
+    "elements": "Predictive text",
+    "backend": "InputMethodManager",
+    "_spec_line": 2604
+  },
+  {
+    "surface": "dictation-overlay",
+    "elements": "Dictation",
+    "backend": "VoiceInput",
+    "_spec_line": 2605
+  },
+  {
+    "surface": "keyboard-light",
+    "elements": "Light keyboard",
+    "backend": "LatinIME",
+    "_spec_line": 2606
+  },
+  {
+    "surface": "keyboard-dark",
+    "elements": "Dark keyboard",
+    "backend": "LatinIME",
+    "_spec_line": 2607
+  },
+  {
+    "surface": "keyboard-emoji",
+    "elements": "Emoji keyboard",
+    "backend": "EmojiPicker",
+    "_spec_line": 2608
+  },
+  {
+    "surface": "keyboard-stickers",
+    "elements": "Stickers",
+    "backend": "EmojiPicker",
+    "_spec_line": 2609
+  },
+  {
+    "surface": "keyboard-handwriting",
+    "elements": "Handwriting",
+    "backend": "InputMethodManager",
+    "_spec_line": 2610
+  },
+  {
+    "surface": "keyboard-one-handed",
+    "elements": "One-handed keyboard",
+    "backend": "LatinIME",
+    "_spec_line": 2611
+  },
+  {
+    "surface": "Component",
+    "elements": "Description",
+    "backend": "Android Backend",
+    "_spec_line": 2652
+  },
+  {
+    "surface": "folder-icon",
+    "elements": "Folder with mini icons",
+    "backend": "FolderIcon",
+    "_spec_line": 2654
+  },
+  {
+    "surface": "widget-frame",
+    "elements": "Widget container",
+    "backend": "AppWidgetHostView",
+    "_spec_line": 2655
+  },
+  {
+    "surface": "liquid-glass-clear",
+    "elements": "Clear variant",
+    "backend": "RenderEffect` blur",
+    "_spec_line": 2656
+  },
+  {
+    "surface": "liquid-glass-tinted",
+    "elements": "Tinted variant",
+    "backend": "RenderEffect` blur + tint",
+    "_spec_line": 2657
+  },
+  {
+    "surface": "liquid-glass-ultraclear",
+    "elements": "Ultra clear",
+    "backend": "RenderEffect` blur",
+    "_spec_line": 2658
+  },
+  {
+    "surface": "button-filled",
+    "elements": "Prominent button",
+    "backend": "Compose `Button",
+    "_spec_line": 2659
+  },
+  {
+    "surface": "button-plain",
+    "elements": "Text button",
+    "backend": "Compose `TextButton",
+    "_spec_line": 2660
+  },
+  {
+    "surface": "button-gray",
+    "elements": "Gray button",
+    "backend": "Compose `OutlinedButton",
+    "_spec_line": 2661
+  },
+  {
+    "surface": "toggle",
+    "elements": "iOS switch",
+    "backend": "Compose `Switch",
+    "_spec_line": 2662
+  },
+  {
+    "surface": "slider",
+    "elements": "Continuous slider",
+    "backend": "Compose `Slider",
+    "_spec_line": 2663
+  },
+  {
+    "surface": "segmented-control",
+    "elements": "Multi-option selector",
+    "backend": "Compose `SegmentedButton",
+    "_spec_line": 2664
+  },
+  {
+    "surface": "stepper",
+    "elements": "+/\u2212 control",
+    "backend": "Compose `Stepper",
+    "_spec_line": 2665
+  },
+  {
+    "surface": "list-row",
+    "elements": "Icon, title, value",
+    "backend": "Compose `ListItem",
+    "_spec_line": 2666
+  },
+  {
+    "surface": "section-header",
+    "elements": "Grouped list header",
+    "backend": "Compose `Text",
+    "_spec_line": 2667
+  },
+  {
+    "surface": "disclosure-indicator",
+    "elements": "Chevron",
+    "backend": "Icon",
+    "_spec_line": 2668
+  },
+  {
+    "surface": "nav-bar",
+    "elements": "Navigation bar",
+    "backend": "TopAppBar",
+    "_spec_line": 2669
+  },
+  {
+    "surface": "tab-bar",
+    "elements": "Bottom tab bar",
+    "backend": "NavigationBar",
+    "_spec_line": 2670
+  },
+  {
+    "surface": "toolbar",
+    "elements": "Toolbar",
+    "backend": "TopAppBar",
+    "_spec_line": 2671
+  },
+  {
+    "surface": "search-bar",
+    "elements": "Search field",
+    "backend": "Compose `TextField",
+    "_spec_line": 2672
+  },
+  {
+    "surface": "alert",
+    "elements": "Alert dialog",
+    "backend": "AlertDialog",
+    "_spec_line": 2673
+  },
+  {
+    "surface": "action-sheet",
+    "elements": "Action sheet",
+    "backend": "ModalBottomSheet",
+    "_spec_line": 2674
+  },
+  {
+    "surface": "popover",
+    "elements": "Popover",
+    "backend": "PopupWindow",
+    "_spec_line": 2675
+  },
+  {
+    "surface": "keyboard-key",
+    "elements": "Keyboard key",
+    "backend": "Custom `View",
+    "_spec_line": 2676
+  },
+  {
+    "surface": "control-center-tile",
+    "elements": "CC tile",
+    "backend": "QSTileView",
+    "_spec_line": 2677
+  },
+  {
+    "surface": "notification-card",
+    "elements": "Notification",
+    "backend": "NotificationView",
+    "_spec_line": 2678
+  },
+  {
+    "surface": "media-player",
+    "elements": "Media player",
+    "backend": "MediaSession",
+    "_spec_line": 2679
+  },
+  {
+    "surface": "battery-icon",
+    "elements": "Battery indicator",
+    "backend": "Custom `Drawable",
+    "_spec_line": 2680
+  },
+  {
+    "surface": "signal-icon",
+    "elements": "Signal bars",
+    "backend": "Custom `Drawable",
+    "_spec_line": 2681
+  },
+  {
+    "surface": "wifi-icon",
+    "elements": "Wi-Fi status",
+    "backend": "Custom `Drawable",
+    "_spec_line": 2682
+  }
+]

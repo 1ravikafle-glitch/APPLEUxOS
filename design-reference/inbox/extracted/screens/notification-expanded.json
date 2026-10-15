@@ -1,0 +1,179 @@
+{
+  "_spec_section": "3.4 notification-expanded.json",
+  "_spec_line": 1051,
+  "screen": {
+    "screen": "notification-expanded",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 50,
+        "alpha": 0.9
+      },
+      {
+        "id": "card",
+        "type": "container",
+        "frame": {
+          "x": 0.05,
+          "y": 0.1,
+          "w": 0.9,
+          "h": 0.65
+        },
+        "cornerRadiusPt": 20,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "app-icon",
+            "type": "icon",
+            "frame": {
+              "x": 0.06,
+              "y": 0.04,
+              "w": 0.12,
+              "h": 0.12
+            },
+            "icon": "message.fill",
+            "color": "#34C759"
+          },
+          {
+            "id": "app-name",
+            "type": "text",
+            "text": "Messages",
+            "frame": {
+              "x": 0.22,
+              "y": 0.04,
+              "w": 0.5,
+              "h": 0.06
+            },
+            "font": "headline"
+          },
+          {
+            "id": "timestamp",
+            "type": "text",
+            "text": "now",
+            "frame": {
+              "x": 0.22,
+              "y": 0.1,
+              "w": 0.3,
+              "h": 0.05
+            },
+            "font": "caption1",
+            "color": "secondaryLabel"
+          },
+          {
+            "id": "sender",
+            "type": "text",
+            "text": "Alex Chen",
+            "frame": {
+              "x": 0.06,
+              "y": 0.2,
+              "w": 0.88,
+              "h": 0.06
+            },
+            "font": "body",
+            "weight": "600"
+          },
+          {
+            "id": "body",
+            "type": "text",
+            "text": "Hey, how are you? Are we still on for tomorrow?",
+            "frame": {
+              "x": 0.06,
+              "y": 0.28,
+              "w": 0.88,
+              "h": 0.15
+            },
+            "font": "body"
+          },
+          {
+            "id": "actions",
+            "type": "button-row",
+            "frame": {
+              "x": 0.06,
+              "y": 0.48,
+              "w": 0.88,
+              "h": 0.08
+            },
+            "buttons": [
+              {
+                "id": "action-reply",
+                "type": "button",
+                "label": "Reply",
+                "style": "gray",
+                "icon": "arrowshape.turn.up.left"
+              },
+              {
+                "id": "action-mark-read",
+                "type": "button",
+                "label": "Mark Read",
+                "style": "gray",
+                "icon": "envelope.open"
+              },
+              {
+                "id": "action-dismiss",
+                "type": "button",
+                "label": "Dismiss",
+                "style": "gray",
+                "icon": "xmark"
+              }
+            ]
+          },
+          {
+            "id": "notification-options",
+            "type": "list",
+            "frame": {
+              "x": 0.06,
+              "y": 0.58,
+              "w": 0.88,
+              "h": 0.35
+            },
+            "rows": [
+              {
+                "id": "opt-options",
+                "title": "Notification Options",
+                "icon": "ellipsis.circle",
+                "iconColor": "#8E8E93"
+              },
+              {
+                "id": "opt-settings",
+                "title": "Settings",
+                "icon": "gear",
+                "iconColor": "#8E8E93"
+              },
+              {
+                "id": "opt-clear",
+                "title": "Clear",
+                "icon": "trash",
+                "iconColor": "#FF3B30",
+                "destructive": true
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "card",
+        "action": "open-app"
+      },
+      {
+        "from": "action-reply",
+        "action": "reply-inline"
+      },
+      {
+        "from": "action-dismiss",
+        "action": "dismiss"
+      },
+      {
+        "from": "blur",
+        "action": "dismiss"
+      }
+    ]
+  }
+}

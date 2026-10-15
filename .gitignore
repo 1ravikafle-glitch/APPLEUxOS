@@ -1,0 +1,28 @@
+# The AOSP tree is its own repo-managed checkout. Never track it here.
+android-16/
+cuttlefish/
+downloads/
+backups/
+builds/
+logs/
+tools/
+workbench/
+
+# device-support/ IS tracked: appleux/design-system/.../com/appleux/device is a
+# relative symlink into it, so the Kotlin compiles in both the kotlinc and the
+# Soong path. Ignoring it would leave the symlink dangling on a fresh clone.
+
+# Third-party reference material — not ours, not tracked
+design-reference/ios27/ios27-ds/
+design-reference/ios27/figma-kit/
+design-reference/ios27/ref-*/
+design-reference/ios27/official-apple/iOS-27-Icon-Templates*/
+design-reference/ios27/official-guide/images/
+
+# Build outputs
+out/
+osbuild/out/*.img
+*.apk
+*.idsig
+__pycache__/
+*.pyc

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Both are colon-separated STRING lists (checked against core/res/res/values/config.xml, android-16.0.0_r3). -->
+    <string name="config_defaultListenerAccessPackages" translatable="false">org.ioslike.ui</string>
+    <string name="config_defaultDndAccessPackages" translatable="false">com.android.camera2:org.ioslike.ui</string>
+</resources>

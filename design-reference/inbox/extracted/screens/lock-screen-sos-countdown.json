@@ -1,0 +1,88 @@
+{
+  "_spec_section": "1.6 lock-screen-sos-countdown.json",
+  "_spec_line": 251,
+  "screen": {
+    "screen": "lock-screen-sos-countdown",
+    "elements": [
+      {
+        "id": "overlay",
+        "type": "container",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "background": "rgba(0,0,0,0.7)"
+      },
+      {
+        "id": "sos-title",
+        "type": "text",
+        "text": "Emergency SOS",
+        "frame": {
+          "x": 0.1,
+          "y": 0.2,
+          "w": 0.8,
+          "h": 0.06
+        },
+        "font": "title1",
+        "size": 28,
+        "weight": "bold",
+        "textAlign": "center",
+        "color": "#FF3B30"
+      },
+      {
+        "id": "countdown",
+        "type": "text",
+        "text": "3",
+        "frame": {
+          "x": 0.3,
+          "y": 0.35,
+          "w": 0.4,
+          "h": 0.15
+        },
+        "font": "largeTitle",
+        "size": 80,
+        "weight": "bold",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "message",
+        "type": "text",
+        "text": "Calling emergency services...",
+        "frame": {
+          "x": 0.1,
+          "y": 0.55,
+          "w": 0.8,
+          "h": 0.04
+        },
+        "font": "body",
+        "textAlign": "center",
+        "color": "#FFFFFF",
+        "opacity": 0.8
+      },
+      {
+        "id": "cancel-button",
+        "type": "button",
+        "frame": {
+          "x": 0.3,
+          "y": 0.75,
+          "w": 0.4,
+          "h": 0.06
+        },
+        "label": "Stop",
+        "style": "prominent",
+        "background": "#FFFFFF",
+        "textColor": "#000000"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "cancel-button",
+        "action": "cancel-sos"
+      }
+    ],
+    "notes": "Countdown from 3. Plays loud siren sound. Cancellable by tapping Stop or releasing side button. After countdown, calls emergency services and sends location to emergency contacts."
+  }
+}

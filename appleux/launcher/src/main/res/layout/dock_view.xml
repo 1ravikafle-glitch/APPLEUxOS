@@ -4,10 +4,20 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|center_horizontal"
-    android:layout_marginBottom="24dp">
+    android:layout_marginBottom="24dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
     <!-- Glass bar behind the icons. Blur applies ONLY here so the icons stay
-         sharp — RenderEffect on the container would blur the icons too. -->
+         sharp — RenderEffect on the container would blur the icons too.
+
+         The corner SHAPE comes from AppleuxSuperellipse (continuous
+         curvature, n=4.4, the exponent measured from Apple's own App Icon
+         Template) via the outlineProvider set in LauncherActivity; the
+         GradientDrawable applied here supplies only the fill and a 1dp rim,
+         because a GradientDrawable cannot express a superellipse.
+         The vertical padding is LauncherTokens.DOCK_BAR_PADDING_V_DP, so the
+         bar is icon + 28dp and the clear height derived in that file holds. -->
     <View
         android:id="@+id/dockGlassBg"
         android:layout_width="match_parent"
@@ -17,5 +27,10 @@
         android:id="@+id/dockRecyclerView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" />
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingLeft="14dp"
+        android:paddingTop="14dp"
+        android:paddingRight="14dp"
+        android:paddingBottom="14dp" />
 </FrameLayout>

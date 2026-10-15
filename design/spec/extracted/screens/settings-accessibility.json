@@ -1,0 +1,162 @@
+{
+  "_spec_section": "8.1 settings-accessibility.json",
+  "_spec_line": 1716,
+  "screen": {
+    "screen": "settings-accessibility",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Accessibility",
+        "backButton": "Settings"
+      },
+      {
+        "id": "list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.91
+        },
+        "sections": [
+          {
+            "id": "vision",
+            "header": "Vision",
+            "rows": [
+              {
+                "id": "voiceover",
+                "title": "VoiceOver",
+                "icon": "speaker.wave.3.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-voiceover"
+              },
+              {
+                "id": "zoom",
+                "title": "Zoom",
+                "icon": "magnifyingglass",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-zoom"
+              },
+              {
+                "id": "display-text",
+                "title": "Display & Text Size",
+                "icon": "textformat.size",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-display-text"
+              },
+              {
+                "id": "motion",
+                "title": "Motion",
+                "icon": "figure.walk.motion",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-motion"
+              },
+              {
+                "id": "spoken-content",
+                "title": "Spoken Content",
+                "icon": "speaker.wave.2.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-spoken-content"
+              }
+            ]
+          },
+          {
+            "id": "hearing",
+            "header": "Hearing",
+            "rows": [
+              {
+                "id": "hearing-devices",
+                "title": "Hearing Devices",
+                "icon": "ear.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-hearing"
+              },
+              {
+                "id": "audio-visual",
+                "title": "Audio & Visual",
+                "icon": "waveform",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-audio-visual"
+              },
+              {
+                "id": "subtitles",
+                "title": "Subtitles & Captioning",
+                "icon": "captions.bubble.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-subtitles"
+              }
+            ]
+          },
+          {
+            "id": "physical",
+            "header": "Physical & Motor",
+            "rows": [
+              {
+                "id": "touch",
+                "title": "Touch",
+                "icon": "hand.tap.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-touch"
+              },
+              {
+                "id": "face-id-attention",
+                "title": "Face ID & Attention",
+                "icon": "faceid",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-face-id"
+              },
+              {
+                "id": "switch-control",
+                "title": "Switch Control",
+                "icon": "switch.2",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-switch-control"
+              },
+              {
+                "id": "voice-control",
+                "title": "Voice Control",
+                "icon": "mic.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-voice-control"
+              }
+            ]
+          },
+          {
+            "id": "general",
+            "header": "General",
+            "rows": [
+              {
+                "id": "guided-access",
+                "title": "Guided Access",
+                "icon": "lock.rectangle",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-guided-access"
+              },
+              {
+                "id": "assistive-touch",
+                "title": "AssistiveTouch",
+                "icon": "hand.point.up.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-assistive-touch"
+              },
+              {
+                "id": "accessibility-shortcut",
+                "title": "Accessibility Shortcut",
+                "icon": "command",
+                "iconColor": "#8E8E93",
+                "destination": "settings-accessibility-shortcut"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

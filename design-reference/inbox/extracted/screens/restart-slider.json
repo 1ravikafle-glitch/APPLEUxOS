@@ -1,0 +1,73 @@
+{
+  "_spec_section": "4.4 restart-slider.json",
+  "_spec_line": 1206,
+  "screen": {
+    "screen": "restart-slider",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 40
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "text": "Slide to restart",
+        "frame": {
+          "x": 0.1,
+          "y": 0.15,
+          "w": 0.8,
+          "h": 0.05
+        },
+        "font": "headline",
+        "size": 17,
+        "weight": "600",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "slider",
+        "type": "slider",
+        "frame": {
+          "x": 0.1,
+          "y": 0.25,
+          "w": 0.8,
+          "h": 0.08
+        },
+        "label": "slide to restart",
+        "trackColor": "#007AFF",
+        "thumbColor": "#FFFFFF",
+        "icon": "arrow.clockwise"
+      },
+      {
+        "id": "cancel",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.75,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Cancel",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "slider",
+        "action": "restart"
+      },
+      {
+        "from": "cancel",
+        "action": "dismiss"
+      }
+    ]
+  }
+}

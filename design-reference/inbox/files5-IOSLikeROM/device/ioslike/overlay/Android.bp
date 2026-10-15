@@ -1,0 +1,8 @@
+runtime_resource_overlay {
+    name: "IOSLikeOverlay",
+    resource_dirs: ["res"],
+    manifest: "AndroidManifest.xml",
+    certificate: "platform",
+    sdk_version: "current",
+    system_ext_specific: true,
+}

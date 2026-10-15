@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.appleux.design.components.AppleuxDisplayInsets
 import com.appleux.design.tokens.SpacingTokens
 import com.appleux.launcher.LauncherTokens
 import com.appleux.performance.quality.AppleuxQualityLevel
@@ -16,24 +17,44 @@ class HomescreenGrid @JvmOverloads constructor(
 ) : RecyclerView(context, attrs, defStyle) {
 
     private val homescreenAdapter = HomescreenAdapter()
+    private val gridLayoutManager = GridLayoutManager(context, LauncherTokens.GRID_COLUMNS)
 
     init {
-        val glm = GridLayoutManager(context, COLUMN_COUNT)
-        glm.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+        gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int =
                 homescreenAdapter.getSpanSize(position)
         }
-        layoutManager = glm
+        layoutManager = gridLayoutManager
         setHasFixedSize(true)
         setItemViewCacheSize(ITEM_CACHE_SIZE)
         setAdapter(homescreenAdapter)
         // Transparent: the iOS-style wallpaper behind the grid must show through.
         setBackgroundColor(android.graphics.Color.TRANSPARENT)
-        // The last row must stop above the floating dock instead of sliding
-        // underneath its glass bar (iOS keeps clear space above the dock).
         val density = context.resources.displayMetrics.density
-        setPadding(0, 0, 0, (LauncherTokens.HOMESCREEN_DOCK_CLEARANCE_DP * density).toInt())
+        setPadding(
+            (LauncherTokens.GRID_SIDE_MARGIN_DP * density).toInt(),
+            0,
+            (LauncherTokens.GRID_SIDE_MARGIN_DP * density).toInt(),
+            (LauncherTokens.HOMESCREEN_DOCK_CLEARANCE_DP * density).toInt()
+        )
         clipToPadding = false
+    }
+
+    /**
+     * Reserves the top-centre notch.
+     *
+     * The launcher root already pads by the window's system-bar insets, but
+     * that inset is a *window* property and the grid is what actually holds
+     * the first row of icons. Reading the cutout through the shared display
+     * profile means the top row is clear of the waterdrop on the POCO M5 even
+     * if the window ever stops laying out behind the cutout, and it makes the
+     * gap an explicit design value instead of an accident of the window flags.
+     */
+    fun applyNotchInset() {
+        val top = AppleuxDisplayInsets.topContentPaddingPx(context)
+        if (paddingTop == top) return
+        setPadding(paddingLeft, top, paddingRight, paddingBottom)
+        requestLayout()
     }
 
     fun submitApps(apps: List<AppIconItem>) {
@@ -96,14 +117,15 @@ class HomescreenGrid @JvmOverloads constructor(
     }
 
     companion object {
-        private const val COLUMN_COUNT = 4
         private const val ITEM_CACHE_SIZE = 16
     }
 }
 
 /**
  * A pinned widget cell: the host view plus its grid span (S = 2 columns,
- * M = 4 columns, matching iOS small/medium proportions on a 4-column grid).
+ * M = 3 columns on the 5-column home grid). iOS proportions carry over: a
+ * small widget is 2x2 cells and a medium one is 3x2, so both share the same
+ * row height and differ only in width.
  */
 data class WidgetCell(
     val appWidgetId: Int,

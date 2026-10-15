@@ -15,8 +15,10 @@
         android:layout_height="wrap_content"
         android:format12Hour="d"
         android:format24Hour="d"
+        android:letterSpacing="-0.02"
         android:textColor="#FFFF3B30"
-        android:textSize="52sp" />
+        android:textSize="52sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -24,6 +26,11 @@
         android:layout_marginStart="16dp"
         android:orientation="vertical">
 
+        <!-- Bold primary line: PROTOTYPE-DERIVED (IOSLikeROM Glass.bodyBold is
+             FontWeight.SemiBold; Android's closest stock face is bold). The
+             -0.02 em tracking on the day numeral comes from the same source
+             as the clock widget: IOSLikeROM lockscreen/LockScreen.kt uses
+             letterSpacing = -2sp on its 96sp numerals. -->
         <TextClock
             android:id="@+id/widget_calendar_weekday"
             android:layout_width="wrap_content"
@@ -31,7 +38,8 @@
             android:format12Hour="EEEE"
             android:format24Hour="EEEE"
             android:textColor="#FFFFFFFF"
-            android:textSize="17sp" />
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
         <TextClock
             android:id="@+id/widget_calendar_month"

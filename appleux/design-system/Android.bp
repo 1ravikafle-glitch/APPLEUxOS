@@ -22,6 +22,12 @@ android_library {
         "androidx.recyclerview_recyclerview",
         "androidx.core_core-ktx",
         "androidx.dynamicanimation_dynamicanimation",
+        // Runtime display profile + refresh-rate-derived frame budget.
+        // Lives outside the tree so device adapters are not build-mixed into
+        // the design system; sources are symlinked in at
+        // src/main/java/com/appleux/device so the Gradle-free kotlinc path
+        // picks them up too (both paths must compile the same code).
+        "appleux-device-support-rock",
     ],
     libs: ["android.framework"],
 }

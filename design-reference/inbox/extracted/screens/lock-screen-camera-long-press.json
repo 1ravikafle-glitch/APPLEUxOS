@@ -1,0 +1,78 @@
+{
+  "_spec_section": "1.12 lock-screen-camera-long-press.json",
+  "_spec_line": 422,
+  "screen": {
+    "screen": "lock-screen-camera-long-press",
+    "elements": [
+      {
+        "id": "overlay",
+        "type": "container",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "background": "rgba(0,0,0,0.6)"
+      },
+      {
+        "id": "camera-icon",
+        "type": "icon",
+        "frame": {
+          "x": 0.4,
+          "y": 0.4,
+          "w": 0.2,
+          "h": 0.1
+        },
+        "icon": "camera.fill",
+        "size": 48,
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "options",
+        "type": "menu",
+        "frame": {
+          "x": 0.2,
+          "y": 0.55,
+          "w": 0.6,
+          "h": 0.3
+        },
+        "items": [
+          {
+            "id": "opt-photo",
+            "label": "Photo",
+            "icon": "camera"
+          },
+          {
+            "id": "opt-video",
+            "label": "Video",
+            "icon": "video.fill"
+          },
+          {
+            "id": "opt-portrait",
+            "label": "Portrait",
+            "icon": "person.crop.square"
+          },
+          {
+            "id": "opt-scan-qr",
+            "label": "Scan QR Code",
+            "icon": "qrcode"
+          }
+        ]
+      },
+      {
+        "id": "cancel",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.88,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Cancel",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      }
+    ]
+  }
+}

@@ -1,0 +1,101 @@
+{
+  "_spec_section": "7.1 settings-appearance.json",
+  "_spec_line": 1612,
+  "screen": {
+    "screen": "settings-appearance",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Appearance",
+        "backButton": "Settings"
+      },
+      {
+        "id": "list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.91
+        },
+        "sections": [
+          {
+            "id": "appearance-mode",
+            "header": "Appearance",
+            "rows": [
+              {
+                "id": "mode-light",
+                "title": "Light",
+                "valueType": "radio",
+                "selected": true
+              },
+              {
+                "id": "mode-dark",
+                "title": "Dark",
+                "valueType": "radio",
+                "selected": false
+              }
+            ]
+          },
+          {
+            "id": "text",
+            "header": "Text",
+            "rows": [
+              {
+                "id": "text-size",
+                "title": "Text Size",
+                "icon": "textformat.size",
+                "iconColor": "#007AFF",
+                "valueType": "slider",
+                "value": 0.5,
+                "destination": "settings-appearance-text-size"
+              },
+              {
+                "id": "bold-text",
+                "title": "Bold Text",
+                "icon": "bold",
+                "iconColor": "#007AFF",
+                "valueType": "toggle",
+                "value": false
+              }
+            ]
+          },
+          {
+            "id": "display",
+            "header": "Display",
+            "rows": [
+              {
+                "id": "display-zoom",
+                "title": "Display Zoom",
+                "icon": "rectangle.expand.vertical",
+                "iconColor": "#007AFF",
+                "valueType": "detail",
+                "value": "Default",
+                "destination": "settings-appearance-display-zoom"
+              },
+              {
+                "id": "liquid-glass",
+                "title": "Liquid Glass",
+                "icon": "circle.dashed",
+                "iconColor": "#007AFF",
+                "valueType": "slider",
+                "value": 0.5,
+                "min": 0,
+                "max": 1,
+                "destination": "settings-appearance-liquid-glass"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "notes": "iOS 27 moved Text Size, Bold Text, Display Zoom, and Liquid Glass to this new Appearance menu."
+  }
+}

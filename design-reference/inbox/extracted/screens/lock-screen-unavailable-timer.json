@@ -1,0 +1,91 @@
+{
+  "_spec_section": "1.7 lock-screen-unavailable-timer.json",
+  "_spec_line": 277,
+  "screen": {
+    "screen": "lock-screen-unavailable-timer",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 40
+      },
+      {
+        "id": "icon",
+        "type": "icon",
+        "frame": {
+          "x": 0.4,
+          "y": 0.2,
+          "w": 0.2,
+          "h": 0.1
+        },
+        "icon": "lock.fill",
+        "size": 48,
+        "color": "#FF3B30"
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "text": "iPhone Unavailable",
+        "frame": {
+          "x": 0.1,
+          "y": 0.35,
+          "w": 0.8,
+          "h": 0.06
+        },
+        "font": "title2",
+        "size": 22,
+        "weight": "bold",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "message",
+        "type": "text",
+        "text": "Try again in 5 minutes",
+        "frame": {
+          "x": 0.1,
+          "y": 0.44,
+          "w": 0.8,
+          "h": 0.04
+        },
+        "font": "body",
+        "textAlign": "center",
+        "color": "#FFFFFF",
+        "opacity": 0.8
+      },
+      {
+        "id": "erase-button",
+        "type": "button",
+        "frame": {
+          "x": 0.2,
+          "y": 0.7,
+          "w": 0.6,
+          "h": 0.06
+        },
+        "label": "Erase iPhone",
+        "style": "plain",
+        "textColor": "#FF3B30"
+      },
+      {
+        "id": "cancel",
+        "type": "button",
+        "frame": {
+          "x": 0.3,
+          "y": 0.8,
+          "w": 0.4,
+          "h": 0.05
+        },
+        "label": "Cancel",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      }
+    ],
+    "notes": "After 6 failed passcode attempts. Timer counts down. Erase iPhone button appears after 10 failed attempts. Cancel returns to passcode entry."
+  }
+}

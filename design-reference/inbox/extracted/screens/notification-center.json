@@ -1,0 +1,260 @@
+{
+  "_spec_section": "3.1 notification-center.json",
+  "_spec_line": 899,
+  "screen": {
+    "screen": "notification-center",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 30
+      },
+      {
+        "id": "time",
+        "type": "text",
+        "text": "9:41",
+        "frame": {
+          "x": 0.08,
+          "y": 0.03,
+          "w": 0.3,
+          "h": 0.04
+        },
+        "font": "headline",
+        "size": 17,
+        "weight": "600",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "date",
+        "type": "text",
+        "text": "Monday, October 15",
+        "frame": {
+          "x": 0.08,
+          "y": 0.07,
+          "w": 0.5,
+          "h": 0.03
+        },
+        "font": "caption1",
+        "color": "#FFFFFF",
+        "opacity": 0.7
+      },
+      {
+        "id": "notification-list",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.14,
+          "w": 0.9,
+          "h": 0.75
+        },
+        "listStyle": "insetGrouped",
+        "rowHeight": 80,
+        "children": [
+          {
+            "id": "notif-1",
+            "type": "notification-card",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 1,
+              "h": 0.12
+            },
+            "cornerRadiusPt": 13,
+            "material": "liquidGlassRegular",
+            "children": [
+              {
+                "id": "n1-icon",
+                "type": "icon",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.15,
+                  "w": 0.1,
+                  "h": 0.7
+                },
+                "icon": "message.fill",
+                "color": "#34C759"
+              },
+              {
+                "id": "n1-title",
+                "type": "text",
+                "text": "Messages",
+                "frame": {
+                  "x": 0.17,
+                  "y": 0.1,
+                  "w": 0.6,
+                  "h": 0.3
+                },
+                "font": "headline"
+              },
+              {
+                "id": "n1-body",
+                "type": "text",
+                "text": "Alex Chen: Hey, how are you?",
+                "frame": {
+                  "x": 0.17,
+                  "y": 0.4,
+                  "w": 0.7,
+                  "h": 0.3
+                },
+                "font": "subhead"
+              }
+            ]
+          },
+          {
+            "id": "notif-2",
+            "type": "notification-card",
+            "frame": {
+              "x": 0,
+              "y": 0.15,
+              "w": 1,
+              "h": 0.12
+            },
+            "cornerRadiusPt": 13,
+            "material": "liquidGlassRegular",
+            "children": [
+              {
+                "id": "n2-icon",
+                "type": "icon",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.15,
+                  "w": 0.1,
+                  "h": 0.7
+                },
+                "icon": "envelope.fill",
+                "color": "#007AFF"
+              },
+              {
+                "id": "n2-title",
+                "type": "text",
+                "text": "Mail",
+                "frame": {
+                  "x": 0.17,
+                  "y": 0.1,
+                  "w": 0.6,
+                  "h": 0.3
+                },
+                "font": "headline"
+              },
+              {
+                "id": "n2-body",
+                "type": "text",
+                "text": "Weekly Report \u2014 3 new messages",
+                "frame": {
+                  "x": 0.17,
+                  "y": 0.4,
+                  "w": 0.7,
+                  "h": 0.3
+                },
+                "font": "subhead"
+              }
+            ]
+          },
+          {
+            "id": "notif-3",
+            "type": "notification-card",
+            "frame": {
+              "x": 0,
+              "y": 0.3,
+              "w": 1,
+              "h": 0.12
+            },
+            "cornerRadiusPt": 13,
+            "material": "liquidGlassRegular",
+            "children": [
+              {
+                "id": "n3-icon",
+                "type": "icon",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.15,
+                  "w": 0.1,
+                  "h": 0.7
+                },
+                "icon": "calendar",
+                "color": "#FF3B30"
+              },
+              {
+                "id": "n3-title",
+                "type": "text",
+                "text": "Calendar",
+                "frame": {
+                  "x": 0.17,
+                  "y": 0.1,
+                  "w": 0.6,
+                  "h": 0.3
+                },
+                "font": "headline"
+              },
+              {
+                "id": "n3-body",
+                "type": "text",
+                "text": "Design review in 15 minutes",
+                "frame": {
+                  "x": 0.17,
+                  "y": 0.4,
+                  "w": 0.7,
+                  "h": 0.3
+                },
+                "font": "subhead"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "clear-all",
+        "type": "button",
+        "frame": {
+          "x": 0.75,
+          "y": 0.92,
+          "w": 0.2,
+          "h": 0.04
+        },
+        "label": "Clear All",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      },
+      {
+        "id": "older-notifications",
+        "type": "button",
+        "frame": {
+          "x": 0.05,
+          "y": 0.92,
+          "w": 0.3,
+          "h": 0.04
+        },
+        "label": "Older Notifications",
+        "style": "plain",
+        "textColor": "#FFFFFF",
+        "opacity": 0.7
+      }
+    ],
+    "gestures": [
+      {
+        "from": "top-left",
+        "action": "swipe-down",
+        "opens": "notification-center"
+      },
+      {
+        "from": "notification-card",
+        "action": "tap",
+        "opens": "notification-expanded"
+      },
+      {
+        "from": "notification-card",
+        "action": "dismiss"
+      },
+      {
+        "from": "clear-all",
+        "action": "clear-all-notifications"
+      }
+    ]
+  }
+}

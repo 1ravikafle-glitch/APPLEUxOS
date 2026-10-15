@@ -1,0 +1,84 @@
+{
+  "_spec_section": "9.4 settings-emergency-sos.json",
+  "_spec_line": 1904,
+  "screen": {
+    "screen": "settings-emergency-sos",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Emergency SOS",
+        "backButton": "Settings"
+      },
+      {
+        "id": "list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.91
+        },
+        "sections": [
+          {
+            "id": "sos",
+            "rows": [
+              {
+                "id": "sos-auto-call",
+                "title": "Auto Call",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "sos-countdown",
+                "title": "Countdown Sound",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "sos-crash-detection",
+                "title": "Crash Detection",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "sos-call-side-button",
+                "title": "Call with Side Button",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "sos-call-5-presses",
+                "title": "Call with 5 Presses",
+                "valueType": "toggle",
+                "value": true
+              }
+            ]
+          },
+          {
+            "id": "contacts",
+            "rows": [
+              {
+                "id": "sos-contacts",
+                "title": "Emergency Contacts",
+                "value": "2 contacts",
+                "destination": "settings-emergency-sos-contacts"
+              },
+              {
+                "id": "sos-medical-id",
+                "title": "Medical ID",
+                "destination": "settings-emergency-sos-medical-id"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

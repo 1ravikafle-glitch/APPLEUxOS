@@ -1,0 +1,135 @@
+{
+  "_spec_section": "9.3 settings-face-id-passcode.json",
+  "_spec_line": 1864,
+  "screen": {
+    "screen": "settings-face-id-passcode",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Face ID & Passcode",
+        "backButton": "Settings"
+      },
+      {
+        "id": "list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.91
+        },
+        "sections": [
+          {
+            "id": "face-id",
+            "rows": [
+              {
+                "id": "face-id-setup",
+                "title": "Set Up Face ID",
+                "icon": "faceid",
+                "iconColor": "#34C759",
+                "destination": "settings-face-id-passcode-setup"
+              },
+              {
+                "id": "face-id-reset",
+                "title": "Reset Face ID",
+                "destructive": true
+              }
+            ]
+          },
+          {
+            "id": "passcode",
+            "rows": [
+              {
+                "id": "change-passcode",
+                "title": "Change Passcode",
+                "destination": "settings-face-id-passcode-change"
+              },
+              {
+                "id": "turn-off-passcode",
+                "title": "Turn Passcode Off",
+                "destructive": true
+              },
+              {
+                "id": "require-passcode",
+                "title": "Require Passcode",
+                "value": "Immediately"
+              }
+            ]
+          },
+          {
+            "id": "allow-access",
+            "rows": [
+              {
+                "id": "allow-today",
+                "title": "Today View",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "allow-notifications",
+                "title": "Notifications",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "allow-control-center",
+                "title": "Control Center",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "allow-reply",
+                "title": "Reply with Message",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "allow-home-control",
+                "title": "Home Control",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "allow-wallet",
+                "title": "Wallet",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "allow-return-missed",
+                "title": "Return Missed Calls",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "allow-usb",
+                "title": "USB Accessories",
+                "valueType": "toggle",
+                "value": false
+              }
+            ]
+          },
+          {
+            "id": "erase-data",
+            "rows": [
+              {
+                "id": "erase-data",
+                "title": "Erase Data",
+                "destructive": true,
+                "subtitle": "After 10 failed attempts"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "notes": "On POCO M5, Face ID maps to fingerprint. Replace faceid icon with fingerprint icon. Setup flow uses FingerprintManager.enroll()."
+  }
+}

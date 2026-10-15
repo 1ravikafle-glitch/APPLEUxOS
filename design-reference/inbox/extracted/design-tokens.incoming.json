@@ -1,0 +1,321 @@
+{
+  "color": {
+    "systemBackground": {
+      "light": "#FFFFFF",
+      "dark": "#000000",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemGroupedBackground": {
+      "light": "#F2F2F7",
+      "dark": "#000000",
+      "source": "hig",
+      "inferred": false
+    },
+    "secondarySystemGroupedBackground": {
+      "light": "#FFFFFF",
+      "dark": "#1C1C1E",
+      "source": "hig",
+      "inferred": false
+    },
+    "tertiarySystemGroupedBackground": {
+      "light": "#F2F2F7",
+      "dark": "#2C2C2E",
+      "source": "hig",
+      "inferred": false
+    },
+    "label": {
+      "light": "#000000",
+      "dark": "#FFFFFF",
+      "source": "hig",
+      "inferred": false
+    },
+    "secondaryLabel": {
+      "light": "#3C3C43",
+      "dark": "#EBEBF5",
+      "source": "hig",
+      "inferred": false,
+      "alpha": 0.6
+    },
+    "tertiaryLabel": {
+      "light": "#3C3C43",
+      "dark": "#EBEBF5",
+      "source": "hig",
+      "inferred": false,
+      "alpha": 0.3
+    },
+    "quaternaryLabel": {
+      "light": "#3C3C43",
+      "dark": "#EBEBF5",
+      "source": "hig",
+      "inferred": false,
+      "alpha": 0.18
+    },
+    "separator": {
+      "light": "#3C3C43",
+      "dark": "#545458",
+      "source": "hig",
+      "inferred": false,
+      "alpha": 0.36
+    },
+    "opaqueSeparator": {
+      "light": "#C6C6C8",
+      "dark": "#38383A",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemBlue": {
+      "light": "#007AFF",
+      "dark": "#0A84FF",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemGreen": {
+      "light": "#34C759",
+      "dark": "#30D158",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemRed": {
+      "light": "#FF3B30",
+      "dark": "#FF453A",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemOrange": {
+      "light": "#FF9500",
+      "dark": "#FF9F0A",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemYellow": {
+      "light": "#FFCC00",
+      "dark": "#FFD60A",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemPink": {
+      "light": "#FF2D55",
+      "dark": "#FF375F",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemPurple": {
+      "light": "#AF52DE",
+      "dark": "#BF5AF2",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemTeal": {
+      "light": "#5AC8FA",
+      "dark": "#64D2FF",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemIndigo": {
+      "light": "#5856D6",
+      "dark": "#5E5CE6",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemMint": {
+      "light": "#00C7BE",
+      "dark": "#63E6E2",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemBrown": {
+      "light": "#A2845E",
+      "dark": "#AC8E68",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemGray": {
+      "light": "#8E8E93",
+      "dark": "#8E8E93",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemGray2": {
+      "light": "#AEAEB2",
+      "dark": "#636366",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemGray3": {
+      "light": "#C7C7CC",
+      "dark": "#48484A",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemGray4": {
+      "light": "#D1D1D6",
+      "dark": "#3A3A3C",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemGray5": {
+      "light": "#E5E5EA",
+      "dark": "#2C2C2E",
+      "source": "hig",
+      "inferred": false
+    },
+    "systemGray6": {
+      "light": "#F2F2F7",
+      "dark": "#1C1C1E",
+      "source": "hig",
+      "inferred": false
+    },
+    "liquidGlassFillLight": {
+      "light": "#FFFFFF",
+      "dark": "#1C1C1E",
+      "source": "kit",
+      "inferred": true,
+      "alpha": 0.14
+    },
+    "liquidGlassRimLight": {
+      "light": "#FFFFFF",
+      "dark": "#FFFFFF",
+      "source": "kit",
+      "inferred": true,
+      "alpha": 0.28
+    },
+    "liquidGlassShadow": {
+      "light": "#000000",
+      "dark": "#000000",
+      "source": "kit",
+      "inferred": true,
+      "alpha": 0.35
+    }
+  },
+  "typography": {
+    "largeTitle": {
+      "size": 34,
+      "weight": 700,
+      "lineHeight": 41,
+      "tracking": 0.374
+    },
+    "title1": {
+      "size": 28,
+      "weight": 700,
+      "lineHeight": 34,
+      "tracking": 0.364
+    },
+    "title2": {
+      "size": 22,
+      "weight": 700,
+      "lineHeight": 28,
+      "tracking": 0.352
+    },
+    "title3": {
+      "size": 20,
+      "weight": 600,
+      "lineHeight": 25,
+      "tracking": 0.38
+    },
+    "headline": {
+      "size": 17,
+      "weight": 600,
+      "lineHeight": 22,
+      "tracking": -0.408
+    },
+    "body": {
+      "size": 17,
+      "weight": 400,
+      "lineHeight": 22,
+      "tracking": -0.408
+    },
+    "callout": {
+      "size": 16,
+      "weight": 400,
+      "lineHeight": 21,
+      "tracking": -0.32
+    },
+    "subhead": {
+      "size": 15,
+      "weight": 400,
+      "lineHeight": 20,
+      "tracking": -0.24
+    },
+    "footnote": {
+      "size": 13,
+      "weight": 400,
+      "lineHeight": 18,
+      "tracking": -0.078
+    },
+    "caption1": {
+      "size": 12,
+      "weight": 400,
+      "lineHeight": 16,
+      "tracking": 0
+    },
+    "caption2": {
+      "size": 11,
+      "weight": 400,
+      "lineHeight": 13,
+      "tracking": 0.066
+    }
+  },
+  "spacing": {
+    "inset": {
+      "xxs": 2,
+      "xs": 4,
+      "sm": 8,
+      "md": 12,
+      "lg": 16,
+      "xl": 20,
+      "xxl": 24,
+      "xxxl": 32
+    },
+    "groupedInset": 16,
+    "listRowHeight": 44,
+    "navBarHeight": 44,
+    "tabBarHeight": 49,
+    "homeIndicatorHeight": 34
+  },
+  "radius": {
+    "button": 12,
+    "card": 10,
+    "sheet": 10,
+    "control": 8,
+    "appIconPercent": 22.37,
+    "searchBar": 10,
+    "contextMenu": 13,
+    "alert": 14,
+    "widget": 22,
+    "liquidGlassRegular": 34
+  },
+  "material": {
+    "liquidGlassRegular": {
+      "cornerRadius": 34,
+      "fillAlpha": 0.14,
+      "rimAlpha": 0.28,
+      "rimWidth": 0.5,
+      "shadowBlur": 20,
+      "shadowOffsetY": 4,
+      "shadowAlpha": 0.35,
+      "blurRadius": 30
+    },
+    "transparencySlider": {
+      "min": 0,
+      "max": 1,
+      "default": 0.5
+    }
+  },
+  "animation": {
+    "standardDuration": 300,
+    "sheetPresentDuration": 400,
+    "controlCenterOpenDuration": 350,
+    "springDamping": 0.8,
+    "springStiffness": 200
+  },
+  "icon": {
+    "appIconGrid": 1024,
+    "appIconSuperellipseN": 4.4,
+    "appIconCornerRadius": 228.67,
+    "homeScreenIconSize": 60,
+    "homeScreenIconSpacing": 22,
+    "homeScreenGridColumns": 4,
+    "homeScreenGridRows": 6
+  }
+}

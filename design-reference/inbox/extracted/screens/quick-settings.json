@@ -1,0 +1,264 @@
+{
+  "_spec_section": "3.2 quick-settings.json",
+  "_spec_line": 950,
+  "screen": {
+    "screen": "quick-settings",
+    "elements": [
+      {
+        "id": "connectivity-cluster",
+        "type": "group",
+        "frame": {
+          "x": 0.021,
+          "y": 0.075,
+          "w": 0.31,
+          "h": 0.2
+        },
+        "cornerRadiusPt": 34,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "cc-airplane",
+            "type": "control",
+            "shape": "circle",
+            "centre": {
+              "x": 0.077,
+              "y": 0.118
+            },
+            "diameterPt": 32,
+            "label": "Airplane Mode",
+            "activeColour": "#FF9500",
+            "icon": "airplane",
+            "inactiveColour": "#FFFFFF33"
+          },
+          {
+            "id": "cc-cellular",
+            "type": "control",
+            "shape": "circle",
+            "centre": {
+              "x": 0.135,
+              "y": 0.118
+            },
+            "diameterPt": 32,
+            "label": "Cellular Data",
+            "activeColour": "#34C759",
+            "icon": "antenna.radiowaves.left.and.right",
+            "inactiveColour": "#FFFFFF33"
+          },
+          {
+            "id": "cc-wifi",
+            "type": "control",
+            "shape": "circle",
+            "centre": {
+              "x": 0.193,
+              "y": 0.118
+            },
+            "diameterPt": 32,
+            "label": "Wi-Fi",
+            "activeColour": "#007AFF",
+            "icon": "wifi",
+            "inactiveColour": "#FFFFFF33"
+          },
+          {
+            "id": "cc-bluetooth",
+            "type": "control",
+            "shape": "circle",
+            "centre": {
+              "x": 0.251,
+              "y": 0.118
+            },
+            "diameterPt": 32,
+            "label": "Bluetooth",
+            "activeColour": "#007AFF",
+            "icon": "bluetooth",
+            "inactiveColour": "#FFFFFF33"
+          }
+        ]
+      },
+      {
+        "id": "media-control",
+        "type": "group",
+        "frame": {
+          "x": 0.021,
+          "y": 0.3,
+          "w": 0.31,
+          "h": 0.2
+        },
+        "cornerRadiusPt": 34,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "media-title",
+            "type": "text",
+            "text": "Now Playing",
+            "frame": {
+              "x": 0.03,
+              "y": 0.32,
+              "w": 0.25,
+              "h": 0.03
+            },
+            "font": "caption1",
+            "color": "#FFFFFF"
+          },
+          {
+            "id": "media-controls",
+            "type": "button-row",
+            "frame": {
+              "x": 0.03,
+              "y": 0.36,
+              "w": 0.25,
+              "h": 0.08
+            },
+            "buttons": [
+              {
+                "id": "media-prev",
+                "type": "control",
+                "icon": "backward.fill",
+                "size": 20
+              },
+              {
+                "id": "media-play",
+                "type": "control",
+                "icon": "play.fill",
+                "size": 28
+              },
+              {
+                "id": "media-next",
+                "type": "control",
+                "icon": "forward.fill",
+                "size": 20
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "brightness",
+        "type": "slider",
+        "frame": {
+          "x": 0.021,
+          "y": 0.55,
+          "w": 0.31,
+          "h": 0.35
+        },
+        "orientation": "vertical",
+        "cornerRadiusPt": 34,
+        "material": "liquidGlassRegular",
+        "icon": "sun.max.fill",
+        "value": 0.7
+      },
+      {
+        "id": "volume",
+        "type": "slider",
+        "frame": {
+          "x": 0.66,
+          "y": 0.55,
+          "w": 0.31,
+          "h": 0.35
+        },
+        "orientation": "vertical",
+        "cornerRadiusPt": 34,
+        "material": "liquidGlassRegular",
+        "icon": "speaker.wave.2.fill",
+        "value": 0.5
+      },
+      {
+        "id": "toggles",
+        "type": "grid",
+        "frame": {
+          "x": 0.021,
+          "y": 0.55,
+          "w": 0.31,
+          "h": 0.35
+        },
+        "gridColumns": 2,
+        "gridRows": 2,
+        "children": [
+          {
+            "id": "toggle-flashlight",
+            "type": "control",
+            "shape": "circle",
+            "position": {
+              "col": 0,
+              "row": 0
+            },
+            "diameterPt": 32,
+            "icon": "flashlight.on.fill",
+            "activeColour": "#FFFFFF"
+          },
+          {
+            "id": "toggle-timer",
+            "type": "control",
+            "shape": "circle",
+            "position": {
+              "col": 1,
+              "row": 0
+            },
+            "diameterPt": 32,
+            "icon": "timer",
+            "activeColour": "#FF9500"
+          },
+          {
+            "id": "toggle-calculator",
+            "type": "control",
+            "shape": "circle",
+            "position": {
+              "col": 0,
+              "row": 1
+            },
+            "diameterPt": 32,
+            "icon": "calculator",
+            "activeColour": "#8E8E93"
+          },
+          {
+            "id": "toggle-camera",
+            "type": "control",
+            "shape": "circle",
+            "position": {
+              "col": 1,
+              "row": 1
+            },
+            "diameterPt": 32,
+            "icon": "camera.fill",
+            "activeColour": "#8E8E93"
+          }
+        ]
+      },
+      {
+        "id": "home-indicator",
+        "type": "indicator",
+        "frame": {
+          "x": 0.35,
+          "y": 0.97,
+          "w": 0.3,
+          "h": 0.005
+        },
+        "color": "#FFFFFF",
+        "opacity": 0.9
+      }
+    ],
+    "gestures": [
+      {
+        "from": "top-right",
+        "action": "swipe-down",
+        "opens": "quick-settings"
+      },
+      {
+        "from": "tile",
+        "action": "toggle-tile"
+      },
+      {
+        "from": "tile",
+        "action": "long-press",
+        "opens": "quick-settings-edit"
+      },
+      {
+        "from": "brightness-slider",
+        "action": "adjust-brightness"
+      },
+      {
+        "from": "volume-slider",
+        "action": "adjust-volume"
+      }
+    ]
+  }
+}

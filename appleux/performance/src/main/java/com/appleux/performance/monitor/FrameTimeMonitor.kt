@@ -1,5 +1,7 @@
 package com.appleux.performance.monitor
 
+import com.appleux.device.rock.FrameBudget
+
 /**
  * 30-frame rolling frame-time window, fed continuously by
  * `Choreographer.FrameCallback` from [com.appleux.performance.controller.AppleuxPerformanceController].
@@ -9,7 +11,16 @@ package com.appleux.performance.monitor
  * push, so a decision costs O(1) volatile reads instead of re-scanning 30 slots
  * behind a lock 60 times a second.
  *
- * Thresholds are the canonical ones (>14 warning, >16.67 jank, >20 severe).
+ * THRESHOLDS ARE DERIVED, NOT ASSUMED. The ratios below (good = 0.84 x the
+ * frame budget, severe = 1.20 x it) reproduce the previously-canonical
+ * absolute values *exactly* at 60 Hz — 14.00 / 16.67 / 20.00 ms — so nothing
+ * about 60 Hz behaviour changed. On the POCO M5's panel, which drives 60 Hz
+ * OR 90 Hz, [setRefreshRate] moves them to 9.33 / 11.11 / 13.33 ms at 90 Hz.
+ * Before this, a 13 ms frame on a 90 Hz panel was classified "good" while
+ * having already blown through an 11.11 ms deadline.
+ *
+ * [GOOD_FRAME_MS] and friends remain as the 60 Hz constants, because that is
+ * the only refresh rate a constant can honestly state.
  */
 class FrameTimeMonitor {
 
@@ -19,6 +30,15 @@ class FrameTimeMonitor {
 
     @Volatile
     private var frameCallback: FrameCallback? = null
+
+    /**
+     * Active threshold set. Volatile because the controller sets it from
+     * whichever thread starts the monitor while frames are pushed on the main
+     * thread. [FrameBudget] is immutable, so a reader sees either the old set
+     * or the new one, never a half-updated mixture.
+     */
+    @Volatile
+    private var budget: FrameBudget = FrameBudget.forRefreshRate(FrameBudget60_HZ)
 
     // ------------------------------------------------------ window storage --
 
@@ -50,41 +70,48 @@ class FrameTimeMonitor {
         val previous = lastFrameTimeNanos
         lastFrameTimeNanos = frameTimeNanos
 
+        // One volatile read per frame: all four thresholds come from the same
+        // immutable object, so they can never disagree with each other.
+        val b = budget
+        val goodMs = b.goodFrameMs
+        val jankMs = b.jankMs
+        val severeMs = b.severeMs
+
         val deltaTimeMs = if (previous > 0L) {
             (frameTimeNanos - previous) / 1_000_000f
         } else {
-            NOMINAL_FRAME_MS
+            b.budgetMs
         }
 
         val slot = frameIndex
         val overwritten = windowFilled
 
         // subtract the frame leaving the window before adding the new one.
-        // Severe frames are also jank frames (>20 implies >16.67), so these are
-        // independent tests, not a chain.
+        // Severe frames are also jank frames (severe > jank by construction),
+        // so these are independent tests, not a chain.
         var outgoingWasMax = false
         if (overwritten) {
             val old = frameTimesMs[slot]
             winSumMs -= old
             outgoingWasMax = old >= winMaxMs
-            if (old > SEVERE_FRAME_MS) winSevere--
-            if (old > FRAME_DEADLINE_MS) winJank--
-            if (old > GOOD_FRAME_MS) winWarning--
+            if (old > severeMs) winSevere--
+            if (old > jankMs) winJank--
+            if (old > goodMs) winWarning--
         }
 
         frameTimesMs[slot] = deltaTimeMs
         winSumMs += deltaTimeMs
         when {
-            deltaTimeMs > SEVERE_FRAME_MS -> {
+            deltaTimeMs > severeMs -> {
                 winSevere++
                 winJank++
                 winWarning++
             }
-            deltaTimeMs > FRAME_DEADLINE_MS -> {
+            deltaTimeMs > jankMs -> {
                 winJank++
                 winWarning++
             }
-            deltaTimeMs > GOOD_FRAME_MS -> winWarning++
+            deltaTimeMs > goodMs -> winWarning++
         }
 
         if (outgoingWasMax) {
@@ -99,14 +126,14 @@ class FrameTimeMonitor {
 
         totalEligibleFrames++
 
-        // strict >, matching the canonical thresholds
-        if (deltaTimeMs > FRAME_DEADLINE_MS) {
+        // strict >, matching the derived thresholds
+        if (deltaTimeMs > jankMs) {
             totalJankedFrames++
             consecutiveJankCount++
         } else {
             consecutiveJankCount = 0
         }
-        if (deltaTimeMs > SEVERE_FRAME_MS) {
+        if (deltaTimeMs > severeMs) {
             totalSevereJankedFrames++
             consecutiveSevereJankCount++
         } else {
@@ -115,6 +142,32 @@ class FrameTimeMonitor {
 
         frameCallback?.doFrame(frameTimeNanos)
     }
+
+    /**
+     * Re-derives every threshold from the panel's actual refresh rate.
+     *
+     * Called by the controller whenever the monitor starts and whenever the
+     * display reports a mode change, because the POCO M5 panel switches between
+     * 60 Hz and 90 Hz at runtime and a monitor left at 60 Hz thresholds would
+     * accept every dropped frame on a 90 Hz surface.
+     */
+    fun setRefreshRate(hz: Float) {
+        val next = FrameBudget.forRefreshRate(hz)
+        if (next.refreshRateHz == budget.refreshRateHz) return
+        budget = next
+        // Totals accumulated under the old thresholds are not comparable with
+        // the new ones, so the window is dropped rather than silently mixing
+        // two different jank definitions.
+        reset()
+    }
+
+    /** The active threshold set, for readouts and for the controller policy. */
+    fun frameBudget(): FrameBudget = budget
+
+    val goodFrameMs: Float get() = budget.goodFrameMs
+    val frameDeadlineMs: Float get() = budget.jankMs
+    val severeFrameMs: Float get() = budget.severeMs
+    val nominalFrameMs: Float get() = budget.budgetMs
 
     fun setFrameCallback(callback: FrameCallback?) {
         frameCallback = callback
@@ -143,7 +196,7 @@ class FrameTimeMonitor {
     val averageFrameTimeMs: Float
         get() {
             val count = winCount
-            return if (count > 0) winSumMs / count else NOMINAL_FRAME_MS
+            return if (count > 0) winSumMs / count else budget.budgetMs
         }
 
     val maxFrameTimeMs: Float get() = winMaxMs
@@ -170,9 +223,10 @@ class FrameTimeMonitor {
     fun isFrameTimeStableForRecovery(): Boolean {
         val count = winCount
         if (count == 0) return false
+        val good = budget.goodFrameMs
         // every slot currently in the window must be a good frame
         for (i in 0 until count) {
-            if (frameTimesMs[i] > GOOD_FRAME_MS) return false
+            if (frameTimesMs[i] > good) return false
         }
         return true
     }
@@ -210,6 +264,20 @@ class FrameTimeMonitor {
         const val WINDOW_SIZE = 30
         const val MIN_VALID_SAMPLE = 300L
 
+        /**
+         * The refresh rate every constant below is quoted at. It is the
+         * DEFAULT, not an assumption: [setRefreshRate] re-derives the live
+         * thresholds from the panel.
+         */
+        const val FrameBudget60_HZ = 60f
+
+        /**
+         * 60 Hz instance of the derived thresholds: 0.84 / 1.00 / 1.20 x the
+         * 16.67 ms budget. These reproduce the numbers AGENTS.md §Key
+         * Thresholds documents, and only those numbers — a constant can only
+         * state one refresh rate. The LIVE values are [goodFrameMs],
+         * [frameDeadlineMs] and [severeFrameMs].
+         */
         const val GOOD_FRAME_MS = 14f
         const val WARNING_FRAME_TIME_MS = 16.67f
         const val FRAME_DEADLINE_MS = 16.67f

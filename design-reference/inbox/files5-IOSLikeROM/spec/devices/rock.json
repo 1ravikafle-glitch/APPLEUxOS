@@ -1,0 +1,34 @@
+{
+ "codename": "rock",
+ "model": "POCO M5 (Helio G99, Mali-G57 MC2)",
+ "panel": {
+  "px": [
+   1080,
+   2408
+  ],
+  "ppi": 401,
+  "refreshHz": [
+   30,
+   60,
+   90
+  ],
+  "type": "IPS LCD",
+  "cutout": "waterdrop (DotDrop), top centre",
+  "source": "po.co spec page (2408x1080, 30/60/90Hz) and GSMArena (~401 ppi); the 2408 px height independently confirmed by `wm size` on device"
+ },
+ "density": {
+  "dpi": 430,
+  "measured": true,
+  "note": "MEASURED on the physical POCO M5 running stock HyperOS, pasted by the operator 2026-10-15. `wm density` reports Physical density 440 AND Override density 430. 430 is the EFFECTIVE density the framework reports, so dp maths uses it. Re-run with --density 440 to model the panel with no HyperOS override, which gives frameDp [392.7, 875.6] instead of [401.9, 896.0]."
+ },
+ "insets": {
+  "top": 28.3,
+  "bottom": 47.3,
+  "measured": true,
+  "note": "MEASURED: statusBars frame [0,0][1080,76] = 76 px and navigationBars frame [0,2281][1080,2408] = 127 px, converted at the effective density 2.6875 to 28.3 / 47.3 dp. The cutout is 100 x 76 px, top-centre waterdrop, centre x = 540 which is exactly half of 1080. Kotlin still reads live window insets at runtime; these values are the fallback, not the source."
+ },
+ "frameDp": [
+  401.9,
+  896.0
+ ]
+}

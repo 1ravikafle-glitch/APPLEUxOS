@@ -1,0 +1,56 @@
+{
+  "_spec_section": "4.1 volume-hud.json",
+  "_spec_line": 1142,
+  "screen": {
+    "screen": "volume-hud",
+    "elements": [
+      {
+        "id": "container",
+        "type": "container",
+        "frame": {
+          "x": 0.35,
+          "y": 0.4,
+          "w": 0.3,
+          "h": 0.2
+        },
+        "cornerRadiusPt": 34,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "icon",
+            "type": "icon",
+            "frame": {
+              "x": 0.4,
+              "y": 0.45,
+              "w": 0.2,
+              "h": 0.05
+            },
+            "icon": "speaker.wave.2.fill",
+            "size": 24,
+            "color": "#FFFFFF"
+          },
+          {
+            "id": "level",
+            "type": "progress-bar",
+            "frame": {
+              "x": 0.4,
+              "y": 0.52,
+              "w": 0.2,
+              "h": 0.02
+            },
+            "value": 0.7,
+            "trackColor": "#FFFFFF33",
+            "fillColor": "#FFFFFF"
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "container",
+        "action": "adjust-volume"
+      }
+    ],
+    "notes": "Appears when volume buttons pressed. Auto-dismisses after 2 seconds. Shows speaker/mute icon depending on level."
+  }
+}

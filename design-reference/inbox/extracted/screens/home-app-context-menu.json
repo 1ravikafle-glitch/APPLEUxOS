@@ -1,0 +1,127 @@
+{
+  "_spec_section": "2.5 home-app-context-menu.json",
+  "_spec_line": 692,
+  "screen": {
+    "screen": "home-app-context-menu",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 50,
+        "alpha": 0.8
+      },
+      {
+        "id": "app-preview",
+        "type": "container",
+        "frame": {
+          "x": 0.2,
+          "y": 0.3,
+          "w": 0.6,
+          "h": 0.25
+        },
+        "cornerRadiusPt": 22,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "app-icon-large",
+            "type": "icon",
+            "frame": {
+              "x": 0.3,
+              "y": 0.1,
+              "w": 0.4,
+              "h": 0.5
+            },
+            "icon": "message.fill",
+            "size": 80,
+            "color": "#34C759"
+          },
+          {
+            "id": "app-name",
+            "type": "text",
+            "text": "Messages",
+            "frame": {
+              "x": 0.1,
+              "y": 0.7,
+              "w": 0.8,
+              "h": 0.15
+            },
+            "font": "headline",
+            "textAlign": "center",
+            "color": "#FFFFFF"
+          }
+        ]
+      },
+      {
+        "id": "menu-items",
+        "type": "list",
+        "frame": {
+          "x": 0.1,
+          "y": 0.58,
+          "w": 0.8,
+          "h": 0.35
+        },
+        "children": [
+          {
+            "id": "menu-new-message",
+            "type": "row",
+            "title": "New Message",
+            "icon": "square.and.pencil",
+            "iconColor": "#007AFF"
+          },
+          {
+            "id": "menu-search",
+            "type": "row",
+            "title": "Search",
+            "icon": "magnifyingglass",
+            "iconColor": "#8E8E93"
+          },
+          {
+            "id": "menu-remove",
+            "type": "row",
+            "title": "Remove App",
+            "icon": "trash",
+            "iconColor": "#FF3B30",
+            "destructive": true
+          },
+          {
+            "id": "menu-edit-home",
+            "type": "row",
+            "title": "Edit Home Screen",
+            "icon": "square.grid.2x2",
+            "iconColor": "#8E8E93"
+          },
+          {
+            "id": "menu-share",
+            "type": "row",
+            "title": "Share App",
+            "icon": "square.and.arrow.up",
+            "iconColor": "#007AFF"
+          },
+          {
+            "id": "menu-app-info",
+            "type": "row",
+            "title": "App Info",
+            "icon": "info.circle",
+            "iconColor": "#8E8E93"
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "menu-item",
+        "action": "execute-action"
+      },
+      {
+        "from": "blur",
+        "action": "dismiss"
+      }
+    ]
+  }
+}

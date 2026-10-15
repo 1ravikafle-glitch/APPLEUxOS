@@ -1,0 +1,422 @@
+[
+  {
+    "surface": "lock-screen-depth-effect",
+    "backend": "WallpaperManager.setWallpaperComponent()",
+    "verdict": "warn",
+    "note": "setWallpaperComponent() selects a live WallpaperService, which does not produce the iOS depth effect. It is the nearest available hook, not an equivalent."
+  },
+  {
+    "surface": "home-depth-effect-toggle",
+    "backend": "WallpaperManager.setWallpaperComponent()",
+    "verdict": "warn",
+    "note": "setWallpaperComponent() selects a live WallpaperService, which does not produce the iOS depth effect. It is the nearest available hook, not an equivalent."
+  },
+  {
+    "surface": "spotlight-suggestions",
+    "backend": "Google Assistant API",
+    "verdict": "no-equivalent",
+    "note": "Siri has no AOSP equivalent and no third-party API on AOSP. Any Siri surface is a stub or must be deleted, not mapped."
+  },
+  {
+    "surface": "spotlight-siri-suggestions",
+    "backend": "Gemini / Google Assistant",
+    "verdict": "no-equivalent",
+    "note": "Siri has no AOSP equivalent and no third-party API on AOSP. Any Siri surface is a stub or must be deleted, not mapped."
+  },
+  {
+    "surface": "spotlight-siri",
+    "backend": "Gemini API",
+    "verdict": "no-equivalent",
+    "note": "Siri has no AOSP equivalent and no third-party API on AOSP. Any Siri surface is a stub or must be deleted, not mapped."
+  },
+  {
+    "surface": "notification-clear-all",
+    "backend": "NotificationManager.cancelAll()",
+    "verdict": "signature",
+    "note": "NMS.cancelAllNotifications() calls checkCallerIsSystemOrSameApp(pkg) (frameworks/base/services/core/java/com/android/server/notification/NotificationManagerService.java). A Notification Center 'Clear All' must live in SystemUI or another system-signed component, not in a plain app."
+  },
+  {
+    "surface": "quick-settings-module-home",
+    "backend": "Matter`, `Thread",
+    "verdict": "no-equivalent",
+    "note": "Apple Home and Matter/Thread are different products. Matter cannot stand in for Home."
+  },
+  {
+    "surface": "emoji-keyboard",
+    "backend": "EmojiPicker",
+    "verdict": "warn",
+    "note": "EmojiPicker is an input-method surface owned by the IME, not a system overlay a ROM can summon."
+  },
+  {
+    "surface": "emoji-keyboard-search",
+    "backend": "EmojiPicker",
+    "verdict": "warn",
+    "note": "EmojiPicker is an input-method surface owned by the IME, not a system overlay a ROM can summon."
+  },
+  {
+    "surface": "emoji-keyboard-categories",
+    "backend": "EmojiPicker",
+    "verdict": "warn",
+    "note": "EmojiPicker is an input-method surface owned by the IME, not a system overlay a ROM can summon."
+  },
+  {
+    "surface": "emoji-keyboard-recents",
+    "backend": "EmojiPicker",
+    "verdict": "warn",
+    "note": "EmojiPicker is an input-method surface owned by the IME, not a system overlay a ROM can summon."
+  },
+  {
+    "surface": "settings-general-about",
+    "backend": "Build.MODEL`, `Build.DISPLAY`, `TelephonyManager.getImei()",
+    "verdict": "signature",
+    "note": "TelephonyManager.getImei() is @RequiresPermission(READ_PRIVILEGED_PHONE_STATE). AOSP Settings DOES declare it (packages/apps/Settings/AndroidManifest.xml:58), so this works only because we replace Settings in-tree as a platform-signed privapp. It is invalid for any ordinary app."
+  },
+  {
+    "surface": "settings-general-about-imei",
+    "backend": "TelephonyManager.getImei()",
+    "verdict": "signature",
+    "note": "TelephonyManager.getImei() is @RequiresPermission(READ_PRIVILEGED_PHONE_STATE). AOSP Settings DOES declare it (packages/apps/Settings/AndroidManifest.xml:58), so this works only because we replace Settings in-tree as a platform-signed privapp. It is invalid for any ordinary app."
+  },
+  {
+    "surface": "settings-wallpaper-depth-effect",
+    "backend": "WallpaperManager.setWallpaperComponent()",
+    "verdict": "warn",
+    "note": "setWallpaperComponent() selects a live WallpaperService, which does not produce the iOS depth effect. It is the nearest available hook, not an equivalent."
+  },
+  {
+    "surface": "settings-action-button",
+    "backend": "ButtonSettings` (LineageOS)",
+    "verdict": "warn",
+    "note": "'Action Button' is a LineageOS feature. POCO M5 has no such hardware button; the row has nothing to bind to."
+  },
+  {
+    "surface": "settings-action-button-function",
+    "backend": "ButtonSettings",
+    "verdict": "warn",
+    "note": "'Action Button' is a LineageOS feature. POCO M5 has no such hardware button; the row has nothing to bind to."
+  },
+  {
+    "surface": "settings-action-button-shortcut",
+    "backend": "ButtonSettings",
+    "verdict": "warn",
+    "note": "'Action Button' is a LineageOS feature. POCO M5 has no such hardware button; the row has nothing to bind to."
+  },
+  {
+    "surface": "settings-face-id-passcode-erase-data",
+    "backend": "DevicePolicyManager.wipeData()",
+    "verdict": "blocked",
+    "note": "DevicePolicyManager.wipeData() is only callable by a device owner / profile owner / DO-NOT-KILL app. A Settings row cannot offer 'Erase iPhone' or 'Erase All Content' without a DPC or a real factory-reset flow."
+  },
+  {
+    "surface": "settings-siri-search",
+    "backend": "Google Assistant / Gemini",
+    "verdict": "no-equivalent",
+    "note": "Siri has no AOSP equivalent and no third-party API on AOSP. Any Siri surface is a stub or must be deleted, not mapped."
+  },
+  {
+    "surface": "settings-siri-search-suggestions",
+    "backend": "Google Assistant",
+    "verdict": "no-equivalent",
+    "note": "Siri has no AOSP equivalent and no third-party API on AOSP. Any Siri surface is a stub or must be deleted, not mapped."
+  },
+  {
+    "surface": "settings-siri-search-search-results",
+    "backend": "Google Assistant",
+    "verdict": "no-equivalent",
+    "note": "Siri has no AOSP equivalent and no third-party API on AOSP. Any Siri surface is a stub or must be deleted, not mapped."
+  },
+  {
+    "surface": "settings-action-button",
+    "backend": "ButtonSettings",
+    "verdict": "warn",
+    "note": "'Action Button' is a LineageOS feature. POCO M5 has no such hardware button; the row has nothing to bind to."
+  },
+  {
+    "surface": "settings-action-button-function",
+    "backend": "ButtonSettings",
+    "verdict": "warn",
+    "note": "'Action Button' is a LineageOS feature. POCO M5 has no such hardware button; the row has nothing to bind to."
+  },
+  {
+    "surface": "settings-action-button-shortcut",
+    "backend": "ButtonSettings",
+    "verdict": "warn",
+    "note": "'Action Button' is a LineageOS feature. POCO M5 has no such hardware button; the row has nothing to bind to."
+  },
+  {
+    "surface": "settings-erase-all-content",
+    "backend": "DevicePolicyManager.wipeData()",
+    "verdict": "blocked",
+    "note": "DevicePolicyManager.wipeData() is only callable by a device owner / profile owner / DO-NOT-KILL app. A Settings row cannot offer 'Erase iPhone' or 'Erase All Content' without a DPC or a real factory-reset flow."
+  },
+  {
+    "surface": "messages-emoji",
+    "backend": "EmojiPicker",
+    "verdict": "warn",
+    "note": "EmojiPicker is an input-method surface owned by the IME, not a system overlay a ROM can summon."
+  },
+  {
+    "surface": "mail-mailbox-list",
+    "backend": "Email` app, `JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-inbox",
+    "backend": "JavaMail`, `Imap",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-thread",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-compose",
+    "backend": "JavaMail`, `Smtp",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-reply",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-attachment",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-search",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-filter",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-swipe-actions",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-flag",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-move",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "mail-mailbox-settings",
+    "backend": "JavaMail",
+    "verdict": "warn",
+    "note": "Neither JavaMail nor IMAP/SMTP ships in AOSP. These backends do not exist in the tree and would be a from-scratch mail stack, not a mapping."
+  },
+  {
+    "surface": "weather-current",
+    "backend": "OpenWeatherMap` API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "weather-hourly",
+    "backend": "OpenWeatherMap` API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "weather-daily",
+    "backend": "OpenWeatherMap` API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "weather-detail",
+    "backend": "OpenWeatherMap` API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "maps-search",
+    "backend": "Places API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "maps-directions",
+    "backend": "Directions API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "maps-route",
+    "backend": "Directions API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "maps-place",
+    "backend": "Places API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "maps-guides",
+    "backend": "Places API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "news-today",
+    "backend": "RSS / `NewsAPI",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "news-search",
+    "backend": "NewsAPI",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "news-magazine",
+    "backend": "NewsAPI",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "stocks-watchlist",
+    "backend": "Yahoo Finance API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "stocks-detail",
+    "backend": "Yahoo Finance API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "stocks-chart",
+    "backend": "Yahoo Finance API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "stocks-search",
+    "backend": "Yahoo Finance API",
+    "verdict": "warn",
+    "note": "Third-party network API requiring an API key and a network layer AOSP does not ship. Not a mapping; it is a dependency."
+  },
+  {
+    "surface": "home-overview",
+    "backend": "Matter`, `Thread",
+    "verdict": "no-equivalent",
+    "note": "Apple Home and Matter/Thread are different products. Matter cannot stand in for Home."
+  },
+  {
+    "surface": "home-room",
+    "backend": "Matter",
+    "verdict": "no-equivalent",
+    "note": "Apple Home and Matter/Thread are different products. Matter cannot stand in for Home."
+  },
+  {
+    "surface": "home-accessory",
+    "backend": "Matter",
+    "verdict": "no-equivalent",
+    "note": "Apple Home and Matter/Thread are different products. Matter cannot stand in for Home."
+  },
+  {
+    "surface": "home-automation",
+    "backend": "Matter",
+    "verdict": "no-equivalent",
+    "note": "Apple Home and Matter/Thread are different products. Matter cannot stand in for Home."
+  },
+  {
+    "surface": "home-scene",
+    "backend": "Matter",
+    "verdict": "no-equivalent",
+    "note": "Apple Home and Matter/Thread are different products. Matter cannot stand in for Home."
+  },
+  {
+    "surface": "home-add-accessory",
+    "backend": "Matter",
+    "verdict": "no-equivalent",
+    "note": "Apple Home and Matter/Thread are different products. Matter cannot stand in for Home."
+  },
+  {
+    "surface": "home-camera",
+    "backend": "Matter",
+    "verdict": "no-equivalent",
+    "note": "Apple Home and Matter/Thread are different products. Matter cannot stand in for Home."
+  },
+  {
+    "surface": "measure-main",
+    "backend": "ARCore",
+    "verdict": "warn",
+    "note": "ARCore is a Google Play Services library. It is absent from AOSP and from an unbundled POCO M5 build unless separately vendored."
+  },
+  {
+    "surface": "measure-level",
+    "backend": "ARCore",
+    "verdict": "warn",
+    "note": "ARCore is a Google Play Services library. It is absent from AOSP and from an unbundled POCO M5 build unless separately vendored."
+  },
+  {
+    "surface": "measure-area",
+    "backend": "ARCore",
+    "verdict": "warn",
+    "note": "ARCore is a Google Play Services library. It is absent from AOSP and from an unbundled POCO M5 build unless separately vendored."
+  },
+  {
+    "surface": "measure-height",
+    "backend": "ARCore",
+    "verdict": "warn",
+    "note": "ARCore is a Google Play Services library. It is absent from AOSP and from an unbundled POCO M5 build unless separately vendored."
+  },
+  {
+    "surface": "keyboard-emoji",
+    "backend": "EmojiPicker",
+    "verdict": "warn",
+    "note": "EmojiPicker is an input-method surface owned by the IME, not a system overlay a ROM can summon."
+  },
+  {
+    "surface": "keyboard-stickers",
+    "backend": "EmojiPicker",
+    "verdict": "warn",
+    "note": "EmojiPicker is an input-method surface owned by the IME, not a system overlay a ROM can summon."
+  },
+  {
+    "surface": "liquid-glass-clear",
+    "backend": "RenderEffect` blur",
+    "verdict": "warn",
+    "note": "RenderEffect blurs a window's OWN content. It never blurs what is behind the window. Real frost needs FLAG_BLUR_BEHIND + blurBehindRadius (API 31+)."
+  },
+  {
+    "surface": "liquid-glass-tinted",
+    "backend": "RenderEffect` blur + tint",
+    "verdict": "warn",
+    "note": "RenderEffect blurs a window's OWN content. It never blurs what is behind the window. Real frost needs FLAG_BLUR_BEHIND + blurBehindRadius (API 31+)."
+  },
+  {
+    "surface": "liquid-glass-ultraclear",
+    "backend": "RenderEffect` blur",
+    "verdict": "warn",
+    "note": "RenderEffect blurs a window's OWN content. It never blurs what is behind the window. Real frost needs FLAG_BLUR_BEHIND + blurBehindRadius (API 31+)."
+  }
+]

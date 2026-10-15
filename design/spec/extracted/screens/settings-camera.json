@@ -1,0 +1,89 @@
+{
+  "_spec_section": "10.1 settings-camera.json",
+  "_spec_line": 1998,
+  "screen": {
+    "screen": "settings-camera",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Camera",
+        "backButton": "Settings"
+      },
+      {
+        "id": "list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.91
+        },
+        "sections": [
+          {
+            "id": "formats",
+            "rows": [
+              {
+                "id": "camera-formats",
+                "title": "Formats",
+                "value": "High Efficiency",
+                "destination": "settings-camera-formats"
+              },
+              {
+                "id": "camera-record-video",
+                "title": "Record Video",
+                "value": "1080p at 30 fps",
+                "destination": "settings-camera-record-video"
+              },
+              {
+                "id": "camera-record-slo-mo",
+                "title": "Record Slo-mo",
+                "value": "1080p at 240 fps",
+                "destination": "settings-camera-record-slo-mo"
+              }
+            ]
+          },
+          {
+            "id": "preserve",
+            "rows": [
+              {
+                "id": "camera-preserve-settings",
+                "title": "Preserve Settings",
+                "destination": "settings-camera-preserve-settings"
+              }
+            ]
+          },
+          {
+            "id": "composition",
+            "rows": [
+              {
+                "id": "camera-grid",
+                "title": "Grid",
+                "valueType": "toggle",
+                "value": false
+              },
+              {
+                "id": "camera-level",
+                "title": "Level",
+                "valueType": "toggle",
+                "value": true
+              },
+              {
+                "id": "camera-lens-correction",
+                "title": "Lens Correction",
+                "valueType": "toggle",
+                "value": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

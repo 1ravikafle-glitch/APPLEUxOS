@@ -4,45 +4,161 @@ package com.appleux.launcher
  * Launcher-only metrics that have no design-system counterpart yet.
  *
  * Anything the shared tokens already define is reused directly and NOT repeated
- * here: [com.appleux.design.tokens.SizingTokens.DOCK_ICON_SIZE],
- * [com.appleux.design.tokens.SpacingTokens.INSETS_MD] and
- * [com.appleux.design.tokens.SpacingTokens.INSETS_LG] cover the dock icon, the
- * widget gutter and the dock icon spacing.
+ * here: [com.appleux.design.tokens.SpacingTokens.INSETS_MD] covers the widget
+ * gutter and [com.appleux.design.tokens.SpacingTokens.INSETS_LG] the dock icon
+ * spacing. Promote any of the values below into the shared token files once a
+ * second consumer appears.
  *
- * The values below are specific to the launcher surface — dock clearance,
- * widget cell height, the dock glass bar's own radius and alpha, and the
- * launcher's gesture thresholds — so they live in the launcher module rather
- * than in appleux/design-system/, which every other module also builds. Promote
- * any of them into the shared token files once a second consumer appears.
+ * ============================ THE 5 x 7 GRID =============================
+ *
+ * The grid is 5 columns x 7 rows. Every number below is DERIVED from the rock
+ * panel's real geometry, not copied from the prototype or from an iPhone:
+ *
+ *   panel            1080 x 2400 px @ 420 dpi
+ *   density          420 / 160 = 2.625
+ *   logical size     411.43 x 914.29 dp
+ *
+ * Horizontal — this is the binding axis:
+ *   usable width     411.43 - 2 x GRID_SIDE_MARGIN_DP(20)      = 371.43 dp
+ *   cell pitch       371.43 / 5                                = 74.29 dp
+ *   icon edge        0.76 x cell pitch                          = 56.5 dp -> 56
+ *
+ *   The 0.76 factor is the icon-to-cell ratio that leaves a visible gutter
+ *   between neighbouring icons at 5 columns. It is also the constraint that
+ *   forced the icon DOWN from the 60 dp a 4-column grid affords: at 5 columns
+ *   60 dp icons would sit 0.81 of the pitch apart and visually merge. This is
+ *   the real cost of a 5-wide grid and it is not hidden here.
+ *
+ *   Label check: the longest common label ("Calculator") sets at ~66 dp in
+ *   the 12sp label style, inside the 74.29 dp cell. That is why the label
+ *   stayed at 12sp rather than the 10sp it shipped with.
+ *
+ * Vertical — has slack, and is sized to consume it without crowding:
+ *   top inset (notch)     RockDisplayProfile, 190 px fallback = 72.4 dp
+ *   dock clearance        164 dp (see below)
+ *   band available        914.29 - 72.4 - 164                  = 677.9 dp
+ *   per row               677.9 / 7                             = 96.8 dp
+ *   row pitch used        96 dp  ->  7 x 96 = 672 dp, 5.9 dp slack
+ *
+ *   Row content is icon(56) + icon-to-label gap(4) + label(15) = 75 dp, so
+ *   each row carries ~21 dp of breathing space. That is the iOS rhythm: the
+ *   cell pitch is wider than the icon, and the icon+label group is centred in
+ *   it. Going denser would have meant shrinking the icon further, which the
+ *   horizontal axis already caps.
+ *
+ * Dock clearance, bottom-up:
+ *   gesture-navigation bar   48 dp  (SizingTokens-style fallback; the real
+ *                                  value comes from WindowInsets at runtime)
+ *   dock-to-grid gap         16 dp
+ *   dock bar                 84 dp  (icon 56 + 2 x 14 dp vertical padding)
+ *   ------------------------------------------------
+ *                              164 dp
+ *
+ * PROVENANCE: every figure here is **AppleUX-chosen**, derived from the
+ * public POCO M5 display geometry. Apple publishes no numeric spec for the
+ * launcher grid, and the 4-column/60dp icon we shipped before was ours too.
+ * Nothing in this file comes from Apple's documentation.
  */
 object LauncherTokens {
 
-    // ---- Layout (dp) -------------------------------------------------------
+    // ---- Grid -------------------------------------------------------------
+
+    /** Columns on the home screen. 5, not 4: the panel is 411 dp wide, not 375. */
+    const val GRID_COLUMNS: Int = 5
+
+    /** Rows that must fit above the dock. */
+    const val GRID_ROWS: Int = 7
+
+    /** Side margin, so the first column is not flush with the screen edge. */
+    const val GRID_SIDE_MARGIN_DP: Float = 20f
+
+    /** One cell's pitch: (411.43 - 2 x 20) / 5. */
+    const val GRID_CELL_PITCH_DP: Float = 74.29f
+
+    /** Home-screen app-icon edge. See the derivation above. */
+    const val HOME_ICON_SIZE_DP: Float = 56f
+
+    /** Gap between an icon and its label. */
+    const val ICON_LABEL_GAP_DP: Float = 4f
+
+    /** Row pitch: icon + gap + label + breathing space, 7 of which fit. */
+    const val GRID_ROW_PITCH_DP: Float = 96f
 
     /**
      * Bottom padding on the homescreen grid: the last row must stop above the
-     * floating dock instead of sliding underneath its glass bar.
+     * floating dock instead of sliding underneath its glass bar. Derived in the
+     * header; unchanged numerically from the old value, but now it is a result
+     * rather than a guess.
      */
     const val HOMESCREEN_DOCK_CLEARANCE_DP: Float = 164f
 
-    /** Height of one pinned widget cell (the "S" span on a 4-column grid). */
-    const val WIDGET_CELL_HEIGHT_DP: Float = 154f
+    /**
+     * Height of one pinned widget cell. Derived from the same cell pitch:
+     * a 3-column iOS medium widget is ~1.5:1, so
+     * 3 x 74.29 / 1.5 = 148.6 -> 148 dp. Small (2-span) and medium (3-span)
+     * widgets share the row height, exactly as they do on iOS, where a small
+     * widget is 2x2 cells and a medium one is 4x2 — same height, twice the
+     * width.
+     */
+    const val WIDGET_CELL_HEIGHT_DP: Float = 148f
+
+    /** Widget spans, expressed in the 5-column grid. Each row sums to 5. */
+    const val WIDGET_SPAN_MEDIUM: Int = 3
+    const val WIDGET_SPAN_SMALL: Int = 2
 
     /** iOS shows the App Library as a 3-column grid, never a single-column list. */
     const val APP_LIBRARY_COLUMNS: Int = 3
 
-    // ---- Liquid glass ------------------------------------------------------
+    // ---- Dock -------------------------------------------------------------
 
     /**
-     * Corner radius of the dock glass bar. Not a LiquidGlassTokens value: that
-     * file carries transcribed iOS 27 *material* radii, and the dock bar is an
-     * AppleUX-tuned launcher surface with no Figma counterpart.
+     * Dock icons use the SAME edge as home-screen icons. They used to be 60 dp
+     * against a 56 dp grid icon, which read as the dock being a different
+     * (larger) icon set; iOS uses one size everywhere.
      */
-    const val DOCK_CORNER_RADIUS_DP: Float = 28f
+    const val DOCK_ICON_SIZE_DP: Float = HOME_ICON_SIZE_DP
+
+    /** Vertical padding inside the dock glass bar. */
+    const val DOCK_BAR_PADDING_V_DP: Float = 14f
+
+    /** Number of dock slots. Fixed at 4, like iOS. */
+    const val DOCK_SLOTS: Int = 4
+
+    /**
+     * Corner radius of the dock glass bar.
+     *
+     * PROVENANCE: [com.appleux.design.tokens.LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP]
+     * (34 dp), transcribed from the iOS 27 Figma kit's Regular Liquid Glass
+     * material — NOT the 28 dp this used to carry and NOT the 38 dp the
+     * IOSLikeROM prototype drew. The dock is a Regular glass material, so it
+     * takes the Regular radius. The *corner shape* is then the continuous
+     * superellipse in
+     * [com.appleux.design.components.AppleuxSuperellipse], not a circular arc.
+     */
+    const val DOCK_CORNER_RADIUS_DP: Float =
+        com.appleux.design.tokens.LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP
 
     /** Dock bar fill alpha at glass level 0, and the extra alpha added at level 1. */
     const val DOCK_GLASS_ALPHA_BASE: Int = 64
     const val DOCK_GLASS_ALPHA_RANGE: Int = 64
+
+    // ---- Home-screen legibility ------------------------------------------
+
+    /**
+     * Dim applied over the wallpaper behind the home screen.
+     *
+     * PROVENANCE: **prototype-derived**, from IOSLikeROM
+     * `launcher/HomeScreen.kt` (`GlassScene(wallpaper, dim = 0.12f)`), which
+     * dims the backdrop 12% on the home page and 30% on the App Library page.
+     * Adopted because white 12sp app labels over an arbitrary user wallpaper
+     * are otherwise unreadable on a light image. Apple does not publish a
+     * value; iOS achieves the same legibility with a per-label shadow instead,
+     * which is applied as well (see AppIconView).
+     */
+    const val HOMESCREEN_WALLPAPER_DIM = 0.12f
+
+    /** Dim when the App Library is over the top, matching the prototype's 0.30. */
+    const val APP_LIBRARY_WALLPAPER_DIM = 0.30f
 
     // ---- Gesture thresholds ------------------------------------------------
     // MotionTokens holds the shared transition/velocity set; these are the
@@ -60,4 +176,24 @@ object LauncherTokens {
 
     /** A swipe that takes longer than this is treated as a scroll/hold. */
     const val SWIPE_MAX_DURATION_MS: Long = 800L
+
+    // ---- Press feedback ----------------------------------------------------
+
+    /**
+     * Scale an app cell shrinks to while held.
+     *
+     * PROVENANCE: **prototype-derived**, from IOSLikeROM `theme/LiquidGlass.kt`
+     * `Modifier.pressable` (0.94f, `spring(dampingRatio = 0.6f,
+     * stiffness = 500f)`, `HapticFeedbackType.TextHandleMove`). Apple's own
+     * value for a home-screen icon press is not published; the prototype's
+     * number is adopted because its spring is a plausible iOS "quick, slightly
+     * bouncy" curve, not because it is an Apple measurement.
+     */
+    const val PRESS_SCALE: Float = 0.94f
+
+    /** Spring damping ratio for the press scale. Prototype-derived, as above. */
+    const val PRESS_SPRING_DAMPING: Float = 0.6f
+
+    /** Spring stiffness for the press scale. Prototype-derived, as above. */
+    const val PRESS_SPRING_STIFFNESS: Float = 500f
 }

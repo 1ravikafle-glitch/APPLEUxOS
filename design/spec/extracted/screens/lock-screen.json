@@ -1,0 +1,282 @@
+{
+  "_spec_section": "1.1 lock-screen.json",
+  "_spec_line": 37,
+  "screen": {
+    "screen": "lock-screen",
+    "referenceScreenshot": "DESIGN-REFERENCE/ios27/official-guide/images/(lock-screen) [ASSUMED MATCH - UNVERIFIED]",
+    "screenSize": {
+      "w": 401.9,
+      "h": 896.0,
+      "unit": "dp",
+      "source": "MEASURED. 1080x2408 px at the EFFECTIVE density 430 dpi (HyperOS overrides the panel's 440), so 2.6875 -> 401.9 x 896.0 dp. Read live at runtime via device-support/rock/RockDisplayProfile.kt. At 440 with no override it would be 392.7 x 875.6 dp. Refresh 30/60/90 Hz."
+    },
+    "elements": [
+      {
+        "id": "wallpaper",
+        "type": "image",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "notes": "Full-bleed wallpaper with depth effect"
+      },
+      {
+        "id": "status-bar",
+        "type": "status-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.054
+        },
+        "children": [
+          {
+            "id": "status-time",
+            "type": "text",
+            "text": "9:41",
+            "frame": {
+              "x": 0.08,
+              "y": 0.008,
+              "w": 0.15,
+              "h": 0.03
+            },
+            "font": "headline",
+            "weight": "600"
+          },
+          {
+            "id": "status-signal",
+            "type": "icon",
+            "frame": {
+              "x": 0.82,
+              "y": 0.01,
+              "w": 0.04,
+              "h": 0.025
+            },
+            "icon": "cellularbars"
+          },
+          {
+            "id": "status-wifi",
+            "type": "icon",
+            "frame": {
+              "x": 0.86,
+              "y": 0.01,
+              "w": 0.04,
+              "h": 0.025
+            },
+            "icon": "wifi"
+          },
+          {
+            "id": "status-battery",
+            "type": "icon",
+            "frame": {
+              "x": 0.9,
+              "y": 0.01,
+              "w": 0.06,
+              "h": 0.025
+            },
+            "icon": "battery.100"
+          }
+        ]
+      },
+      {
+        "id": "dynamic-island",
+        "type": "dynamic-island",
+        "frame": {
+          "x": 0.35,
+          "y": 0.013,
+          "w": 0.3,
+          "h": 0.039
+        },
+        "cornerRadiusPt": 20,
+        "background": "#000000",
+        "notes": "Content adapts: music, timer, call, maps"
+      },
+      {
+        "id": "clock",
+        "type": "text",
+        "text": "9:41",
+        "frame": {
+          "x": 0.1,
+          "y": 0.08,
+          "w": 0.8,
+          "h": 0.15
+        },
+        "font": "largeTitle",
+        "size": 80,
+        "weight": "bold",
+        "textAlign": "center",
+        "color": "#FFFFFF",
+        "notes": "Clock font customizable in lock-screen-customize"
+      },
+      {
+        "id": "date",
+        "type": "text",
+        "text": "Monday, October 15",
+        "frame": {
+          "x": 0.1,
+          "y": 0.24,
+          "w": 0.8,
+          "h": 0.04
+        },
+        "font": "headline",
+        "size": 17,
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "lock-widgets",
+        "type": "widget-zone",
+        "frame": {
+          "x": 0.1,
+          "y": 0.3,
+          "w": 0.8,
+          "h": 0.18
+        },
+        "notes": "Lock screen widgets: circular, rectangular, inline"
+      },
+      {
+        "id": "notification-stack",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.52,
+          "w": 0.9,
+          "h": 0.36
+        },
+        "listStyle": "stacked",
+        "rowHeight": 80,
+        "maxVisible": 4,
+        "children": [
+          {
+            "id": "notif-1",
+            "type": "notification-card",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 1,
+              "h": 0.12
+            },
+            "cornerRadiusPt": 13,
+            "material": "liquidGlassRegular",
+            "children": [
+              {
+                "id": "notif-1-icon",
+                "type": "icon",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.15,
+                  "w": 0.1,
+                  "h": 0.7
+                },
+                "icon": "message.fill",
+                "color": "#34C759"
+              },
+              {
+                "id": "notif-1-title",
+                "type": "text",
+                "text": "Messages",
+                "frame": {
+                  "x": 0.17,
+                  "y": 0.1,
+                  "w": 0.6,
+                  "h": 0.3
+                },
+                "font": "headline"
+              },
+              {
+                "id": "notif-1-body",
+                "type": "text",
+                "text": "Hey, how are you?",
+                "frame": {
+                  "x": 0.17,
+                  "y": 0.4,
+                  "w": 0.7,
+                  "h": 0.3
+                },
+                "font": "subhead"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "flashlight",
+        "type": "control",
+        "shape": "circle",
+        "centre": {
+          "x": 0.15,
+          "y": 0.92
+        },
+        "diameterPt": 50,
+        "icon": "flashlight.on.fill",
+        "material": "liquidGlassRegular",
+        "activeColour": "#FFFFFF",
+        "gestures": [
+          {
+            "action": "long-press",
+            "opens": "flashlight-long-press"
+          }
+        ]
+      },
+      {
+        "id": "camera",
+        "type": "control",
+        "shape": "circle",
+        "centre": {
+          "x": 0.85,
+          "y": 0.92
+        },
+        "diameterPt": 50,
+        "icon": "camera.fill",
+        "material": "liquidGlassRegular",
+        "activeColour": "#FFFFFF",
+        "gestures": [
+          {
+            "action": "long-press",
+            "opens": "camera"
+          }
+        ]
+      },
+      {
+        "id": "home-indicator",
+        "type": "indicator",
+        "frame": {
+          "x": 0.35,
+          "y": 0.978,
+          "w": 0.3,
+          "h": 0.005
+        },
+        "cornerRadiusPt": 3,
+        "color": "#FFFFFF",
+        "opacity": 0.9
+      }
+    ],
+    "gestures": [
+      {
+        "from": "bottom-edge",
+        "action": "swipe-up",
+        "opens": "lock-screen-passcode"
+      },
+      {
+        "from": "notification-card",
+        "action": "tap",
+        "opens": "lock-screen-notification-expanded"
+      },
+      {
+        "from": "notification-card",
+        "action": "dismiss"
+      },
+      {
+        "from": "notification-card",
+        "action": "show-actions"
+      },
+      {
+        "from": "clock",
+        "action": "long-press",
+        "opens": "lock-screen-customize"
+      }
+    ]
+  }
+}

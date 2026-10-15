@@ -1,0 +1,103 @@
+{
+  "_spec_section": "7.2 settings-appearance-liquid-glass.json",
+  "_spec_line": 1654,
+  "screen": {
+    "screen": "settings-appearance-liquid-glass",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Liquid Glass",
+        "backButton": "Appearance"
+      },
+      {
+        "id": "preview",
+        "type": "container",
+        "frame": {
+          "x": 0.1,
+          "y": 0.12,
+          "w": 0.8,
+          "h": 0.25
+        },
+        "cornerRadiusPt": 34,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "preview-text",
+            "type": "text",
+            "text": "Liquid Glass Preview",
+            "frame": {
+              "x": 0.1,
+              "y": 0.4,
+              "w": 0.8,
+              "h": 0.2
+            },
+            "font": "headline",
+            "textAlign": "center",
+            "color": "#FFFFFF"
+          }
+        ]
+      },
+      {
+        "id": "slider",
+        "type": "slider",
+        "frame": {
+          "x": 0.1,
+          "y": 0.45,
+          "w": 0.8,
+          "h": 0.08
+        },
+        "value": 0.5,
+        "min": 0,
+        "max": 1,
+        "trackColor": "#FFFFFF33",
+        "fillColor": "#007AFF",
+        "labels": [
+          "Ultra Clear",
+          "Fully Tinted"
+        ]
+      },
+      {
+        "id": "description",
+        "type": "text",
+        "text": "Adjust the appearance of Liquid Glass across the system.",
+        "frame": {
+          "x": 0.1,
+          "y": 0.58,
+          "w": 0.8,
+          "h": 0.06
+        },
+        "font": "footnote",
+        "color": "secondaryLabel",
+        "textAlign": "center"
+      },
+      {
+        "id": "notes",
+        "type": "text",
+        "text": "Only takes effect when Reduce Transparency and Increase Contrast are off.",
+        "frame": {
+          "x": 0.1,
+          "y": 0.68,
+          "w": 0.8,
+          "h": 0.06
+        },
+        "font": "caption1",
+        "color": "tertiaryLabel",
+        "textAlign": "center"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "slider",
+        "action": "adjust-liquid-glass"
+      }
+    ],
+    "notes": "Slider ranges from ultraclear (0) to fully tinted (1), default 0.5. Apple publishes NO numeric spec for Liquid Glass \u2014 this is inferred from visual construction."
+  }
+}

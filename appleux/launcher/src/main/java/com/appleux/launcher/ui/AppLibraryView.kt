@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.appleux.design.components.AppleuxDisplayInsets
 import com.appleux.design.tokens.SpacingTokens
 import com.appleux.launcher.LauncherTokens
 import com.appleux.launcher.R
@@ -45,6 +46,10 @@ class AppLibraryView @JvmOverloads constructor(
             GridLayoutManager(context, LauncherTokens.APP_LIBRARY_COLUMNS)
         adapter = AppLibraryAdapter()
         recyclerView.adapter = adapter
+        // The library is a full-bleed overlay stacked over the launcher root,
+        // which no longer applies a top inset of its own (the wallpaper runs
+        // under the notch). So the overlay reserves the cutout directly.
+        AppleuxDisplayInsets.applyTopInset(context, recyclerView)
     }
 
     fun loadApps(): List<AppIconItem> {

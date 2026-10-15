@@ -1,0 +1,62 @@
+{
+  "_spec_section": "1.11 lock-screen-biometric-prompt.json",
+  "_spec_line": 412,
+  "screen": {
+    "screen": "lock-screen-biometric-prompt",
+    "elements": [
+      {
+        "id": "overlay",
+        "type": "container",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "background": "rgba(0,0,0,0.4)"
+      },
+      {
+        "id": "biometric-icon",
+        "type": "icon",
+        "frame": {
+          "x": 0.4,
+          "y": 0.4,
+          "w": 0.2,
+          "h": 0.1
+        },
+        "icon": "faceid",
+        "size": 64,
+        "color": "#FFFFFF",
+        "notes": "Maps to fingerprint on POCO M5"
+      },
+      {
+        "id": "prompt",
+        "type": "text",
+        "text": "Touch sensor",
+        "frame": {
+          "x": 0.2,
+          "y": 0.55,
+          "w": 0.6,
+          "h": 0.04
+        },
+        "font": "body",
+        "textAlign": "center",
+        "color": "#FFFFFF"
+      },
+      {
+        "id": "cancel",
+        "type": "button",
+        "frame": {
+          "x": 0.35,
+          "y": 0.7,
+          "w": 0.3,
+          "h": 0.05
+        },
+        "label": "Cancel",
+        "style": "plain",
+        "textColor": "#FFFFFF"
+      }
+    ],
+    "notes": "Appears when biometric auth is triggered. On POCO M5, fingerprint sensor at side/bottom. Haptic feedback on scan."
+  }
+}

@@ -1,0 +1,126 @@
+{
+  "_spec_section": "6.1 settings-general.json",
+  "_spec_line": 1538,
+  "screen": {
+    "screen": "settings-general",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "General",
+        "backButton": "Settings"
+      },
+      {
+        "id": "list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.91
+        },
+        "listStyle": "insetGrouped",
+        "sections": [
+          {
+            "id": "about",
+            "rows": [
+              {
+                "id": "about",
+                "title": "About",
+                "icon": "info.circle",
+                "iconColor": "#8E8E93",
+                "destination": "settings-general-about"
+              },
+              {
+                "id": "software-update",
+                "title": "Software Update",
+                "icon": "arrow.triangle.2.circlepath",
+                "iconColor": "#007AFF",
+                "destination": "settings-general-software-update"
+              },
+              {
+                "id": "storage",
+                "title": "iPhone Storage",
+                "icon": "internaldrive",
+                "iconColor": "#8E8E93",
+                "value": "64 GB",
+                "destination": "settings-general-storage"
+              }
+            ]
+          },
+          {
+            "id": "background",
+            "rows": [
+              {
+                "id": "background-app-refresh",
+                "title": "Background App Refresh",
+                "icon": "arrow.clockwise",
+                "iconColor": "#8E8E93",
+                "value": "Wi-Fi",
+                "destination": "settings-general-background-app-refresh"
+              },
+              {
+                "id": "date-time",
+                "title": "Date & Time",
+                "icon": "clock",
+                "iconColor": "#8E8E93",
+                "destination": "settings-general-date-time"
+              },
+              {
+                "id": "keyboard",
+                "title": "Keyboard",
+                "icon": "keyboard",
+                "iconColor": "#8E8E93",
+                "destination": "settings-general-keyboard"
+              },
+              {
+                "id": "language-region",
+                "title": "Language & Region",
+                "icon": "globe",
+                "iconColor": "#8E8E93",
+                "destination": "settings-general-language-region"
+              },
+              {
+                "id": "dictionary",
+                "title": "Dictionary",
+                "icon": "character.book.closed",
+                "iconColor": "#8E8E93",
+                "destination": "settings-general-dictionary"
+              }
+            ]
+          },
+          {
+            "id": "vpn",
+            "rows": [
+              {
+                "id": "vpn-device",
+                "title": "VPN & Device Management",
+                "icon": "lock.shield.fill",
+                "iconColor": "#007AFF",
+                "destination": "settings-vpn-device-management"
+              }
+            ]
+          },
+          {
+            "id": "reset",
+            "rows": [
+              {
+                "id": "transfer-reset",
+                "title": "Transfer or Reset iPhone",
+                "icon": "arrow.triangle.2.circlepath",
+                "iconColor": "#FF3B30",
+                "destination": "settings-transfer-reset"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

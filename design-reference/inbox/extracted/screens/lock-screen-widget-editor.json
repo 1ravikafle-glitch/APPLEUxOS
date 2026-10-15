@@ -1,0 +1,150 @@
+{
+  "_spec_section": "1.9 lock-screen-widget-editor.json",
+  "_spec_line": 340,
+  "screen": {
+    "screen": "lock-screen-widget-editor",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 50
+      },
+      {
+        "id": "title",
+        "type": "text",
+        "text": "Add Widget",
+        "frame": {
+          "x": 0.05,
+          "y": 0.08,
+          "w": 0.9,
+          "h": 0.06
+        },
+        "font": "title2",
+        "size": 22,
+        "weight": "bold"
+      },
+      {
+        "id": "widget-list",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.16,
+          "w": 0.9,
+          "h": 0.6
+        },
+        "rows": [
+          {
+            "id": "w-clock",
+            "title": "Clock",
+            "icon": "clock.fill",
+            "iconColor": "#FF9500",
+            "sizes": [
+              "circular",
+              "rectangular",
+              "inline"
+            ]
+          },
+          {
+            "id": "w-weather",
+            "title": "Weather",
+            "icon": "cloud.sun.fill",
+            "iconColor": "#007AFF",
+            "sizes": [
+              "circular",
+              "rectangular"
+            ]
+          },
+          {
+            "id": "w-calendar",
+            "title": "Calendar",
+            "icon": "calendar",
+            "iconColor": "#FF3B30",
+            "sizes": [
+              "rectangular",
+              "inline"
+            ]
+          },
+          {
+            "id": "w-battery",
+            "title": "Battery",
+            "icon": "battery.100",
+            "iconColor": "#34C759",
+            "sizes": [
+              "circular",
+              "inline"
+            ]
+          },
+          {
+            "id": "w-activity",
+            "title": "Activity",
+            "icon": "figure.walk",
+            "iconColor": "#FF2D55",
+            "sizes": [
+              "circular",
+              "rectangular"
+            ]
+          },
+          {
+            "id": "w-reminders",
+            "title": "Reminders",
+            "icon": "checklist",
+            "iconColor": "#FF9500",
+            "sizes": [
+              "rectangular",
+              "inline"
+            ]
+          },
+          {
+            "id": "w-stocks",
+            "title": "Stocks",
+            "icon": "chart.line.uptrend.xyaxis",
+            "iconColor": "#34C759",
+            "sizes": [
+              "rectangular"
+            ]
+          },
+          {
+            "id": "w-home",
+            "title": "Home",
+            "icon": "house.fill",
+            "iconColor": "#FF9500",
+            "sizes": [
+              "circular",
+              "rectangular"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cancel",
+        "type": "button",
+        "frame": {
+          "x": 0.05,
+          "y": 0.82,
+          "w": 0.45,
+          "h": 0.06
+        },
+        "label": "Cancel",
+        "style": "plain"
+      },
+      {
+        "id": "add",
+        "type": "button",
+        "frame": {
+          "x": 0.5,
+          "y": 0.82,
+          "w": 0.45,
+          "h": 0.06
+        },
+        "label": "Add Widget",
+        "style": "prominent"
+      }
+    ]
+  }
+}

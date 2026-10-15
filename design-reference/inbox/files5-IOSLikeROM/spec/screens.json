@@ -1,0 +1,5918 @@
+{
+ "frame": [
+  401.9,
+  896.0
+ ],
+ "device": {
+  "codename": "rock",
+  "insets": {
+   "top": 28.3,
+   "bottom": 47.3,
+   "measured": true,
+   "note": "MEASURED: statusBars frame [0,0][1080,76] = 76 px and navigationBars frame [0,2281][1080,2408] = 127 px, converted at the effective density 2.6875 to 28.3 / 47.3 dp. The cutout is 100 x 76 px, top-centre waterdrop, centre x = 540 which is exactly half of 1080. Kotlin still reads live window insets at runtime; these values are the fallback, not the source."
+  },
+  "density": {
+   "dpi": 430,
+   "measured": true,
+   "note": "MEASURED on the physical POCO M5 running stock HyperOS, pasted by the operator 2026-10-15. `wm density` reports Physical density 440 AND Override density 430. 430 is the EFFECTIVE density the framework reports, so dp maths uses it. Re-run with --density 440 to model the panel with no HyperOS override, which gives frameDp [392.7, 875.6] instead of [401.9, 896.0]."
+  }
+ },
+ "tokens": "spec/tokens.json",
+ "screens": [
+  {
+   "id": "home",
+   "title": "Home & Dock",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "wallpaper",
+   "code": [
+    "launcher/HomeScreen.kt:LauncherRoot/HomePage"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "text",
+       "s": "THURSDAY",
+       "type": "small",
+       "color": "$color.labelDim"
+      },
+      {
+       "t": "text",
+       "s": "15",
+       "type": "widgetBig",
+       "color": "$color.white"
+      },
+      {
+       "t": "text",
+       "s": "October",
+       "type": "bodyBold",
+       "color": "$color.white"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      22,
+      60.3
+     ],
+     "w": 171.95,
+     "h": 171.95,
+     "pad": 16,
+     "just": "between",
+     "fill": "glass",
+     "r": "$radius.widget",
+     "component": "today_widget"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "photos",
+           "size": 60
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 60,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "camera",
+           "size": 60
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 60,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "just": "between"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "maps",
+           "size": 60
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 60,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "clock",
+           "size": 60
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 60,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "just": "between"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      207.95,
+      60.3
+     ],
+     "w": 171.95,
+     "h": 171.95,
+     "just": "between",
+     "component": "widget_icons"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "music",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Music",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "notes",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Notes",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "wallet",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Wallet",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "files",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Files",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "just": "between"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "health",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Health",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "weather",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Weather",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "books",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Books",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "store",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Store",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "just": "between"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "podcasts",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Podcasts",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "reminders",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Reminders",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "settings",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Settings",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "tips",
+           "size": 60
+          },
+          {
+           "t": "text",
+           "s": "Tips",
+           "type": "caption",
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "w": 72,
+         "h": 81,
+         "align": "center",
+         "gap": 6,
+         "component": "app_cell",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "just": "between"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      22,
+      256.25
+     ],
+     "w": 357.9,
+     "gap": 20,
+     "component": "icon_grid"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.white"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      0,
+      665.7
+     ],
+     "w": 401.9,
+     "h": 7,
+     "just": "center",
+     "gap": 8,
+     "component": "page_dots"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "text",
+       "s": "Search or Ask",
+       "type": "bodyBold",
+       "color": "$color.white",
+       "align": "center"
+      }
+     ],
+     "dir": "col",
+     "align": "center",
+     "just": "center",
+     "abs": [
+      110.95,
+      686.7
+     ],
+     "w": 180,
+     "h": 40,
+     "fill": "glass",
+     "r": "$radius.pill",
+     "component": "search_pill",
+     "tap": true,
+     "hit": 48
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "appicon",
+       "app": "phone",
+       "size": 64
+      },
+      {
+       "t": "appicon",
+       "app": "messages",
+       "size": 64
+      },
+      {
+       "t": "appicon",
+       "app": "browser",
+       "size": 64
+      },
+      {
+       "t": "appicon",
+       "app": "camera",
+       "size": 64
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      14,
+      740.7
+     ],
+     "w": 373.9,
+     "h": 94,
+     "fill": "glass",
+     "r": "$radius.dock",
+     "just": "around",
+     "align": "center",
+     "pad": [
+      0,
+      12,
+      0,
+      12
+     ],
+     "component": "dock"
+    }
+   ]
+  },
+  {
+   "id": "home_2",
+   "title": "Home page 2 (dots, pill and dock stay put)",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "wallpaper",
+   "code": [
+    "launcher/HomeScreen.kt:LauncherRoot/HomePage"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "text",
+       "s": "WEATHER",
+       "type": "small",
+       "color": "$color.labelDim"
+      },
+      {
+       "t": "text",
+       "s": "21\u00b0",
+       "type": "widgetBig",
+       "color": "$color.white"
+      },
+      {
+       "t": "text",
+       "s": "Partly Cloudy",
+       "type": "bodyBold",
+       "color": "$color.white"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      22,
+      60.3
+     ],
+     "w": 357.9,
+     "h": 171.95,
+     "pad": 16,
+     "just": "between",
+     "fill": "glass",
+     "r": "$radius.widget",
+     "component": "weather_widget"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "text",
+       "s": "Notes",
+       "type": "bodyBold",
+       "color": "$color.white"
+      },
+      {
+       "t": "text",
+       "s": "Sample note text",
+       "type": "bodyDim",
+       "color": "$color.white"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      22,
+      246.25
+     ],
+     "w": 171.95,
+     "h": 171.95,
+     "pad": 16,
+     "fill": "glass",
+     "r": "$radius.widget",
+     "component": "notes_widget"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "appicon",
+         "app": "mail",
+         "size": 60
+        },
+        {
+         "t": "text",
+         "s": "Mail",
+         "type": "caption",
+         "color": "$color.white"
+        }
+       ],
+       "dir": "col",
+       "w": 72,
+       "h": 81,
+       "align": "center",
+       "gap": 6,
+       "component": "app_cell",
+       "tap": true
+      }
+     ],
+     "abs": [
+      257.92,
+      246.25
+     ],
+     "w": 72,
+     "h": 81
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.white"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      0,
+      665.7
+     ],
+     "w": 401.9,
+     "h": 7,
+     "just": "center",
+     "gap": 8,
+     "component": "page_dots"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "text",
+       "s": "Search or Ask",
+       "type": "bodyBold",
+       "color": "$color.white",
+       "align": "center"
+      }
+     ],
+     "dir": "col",
+     "align": "center",
+     "just": "center",
+     "abs": [
+      110.95,
+      686.7
+     ],
+     "w": 180,
+     "h": 40,
+     "fill": "glass",
+     "r": "$radius.pill",
+     "component": "search_pill",
+     "tap": true,
+     "hit": 48
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "appicon",
+       "app": "phone",
+       "size": 64
+      },
+      {
+       "t": "appicon",
+       "app": "messages",
+       "size": 64
+      },
+      {
+       "t": "appicon",
+       "app": "browser",
+       "size": 64
+      },
+      {
+       "t": "appicon",
+       "app": "camera",
+       "size": 64
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      14,
+      740.7
+     ],
+     "w": 373.9,
+     "h": 94,
+     "fill": "glass",
+     "r": "$radius.dock",
+     "just": "around",
+     "align": "center",
+     "pad": [
+      0,
+      12,
+      0,
+      12
+     ],
+     "component": "dock"
+    }
+   ]
+  },
+  {
+   "id": "app_library",
+   "title": "App Library",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "wallpaper",
+   "code": [
+    "launcher/AppLibraryScreen.kt:AppLibraryScreen"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [],
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "h": 896.0,
+     "scrim": {
+      "blur": 30,
+      "color": "#4D080A1E"
+     },
+     "component": "scrim"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "icon",
+       "g": "search",
+       "size": 18,
+       "color": "$color.white"
+      },
+      {
+       "t": "text",
+       "s": "App Library",
+       "type": "bodyDim",
+       "color": "$color.labelDim"
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      22,
+      60.3
+     ],
+     "w": 357.9,
+     "h": 48,
+     "align": "center",
+     "gap": 10,
+     "pad": [
+      0,
+      18,
+      0,
+      18
+     ],
+     "fill": "glass",
+     "r": "$radius.search",
+     "component": "library_search"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "music",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "maps",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "notes",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "browser",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            }
+           ],
+           "dir": "col",
+           "w": 169.95,
+           "h": 169.95,
+           "pad": 16,
+           "gap": 8,
+           "align": "center",
+           "just": "center",
+           "fill": "glass",
+           "r": "$radius.folder",
+           "component": "folder_tile",
+           "tap": true
+          },
+          {
+           "t": "text",
+           "s": "Suggestions",
+           "type": "caption13",
+           "color": "$color.white",
+           "align": "center"
+          }
+         ],
+         "dir": "col",
+         "w": 169.95,
+         "gap": 8,
+         "align": "center",
+         "component": "folder"
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "podcasts",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "tips",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "books",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "store",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            }
+           ],
+           "dir": "col",
+           "w": 169.95,
+           "h": 169.95,
+           "pad": 16,
+           "gap": 8,
+           "align": "center",
+           "just": "center",
+           "fill": "glass",
+           "r": "$radius.folder",
+           "component": "folder_tile",
+           "tap": true
+          },
+          {
+           "t": "text",
+           "s": "Recently Added",
+           "type": "caption13",
+           "color": "$color.white",
+           "align": "center"
+          }
+         ],
+         "dir": "col",
+         "w": 169.95,
+         "gap": 8,
+         "align": "center",
+         "component": "folder"
+        }
+       ],
+       "dir": "row",
+       "just": "between"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "messages",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "mail",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "phone",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "photos",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            }
+           ],
+           "dir": "col",
+           "w": 169.95,
+           "h": 169.95,
+           "pad": 16,
+           "gap": 8,
+           "align": "center",
+           "just": "center",
+           "fill": "glass",
+           "r": "$radius.folder",
+           "component": "folder_tile",
+           "tap": true
+          },
+          {
+           "t": "text",
+           "s": "Social",
+           "type": "caption13",
+           "color": "$color.white",
+           "align": "center"
+          }
+         ],
+         "dir": "col",
+         "w": 169.95,
+         "gap": 8,
+         "align": "center",
+         "component": "folder"
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "music",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "podcasts",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "photos",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "books",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            }
+           ],
+           "dir": "col",
+           "w": 169.95,
+           "h": 169.95,
+           "pad": 16,
+           "gap": 8,
+           "align": "center",
+           "just": "center",
+           "fill": "glass",
+           "r": "$radius.folder",
+           "component": "folder_tile",
+           "tap": true
+          },
+          {
+           "t": "text",
+           "s": "Entertainment",
+           "type": "caption13",
+           "color": "$color.white",
+           "align": "center"
+          }
+         ],
+         "dir": "col",
+         "w": 169.95,
+         "gap": 8,
+         "align": "center",
+         "component": "folder"
+        }
+       ],
+       "dir": "row",
+       "just": "between"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "notes",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "reminders",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "files",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "mail",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            }
+           ],
+           "dir": "col",
+           "w": 169.95,
+           "h": 169.95,
+           "pad": 16,
+           "gap": 8,
+           "align": "center",
+           "just": "center",
+           "fill": "glass",
+           "r": "$radius.folder",
+           "component": "folder_tile",
+           "tap": true
+          },
+          {
+           "t": "text",
+           "s": "Productivity",
+           "type": "caption13",
+           "color": "$color.white",
+           "align": "center"
+          }
+         ],
+         "dir": "col",
+         "w": 169.95,
+         "gap": 8,
+         "align": "center",
+         "component": "folder"
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "settings",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "clock",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "appicon",
+               "app": "weather",
+               "size": 62
+              },
+              {
+               "t": "appicon",
+               "app": "wallet",
+               "size": 62
+              }
+             ],
+             "dir": "row",
+             "gap": 8
+            }
+           ],
+           "dir": "col",
+           "w": 169.95,
+           "h": 169.95,
+           "pad": 16,
+           "gap": 8,
+           "align": "center",
+           "just": "center",
+           "fill": "glass",
+           "r": "$radius.folder",
+           "component": "folder_tile",
+           "tap": true
+          },
+          {
+           "t": "text",
+           "s": "Utilities",
+           "type": "caption13",
+           "color": "$color.white",
+           "align": "center"
+          }
+         ],
+         "dir": "col",
+         "w": 169.95,
+         "gap": 8,
+         "align": "center",
+         "component": "folder"
+        }
+       ],
+       "dir": "row",
+       "just": "between"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      22,
+      132.3
+     ],
+     "w": 357.9,
+     "gap": 18,
+     "scroll": true,
+     "component": "folder_grid"
+    },
+    {
+     "t": "box",
+     "children": [],
+     "abs": [
+      0,
+      565.7
+     ],
+     "w": 401.9,
+     "h": 330.3,
+     "grad": [
+      "#00080A1E",
+      "#8C080A1E"
+     ],
+     "component": "bottom_fade",
+     "overlay": true
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 7,
+       "h": 7,
+       "r": "circle",
+       "fill": "$color.white"
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      0,
+      665.7
+     ],
+     "w": 401.9,
+     "h": 7,
+     "just": "center",
+     "gap": 8,
+     "component": "page_dots"
+    }
+   ]
+  },
+  {
+   "id": "notifications",
+   "title": "Notification Center",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "wallpaper",
+   "code": [
+    "notifications/NotificationCenterScreen.kt"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [],
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "h": 896.0,
+     "scrim": {
+      "blur": 34,
+      "color": "#61080A1E"
+     },
+     "component": "scrim"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "text",
+       "s": "Notifications",
+       "type": "title",
+       "color": "$color.white"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "Clear",
+         "type": "bodyBold",
+         "color": "$color.white",
+         "align": "center"
+        }
+       ],
+       "dir": "col",
+       "align": "center",
+       "just": "center",
+       "w": 68,
+       "h": 34,
+       "fill": "glass",
+       "r": 17,
+       "component": "clear_button",
+       "tap": true,
+       "hit": 44
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      22,
+      60.3
+     ],
+     "w": 357.9,
+     "h": 38,
+     "align": "center",
+     "just": "between"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "text",
+       "s": "Now",
+       "type": "bodyBold",
+       "color": "$color.labelDim",
+       "h": 17
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "appicon",
+         "app": "messages",
+         "size": 40
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Aarav",
+             "type": "bodyBold",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "text",
+             "s": "now",
+             "type": "caption",
+             "color": "$color.labelDim"
+            }
+           ],
+           "dir": "row",
+           "h": 19
+          },
+          {
+           "t": "text",
+           "s": "Are you free tonight? Dinner at 8?",
+           "type": "bodyDim",
+           "color": "$color.white",
+           "h": 19
+          }
+         ],
+         "dir": "col",
+         "w": "fill"
+        }
+       ],
+       "dir": "row",
+       "gap": 12,
+       "pad": 14,
+       "h": 66,
+       "fill": "glass",
+       "r": "$radius.card",
+       "ml": -10,
+       "component": "notification_card",
+       "tap": true
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [],
+         "abs": [
+          12,
+          0
+         ],
+         "w": 333.9,
+         "h": 38,
+         "fill": "glass",
+         "r": 24,
+         "op": 0.7
+        },
+        {
+         "t": "box",
+         "children": [],
+         "abs": [
+          24,
+          8
+         ],
+         "w": 309.9,
+         "h": 38,
+         "fill": "glass",
+         "r": 24,
+         "op": 0.4
+        }
+       ],
+       "h": 46,
+       "component": "collapsed_stack_layers"
+      },
+      {
+       "t": "text",
+       "s": "+2 more",
+       "type": "bodyDim",
+       "color": "$color.labelDim",
+       "h": 17
+      },
+      {
+       "t": "text",
+       "s": "Earlier today",
+       "type": "bodyBold",
+       "color": "$color.labelDim",
+       "h": 17
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "appicon",
+         "app": "mail",
+         "size": 40
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Mail",
+             "type": "bodyBold",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "text",
+             "s": "9:41",
+             "type": "caption",
+             "color": "$color.labelDim"
+            }
+           ],
+           "dir": "row",
+           "h": 19
+          },
+          {
+           "t": "text",
+           "s": "Your invoice for October is ready to view.",
+           "type": "bodyDim",
+           "color": "$color.white",
+           "h": 19
+          }
+         ],
+         "dir": "col",
+         "w": "fill"
+        }
+       ],
+       "dir": "row",
+       "gap": 12,
+       "pad": 14,
+       "h": 66,
+       "fill": "glass",
+       "r": "$radius.card",
+       "ml": 0,
+       "component": "notification_card",
+       "tap": true
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "appicon",
+         "app": "clock",
+         "size": 40
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Clock",
+             "type": "bodyBold",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "text",
+             "s": "9:15",
+             "type": "caption",
+             "color": "$color.labelDim"
+            }
+           ],
+           "dir": "row",
+           "h": 19
+          },
+          {
+           "t": "text",
+           "s": "Timer finished.",
+           "type": "bodyDim",
+           "color": "$color.white",
+           "h": 19
+          }
+         ],
+         "dir": "col",
+         "w": "fill"
+        }
+       ],
+       "dir": "row",
+       "gap": 12,
+       "pad": 14,
+       "h": 66,
+       "fill": "glass",
+       "r": "$radius.card",
+       "ml": 0,
+       "component": "notification_card",
+       "tap": true
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "appicon",
+         "app": "reminders",
+         "size": 40
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Reminders",
+             "type": "bodyBold",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "text",
+             "s": "8:00",
+             "type": "caption",
+             "color": "$color.labelDim"
+            }
+           ],
+           "dir": "row",
+           "h": 19
+          },
+          {
+           "t": "text",
+           "s": "Pick up the package.",
+           "type": "bodyDim",
+           "color": "$color.white",
+           "h": 19
+          }
+         ],
+         "dir": "col",
+         "w": "fill"
+        }
+       ],
+       "dir": "row",
+       "gap": 12,
+       "pad": 14,
+       "h": 66,
+       "fill": "glass",
+       "r": "$radius.card",
+       "ml": 0,
+       "component": "notification_card",
+       "tap": true
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      22,
+      124.3
+     ],
+     "w": 357.9,
+     "gap": 12,
+     "scroll": true,
+     "component": "notification_list"
+    }
+   ]
+  },
+  {
+   "id": "control_center",
+   "title": "Control Center",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "wallpaper",
+   "code": [
+    "controlcenter/ControlCenterScreen.kt"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [],
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "h": 896.0,
+     "scrim": {
+      "blur": 34,
+      "color": "#59080A1E"
+     },
+     "component": "scrim"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "airplane",
+               "size": 28,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 64,
+             "h": 64,
+             "r": "circle",
+             "fill": "glass",
+             "component": "round_toggle",
+             "tap": true
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "cellular",
+               "size": 28,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 64,
+             "h": 64,
+             "r": "circle",
+             "fill": {
+              "glass": "$color.green"
+             },
+             "component": "round_toggle",
+             "tap": true
+            }
+           ],
+           "dir": "row",
+           "just": "between"
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "wifi",
+               "size": 28,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 64,
+             "h": 64,
+             "r": "circle",
+             "fill": {
+              "glass": "$color.blue"
+             },
+             "component": "round_toggle",
+             "tap": true
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "bluetooth",
+               "size": 28,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 64,
+             "h": 64,
+             "r": "circle",
+             "fill": {
+              "glass": "$color.blue"
+             },
+             "component": "round_toggle",
+             "tap": true
+            }
+           ],
+           "dir": "row",
+           "just": "between"
+          }
+         ],
+         "dir": "col",
+         "w": 178.94,
+         "h": 178.94,
+         "pad": 14,
+         "just": "between",
+         "fill": "glass",
+         "r": "$radius.panel",
+         "component": "connectivity"
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "art",
+               "grad": [
+                "#a18cd1",
+                "#fbc2eb"
+               ],
+               "w": 44,
+               "h": 44,
+               "r": 10
+              }
+             ],
+             "w": 44,
+             "h": 44
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "text",
+               "s": "Song Title",
+               "type": "bodyBold",
+               "color": "$color.white"
+              },
+              {
+               "t": "text",
+               "s": "Artist Name",
+               "type": "bodyDim",
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "w": "fill"
+            }
+           ],
+           "dir": "row",
+           "gap": 10,
+           "h": 44
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "icon",
+             "g": "prev",
+             "size": 26,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "pause",
+             "size": 30,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "next",
+             "size": 26,
+             "color": "$color.white"
+            }
+           ],
+           "dir": "row",
+           "just": "around",
+           "align": "center",
+           "h": 30
+          }
+         ],
+         "dir": "col",
+         "w": 178.94,
+         "h": 178.94,
+         "pad": 14,
+         "just": "between",
+         "fill": "glass",
+         "r": "$radius.panel",
+         "component": "now_playing"
+        }
+       ],
+       "dir": "row",
+       "gap": 12,
+       "h": 178.94
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "rotation",
+               "size": 28,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 83.47,
+             "h": 83.47,
+             "r": "$radius.tile",
+             "fill": "glass",
+             "component": "square_tile",
+             "tap": true
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "cast",
+               "size": 28,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 83.47,
+             "h": 83.47,
+             "r": "$radius.tile",
+             "fill": "glass",
+             "component": "square_tile",
+             "tap": true
+            }
+           ],
+           "dir": "row",
+           "gap": 12
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "icon",
+             "g": "dnd",
+             "size": 28,
+             "color": "$color.white"
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "text",
+               "s": "Focus",
+               "type": "bodyBold",
+               "color": "$color.white"
+              },
+              {
+               "t": "text",
+               "s": "On",
+               "type": "bodyDim",
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "w": "fill"
+            }
+           ],
+           "dir": "row",
+           "w": 178.94,
+           "h": 83.47,
+           "align": "center",
+           "gap": 12,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "fill": {
+            "glass": "$color.indigo"
+           },
+           "r": "$radius.tile",
+           "component": "wide_tile",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "w": 178.94,
+         "gap": 12
+        },
+        {
+         "t": "slider",
+         "dir": "v",
+         "value": 0.62,
+         "icon": "brightness",
+         "w": 83.47,
+         "h": 178.94,
+         "component": "vertical_slider",
+         "tap": true
+        },
+        {
+         "t": "slider",
+         "dir": "v",
+         "value": 0.4,
+         "icon": "volume",
+         "w": 83.47,
+         "h": 178.94,
+         "component": "vertical_slider",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "gap": 12,
+       "h": 178.94
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "icon",
+           "g": "share",
+           "size": 28,
+           "color": "$color.white"
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Quick Share",
+             "type": "bodyBold",
+             "color": "$color.white"
+            },
+            {
+             "t": "text",
+             "s": "Send & receive",
+             "type": "bodyDim",
+             "color": "$color.white"
+            }
+           ],
+           "dir": "col",
+           "w": "fill"
+          }
+         ],
+         "dir": "row",
+         "w": 178.94,
+         "h": 83.47,
+         "align": "center",
+         "gap": 12,
+         "pad": [
+          0,
+          16,
+          0,
+          16
+         ],
+         "fill": "glass",
+         "r": "$radius.tile",
+         "component": "wide_tile",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "icon",
+           "g": "hotspot",
+           "size": 28,
+           "color": "$color.white"
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Hotspot",
+             "type": "bodyBold",
+             "color": "$color.white"
+            },
+            {
+             "t": "text",
+             "s": "Settings",
+             "type": "bodyDim",
+             "color": "$color.white"
+            }
+           ],
+           "dir": "col",
+           "w": "fill"
+          }
+         ],
+         "dir": "row",
+         "w": 178.94,
+         "h": 83.47,
+         "align": "center",
+         "gap": 12,
+         "pad": [
+          0,
+          16,
+          0,
+          16
+         ],
+         "fill": "glass",
+         "r": "$radius.tile",
+         "component": "wide_tile",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "gap": 12,
+       "h": 83.47
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "icon",
+           "g": "flashlight",
+           "size": 28,
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "align": "center",
+         "just": "center",
+         "w": 83.47,
+         "h": 83.47,
+         "r": "$radius.tile",
+         "fill": "glass",
+         "component": "square_tile",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "icon",
+           "g": "timer",
+           "size": 28,
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "align": "center",
+         "just": "center",
+         "w": 83.47,
+         "h": 83.47,
+         "r": "$radius.tile",
+         "fill": "glass",
+         "component": "square_tile",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "icon",
+           "g": "calculator",
+           "size": 28,
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "align": "center",
+         "just": "center",
+         "w": 83.47,
+         "h": 83.47,
+         "r": "$radius.tile",
+         "fill": "glass",
+         "component": "square_tile",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "icon",
+           "g": "camera",
+           "size": 28,
+           "color": "$color.white"
+          }
+         ],
+         "dir": "col",
+         "align": "center",
+         "just": "center",
+         "w": 83.47,
+         "h": 83.47,
+         "r": "$radius.tile",
+         "fill": "glass",
+         "component": "square_tile",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "gap": 12,
+       "h": 83.47
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      16,
+      60.3
+     ],
+     "w": 369.9,
+     "gap": 12,
+     "component": "control_center_grid"
+    }
+   ]
+  },
+  {
+   "id": "lock",
+   "title": "Lock Screen",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "wallpaper",
+   "code": [
+    "lockscreen/LockScreen.kt:LockScreen"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [],
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "h": 896.0,
+     "fill": "#2E0A0C22",
+     "component": "dim",
+     "overlay": true
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "icon",
+       "g": "lock",
+       "size": 18,
+       "color": "$color.white"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "h": 10
+      },
+      {
+       "t": "text",
+       "s": "Thursday, October 15",
+       "type": "date",
+       "color": "$color.labelDim",
+       "align": "center",
+       "h": 22
+      },
+      {
+       "t": "text",
+       "s": "9:41",
+       "type": "clock",
+       "color": "$color.white",
+       "align": "center"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "h": 28
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "messages",
+           "size": 40
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "text",
+               "s": "Aarav",
+               "type": "bodyBold",
+               "color": "$color.white",
+               "w": "fill"
+              },
+              {
+               "t": "text",
+               "s": "now",
+               "type": "caption",
+               "color": "$color.labelDim"
+              }
+             ],
+             "dir": "row",
+             "h": 19
+            },
+            {
+             "t": "text",
+             "s": "Are you free tonight? Dinner at 8?",
+             "type": "bodyDim",
+             "color": "$color.white",
+             "h": 19
+            }
+           ],
+           "dir": "col",
+           "w": "fill"
+          }
+         ],
+         "dir": "row",
+         "gap": 12,
+         "pad": 14,
+         "h": 66,
+         "fill": "glass",
+         "r": "$radius.card",
+         "ml": 0,
+         "component": "notification_card",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "appicon",
+           "app": "clock",
+           "size": 40
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "text",
+               "s": "Clock",
+               "type": "bodyBold",
+               "color": "$color.white",
+               "w": "fill"
+              },
+              {
+               "t": "text",
+               "s": "9:15",
+               "type": "caption",
+               "color": "$color.labelDim"
+              }
+             ],
+             "dir": "row",
+             "h": 19
+            },
+            {
+             "t": "text",
+             "s": "Timer finished.",
+             "type": "bodyDim",
+             "color": "$color.white",
+             "h": 19
+            }
+           ],
+           "dir": "col",
+           "w": "fill"
+          }
+         ],
+         "dir": "row",
+         "gap": 12,
+         "pad": 14,
+         "h": 66,
+         "fill": "glass",
+         "r": "$radius.card",
+         "ml": 0,
+         "component": "notification_card",
+         "tap": true
+        },
+        {
+         "t": "text",
+         "s": "+2 more",
+         "type": "bodyDim",
+         "color": "$color.labelDim",
+         "h": 17,
+         "ml": 6
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "w": 357.9,
+       "component": "lock_notifications"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      0,
+      68.3
+     ],
+     "w": 401.9,
+     "align": "center",
+     "component": "lock_content"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "icon",
+         "g": "flashlight",
+         "size": 24,
+         "color": "$color.white"
+        }
+       ],
+       "dir": "col",
+       "align": "center",
+       "just": "center",
+       "w": 52,
+       "h": 52,
+       "r": "circle",
+       "fill": "glass",
+       "tap": true,
+       "component": "lock_flashlight"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "icon",
+         "g": "camera",
+         "size": 24,
+         "color": "$color.white"
+        }
+       ],
+       "dir": "col",
+       "align": "center",
+       "just": "center",
+       "w": 52,
+       "h": 52,
+       "r": "circle",
+       "fill": "glass",
+       "tap": true,
+       "component": "lock_camera"
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      44,
+      743.7
+     ],
+     "w": 313.9,
+     "h": 52,
+     "just": "between"
+    },
+    {
+     "t": "text",
+     "s": "Swipe up to unlock",
+     "type": "bodyDim",
+     "color": "$color.labelDim",
+     "align": "center",
+     "abs": [
+      0,
+      815.7
+     ],
+     "w": 401.9,
+     "h": 17
+    }
+   ]
+  },
+  {
+   "id": "passcode",
+   "title": "Passcode",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "wallpaper",
+   "code": [
+    "lockscreen/LockScreen.kt:PasscodeScreen"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [],
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "h": 896.0,
+     "scrim": {
+      "blur": 28,
+      "color": "#4D080A1E"
+     },
+     "component": "scrim"
+    },
+    {
+     "t": "text",
+     "s": "Enter Passcode",
+     "type": "passTitle",
+     "color": "$color.white",
+     "align": "center",
+     "abs": [
+      0,
+      124.3
+     ],
+     "w": 401.9,
+     "h": 24
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [],
+       "w": 14,
+       "h": 14,
+       "r": "circle",
+       "fill": "$color.white"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 14,
+       "h": 14,
+       "r": "circle",
+       "fill": "$color.white"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 14,
+       "h": 14,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 14,
+       "h": 14,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 14,
+       "h": 14,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "w": 14,
+       "h": 14,
+       "r": "circle",
+       "fill": "$color.labelFaint"
+      }
+     ],
+     "dir": "row",
+     "abs": [
+      0,
+      172.3
+     ],
+     "w": 401.9,
+     "h": 14,
+     "just": "center",
+     "gap": 16,
+     "component": "passcode_dots"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "1",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "2",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "ABC",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "3",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "DEF",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "gap": 22
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "4",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "GHI",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "5",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "JKL",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "6",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "MNO",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "gap": 22
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "7",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "PQRS",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "8",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "TUV",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "9",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "WXYZ",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "gap": 22
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "Cancel",
+           "type": "button",
+           "color": "$color.white",
+           "align": "center"
+          }
+         ],
+         "dir": "col",
+         "align": "center",
+         "just": "center",
+         "w": 78,
+         "h": 78,
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "0",
+           "type": "key",
+           "color": "$color.white",
+           "align": "center"
+          },
+          {
+           "t": "text",
+           "s": "",
+           "type": "keyLetters",
+           "color": "$color.labelDim",
+           "align": "center",
+           "h": 10
+          }
+         ],
+         "dir": "col",
+         "w": 78,
+         "h": 78,
+         "align": "center",
+         "just": "center",
+         "fill": "glass",
+         "r": "circle",
+         "component": "passcode_key",
+         "tap": true
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "text",
+           "s": "Delete",
+           "type": "button",
+           "color": "$color.white",
+           "align": "center"
+          }
+         ],
+         "dir": "col",
+         "align": "center",
+         "just": "center",
+         "w": 78,
+         "h": 78,
+         "tap": true
+        }
+       ],
+       "dir": "row",
+       "gap": 22,
+       "align": "center"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      0,
+      226.3
+     ],
+     "w": 401.9,
+     "align": "center",
+     "gap": 16,
+     "component": "keypad"
+    }
+   ]
+  },
+  {
+   "id": "settings",
+   "title": "Settings",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "black",
+   "code": [
+    "settings/SettingsActivity.kt:SettingsHome"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "Settings",
+         "type": "largeTitle",
+         "color": "$color.white",
+         "h": 41
+        }
+       ],
+       "pad": [
+        0,
+        20,
+        0,
+        20
+       ],
+       "w": 401.9,
+       "h": 41,
+       "dir": "col"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "h": 14
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "icon",
+           "g": "search",
+           "size": 18,
+           "color": "$color.secondary"
+          },
+          {
+           "t": "text",
+           "s": "Search",
+           "type": "row",
+           "color": "$color.secondary"
+          }
+         ],
+         "dir": "row",
+         "h": 46,
+         "w": "fill",
+         "align": "center",
+         "gap": 8,
+         "pad": [
+          0,
+          16,
+          0,
+          16
+         ],
+         "fill": "glass",
+         "r": "circle",
+         "component": "settings_search"
+        }
+       ],
+       "pad": [
+        0,
+        16,
+        0,
+        16
+       ],
+       "w": 401.9,
+       "h": 46,
+       "dir": "col"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "h": 18
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "person",
+               "size": 30,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 60,
+             "h": 60,
+             "r": "circle",
+             "fill": {
+              "grad": [
+               "#FF8E9AAF",
+               "#FF5B6270"
+              ]
+             }
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "text",
+               "s": "Your Account",
+               "type": "acctName",
+               "color": "$color.white"
+              },
+              {
+               "t": "text",
+               "s": "Sign-in, backup & services",
+               "type": "small",
+               "color": "$color.secondary"
+              }
+             ],
+             "dir": "col",
+             "w": "fill"
+            }
+           ],
+           "dir": "row",
+           "h": 92,
+           "pad": 16,
+           "gap": 14,
+           "align": "center",
+           "component": "account_card",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "airplane",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.orange"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Airplane Mode",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "switch",
+             "on": false
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "wifi",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Wi-Fi",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "text",
+             "s": "Home_5G",
+             "type": "row",
+             "color": "$color.secondary"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "bluetooth",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Bluetooth",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "text",
+             "s": "On",
+             "type": "row",
+             "color": "$color.secondary"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "cellular",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.green"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Mobile Service",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "hotspot",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.green"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Hotspot",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "text",
+             "s": "Off",
+             "type": "row",
+             "color": "$color.secondary"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "bell",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.red"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Notifications",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "volume",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.pink"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Sounds & Haptics",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "dnd",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.indigo"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Focus",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "timer",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.indigo"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Digital Wellbeing",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "settings",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.gray"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "General",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "sliders",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.gray"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Control Center",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "brightness",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Display & Brightness",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "grid",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Home Screen & App Library",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "person",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Accessibility",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "photos",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.cyan"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Wallpaper",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "sparkle",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.gray"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Assistant",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "shield",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Privacy & Security",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "battery",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.green"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Battery",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "pad": [
+      60.3,
+      0,
+      0,
+      0
+     ],
+     "scroll": true,
+     "component": "settings_page"
+    }
+   ]
+  },
+  {
+   "id": "settings_scrolled",
+   "title": "Settings (scrolled: glass nav bar)",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "black",
+   "code": [
+    "settings/SettingsKit.kt:SettingsPage"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "Settings",
+         "type": "largeTitle",
+         "color": "$color.white",
+         "h": 41
+        }
+       ],
+       "pad": [
+        0,
+        20,
+        0,
+        20
+       ],
+       "w": 401.9,
+       "h": 41,
+       "dir": "col"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "h": 14
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "settings",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.gray"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "General",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "sliders",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.gray"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Control Center",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "brightness",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Display & Brightness",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "grid",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Home Screen & App Library",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "person",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Accessibility",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "photos",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.cyan"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Wallpaper",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "sparkle",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.gray"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Assistant",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "shield",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Privacy & Security",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "battery",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.green"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Battery",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "grid",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.indigo"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Apps",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "key",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.gray"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Passwords",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 60,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "icon",
+               "g": "person",
+               "size": 18,
+               "color": "$color.white"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "just": "center",
+             "w": 30,
+             "h": 30,
+             "r": "$radius.iconTile",
+             "fill": {
+              "tint": "$color.blue"
+             },
+             "mr": 6,
+             "component": "icon_tile"
+            },
+            {
+             "t": "text",
+             "s": "Accounts",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "pad": [
+      92.3,
+      0,
+      0,
+      0
+     ],
+     "scroll": true,
+     "component": "settings_page"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "text",
+       "s": "Settings",
+       "type": "navTitle",
+       "color": "$color.white",
+       "align": "center"
+      }
+     ],
+     "dir": "col",
+     "align": "center",
+     "just": "center",
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "h": 104.3,
+     "fill": {
+      "glass": "$color.scrimNav"
+     },
+     "r": 0,
+     "pad": [
+      48.3,
+      0,
+      0,
+      0
+     ],
+     "component": "glass_nav_bar",
+     "overlay": true
+    }
+   ]
+  },
+  {
+   "id": "settings_wifi",
+   "title": "Settings: Wi-Fi",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "black",
+   "code": [
+    "settings/WifiPage.kt"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [],
+       "h": 52
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "Wi-Fi",
+         "type": "largeTitle",
+         "color": "$color.white",
+         "h": 41
+        }
+       ],
+       "pad": [
+        0,
+        20,
+        0,
+        20
+       ],
+       "w": 401.9,
+       "h": 41,
+       "dir": "col"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "h": 14
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Wi-Fi",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "switch",
+             "on": true
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "MY NETWORKS",
+         "type": "small",
+         "color": "$color.secondary",
+         "h": 17,
+         "ml": 16
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "icon",
+             "g": "check",
+             "size": 20,
+             "color": "$color.blue"
+            },
+            {
+             "t": "text",
+             "s": "Home_5G",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "lock",
+             "size": 18,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "wifi",
+             "size": 18,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "info",
+             "size": 18,
+             "color": "$color.blue"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "NETWORKS",
+         "type": "small",
+         "color": "$color.secondary",
+         "h": 17,
+         "ml": 16
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Cafe_Guest",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "wifi",
+             "size": 18,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "info",
+             "size": 18,
+             "color": "$color.blue"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 16,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Office-2.4",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "lock",
+             "size": 18,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "wifi",
+             "size": 18,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "info",
+             "size": 18,
+             "color": "$color.blue"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 16,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Neighbor_AX",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "lock",
+             "size": 18,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "wifi",
+             "size": 18,
+             "color": "$color.white"
+            },
+            {
+             "t": "icon",
+             "g": "info",
+             "size": 18,
+             "color": "$color.blue"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 16,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Other\u2026",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        },
+        {
+         "t": "text",
+         "s": "Known networks connect automatically. If none are in range, you will be asked before joining a new one.",
+         "type": "small",
+         "color": "$color.secondary",
+         "h": 51,
+         "wrap": true,
+         "ml": 16,
+         "mr": 16
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "pad": [
+      60.3,
+      0,
+      0,
+      0
+     ],
+     "scroll": true,
+     "component": "settings_page"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "icon",
+       "g": "chevron_l",
+       "size": 20,
+       "color": "$color.white"
+      }
+     ],
+     "dir": "col",
+     "align": "center",
+     "just": "center",
+     "abs": [
+      16,
+      48.3
+     ],
+     "w": 44,
+     "h": 44,
+     "r": "circle",
+     "fill": "glass",
+     "component": "glass_back_button",
+     "tap": true
+    }
+   ]
+  },
+  {
+   "id": "settings_display",
+   "title": "Settings: Display & Brightness",
+   "size": [
+    401.9,
+    896.0
+   ],
+   "bg": "black",
+   "code": [
+    "settings/DisplayPage.kt"
+   ],
+   "children": [
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "box",
+       "children": [],
+       "h": 52
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "Display & Brightness",
+         "type": "largeTitleLong",
+         "color": "$color.white",
+         "h": 34
+        }
+       ],
+       "pad": [
+        0,
+        20,
+        0,
+        20
+       ],
+       "w": 401.9,
+       "h": 34,
+       "dir": "col"
+      },
+      {
+       "t": "box",
+       "children": [],
+       "h": 14
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "APPEARANCE",
+         "type": "small",
+         "color": "$color.secondary",
+         "h": 17,
+         "ml": 16
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "box",
+               "children": [
+                {
+                 "t": "box",
+                 "children": [],
+                 "w": 48,
+                 "h": 8,
+                 "r": "circle",
+                 "fill": "#66000000"
+                },
+                {
+                 "t": "box",
+                 "children": [],
+                 "h": 22,
+                 "w": "fill",
+                 "r": 8,
+                 "fill": "#14000000"
+                },
+                {
+                 "t": "box",
+                 "children": [],
+                 "h": 22,
+                 "w": "fill",
+                 "r": 8,
+                 "fill": "#14000000"
+                },
+                {
+                 "t": "box",
+                 "children": [],
+                 "h": 22,
+                 "w": "fill",
+                 "r": 8,
+                 "fill": "#14000000"
+                }
+               ],
+               "dir": "col",
+               "w": 104,
+               "h": 160,
+               "pad": 12,
+               "gap": 8,
+               "r": "$radius.preview",
+               "fill": {
+                "grad": [
+                 "#FFF2F2F7",
+                 "#FFD1D1D6"
+                ]
+               }
+              },
+              {
+               "t": "box",
+               "children": [],
+               "h": 10
+              },
+              {
+               "t": "text",
+               "s": "Light",
+               "type": "bodyBold",
+               "color": "$color.white",
+               "align": "center",
+               "h": 19
+              },
+              {
+               "t": "box",
+               "children": [],
+               "h": 8
+              },
+              {
+               "t": "box",
+               "children": [
+                {
+                 "t": "icon",
+                 "g": "check",
+                 "size": 16,
+                 "color": "$color.white"
+                }
+               ],
+               "dir": "col",
+               "align": "center",
+               "just": "center",
+               "w": 24,
+               "h": 24,
+               "r": "circle",
+               "fill": "$color.blue"
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "w": 104,
+             "tap": true,
+             "component": "appearance_card"
+            },
+            {
+             "t": "box",
+             "children": [
+              {
+               "t": "box",
+               "children": [
+                {
+                 "t": "box",
+                 "children": [],
+                 "w": 48,
+                 "h": 8,
+                 "r": "circle",
+                 "fill": "#66FFFFFF"
+                },
+                {
+                 "t": "box",
+                 "children": [],
+                 "h": 22,
+                 "w": "fill",
+                 "r": 8,
+                 "fill": "#1FFFFFFF"
+                },
+                {
+                 "t": "box",
+                 "children": [],
+                 "h": 22,
+                 "w": "fill",
+                 "r": 8,
+                 "fill": "#1FFFFFFF"
+                },
+                {
+                 "t": "box",
+                 "children": [],
+                 "h": 22,
+                 "w": "fill",
+                 "r": 8,
+                 "fill": "#1FFFFFFF"
+                }
+               ],
+               "dir": "col",
+               "w": 104,
+               "h": 160,
+               "pad": 12,
+               "gap": 8,
+               "r": "$radius.preview",
+               "fill": {
+                "grad": [
+                 "#FF2C2C2E",
+                 "#FF0B0B0D"
+                ]
+               }
+              },
+              {
+               "t": "box",
+               "children": [],
+               "h": 10
+              },
+              {
+               "t": "text",
+               "s": "Dark",
+               "type": "bodyBold",
+               "color": "$color.white",
+               "align": "center",
+               "h": 19
+              },
+              {
+               "t": "box",
+               "children": [],
+               "h": 8
+              },
+              {
+               "t": "box",
+               "children": [],
+               "w": 24,
+               "h": 24,
+               "r": "circle",
+               "bd": [
+                1.5,
+                "$color.tertiary"
+               ]
+              }
+             ],
+             "dir": "col",
+             "align": "center",
+             "w": 104,
+             "tap": true,
+             "component": "appearance_card"
+            }
+           ],
+           "dir": "row",
+           "just": "around",
+           "pad": [
+            18,
+            0,
+            18,
+            0
+           ],
+           "h": 257,
+           "w": "fill"
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Automatic",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "switch",
+             "on": false
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "text",
+         "s": "BRIGHTNESS",
+         "type": "small",
+         "color": "$color.secondary",
+         "h": 17,
+         "ml": 16
+        },
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "slider",
+             "dir": "h",
+             "value": 0.62,
+             "w": "fill",
+             "h": 56
+            }
+           ],
+           "h": 56,
+           "pad": [
+            0,
+            20,
+            0,
+            20
+           ],
+           "dir": "row",
+           "component": "brightness_slider"
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      },
+      {
+       "t": "box",
+       "children": [
+        {
+         "t": "box",
+         "children": [
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Text Size",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": 16,
+           "component": "settings_row",
+           "tap": true
+          },
+          {
+           "t": "box",
+           "children": [
+            {
+             "t": "text",
+             "s": "Auto-Lock",
+             "type": "row",
+             "color": "$color.white",
+             "w": "fill"
+            },
+            {
+             "t": "text",
+             "s": "30 Seconds",
+             "type": "row",
+             "color": "$color.secondary"
+            },
+            {
+             "t": "icon",
+             "g": "chevron_r",
+             "size": 14,
+             "color": "$color.tertiary"
+            }
+           ],
+           "dir": "row",
+           "h": 52,
+           "align": "center",
+           "gap": 8,
+           "pad": [
+            0,
+            16,
+            0,
+            16
+           ],
+           "divider": null,
+           "component": "settings_row",
+           "tap": true
+          }
+         ],
+         "dir": "col",
+         "fill": "$color.cell",
+         "r": "$radius.group",
+         "clip": true
+        }
+       ],
+       "dir": "col",
+       "gap": 8,
+       "pad": [
+        0,
+        16,
+        22,
+        16
+       ],
+       "w": 401.9,
+       "component": "settings_group"
+      }
+     ],
+     "dir": "col",
+     "abs": [
+      0,
+      0
+     ],
+     "w": 401.9,
+     "pad": [
+      60.3,
+      0,
+      0,
+      0
+     ],
+     "scroll": true,
+     "component": "settings_page"
+    },
+    {
+     "t": "box",
+     "children": [
+      {
+       "t": "icon",
+       "g": "chevron_l",
+       "size": 20,
+       "color": "$color.white"
+      }
+     ],
+     "dir": "col",
+     "align": "center",
+     "just": "center",
+     "abs": [
+      16,
+      48.3
+     ],
+     "w": 44,
+     "h": 44,
+     "r": "circle",
+     "fill": "glass",
+     "component": "glass_back_button",
+     "tap": true
+    }
+   ]
+  }
+ ]
+}

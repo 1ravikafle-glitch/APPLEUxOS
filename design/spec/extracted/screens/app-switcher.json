@@ -1,0 +1,147 @@
+{
+  "_spec_section": "2.6 app-switcher.json",
+  "_spec_line": 736,
+  "screen": {
+    "screen": "app-switcher",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "blurRadiusProvenance": "AppleUX-CHOSEN (C06). The Figma GLASS effect does not expose its radius over REST and Apple publishes no numeric spec for Liquid Glass. This value is ours; tune it per surface against the real Mali-G57 GPU.",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 50
+      },
+      {
+        "id": "card-stack",
+        "type": "stack",
+        "frame": {
+          "x": 0.05,
+          "y": 0.1,
+          "w": 0.9,
+          "h": 0.8
+        },
+        "children": [
+          {
+            "id": "card-1",
+            "type": "app-card",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 0.9,
+              "h": 0.7
+            },
+            "cornerRadiusPt": 34,
+            "material": "liquidGlassRegular",
+            "appName": "Safari",
+            "children": [
+              {
+                "id": "card-1-preview",
+                "type": "image",
+                "frame": {
+                  "x": 0.02,
+                  "y": 0.02,
+                  "w": 0.96,
+                  "h": 0.96
+                },
+                "cornerRadiusPt": 30
+              }
+            ]
+          },
+          {
+            "id": "card-2",
+            "type": "app-card",
+            "frame": {
+              "x": 0.02,
+              "y": 0.05,
+              "w": 0.86,
+              "h": 0.65
+            },
+            "cornerRadiusPt": 34,
+            "material": "liquidGlassRegular",
+            "appName": "Messages",
+            "children": [
+              {
+                "id": "card-2-preview",
+                "type": "image",
+                "frame": {
+                  "x": 0.02,
+                  "y": 0.02,
+                  "w": 0.96,
+                  "h": 0.96
+                },
+                "cornerRadiusPt": 30
+              }
+            ]
+          },
+          {
+            "id": "card-3",
+            "type": "app-card",
+            "frame": {
+              "x": 0.04,
+              "y": 0.1,
+              "w": 0.82,
+              "h": 0.6
+            },
+            "cornerRadiusPt": 34,
+            "material": "liquidGlassRegular",
+            "appName": "Photos",
+            "children": [
+              {
+                "id": "card-3-preview",
+                "type": "image",
+                "frame": {
+                  "x": 0.02,
+                  "y": 0.02,
+                  "w": 0.96,
+                  "h": 0.96
+                },
+                "cornerRadiusPt": 30
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "home-indicator",
+        "type": "indicator",
+        "frame": {
+          "x": 0.35,
+          "y": 0.95,
+          "w": 0.3,
+          "h": 0.005
+        },
+        "cornerRadiusPt": 3,
+        "color": "#FFFFFF"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "bottom-edge",
+        "action": "swipe-up",
+        "opens": "home"
+      },
+      {
+        "from": "app-card",
+        "action": "close-app"
+      },
+      {
+        "from": "app-card",
+        "action": "open-app"
+      },
+      {
+        "from": "app-card",
+        "action": "next-card"
+      },
+      {
+        "from": "app-card",
+        "action": "prev-card"
+      }
+    ],
+    "notes": "Cards stacked with 3D perspective. Swipe up on card closes app. Tap opens app. Horizontal swipe navigates between apps."
+  }
+}

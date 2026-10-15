@@ -1,0 +1,214 @@
+{
+  "_spec_section": "1.14 lock-screen-notification-group.json",
+  "_spec_line": 479,
+  "screen": {
+    "screen": "lock-screen-notification-group",
+    "elements": [
+      {
+        "id": "group-card",
+        "type": "container",
+        "frame": {
+          "x": 0.05,
+          "y": 0.1,
+          "w": 0.9,
+          "h": 0.15
+        },
+        "cornerRadiusPt": 13,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "group-icon",
+            "type": "icon",
+            "frame": {
+              "x": 0.05,
+              "y": 0.15,
+              "w": 0.08,
+              "h": 0.3
+            },
+            "icon": "message.fill",
+            "color": "#34C759"
+          },
+          {
+            "id": "group-title",
+            "type": "text",
+            "text": "Messages (3)",
+            "frame": {
+              "x": 0.15,
+              "y": 0.15,
+              "w": 0.5,
+              "h": 0.3
+            },
+            "font": "headline"
+          },
+          {
+            "id": "group-time",
+            "type": "text",
+            "text": "now",
+            "frame": {
+              "x": 0.75,
+              "y": 0.15,
+              "w": 0.2,
+              "h": 0.3
+            },
+            "font": "caption1",
+            "color": "secondaryLabel"
+          }
+        ]
+      },
+      {
+        "id": "expanded-list",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.28,
+          "w": 0.9,
+          "h": 0.3
+        },
+        "children": [
+          {
+            "id": "notif-1",
+            "type": "notification-card",
+            "frame": {
+              "x": 0,
+              "y": 0,
+              "w": 1,
+              "h": 0.3
+            },
+            "compact": true,
+            "children": [
+              {
+                "id": "n1-sender",
+                "type": "text",
+                "text": "Alex Chen",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.1,
+                  "w": 0.6,
+                  "h": 0.3
+                },
+                "font": "subhead",
+                "weight": "600"
+              },
+              {
+                "id": "n1-body",
+                "type": "text",
+                "text": "Hey, how are you?",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.45,
+                  "w": 0.9,
+                  "h": 0.4
+                },
+                "font": "footnote"
+              }
+            ]
+          },
+          {
+            "id": "notif-2",
+            "type": "notification-card",
+            "frame": {
+              "x": 0,
+              "y": 0.35,
+              "w": 1,
+              "h": 0.3
+            },
+            "compact": true,
+            "children": [
+              {
+                "id": "n2-sender",
+                "type": "text",
+                "text": "Sam Rivera",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.1,
+                  "w": 0.6,
+                  "h": 0.3
+                },
+                "font": "subhead",
+                "weight": "600"
+              },
+              {
+                "id": "n2-body",
+                "type": "text",
+                "text": "See you tomorrow!",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.45,
+                  "w": 0.9,
+                  "h": 0.4
+                },
+                "font": "footnote"
+              }
+            ]
+          },
+          {
+            "id": "notif-3",
+            "type": "notification-card",
+            "frame": {
+              "x": 0,
+              "y": 0.7,
+              "w": 1,
+              "h": 0.3
+            },
+            "compact": true,
+            "children": [
+              {
+                "id": "n3-sender",
+                "type": "text",
+                "text": "Jordan Lee",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.1,
+                  "w": 0.6,
+                  "h": 0.3
+                },
+                "font": "subhead",
+                "weight": "600"
+              },
+              {
+                "id": "n3-body",
+                "type": "text",
+                "text": "Thanks!",
+                "frame": {
+                  "x": 0.05,
+                  "y": 0.45,
+                  "w": 0.9,
+                  "h": 0.4
+                },
+                "font": "footnote"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "collapse-hint",
+        "type": "text",
+        "text": "Swipe to collapse",
+        "frame": {
+          "x": 0.1,
+          "y": 0.62,
+          "w": 0.8,
+          "h": 0.03
+        },
+        "font": "caption2",
+        "textAlign": "center",
+        "color": "secondaryLabel"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "group-card",
+        "action": "expand-group"
+      },
+      {
+        "from": "expanded-list",
+        "action": "collapse-group"
+      },
+      {
+        "from": "group-card",
+        "action": "dismiss-group"
+      }
+    ]
+  }
+}

@@ -1,0 +1,134 @@
+{
+  "_spec_section": "5.2 settings-wifi.json",
+  "_spec_line": 1393,
+  "screen": {
+    "screen": "settings-wifi",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Wi-Fi",
+        "backButton": "Settings"
+      },
+      {
+        "id": "wifi-toggle",
+        "type": "toggle-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.1,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "title": "Wi-Fi",
+        "value": true,
+        "icon": "wifi",
+        "iconColor": "#007AFF"
+      },
+      {
+        "id": "networks-header",
+        "type": "section-header",
+        "frame": {
+          "x": 0.05,
+          "y": 0.17,
+          "w": 0.9,
+          "h": 0.03
+        },
+        "title": "Networks"
+      },
+      {
+        "id": "network-list",
+        "type": "list",
+        "frame": {
+          "x": 0.05,
+          "y": 0.21,
+          "w": 0.9,
+          "h": 0.4
+        },
+        "rows": [
+          {
+            "id": "net-home",
+            "title": "HomeWiFi",
+            "subtitle": "Connected",
+            "icon": "wifi",
+            "iconColor": "#007AFF",
+            "checkmark": true,
+            "infoButton": true,
+            "destination": "settings-wifi-detail"
+          },
+          {
+            "id": "net-office",
+            "title": "Office-5G",
+            "subtitle": "",
+            "icon": "wifi",
+            "iconColor": "#007AFF",
+            "infoButton": true,
+            "destination": "settings-wifi-detail"
+          },
+          {
+            "id": "net-guest",
+            "title": "Guest Network",
+            "subtitle": "",
+            "icon": "wifi",
+            "iconColor": "#007AFF",
+            "infoButton": true,
+            "destination": "settings-wifi-detail"
+          }
+        ]
+      },
+      {
+        "id": "other-network",
+        "type": "button",
+        "frame": {
+          "x": 0.05,
+          "y": 0.63,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "label": "Other...",
+        "style": "plain",
+        "icon": "plus.circle"
+      },
+      {
+        "id": "ask-to-join",
+        "type": "toggle-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.72,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "title": "Ask to Join Networks",
+        "value": true
+      },
+      {
+        "id": "auto-join-hotspot",
+        "type": "toggle-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.79,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "title": "Auto-Join Hotspot",
+        "value": false
+      }
+    ],
+    "gestures": [
+      {
+        "from": "network-row",
+        "action": "connect-or-detail"
+      },
+      {
+        "from": "info-button",
+        "action": "tap",
+        "opens": "settings-wifi-detail"
+      }
+    ]
+  }
+}

@@ -1,0 +1,145 @@
+{
+  "_spec_section": "2.7 spotlight.json",
+  "_spec_line": 760,
+  "screen": {
+    "screen": "spotlight",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 60,
+        "alpha": 0.9
+      },
+      {
+        "id": "search-field",
+        "type": "search-bar",
+        "frame": {
+          "x": 0.08,
+          "y": 0.12,
+          "w": 0.84,
+          "h": 0.07
+        },
+        "placeholder": "Search",
+        "cornerRadiusPt": 14,
+        "material": "liquidGlassRegular",
+        "icon": "magnifyingglass",
+        "font": "body",
+        "size": 17
+      },
+      {
+        "id": "siri-suggestions",
+        "type": "list",
+        "frame": {
+          "x": 0.08,
+          "y": 0.22,
+          "w": 0.84,
+          "h": 0.15
+        },
+        "title": "Siri Suggestions",
+        "rows": [
+          {
+            "id": "siri-1",
+            "title": "Messages",
+            "subtitle": "Alex Chen",
+            "icon": "message.fill",
+            "iconColor": "#34C759"
+          },
+          {
+            "id": "siri-2",
+            "title": "Safari",
+            "subtitle": "apple.com",
+            "icon": "safari.fill",
+            "iconColor": "#007AFF"
+          },
+          {
+            "id": "siri-3",
+            "title": "Music",
+            "subtitle": "Recently played",
+            "icon": "music.note",
+            "iconColor": "#FF2D55"
+          }
+        ]
+      },
+      {
+        "id": "recent-searches",
+        "type": "list",
+        "frame": {
+          "x": 0.08,
+          "y": 0.4,
+          "w": 0.84,
+          "h": 0.15
+        },
+        "title": "Recent",
+        "rows": [
+          {
+            "id": "recent-1",
+            "title": "Weather",
+            "icon": "clock.arrow.circlepath"
+          },
+          {
+            "id": "recent-2",
+            "title": "Calendar",
+            "icon": "clock.arrow.circlepath"
+          }
+        ]
+      },
+      {
+        "id": "app-results",
+        "type": "list",
+        "frame": {
+          "x": 0.08,
+          "y": 0.58,
+          "w": 0.84,
+          "h": 0.35
+        },
+        "title": "Applications",
+        "rows": [
+          {
+            "id": "app-1",
+            "title": "Messages",
+            "icon": "message.fill",
+            "iconColor": "#34C759",
+            "destination": "com.android.messaging"
+          },
+          {
+            "id": "app-2",
+            "title": "Safari",
+            "icon": "safari.fill",
+            "iconColor": "#007AFF",
+            "destination": "com.android.browser"
+          },
+          {
+            "id": "app-3",
+            "title": "Photos",
+            "icon": "photo.fill",
+            "iconColor": "#FF9500",
+            "destination": "com.android.gallery3d"
+          },
+          {
+            "id": "app-4",
+            "title": "Settings",
+            "icon": "gear",
+            "iconColor": "#8E8E93",
+            "destination": "com.android.settings"
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "search-field",
+        "action": "filter-results"
+      },
+      {
+        "from": "result-row",
+        "action": "open-item"
+      }
+    ]
+  }
+}

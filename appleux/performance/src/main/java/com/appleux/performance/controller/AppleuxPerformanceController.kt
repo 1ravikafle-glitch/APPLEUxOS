@@ -1,10 +1,12 @@
 package com.appleux.performance.controller
 
 import android.content.Context
+import android.hardware.display.DisplayManager
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
 import android.view.Choreographer
+import com.appleux.device.rock.RockDisplayProfile
 import com.appleux.performance.monitor.FrameTimeMonitor
 import com.appleux.performance.monitor.PressureMonitor
 import com.appleux.performance.quality.AppleuxQualityLevel
@@ -37,6 +39,14 @@ class AppleuxPerformanceController private constructor() {
     private val frameMonitor = FrameTimeMonitor()
     private val pressureMonitor = PressureMonitor()
 
+    /**
+     * The APPLICATION context, used only to read the live display refresh
+     * rate. Held as the application context, never an Activity, so it cannot
+     * outlive one or keep a window alive.
+     */
+    @Volatile
+    private var appContext: Context? = null
+
     @Volatile
     private var currentLevel: MonitoringLevel = MonitoringLevel.LEVEL_0_NORMAL
     @Volatile
@@ -57,6 +67,14 @@ class AppleuxPerformanceController private constructor() {
         private set
 
     private val mainHandler = Handler(Looper.getMainLooper())
+
+    /**
+     * Live display-mode watcher. Held so it can be unregistered on stop; a
+     * controller is a process singleton, so leaking one registration would
+     * mean a Context-free listener surviving forever.
+     */
+    @Volatile
+    private var displayListener: DisplayManager.DisplayListener? = null
 
     private var executor: java.util.concurrent.ScheduledExecutorService? = null
     private var monitorFuture: ScheduledFuture<*>? = null
@@ -135,6 +153,16 @@ class AppleuxPerformanceController private constructor() {
         if (started) return
         started = true
 
+        // Read the refresh rate BEFORE the first frame is judged. The POCO M5
+        // panel drives 60 Hz or 90 Hz, so a monitor left on 60 Hz thresholds
+        // would call a 13 ms frame good on a 90 Hz surface. Re-read on every
+        // start because the panel can have switched mode while the controller
+        // was stopped.
+        frameMonitor.setRefreshRate(
+            appContext?.let { RockDisplayProfile.currentRefreshRateHz(it) }
+                ?: FrameTimeMonitor.FrameBudget60_HZ
+        )
+
         val now = SystemClock.elapsedRealtime()
         qualityChangeTimeMs = now
         levelEscalationTimeMs = now
@@ -147,6 +175,42 @@ class AppleuxPerformanceController private constructor() {
 
         postNextFrame()
         scheduleTick(MONITOR_INTERVAL_MS)
+        registerDisplayListener()
+    }
+
+    /**
+     * Watches for the panel switching between 60 Hz and 90 Hz.
+     *
+     * The rock panel changes mode on its own (adaptive refresh), so reading the
+     * rate once at start() is not enough: without this the budget would stay
+     * on the rate the panel happened to be in when the controller started.
+     */
+    private fun registerDisplayListener() {
+        val ctx = appContext ?: return
+        if (displayListener != null) return
+        val dm = ctx.getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager ?: return
+        val listener = object : DisplayManager.DisplayListener {
+            override fun onDisplayAdded(displayId: Int) = Unit
+            override fun onDisplayRemoved(displayId: Int) = Unit
+            override fun onDisplayChanged(displayId: Int) {
+                // Delivered on the handler passed to registerDisplayListener
+                // (the main looper here). The post inside is only there
+                // because start() can be called from a background thread.
+                mainHandler.post { refreshFrameBudget() }
+            }
+        }
+        runCatching { dm.registerDisplayListener(listener, mainHandler) }
+            .onSuccess { displayListener = listener }
+            .onFailure { displayListener = null }
+    }
+
+    /**
+     * Re-reads the live refresh rate and re-derives the thresholds. Safe to
+     * call at any time: the monitor ignores a rate it is already on.
+     */
+    fun refreshFrameBudget() {
+        val ctx = appContext ?: return
+        frameMonitor.setRefreshRate(RockDisplayProfile.currentRefreshRateHz(ctx))
     }
 
     fun stop() {
@@ -163,6 +227,12 @@ class AppleuxPerformanceController private constructor() {
         } catch (e: IllegalStateException) {
             // no Looper; nothing to remove
         }
+
+        displayListener?.let { listener ->
+            val dm = appContext?.getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager
+            runCatching { dm?.unregisterDisplayListener(listener) }
+        }
+        displayListener = null
 
         recoveryStartConditionTimeMs = 0L
     }
@@ -274,7 +344,7 @@ class AppleuxPerformanceController private constructor() {
         val hasGpuPressure = pressureMonitor.gpuUtilization > 90f
         val hasMemPressure = pressureMonitor.memoryPressure > 85f || pressureMonitor.psiMemory > 50f
         val hasIoPressure = pressureMonitor.ioWait > 30f || pressureMonitor.psiIo > 50f
-        val framesLate = frameMonitor.averageFrameTimeMs > TARGET_FRAME_TIME_MS
+        val framesLate = frameMonitor.averageFrameTimeMs > frameMonitor.nominalFrameMs
 
         val newState = when {
             thermal == PressureMonitor.ThermalState.SEVERE -> BottleneckState.THERMAL_BOUND
@@ -351,7 +421,7 @@ class AppleuxPerformanceController private constructor() {
         // A cold window must not be read as stability.
         if (!frameMonitor.hasMinimumSample) return
 
-        val performanceStable = frameMonitor.averageFrameTimeMs <= GOOD_FRAME_TIME_MS &&
+        val performanceStable = frameMonitor.averageFrameTimeMs <= frameMonitor.goodFrameMs &&
             frameMonitor.windowJankCount == 0 &&
             frameMonitor.windowSevereJankCount == 0 &&
             !pressureMonitor.hasSeverePressure()
@@ -575,6 +645,14 @@ class AppleuxPerformanceController private constructor() {
     fun getPressureMonitor(): PressureMonitor = pressureMonitor
 
     companion object {
+        // Frame-time thresholds are no longer constants here. They are derived
+        // from the panel's ACTUAL refresh rate by FrameTimeMonitor.setRefreshRate
+        // (1000/Hz, good = 0.84x, severe = 1.20x) and read back live through
+        // frameMonitor.nominalFrameMs / goodFrameMs / severeFrameMs.
+        //
+        // These three remain only as the documented 60 Hz values, for anything
+        // that needs a compile-time number (a settings readout's "target").
+        // Nothing in the policy engine reads them.
         const val TARGET_FRAME_TIME_MS: Float = 16.67f
         const val GOOD_FRAME_TIME_MS: Float = 14f
         const val SEVERE_FRAME_TIME_MS: Float = 20f
@@ -628,10 +706,13 @@ class AppleuxPerformanceController private constructor() {
 
         fun getInstance(context: Context?): AppleuxPerformanceController {
             return instance ?: synchronized(this) {
-                // Deliberately holds no Context: a controller that outlives its
-                // Activity must not hold one. Callers pass Context for source
-                // compatibility only.
-                instance ?: AppleuxPerformanceController().also { instance = it }
+                instance ?: AppleuxPerformanceController().also {
+                    // Only ever the APPLICATION context, and only to read the
+                    // display's live refresh rate. Holding an Activity here
+                    // would keep a window alive for the process's lifetime.
+                    it.appContext = context?.applicationContext
+                    instance = it
+                }
             }
         }
     }

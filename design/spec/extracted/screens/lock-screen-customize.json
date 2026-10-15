@@ -1,0 +1,158 @@
+{
+  "_spec_section": "1.8 lock-screen-customize.json",
+  "_spec_line": 312,
+  "screen": {
+    "screen": "lock-screen-customize",
+    "elements": [
+      {
+        "id": "blur",
+        "type": "blur",
+        "blurRadiusProvenance": "AppleUX-CHOSEN (C06). The Figma GLASS effect does not expose its radius over REST and Apple publishes no numeric spec for Liquid Glass. This value is ours; tune it per surface against the real Mali-G57 GPU.",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 50
+      },
+      {
+        "id": "preview",
+        "type": "container",
+        "frame": {
+          "x": 0.1,
+          "y": 0.08,
+          "w": 0.8,
+          "h": 0.55
+        },
+        "cornerRadiusPt": 22,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "preview-clock",
+            "type": "text",
+            "text": "9:41",
+            "frame": {
+              "x": 0.1,
+              "y": 0.15,
+              "w": 0.8,
+              "h": 0.2
+            },
+            "font": "largeTitle",
+            "size": 72,
+            "weight": "bold",
+            "textAlign": "center",
+            "color": "#FFFFFF"
+          },
+          {
+            "id": "preview-date",
+            "type": "text",
+            "text": "Monday, October 15",
+            "frame": {
+              "x": 0.1,
+              "y": 0.4,
+              "w": 0.8,
+              "h": 0.04
+            },
+            "font": "headline",
+            "textAlign": "center",
+            "color": "#FFFFFF"
+          },
+          {
+            "id": "preview-widgets",
+            "type": "widget-zone",
+            "frame": {
+              "x": 0.1,
+              "y": 0.5,
+              "w": 0.8,
+              "h": 0.35
+            }
+          }
+        ]
+      },
+      {
+        "id": "font-picker",
+        "type": "scroll-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.68,
+          "w": 0.9,
+          "h": 0.08
+        },
+        "title": "Font",
+        "items": [
+          "SF Pro",
+          "SF Pro Rounded",
+          "SF Pro Serif",
+          "New York",
+          "Monospaced"
+        ],
+        "selected": "SF Pro"
+      },
+      {
+        "id": "color-picker",
+        "type": "scroll-row",
+        "frame": {
+          "x": 0.05,
+          "y": 0.78,
+          "w": 0.9,
+          "h": 0.08
+        },
+        "title": "Color",
+        "items": [
+          "#FFFFFF",
+          "#FF3B30",
+          "#007AFF",
+          "#34C759",
+          "#FF9500",
+          "#AF52DE"
+        ],
+        "selected": "#FFFFFF"
+      },
+      {
+        "id": "widget-editor",
+        "type": "button",
+        "frame": {
+          "x": 0.05,
+          "y": 0.88,
+          "w": 0.4,
+          "h": 0.05
+        },
+        "label": "Edit Widgets",
+        "style": "gray",
+        "icon": "plus.circle"
+      },
+      {
+        "id": "done",
+        "type": "button",
+        "frame": {
+          "x": 0.55,
+          "y": 0.88,
+          "w": 0.4,
+          "h": 0.05
+        },
+        "label": "Done",
+        "style": "prominent"
+      }
+    ],
+    "gestures": [
+      {
+        "from": "font-picker",
+        "action": "change-font"
+      },
+      {
+        "from": "color-picker",
+        "action": "change-color"
+      },
+      {
+        "from": "widget-editor",
+        "action": "tap",
+        "opens": "lock-screen-widget-editor"
+      },
+      {
+        "from": "done",
+        "action": "save-and-dismiss"
+      }
+    ]
+  }
+}

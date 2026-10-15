@@ -1,0 +1,388 @@
+{
+  "_spec_section": "2.1 home.json",
+  "_spec_line": 540,
+  "screen": {
+    "screen": "home",
+    "elements": [
+      {
+        "id": "wallpaper",
+        "type": "image",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        }
+      },
+      {
+        "id": "status-bar",
+        "type": "status-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.054
+        }
+      },
+      {
+        "id": "dynamic-island",
+        "type": "dynamic-island",
+        "frame": {
+          "x": 0.35,
+          "y": 0.013,
+          "w": 0.3,
+          "h": 0.039
+        }
+      },
+      {
+        "id": "widget-area",
+        "type": "widget-zone",
+        "frame": {
+          "x": 0.054,
+          "y": 0.085,
+          "w": 0.892,
+          "h": 0.17
+        },
+        "notes": "Widgets placed here; can be small/medium/large/extra-large"
+      },
+      {
+        "id": "app-grid",
+        "type": "grid",
+        "frame": {
+          "x": 0.054,
+          "y": 0.28,
+          "w": 0.892,
+          "h": 0.55
+        },
+        "gridColumns": 4,
+        "gridRows": 6,
+        "iconSize": 60,
+        "iconSpacingX": 22,
+        "iconSpacingY": 18,
+        "freePlacement": true,
+        "children": [
+          {
+            "id": "app-messages",
+            "type": "app-icon",
+            "position": {
+              "col": 0,
+              "row": 0
+            },
+            "label": "Messages",
+            "icon": "message.fill",
+            "color": "#34C759"
+          },
+          {
+            "id": "app-safari",
+            "type": "app-icon",
+            "position": {
+              "col": 1,
+              "row": 0
+            },
+            "label": "Safari",
+            "icon": "safari.fill",
+            "color": "#007AFF"
+          },
+          {
+            "id": "app-photos",
+            "type": "app-icon",
+            "position": {
+              "col": 2,
+              "row": 0
+            },
+            "label": "Photos",
+            "icon": "photo.fill",
+            "color": "#FF9500"
+          },
+          {
+            "id": "app-camera",
+            "type": "app-icon",
+            "position": {
+              "col": 3,
+              "row": 0
+            },
+            "label": "Camera",
+            "icon": "camera.fill",
+            "color": "#8E8E93"
+          },
+          {
+            "id": "app-mail",
+            "type": "app-icon",
+            "position": {
+              "col": 0,
+              "row": 1
+            },
+            "label": "Mail",
+            "icon": "envelope.fill",
+            "color": "#007AFF"
+          },
+          {
+            "id": "app-phone",
+            "type": "app-icon",
+            "position": {
+              "col": 1,
+              "row": 1
+            },
+            "label": "Phone",
+            "icon": "phone.fill",
+            "color": "#34C759"
+          },
+          {
+            "id": "app-music",
+            "type": "app-icon",
+            "position": {
+              "col": 2,
+              "row": 1
+            },
+            "label": "Music",
+            "icon": "music.note",
+            "color": "#FF2D55"
+          },
+          {
+            "id": "app-calendar",
+            "type": "app-icon",
+            "position": {
+              "col": 3,
+              "row": 1
+            },
+            "label": "Calendar",
+            "icon": "calendar",
+            "color": "#FFFFFF"
+          },
+          {
+            "id": "app-clock",
+            "type": "app-icon",
+            "position": {
+              "col": 0,
+              "row": 2
+            },
+            "label": "Clock",
+            "icon": "clock.fill",
+            "color": "#000000"
+          },
+          {
+            "id": "app-weather",
+            "type": "app-icon",
+            "position": {
+              "col": 1,
+              "row": 2
+            },
+            "label": "Weather",
+            "icon": "cloud.sun.fill",
+            "color": "#007AFF"
+          },
+          {
+            "id": "app-maps",
+            "type": "app-icon",
+            "position": {
+              "col": 2,
+              "row": 2
+            },
+            "label": "Maps",
+            "icon": "map.fill",
+            "color": "#34C759"
+          },
+          {
+            "id": "app-notes",
+            "type": "app-icon",
+            "position": {
+              "col": 3,
+              "row": 2
+            },
+            "label": "Notes",
+            "icon": "note.text",
+            "color": "#FFCC00"
+          },
+          {
+            "id": "app-reminders",
+            "type": "app-icon",
+            "position": {
+              "col": 0,
+              "row": 3
+            },
+            "label": "Reminders",
+            "icon": "checklist",
+            "color": "#FFFFFF"
+          },
+          {
+            "id": "app-appstore",
+            "type": "app-icon",
+            "position": {
+              "col": 1,
+              "row": 3
+            },
+            "label": "App Store",
+            "icon": "app.badge",
+            "color": "#007AFF"
+          },
+          {
+            "id": "app-settings",
+            "type": "app-icon",
+            "position": {
+              "col": 2,
+              "row": 3
+            },
+            "label": "Settings",
+            "icon": "gear",
+            "color": "#8E8E93"
+          },
+          {
+            "id": "app-wallet",
+            "type": "app-icon",
+            "position": {
+              "col": 3,
+              "row": 3
+            },
+            "label": "Wallet",
+            "icon": "creditcard.fill",
+            "color": "#000000"
+          },
+          {
+            "id": "app-health",
+            "type": "app-icon",
+            "position": {
+              "col": 0,
+              "row": 4
+            },
+            "label": "Health",
+            "icon": "heart.fill",
+            "color": "#FF2D55"
+          },
+          {
+            "id": "app-fitness",
+            "type": "app-icon",
+            "position": {
+              "col": 1,
+              "row": 4
+            },
+            "label": "Fitness",
+            "icon": "figure.walk",
+            "color": "#000000"
+          },
+          {
+            "id": "app-files",
+            "type": "app-icon",
+            "position": {
+              "col": 2,
+              "row": 4
+            },
+            "label": "Files",
+            "icon": "folder.fill",
+            "color": "#007AFF"
+          },
+          {
+            "id": "app-podcasts",
+            "type": "app-icon",
+            "position": {
+              "col": 3,
+              "row": 4
+            },
+            "label": "Podcasts",
+            "icon": "mic.fill",
+            "color": "#AF52DE"
+          }
+        ]
+      },
+      {
+        "id": "dock",
+        "type": "dock",
+        "frame": {
+          "x": 0.044,
+          "y": 0.89,
+          "w": 0.912,
+          "h": 0.1
+        },
+        "background": "liquidGlassRegular",
+        "cornerRadius": 34,
+        "children": [
+          {
+            "id": "dock-phone",
+            "type": "app-icon",
+            "label": "Phone",
+            "icon": "phone.fill",
+            "color": "#34C759"
+          },
+          {
+            "id": "dock-safari",
+            "type": "app-icon",
+            "label": "Safari",
+            "icon": "safari.fill",
+            "color": "#007AFF"
+          },
+          {
+            "id": "dock-messages",
+            "type": "app-icon",
+            "label": "Messages",
+            "icon": "message.fill",
+            "color": "#34C759"
+          },
+          {
+            "id": "dock-music",
+            "type": "app-icon",
+            "label": "Music",
+            "icon": "music.note",
+            "color": "#FF2D55"
+          }
+        ]
+      },
+      {
+        "id": "page-dots",
+        "type": "indicator",
+        "frame": {
+          "x": 0.4,
+          "y": 0.855,
+          "w": 0.2,
+          "h": 0.006
+        },
+        "count": 2,
+        "activeIndex": 0,
+        "dotSize": 6,
+        "spacing": 6
+      },
+      {
+        "id": "home-indicator",
+        "type": "indicator",
+        "frame": {
+          "x": 0.35,
+          "y": 0.978,
+          "w": 0.3,
+          "h": 0.005
+        },
+        "cornerRadiusPt": 3,
+        "color": "#FFFFFF",
+        "opacity": 0.9
+      }
+    ],
+    "gestures": [
+      {
+        "from": "bottom-edge",
+        "action": "swipe-up",
+        "opens": "app-switcher"
+      },
+      {
+        "from": "top-left",
+        "action": "swipe-down",
+        "opens": "notification-center"
+      },
+      {
+        "from": "top-right",
+        "action": "swipe-down",
+        "opens": "quick-settings"
+      },
+      {
+        "from": "app-icon",
+        "action": "long-press",
+        "opens": "home-app-context-menu"
+      },
+      {
+        "from": "app-icon",
+        "action": "launch-app"
+      },
+      {
+        "from": "wallpaper",
+        "action": "long-press",
+        "opens": "home-edit-jiggle"
+      }
+    ]
+  }
+}

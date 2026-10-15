@@ -1,0 +1,93 @@
+{
+  "_spec_section": "11.1 messages-thread-list.json",
+  "_spec_line": 2091,
+  "screen": {
+    "screen": "messages-thread-list",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Messages",
+        "largeTitle": true,
+        "trailingButton": "square.and.pencil"
+      },
+      {
+        "id": "search",
+        "type": "search-bar",
+        "frame": {
+          "x": 0.05,
+          "y": 0.1,
+          "w": 0.9,
+          "h": 0.05
+        },
+        "placeholder": "Search",
+        "cornerRadiusPt": 10,
+        "material": "liquidGlassRegular"
+      },
+      {
+        "id": "thread-list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.17,
+          "w": 1,
+          "h": 0.83
+        },
+        "rows": [
+          {
+            "id": "thread-1",
+            "avatar": "AC",
+            "title": "Alex Chen",
+            "preview": "Hey, how are you?",
+            "time": "9:41 AM",
+            "unread": true,
+            "bubbleColor": "#34C759",
+            "destination": "messages-thread-detail"
+          },
+          {
+            "id": "thread-2",
+            "avatar": "SR",
+            "title": "Sam Rivera",
+            "preview": "See you tomorrow!",
+            "time": "Yesterday",
+            "unread": false,
+            "bubbleColor": "#007AFF",
+            "destination": "messages-thread-detail"
+          },
+          {
+            "id": "thread-3",
+            "avatar": "JL",
+            "title": "Jordan Lee",
+            "preview": "Thanks!",
+            "time": "Monday",
+            "unread": false,
+            "bubbleColor": "#FF9500",
+            "destination": "messages-thread-detail"
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "thread-row",
+        "action": "tap",
+        "opens": "messages-thread-detail"
+      },
+      {
+        "from": "thread-row",
+        "action": "delete"
+      },
+      {
+        "from": "square.and.pencil",
+        "action": "tap",
+        "opens": "messages-new"
+      }
+    ]
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "_spec_section": "9.1 settings-privacy-security.json",
+  "_spec_line": 1802,
+  "screen": {
+    "screen": "settings-privacy-security",
+    "elements": [
+      {
+        "id": "nav-bar",
+        "type": "nav-bar",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 0.09
+        },
+        "title": "Privacy & Security",
+        "backButton": "Settings"
+      },
+      {
+        "id": "list",
+        "type": "list",
+        "frame": {
+          "x": 0,
+          "y": 0.09,
+          "w": 1,
+          "h": 0.91
+        },
+        "sections": [
+          {
+            "id": "location",
+            "rows": [
+              {
+                "id": "location-services",
+                "title": "Location Services",
+                "icon": "location.fill",
+                "iconColor": "#007AFF",
+                "destination": "settings-privacy-location"
+              }
+            ]
+          },
+          {
+            "id": "tracking",
+            "rows": [
+              {
+                "id": "tracking",
+                "title": "Tracking",
+                "icon": "hand.raised.fill",
+                "iconColor": "#007AFF",
+                "destination": "settings-privacy-tracking"
+              }
+            ]
+          },
+          {
+            "id": "analytics",
+            "rows": [
+              {
+                "id": "analytics",
+                "title": "Analytics & Improvements",
+                "icon": "chart.bar.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-privacy-analytics"
+              },
+              {
+                "id": "apple-advertising",
+                "title": "Apple Advertising",
+                "icon": "megaphone.fill",
+                "iconColor": "#8E8E93",
+                "destination": "settings-privacy-apple-advertising"
+              }
+            ]
+          },
+          {
+            "id": "safety",
+            "rows": [
+              {
+                "id": "safety-check",
+                "title": "Safety Check",
+                "icon": "checkmark.shield.fill",
+                "iconColor": "#34C759",
+                "destination": "settings-privacy-safety-check"
+              },
+              {
+                "id": "lockdown-mode",
+                "title": "Lockdown Mode",
+                "icon": "lock.shield.fill",
+                "iconColor": "#FF3B30",
+                "destination": "settings-privacy-lockdown-mode"
+              }
+            ]
+          },
+          {
+            "id": "permissions",
+            "rows": [
+              {
+                "id": "app-permissions",
+                "title": "App Privacy Report",
+                "icon": "doc.text.magnifyingglass",
+                "iconColor": "#007AFF",
+                "destination": "settings-privacy-app-permissions"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "_spec_section": "19.1 dialog-alert.json",
+  "_spec_line": 2538,
+  "screen": {
+    "screen": "dialog-alert",
+    "elements": [
+      {
+        "id": "overlay",
+        "type": "blur",
+        "frame": {
+          "x": 0,
+          "y": 0,
+          "w": 1,
+          "h": 1
+        },
+        "blurRadius": 20,
+        "alpha": 0.5
+      },
+      {
+        "id": "dialog",
+        "type": "container",
+        "frame": {
+          "x": 0.15,
+          "y": 0.35,
+          "w": 0.7,
+          "h": 0.3
+        },
+        "cornerRadiusPt": 14,
+        "material": "liquidGlassRegular",
+        "children": [
+          {
+            "id": "title",
+            "type": "text",
+            "text": "Allow Access?",
+            "frame": {
+              "x": 0.05,
+              "y": 0.05,
+              "w": 0.9,
+              "h": 0.05
+            },
+            "font": "headline",
+            "size": 17,
+            "weight": "600",
+            "textAlign": "center"
+          },
+          {
+            "id": "message",
+            "type": "text",
+            "text": "This app would like to access your photos.",
+            "frame": {
+              "x": 0.05,
+              "y": 0.12,
+              "w": 0.9,
+              "h": 0.08
+            },
+            "font": "subhead",
+            "size": 15,
+            "textAlign": "center",
+            "color": "secondaryLabel"
+          },
+          {
+            "id": "buttons",
+            "type": "button-row",
+            "frame": {
+              "x": 0.05,
+              "y": 0.22,
+              "w": 0.9,
+              "h": 0.05
+            },
+            "buttons": [
+              {
+                "id": "deny",
+                "type": "button",
+                "label": "Don't Allow",
+                "style": "plain"
+              },
+              {
+                "id": "allow",
+                "type": "button",
+                "label": "Allow",
+                "style": "prominent"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "gestures": [
+      {
+        "from": "overlay",
+        "action": "dismiss"
+      },
+      {
+        "from": "allow",
+        "action": "grant-permission"
+      },
+      {
+        "from": "deny",
+        "action": "deny-permission"
+      }
+    ]
+  }
+}

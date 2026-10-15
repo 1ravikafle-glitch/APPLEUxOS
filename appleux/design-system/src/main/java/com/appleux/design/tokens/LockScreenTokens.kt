@@ -43,12 +43,12 @@ object LockScreenTokens {
     const val CLOCK_MAX_HEIGHT_FRACTION = 0.34f
 
     // ---- Date -------------------------------------------------------------
-    // "Wed Apr 1" measured at x 169..275 -> 107px wide (0.239 of width) with a
-    // 22px cap height (0.0228 of screen height). 22px on a 393pt-wide screen
-    // is ~19.3pt, which lands between Subheadline (15) and Title 3 (20); see
-    // TypographyTokens.title3, which AppleuxLockScreen uses for this line.
-    const val DATE_WIDTH_FRACTION = 0.239f
-    const val DATE_GAP_DP = 6f
+    // "Wed Apr 1" measured at x 169..275 -> 107px wide (0.239 of screen width)
+    // with a 22px cap height (0.0228 of screen height). 22px on a 393pt-wide
+    // screen is ~19.3pt, which lands between Subheadline (15) and Title 3 (20);
+    // AppleuxLockScreen uses TypographyTokens.title3 for this line, so the
+    // closest transcribed HIG style is the type source rather than a
+    // hardcoded 19.3f.
 
     // ---- Bottom corner buttons -------------------------------------------
     // The two circular glass controls. The cleanest connected component in the
@@ -57,17 +57,14 @@ object LockScreenTokens {
     //
     // Inset: the button's outer edge sits 447 - 389 = 58px from the right edge
     // (0.130 of width); the left button's centre measured x 82.5 with a 27px
-    // radius, giving the same ~55px inset. Expressed in dp against the same
-    // 393pt reference the screenshot's proportions imply.
+    // radius, giving the same ~55px inset.
+    //
+    // Vertical placement (measured centre y 880 of 965 = 0.912 of screen
+    // height) is deliberately NOT a token: the row is anchored to the bottom
+    // inset instead, which is both more correct across devices with different
+    // home indicators and one less constant to keep in sync.
     const val BUTTON_DIAMETER_DP = 48f
     const val BUTTON_INSET_DP = 48f
-
-    /**
-     * Where the buttons sit vertically: measured centre y 880 of 965 = 0.912.
-     * Expressed as a fraction because it is measured relative to screen height,
-     * which differs far more between devices than screen width does.
-     */
-    const val BUTTON_CENTER_Y_FRACTION = 0.912f
 
     /** Minimum clear space under the button row before the home indicator. */
     const val BUTTON_ROW_BOTTOM_CLEARANCE_DP = 12f
@@ -94,11 +91,4 @@ object LockScreenTokens {
 
     /** Date sits one step down from the clock but stays clearly readable. */
     const val DATE_FILL_ALPHA = 0xD0 // ~82%
-
-    /**
-     * Home indicator: measured x 144..302 (159px = 0.356 of width), 5px tall,
-     * centred, 7-11px above the bottom edge.
-     */
-    const val HOME_INDICATOR_WIDTH_FRACTION = 0.356f
-    const val HOME_INDICATOR_HEIGHT_DP = 5f
 }

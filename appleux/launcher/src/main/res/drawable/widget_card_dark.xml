@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Dark widget card.
+
+  PROVENANCE:
+   - Fill #CC1C1C1E is AppleUX-chosen (iOS "systemThickDark"-family grouped
+     background), unchanged from what shipped.
+   - The 1dp rim is PROTOTYPE-DERIVED: IOSLikeROM draws every glass element
+     with a highlight rim (theme/GlassTheme.kt `Glass.stroke = #59FFFFFF`,
+     theme/LiquidGlass.kt `onDrawSurface`). That rim is the part of the glass
+     treatment that survives RemoteViews — a widget host view cannot take a
+     RenderEffect — so the card gets the rim even though it keeps a flat fill.
+   - Corner radius is 34dp, NOT the 28dp this shipped with and NOT the 30dp the
+     prototype drew: LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP, transcribed
+     from the iOS 27 Figma kit's Regular Liquid Glass material. The widget card
+     is a Regular glass material, so it takes the Regular radius.
+   RemoteViews cannot express a superellipse corner; only the icon path and
+   in-app glass surfaces use AppleuxSuperellipse.
+-->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <corners android:radius="28dp" />
+    <corners android:radius="34dp" />
     <solid android:color="#CC1C1C1E" />
+    <stroke
+        android:width="1dp"
+        android:color="#59FFFFFF" />
 </shape>
