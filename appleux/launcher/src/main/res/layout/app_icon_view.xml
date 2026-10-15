@@ -3,16 +3,17 @@
   One home-screen / dock app cell.
 
   ICON: 56dp is LauncherTokens.HOME_ICON_SIZE_DP, derived in that file from
-  the MEASURED 1080x2408 @ effective-430dpi frame at 5 columns
-  (56dp icon in a 72.38dp cell, 0.774 ratio — under the 0.81 merge limit).
-  bind() sets it programmatically, so this is only the preview value.
+  our ROM's frame (1080x2408 @ 440dpi, 5 columns: 56dp icon in a 70.55dp
+  cell, 0.794 ratio — under the 0.81 merge limit). bind() sets it
+  programmatically, so this is only the preview value.
 
   LABEL 12sp: the prototype used 12sp for its glass caption
   (IOSLikeROM theme/GlassTheme.kt `Glass.caption`), which is also the HIG
   Caption 1 size we already carry in TypographyTokens.caption1. It shipped at
   10sp, which is too small to survive five columns: at 12sp the longest common
-  label ("Calculator") sets at ~66dp inside a 72.38dp cell, so nothing
-  truncates.
+  label ("Calculator") sets at ~66dp inside a 70.55dp cell — 4.5dp of slack,
+  tight but it truncates nothing. If labels ever truncate on-device, that
+  slack is the first suspect.
 
   LABEL COLOUR #B3FFFFFF + shadow: prototype-derived. IOSLikeROM's
   `Glass.labelDim` is #B3FFFFFF, used for exactly this reason — 70% white

@@ -25,9 +25,9 @@ import android.provider.MediaStore
  *  1. an explicit package-name allowlist per slot, in preference order;
  *  2. an exact, case-insensitive app-LABEL match;
  *  3. the platform's own "user's default app" resolution for that role
- *     (ACTION_DIAL / ACTION_SENDTO smsto: / ACTION_VIEW https / camera),
- *     which is what IOSLikeROM's `AppRepo.dock()` does and is still not
- *     positional;
+ *     (ACTION_DIAL / ACTION_VIEW https / ACTION_SENDTO smsto: / ACTION_VIEW
+ *     audio), which is what IOSLikeROM's `AppRepo.dock()` does and is still
+ *     not positional;
  *  4. only if all three fail, the first remaining app — and that is recorded
  *     so the choice is stable from then on.
  *
@@ -36,10 +36,11 @@ import android.provider.MediaStore
  * unless the user explicitly resets, so an app being uninstalled later cannot
  * reshuffle the dock behind their back: the slot is emptied, not refilled.
  *
- * PROVENANCE: the four default slots and the role intents are **prototype-
- * derived** from IOSLikeROM `launcher/AppRepo.kt` (`dock()`), whose README
- * states "Dock = your default phone, messages, browser and camera apps". The
- * package allowlists and the persistence mechanism are ours.
+ * PROVENANCE: slot ORDER (dial, browser, message, music) and the music slot
+ * are Apple-measured — SB_DefaultIconState~iphone.plist `buttonBar`. The
+ * resolve-by-identity mechanism is prototype-derived (IOSLikeROM
+ * `launcher/AppRepo.kt` `dock()`); the package allowlists and persistence
+ * are ours.
  */
 class DockPreferences(context: Context) {
 
@@ -130,7 +131,10 @@ class DockPreferences(context: Context) {
             ROLE_DIAL -> Intent(Intent.ACTION_DIAL)
             ROLE_MESSAGE -> Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:"))
             ROLE_BROWSER -> Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com"))
-            ROLE_CAMERA -> Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA)
+            ROLE_MUSIC -> Intent(
+                Intent.ACTION_VIEW,
+                android.provider.MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            )
             else -> null
         }
         intent?.let {
@@ -153,16 +157,19 @@ class DockPreferences(context: Context) {
         private const val NONE = "\u0000"
 
         const val ROLE_DIAL = 0
-        const val ROLE_MESSAGE = 1
-        const val ROLE_BROWSER = 2
-        const val ROLE_CAMERA = 3
+        const val ROLE_BROWSER = 1
+        const val ROLE_MESSAGE = 2
+        const val ROLE_MUSIC = 3
 
         /**
-         * PROVENANCE: the four roles are prototype-derived (see the class
-         * header). The package allowlists are AppleUX-chosen and ordered by
-         * confidence: the AOSP/Google defaults first, then the common
-         * OEM-replacement packages. They are matched as whole package names —
-         * never as a prefix, and never by list position.
+         * PROVENANCE: slot order AND slot 4 are Apple-measured, from
+         * SB_DefaultIconState~iphone.plist (`buttonBar`): com.apple.mobilephone,
+         * com.apple.mobilesafari, com.apple.MobileSMS, com.apple.Music. An
+         * earlier revision had message/browser swapped and a CAMERA slot;
+         * iOS carries no camera in the dock (camera is a lock-screen
+         * shortcut, which we also have). The package allowlists remain
+         * AppleUX-chosen (AOSP/Google defaults, OEM replacements, whole-name
+         * matches only).
          */
         private val DEFAULT_SLOTS = listOf(
             SlotSpec(
@@ -174,16 +181,6 @@ class DockPreferences(context: Context) {
                     "com.s.android.dialer",
                     "com.miui.player",
                     "com.android.incallui"
-                )
-            ),
-            SlotSpec(
-                ROLE_MESSAGE, "Messages",
-                listOf(
-                    "com.google.android.apps.messaging",
-                    "com.android.mms",
-                    "com.android.mms.service",
-                    "com.samsung.android.messaging",
-                    "com.miui.msghandle"
                 )
             ),
             SlotSpec(
@@ -200,13 +197,22 @@ class DockPreferences(context: Context) {
                 )
             ),
             SlotSpec(
-                ROLE_CAMERA, "Camera",
+                ROLE_MESSAGE, "Messages",
                 listOf(
-                    "com.android.camera",
-                    "com.android.camera2",
-                    "com.miui.camera",
-                    "com.huawei.camera",
-                    "com.oneplus.camera"
+                    "com.google.android.apps.messaging",
+                    "com.android.mms",
+                    "com.android.mms.service",
+                    "com.samsung.android.messaging",
+                    "com.miui.msghandle"
+                )
+            ),
+            // Music, not Camera: Apple's fourth dock slot is com.apple.Music.
+            SlotSpec(
+                ROLE_MUSIC, "Music",
+                listOf(
+                    "com.android.music",
+                    "com.google.android.music",
+                    "com.miui.player"
                 )
             )
         )
