@@ -149,7 +149,8 @@ CORRECTIONS = [
      '"source": "MEASURED. 1080x2408 px at the EFFECTIVE density 430 dpi (HyperOS '
      'overrides the panel\'s 440), so 2.6875 -> 401.9 x 896.0 dp. Read live at '
      'runtime via device-support/rock/RockDisplayProfile.kt. At 440 with no '
-     'override it would be 392.7 x 875.6 dp. Refresh 30/60/90 Hz."}',
+     'override it would be 392.7 x 875.6 dp. Refresh 60/90 Hz switchable, '\
+     'operator-confirmed."}',
 
      "411x916 is an iPhone figure and is 9.6 dp wider than this panel. The earlier\n"
      "revision used 411.43 x 914.29, derived from a wrong 2400/420 assumption."),

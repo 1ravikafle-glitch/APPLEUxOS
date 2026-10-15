@@ -4,23 +4,22 @@ package com.appleux.device.rock
  * The per-frame budget, derived from the panel's ACTUAL refresh rate instead of
  * from a hardcoded 60 Hz.
  *
- * WHY — the rock panel (POCO M5, Helio G99) drives **30, 60 or 90 Hz**
- * (po.co / GSMArena list all three; the rate switches with power mode and the
- * ambient light sensor). Every threshold in the adaptive performance
- * controller was expressed in absolute milliseconds derived from 60 Hz, which
- * means that on a 90 Hz panel the controller was calling a frame that took
- * 13 ms "good" when it had already blown through the 11.11 ms deadline — a
- * quarter of a second of jank per panel-second shipped as "smooth". The same
- * error is much larger at 30 Hz, where the real deadline is 33.3 ms.
+ * WHY — the rock panel (POCO M5, Helio G99) switches between **60 Hz and
+ * 90 Hz** (operator-confirmed on the physical unit, 2026-10-15). Every
+ * threshold in the adaptive performance controller was expressed in absolute
+ * milliseconds derived from 60 Hz, which means that on a 90 Hz panel the
+ * controller was calling a frame that took 13 ms "good" when it had already
+ * blown through the 11.11 ms deadline — a quarter of a second of jank per
+ * panel-second shipped as "smooth".
  *
  * DERIVATION — the ratios below are the ones already in use at 60 Hz, so
  * nothing about the 60 Hz behaviour changes:
  *
- * | threshold    | ratio to budget | 30 Hz  | 60 Hz  | 90 Hz  |
- * |--------------|-----------------|--------|--------|--------|
- * | good frame   | 0.84            | 28.00  | 14.00  | 9.33   |
- * | jank         | 1.00            | 33.33  | 16.67  | 11.11  |
- * | severe       | 1.20            | 40.00  | 20.00  | 13.33  |
+ * | threshold    | ratio to budget | 60 Hz  | 90 Hz  |
+ * |--------------|-----------------|--------|--------|
+ * | good frame   | 0.84            | 14.00  | 9.33   |
+ * | jank         | 1.00            | 16.67  | 11.11  |
+ * | severe       | 1.20            | 20.00  | 13.33  |
  *
  * 14 / 16.67 = 0.840, 20 / 16.67 = 1.1998 — so 0.84 and 1.20 reproduce the
  * documented canonical values exactly at 60 Hz and scale them at anything

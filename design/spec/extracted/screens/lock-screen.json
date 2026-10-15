@@ -8,7 +8,7 @@
       "w": 401.9,
       "h": 896.0,
       "unit": "dp",
-      "source": "MEASURED. 1080x2408 px at the EFFECTIVE density 430 dpi (HyperOS overrides the panel's 440), so 2.6875 -> 401.9 x 896.0 dp. Read live at runtime via device-support/rock/RockDisplayProfile.kt. At 440 with no override it would be 392.7 x 875.6 dp. Refresh 30/60/90 Hz."
+      "source": "MEASURED. 1080x2408 px at the EFFECTIVE density 430 dpi (HyperOS overrides the panel's 440), so 2.6875 -> 401.9 x 896.0 dp. Read live at runtime via device-support/rock/RockDisplayProfile.kt. At 440 with no override it would be 392.7 x 875.6 dp. Refresh 60/90 Hz switchable, operator-confirmed."
     },
     "elements": [
       {

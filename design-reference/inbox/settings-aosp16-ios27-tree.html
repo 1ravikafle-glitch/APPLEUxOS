@@ -1,0 +1,1655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AOSP 16 Settings — iOS 27 Design — Complete Tree</title>
+<style>
+  :root {
+    --w: 402px;
+    --h: 896px;
+    --system-background: #000000;
+    --card-bg: #1C1C1E;
+    --label: #FFFFFF;
+    --secondary-label: rgba(235,235,245,0.60);
+    --tertiary-label: rgba(235,235,245,0.30);
+    --separator: rgba(84,84,88,0.65);
+    --system-blue: #0A84FF;
+    --system-green: #30D158;
+    --system-red: #FF453A;
+    --system-orange: #FF9F0A;
+    --system-pink: #FF375F;
+    --system-purple: #BF5AF2;
+    --system-teal: #64D2FF;
+    --system-indigo: #5E5CE6;
+    --system-gray4: #3A3A3C;
+    --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: #0a0a0f; color: #e8e8ed; font-family: var(--font);
+    min-height: 100vh; padding: 24px 16px 64px;
+    display: flex; flex-direction: column; align-items: center; gap: 20px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page-info {
+    font-size: 12px; color: #8a8a95; text-align: center;
+    max-width: 640px; line-height: 1.6;
+  }
+  .page-info strong { color: #e8e8ed; }
+  .page-info code { color: #8ec07c; font-family: ui-monospace, Menlo, monospace; font-size: 11px; background: rgba(255,255,255,0.05); padding: 1px 4px; border-radius: 3px; }
+  .controls {
+    display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+    padding: 10px 14px; background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 14px;
+  }
+  .controls button {
+    font-family: var(--font); font-size: 12px; font-weight: 500;
+    padding: 8px 14px; border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(255,255,255,0.06); color: #e8e8ed;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .controls button:hover { background: rgba(255,255,255,0.12); transform: translateY(-1px); }
+  .controls button.active { background: #0A84FF; border-color: #0A84FF; color: #fff; }
+
+  /* Phone frame */
+  .phone {
+    width: calc(var(--w) + 16px);
+    height: calc(var(--h) + 16px);
+    background: #1a1a1e;
+    border-radius: 46px;
+    padding: 8px;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.06), 0 20px 60px rgba(0,0,0,0.7);
+    position: relative;
+  }
+  .screen {
+    width: var(--w);
+    height: var(--h);
+    border-radius: 38px;
+    overflow: hidden;
+    background: var(--system-background);
+    position: relative;
+  }
+  .di {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 126px; height: 46px;
+    background: #000;
+    border-radius: 0 0 22px 22px;
+    z-index: 100;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 18px 12px;
+  }
+  .di .sensor { width: 8px; height: 8px; border-radius: 50%; background: #0a0a0f; margin-bottom: 2px; }
+  .di .camera { width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #1a1a2e, #000); margin-bottom: 1px; }
+  .status-bar {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 54px;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 17px 22px 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    letter-spacing: 0.2px;
+    pointer-events: none;
+  }
+  .status-right { display: flex; align-items: center; gap: 5px; }
+
+  /* Nav bar (only when not root) */
+  .nav-bar {
+    position: absolute;
+    top: 54px; left: 0; right: 0;
+    height: 44px;
+    z-index: 80;
+    display: none;
+    align-items: center;
+    padding: 0 16px;
+    background: rgba(0,0,0,0.72);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 0.5px solid var(--separator);
+    color: var(--system-blue);
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.024em;
+  }
+  .nav-bar.shown { display: flex; }
+  .nav-bar .back {
+    display: flex; align-items: center; gap: 4px; cursor: pointer;
+  }
+  .nav-bar .back::before {
+    content: "‹";
+    font-size: 24px; font-weight: 500; line-height: 1;
+    color: var(--system-blue); margin-top: -3px;
+  }
+  .nav-bar .title {
+    position: absolute;
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 17px; font-weight: 600;
+    color: var(--label);
+    letter-spacing: -0.024em;
+    white-space: nowrap;
+  }
+
+  /* Content area — fills screen */
+  .content {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-top: 54px;
+    padding-bottom: 32px;
+    scrollbar-width: none;
+    color: var(--label);
+    z-index: 10;
+  }
+  .content::-webkit-scrollbar { display: none; }
+  .content.has-nav {
+    padding-top: 98px;
+  }
+  .large-title {
+    padding: 8px 16px 4px;
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: 0.011em;
+    color: var(--label);
+    line-height: 41px;
+  }
+  .search-wrap { padding: 6px 16px 12px; }
+  .search {
+    display: flex; align-items: center; gap: 6px;
+    height: 36px; padding: 0 8px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    color: var(--secondary-label);
+    font-size: 17px;
+    letter-spacing: -0.024em;
+  }
+  .search svg { opacity: 0.6; flex-shrink: 0; }
+
+  .section { margin: 0 16px 28px; }
+  .section-header {
+    font-size: 13px; font-weight: 400; letter-spacing: -0.006em;
+    color: var(--secondary-label);
+    padding: 0 16px 6px;
+    text-transform: uppercase;
+  }
+  .section-footer {
+    font-size: 13px; font-weight: 400; letter-spacing: -0.006em;
+    color: var(--secondary-label);
+    padding: 8px 16px 0;
+    line-height: 18px;
+  }
+  .card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .row {
+    position: relative;
+    display: flex; align-items: center;
+    min-height: 44px;
+    padding: 11px 16px;
+    cursor: pointer;
+    transition: background 0.05s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .row:active { background: rgba(255,255,255,0.06); }
+  .row.two-line { min-height: 52px; padding: 8px 16px; }
+  .row + .row::before {
+    content: ""; position: absolute;
+    top: 0; left: 57px; right: 0;
+    height: 0.5px;
+    background: var(--separator);
+  }
+  .row.no-icon + .row::before { left: 16px; }
+  .icon-sq {
+    width: 29px; height: 29px;
+    border-radius: 6.5px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; color: #fff;
+  }
+  .icon-sq svg { width: 18px; height: 18px; fill: #fff; }
+  .icon-sq.avatar {
+    width: 60px; height: 60px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, #4285F4, #EA4335, #FBBC04, #34A853);
+    font-size: 24px; font-weight: 700;
+    margin-right: 12px;
+  }
+  .row-main {
+    flex: 1; min-width: 0;
+    margin-left: 12px;
+    display: flex; flex-direction: column;
+  }
+  .row.no-icon .row-main { margin-left: 0; }
+  .row-title {
+    font-size: 17px; font-weight: 400; letter-spacing: -0.024em;
+    color: var(--label); line-height: 22px;
+  }
+  .row-title.destructive { color: var(--system-red); }
+  .row-sub {
+    font-size: 13px; font-weight: 400; letter-spacing: -0.006em;
+    color: var(--secondary-label); line-height: 18px; margin-top: 1px;
+  }
+  .row-value {
+    font-size: 17px; font-weight: 400; letter-spacing: -0.024em;
+    color: var(--secondary-label);
+    margin-left: 8px; flex-shrink: 0;
+  }
+  .chevron {
+    color: var(--tertiary-label);
+    font-size: 15px; font-weight: 600;
+    margin-left: 6px; flex-shrink: 0; line-height: 1;
+  }
+  .toggle {
+    width: 51px; height: 31px;
+    border-radius: 15.5px;
+    background: var(--system-gray4);
+    position: relative;
+    flex-shrink: 0; margin-left: 8px;
+    transition: background 0.25s;
+    cursor: pointer;
+  }
+  .toggle.on { background: var(--system-green); }
+  .toggle::after {
+    content: "";
+    position: absolute;
+    top: 2px; left: 2px;
+    width: 27px; height: 27px;
+    border-radius: 13.5px;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15), 0 1px 1px rgba(0,0,0,0.16);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .toggle.on::after { transform: translateX(20px); }
+  .slider-row { padding: 12px 16px 14px; }
+  .slider {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 4px;
+    border-radius: 2px;
+    background: var(--system-gray4);
+    outline: none;
+    margin-top: 6px;
+  }
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15), 0 1px 1px rgba(0,0,0,0.16);
+    cursor: pointer;
+  }
+  .home-indicator {
+    position: absolute;
+    bottom: 10px; left: 50%;
+    transform: translateX(-50%);
+    width: 134px; height: 5px;
+    background: #fff; opacity: 0.9;
+    border-radius: 3px;
+    z-index: 95;
+    pointer-events: none;
+  }
+  .backend-panel {
+    max-width: 640px; width: 100%;
+    background: #0a1a0a;
+    border: 1px solid #1a3a1a;
+    border-radius: 12px;
+    padding: 16px 20px;
+    font-size: 12px;
+    line-height: 1.8;
+    color: #4ade80;
+    font-family: ui-monospace, Menlo, monospace;
+    display: none;
+  }
+  .backend-panel h3 {
+    font-size: 13px; font-weight: 700;
+    color: #86efac; margin-bottom: 10px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .backend-panel table { width: 100%; border-collapse: collapse; font-size: 11.5px; }
+  .backend-panel td { padding: 3px 0; vertical-align: top; }
+  .backend-panel td:first-child { color: #6b8f6b; width: 46%; padding-right: 12px; }
+  .backend-panel td:last-child { color: #bbf7d0; }
+  .backend-panel .badge {
+    display: inline-block;
+    background: #14532d; color: #86efac;
+    font-size: 10px; padding: 1px 6px;
+    border-radius: 4px;
+    margin-right: 6px;
+    font-weight: 600;
+  }
+  .backend-panel .note { color: #6b8f6b; font-size: 11px; margin-top: 10px; font-style: italic; }
+</style>
+</head>
+<body>
+
+<div class="page-info">
+  <strong>AOSP 16 Settings</strong> · iOS 27 visual · POCO M5 (rock) · 402 × 896 dp.
+  Tap any row to navigate. Every row is wired to a real AOSP 16 backend.
+</div>
+
+<div class="controls">
+  <button id="btn-light">Light</button>
+  <button id="btn-dark" class="active">Dark</button>
+  <button id="btn-home">← Home</button>
+  <button id="btn-backend">AOSP Backend Map</button>
+</div>
+
+<div class="phone">
+  <div class="screen" id="screen">
+    <div class="di"><div class="sensor"></div><div class="camera"></div></div>
+    <div class="status-bar">
+      <div id="clock">9:41</div>
+      <div class="status-right">
+        <svg width="18" height="12" viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx="1" fill="#fff"/><rect x="5" y="6" width="3" height="6" rx="1" fill="#fff"/><rect x="10" y="3" width="3" height="9" rx="1" fill="#fff"/><rect x="15" y="0" width="3" height="12" rx="1" fill="#fff"/></svg>
+        <svg width="17" height="12" viewBox="0 0 17 12" fill="#fff"><path d="M8.5 2.5C10.8 2.5 12.9 3.4 14.5 4.9L15.8 3.6C13.9 1.7 11.3 0.5 8.5 0.5C5.7 0.5 3.1 1.7 1.2 3.6L2.5 4.9C4.1 3.4 6.2 2.5 8.5 2.5Z"/><path d="M8.5 6.5C9.9 6.5 11.2 7.1 12.1 8L13.4 6.7C12.1 5.5 10.4 4.7 8.5 4.7C6.6 4.7 4.9 5.5 3.6 6.7L4.9 8C5.8 7.1 7.1 6.5 8.5 6.5Z"/><circle cx="8.5" cy="10.5" r="1.5"/></svg>
+        <svg width="26" height="13" viewBox="0 0 26 13"><rect x="0.5" y="0.5" width="22" height="12" rx="3.5" stroke="#fff" stroke-opacity="0.5" fill="none"/><rect x="2" y="2" width="17" height="9" rx="2" fill="#fff"/><path d="M24 4.5V8.5C25 8.2 25.5 7.5 25.5 6.5C25.5 5.5 25 4.8 24 4.5Z" fill="#fff" fill-opacity="0.5"/></svg>
+      </div>
+    </div>
+    <div class="nav-bar" id="nav-bar">
+      <div class="back" id="nav-back">Settings</div>
+      <div class="title" id="nav-title"></div>
+    </div>
+    <div class="content" id="content"></div>
+    <div class="home-indicator"></div>
+  </div>
+</div>
+
+<div class="backend-panel" id="backend-panel">
+  <h3>⚙️ AOSP 16 Backend Classes</h3>
+  <table id="backend-table"></table>
+  <div class="note">Every row in the tree declares its AOSP 16 backend. Face ID &amp; Passcode kept because POCO M5 has 2D face unlock plus a side-mounted fingerprint sensor.</div>
+</div>
+
+<script>
+/* ============================================================
+   ICON LIBRARY — 24×24 SVG path strings
+   ============================================================ */
+const I = {
+  wifi: '<path d="M12 21l3-3.75a4 4 0 0 0-6 0L12 21zm0-6c1.66 0 3.14.69 4.22 1.78l1.06-1.06A7.96 7.96 0 0 0 12 13.5a7.96 7.96 0 0 0-5.28 2.22l1.06 1.06A5.96 5.96 0 0 1 12 15zm0-4c2.76 0 5.26 1.12 7.07 2.93l1.06-1.06A11.96 11.96 0 0 0 12 9.5c-3.31 0-6.31 1.34-8.49 3.51l1.06 1.06A9.96 9.96 0 0 1 12 11zm0-4c4.14 0 7.88 1.68 10.61 4.39l1.06-1.06A15.94 15.94 0 0 0 12 5.5c-4.97 0-9.45 2.02-12.67 5.28l1.06 1.06A13.96 13.96 0 0 1 12 7z"/>',
+  bluetooth: '<path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>',
+  airplane: '<path d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>',
+  cellular: '<path d="M2 20h3v-6H2v6zm5 0h3V9H7v11zm5 0h3V5h-3v15zm5 0h3V2h-3v18z"/>',
+  hotspot: '<path d="M12 2a7 7 0 0 0-7 7c0 4 3 7 3 9h8c0-2 3-5 3-9a7 7 0 0 0-7-7zm-3 18h6v2H9v-2z"/>',
+  vpn: '<path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>',
+  bell: '<path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5S10.5 3.17 10.5 4v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>',
+  speaker: '<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>',
+  moon: '<path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"/>',
+  hourglass: '<path d="M6 2v6h.01L6 8.01 10 12l-4 4 .01.01H6V22h12v-5.99h-.01L18 16l-4-4 4-3.99-.01-.01H18V2H6z"/>',
+  sun: '<path d="M20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12 20 8.69zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/>',
+  photo: '<path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>',
+  grid: '<path d="M3 3h8v8H3V3zm0 10h8v8H3v-8zm10 0h8v8h-8v-8zm0-10h8v8h-8V3z"/>',
+  accessibility: '<circle cx="12" cy="4" r="2"/><path d="M19 13v-2c-2.5 0-5-1-7-2.5C10.5 9.5 8 11 5.5 11v2c2 0 4-.5 5.5-1.5V19h2v-5h2v5h2v-7.5c1.5 1 3.5 1.5 5.5 1.5z"/>',
+  shield: '<path d="M12 2L4 6v6c0 5.55 3.84 10.74 8 12 4.16-1.26 8-6.45 8-12V6l-8-4z"/>',
+  faceid: '<path d="M9 2H4a2 2 0 0 0-2 2v5h2V4h5V2zm12 2a2 2 0 0 0-2-2h-5v2h5v5h2V4zM4 15H2v5a2 2 0 0 0 2 2h5v-2H4v-5zm16 5v-5h2v5a2 2 0 0 1-2 2h-5v-2h5zM8 10h2v2H8v-2zm6 0h2v2h-2v-2zm-3 5h2v1h-2v-1z"/>',
+  sos: '<path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 4a6 6 0 0 1 6 6h-6V6z"/>',
+  location: '<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/>',
+  lock: '<path d="M18 8h-1V6a5 5 0 0 0-10 0v2H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2zm-6 9a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm3-9H9V6a3 3 0 0 1 6 0v2z"/>',
+  gear: '<path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.49.49 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58a.49.49 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>',
+  battery: '<path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/>',
+  storage: '<path d="M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z"/>',
+  apps: '<path d="M4 4h7v7H4V4zm9 0h7v7h-7V4zM4 13h7v7H4v-7zm9 0h7v7h-7v-7z"/>',
+  account: '<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>',
+  key: '<path d="M12.65 10C11.83 7.67 9.61 6 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6c2.61 0 4.83-1.67 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>',
+  info: '<path d="M11 7h2v2h-2V7zm0 4h2v6h-2v-6zm1-9a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/>',
+  dev: '<path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>',
+  google: '<path d="M12 11v3.5h4.9c-.2 1.3-1.5 3.8-4.9 3.8-2.9 0-5.3-2.4-5.3-5.3s2.4-5.3 5.3-5.3c1.7 0 2.8.7 3.4 1.3l2.3-2.2C15.9 5.3 14.1 4.5 12 4.5 7.9 4.5 4.5 7.9 4.5 12S7.9 19.5 12 19.5c4.3 0 7.2-3 7.2-7.3 0-.5-.1-.9-.2-1.2H12z"/>',
+  reset: '<path d="M17.65 6.35A7.95 7.95 0 0 0 12 4a8 8 0 1 0 7.73 10h-2.08A6 6 0 1 1 12 6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>',
+  power: '<path d="M13 3h-2v10h2V3zm4.83 2.17l-1.42 1.42A6.92 6.92 0 0 1 19 12c0 3.87-3.13 7-7 7A6.995 6.995 0 0 1 7.58 6.58L6.17 5.17A8.932 8.932 0 0 0 3 12a9 9 0 0 0 18 0c0-2.74-1.23-5.18-3.17-6.83z"/>',
+  display: '<path d="M21 3H3c-1.11 0-2 .89-2 2v12c0 1.1.89 2 2 2h5v2h8v-2h5c1.1 0 2-.9 2-2V5c0-1.11-.9-2-2-2zm0 14H3V5h18v12z"/>',
+  gesture: '<path d="M13 5.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm4.5 4.5c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1h-1zM6.5 10c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1h-1zM12 12c-.55 0-1 .45-1 1v3c0 .55.45 1 1 1h1c.55 0 1-.45 1-1v-3c0-.55-.45-1-1-1h-1z"/>',
+  cloud: '<path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/>',
+  users: '<path d="M16 11c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3zm-8 0c1.66 0 3-1.34 3-3S9.66 5 8 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>',
+  nfc: '<path d="M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 18H4V4h16v16zM18 6h-5c-1.1 0-2 .9-2 2v2.28c-.6.35-1 .98-1 1.72 0 1.1.9 2 2 2s2-.9 2-2c0-.74-.4-1.38-1-1.72V8h3v8H8V8h2V6H6v12h12V6z"/>',
+  cast: '<path d="M21 3H3c-1.1 0-2 .9-2 2v3h2V5h18v14h-7v2h7c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM1 18v3h3c0-1.66-1.34-3-3-3zm0-4v2c2.76 0 5 2.24 5 5h2c0-3.87-3.13-7-7-7zm0-4v2c4.97 0 9 4.03 9 9h2c0-6.08-4.93-11-11-11z"/>',
+  print: '<path d="M19 8H5c-1.66 0-3 1.34-3 3v6h4v4h12v-4h4v-6c0-1.66-1.34-3-3-3zm-3 11H8v-5h8v5zm3-7c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm-1-9H6v4h12V3z"/>',
+  usb: '<path d="M15 7v4h1v2h-3V5h2l-3-4-3 4h2v8H8v-2.07c.7-.37 1.2-1.08 1.2-1.93 0-1.21-.99-2.2-2.2-2.2-1.21 0-2.2.99-2.2 2.2 0 .85.5 1.56 1.2 1.93V13c0 1.11.89 2 2 2h3v3.05c-.71.37-1.2 1.1-1.2 1.95a2.2 2.2 0 1 0 4.4 0c0-.85-.49-1.58-1.2-1.95V15h3c1.11 0 2-.89 2-2v-2h1V7h-4z"/>'
+};
+
+/* ============================================================
+   SETTINGS TREE
+   ============================================================ */
+const TREE = {
+  root: { title: 'Settings', parent: null, sections: [
+    { rows: [{ title: 'Alex Chen', sub: 'Google Account · alex.chen@gmail.com', avatar: 'A', nav: 'account' }]},
+    { rows: [
+      { title: 'Network & internet', icon: 'wifi', color: 'system-blue', value: 'Wi-Fi', nav: 'network' },
+      { title: 'Connected devices', icon: 'bluetooth', color: 'system-blue', value: '2', nav: 'devices' },
+      { title: 'Apps', icon: 'apps', color: 'system-blue', nav: 'apps' },
+      { title: 'Notifications', icon: 'bell', color: 'system-red', nav: 'notifications' },
+      { title: 'Sound & vibration', icon: 'speaker', color: 'system-pink', nav: 'sound' },
+      { title: 'Display', icon: 'sun', color: 'system-blue', nav: 'display' },
+      { title: 'Wallpaper & style', icon: 'photo', color: 'system-teal', nav: 'wallpaper' },
+      { title: 'Home screen & lock screen', icon: 'grid', color: 'system-blue', nav: 'home-screen' }
+    ]},
+    { rows: [
+      { title: 'Accessibility', icon: 'accessibility', color: 'system-blue', nav: 'accessibility' },
+      { title: 'Security & privacy', icon: 'shield', color: 'system-blue', nav: 'security' },
+      { title: 'Face ID & Passcode', icon: 'faceid', color: 'system-green', nav: 'faceid' },
+      { title: 'Location', icon: 'location', color: 'system-blue', nav: 'location' },
+      { title: 'Safety & emergency', icon: 'sos', color: 'system-red', nav: 'safety' },
+      { title: 'Passwords & accounts', icon: 'key', color: 'system-blue', nav: 'passwords' },
+      { title: 'Digital Wellbeing', icon: 'hourglass', color: 'system-indigo', nav: 'wellbeing' },
+      { title: 'Google', icon: 'google', color: 'system-blue', nav: 'google' }
+    ]},
+    { rows: [
+      { title: 'Battery', icon: 'battery', color: 'system-green', nav: 'battery' },
+      { title: 'Storage', icon: 'storage', color: 'system-gray', value: '64 GB', nav: 'storage' },
+      { title: 'Modes', icon: 'moon', color: 'system-indigo', value: 'Off', nav: 'modes' },
+      { title: 'System', icon: 'gear', color: 'system-gray', nav: 'system' },
+      { title: 'About phone', icon: 'info', color: 'system-gray', nav: 'about' }
+    ]},
+    { rows: [
+      { title: 'Reset options', icon: 'reset', color: 'system-red', nav: 'reset' },
+      { title: 'Shut down', icon: 'power', color: 'system-red' }
+    ]}
+  ]},
+  account: { title: 'Google Account', parent: 'root', sections: [
+    { rows: [
+      { title: 'Alex Chen', sub: 'alex.chen@gmail.com', avatar: 'A' },
+      { title: 'Manage your Google Account', color: 'system-blue' }
+    ]},
+    { header: 'Services', rows: [
+      { title: 'Backup', value: 'On', nav: 'backup' },
+      { title: 'Find My Device', toggle: true, on: true },
+      { title: 'Google Play Protect', value: 'On', nav: 'app-security' },
+      { title: 'Sync', value: 'On', nav: 'sync' }
+    ]},
+    { rows: [{ title: 'Remove account', destructive: true }]}
+  ]},
+  sync: { title: 'Sync', parent: 'account', sections: [{ rows: [
+    { title: 'Chrome', toggle: true, on: true }, { title: 'Contacts', toggle: true, on: true },
+    { title: 'Gmail', toggle: true, on: true }, { title: 'Calendar', toggle: true, on: true }
+  ]}]},
+  network: { title: 'Network & internet', parent: 'root', sections: [
+    { rows: [{ title: 'Airplane mode', icon: 'airplane', color: 'system-orange', toggle: true, on: false }]},
+    { header: 'Internet', rows: [
+      { title: 'Wi-Fi', icon: 'wifi', color: 'system-blue', value: 'HomeWiFi', nav: 'wifi' },
+      { title: 'Mobile network', icon: 'cellular', color: 'system-green', value: 'Jio 4G', nav: 'mobile' },
+      { title: 'Hotspot & tethering', icon: 'hotspot', color: 'system-green', value: 'Off', nav: 'hotspot' }
+    ]},
+    { rows: [
+      { title: 'VPN', icon: 'vpn', color: 'system-blue', value: 'None', nav: 'vpn' },
+      { title: 'Private DNS', value: 'Automatic', nav: 'dns' }
+    ]},
+    { rows: [{ title: 'Data Saver', toggle: true, on: false }]}
+  ]},
+  wifi: { title: 'Wi-Fi', parent: 'network', sections: [
+    { rows: [{ title: 'Use Wi-Fi', toggle: true, on: true }]},
+    { header: 'Saved networks', rows: [
+      { title: 'HomeWiFi', sub: 'Connected · WPA3 · 5 GHz', value: 'ⓘ' },
+      { title: 'Office-5G', sub: 'Auto-connect', value: 'ⓘ' },
+      { title: 'Guest Network', value: 'ⓘ' }
+    ]},
+    { rows: [{ title: 'Add network', color: 'system-blue' }]},
+    { header: 'Preferences', rows: [
+      { title: 'Turn on Wi-Fi automatically', toggle: true, on: true },
+      { title: 'Notify for public networks', toggle: true, on: true },
+      { title: 'Wi-Fi Direct', nav: 'wifi-direct' }
+    ]}
+  ]},
+  'wifi-direct': { title: 'Wi-Fi Direct', parent: 'wifi', sections: [{ rows: [{ title: 'No devices found', sub: 'Tap to search' }]}]},
+  mobile: { title: 'Mobile network', parent: 'network', sections: [
+    { rows: [{ title: 'Mobile data', toggle: true, on: true }]},
+    { header: 'SIM', rows: [{ title: 'SIM 1 · Jio 4G', sub: 'Preferred for mobile data', value: 'ⓘ' }]},
+    { rows: [
+      { title: 'Roaming', toggle: true, on: false },
+      { title: 'Data warning & limit', nav: 'data-usage' },
+      { title: 'Preferred network type', value: '5G / LTE / 3G / 2G', nav: 'network-type' }
+    ]},
+    { header: 'Advanced', rows: [
+      { title: 'Access Point Names', nav: 'apn' },
+      { title: 'Carrier settings' }
+    ]}
+  ]},
+  'data-usage': { title: 'Data warning & limit', parent: 'mobile', sections: [{ rows: [
+    { title: 'Set data warning', toggle: true, on: false },
+    { title: 'Data warning', value: '2 GB' },
+    { title: 'Set data limit', toggle: true, on: false },
+    { title: 'Data limit', value: 'Unlimited' }
+  ]}]},
+  'network-type': { title: 'Preferred network type', parent: 'mobile', sections: [{ rows: [
+    { title: '5G / LTE / 3G / 2G (auto)', radio: true, on: true },
+    { title: 'LTE / 3G / 2G' },
+    { title: '3G / 2G' },
+    { title: '2G only' }
+  ]}]},
+  apn: { title: 'Access Point Names', parent: 'mobile', sections: [{ rows: [
+    { title: 'Jio Internet', sub: 'jionet' },
+    { title: 'Add APN', color: 'system-blue' }
+  ]}]},
+  hotspot: { title: 'Hotspot & tethering', parent: 'network', sections: [
+    { rows: [{ title: 'Wi-Fi hotspot', toggle: true, on: false }]},
+    { rows: [
+      { title: 'Hotspot name', value: 'POCO M5' },
+      { title: 'Hotspot password', value: '••••••••', nav: 'hotspot-password' },
+      { title: 'Auto turn off', value: '10 min' },
+      { title: 'Connected devices', value: '0' }
+    ]},
+    { rows: [
+      { title: 'USB tethering', toggle: true, on: false },
+      { title: 'Bluetooth tethering', toggle: true, on: false },
+      { title: 'Ethernet tethering', toggle: true, on: false }
+    ]}
+  ]},
+  'hotspot-password': { title: 'Hotspot password', parent: 'hotspot', sections: [{ rows: [{ title: 'Password', value: '••••••••' }]}]},
+  vpn: { title: 'VPN', parent: 'network', sections: [
+    { rows: [{ title: 'Add VPN', color: 'system-blue' }]},
+    { rows: [{ title: 'No VPNs configured', sub: 'Add a profile to connect' }]}
+  ]},
+  dns: { title: 'Private DNS', parent: 'network', sections: [{ rows: [
+    { title: 'Automatic', radio: true, on: true }, { title: 'Off' }, { title: 'Hostname', sub: 'Example: dns.google' }
+  ]}]},
+  devices: { title: 'Connected devices', parent: 'root', sections: [
+    { header: 'Currently connected', rows: [{ title: 'POCO Buds Pro', sub: 'Bluetooth · 80%', value: 'ⓘ', nav: 'bluetooth-device' }]},
+    { header: 'Available media devices', rows: [{ title: 'JBL Flip 6', nav: 'bluetooth-device' }]},
+    { rows: [
+      { title: 'Bluetooth', icon: 'bluetooth', color: 'system-blue', nav: 'bluetooth' },
+      { title: 'Pair new device', value: 'Bluetooth', nav: 'pair' },
+      { title: 'NFC', icon: 'nfc', color: 'system-blue', toggle: true, on: true },
+      { title: 'Cast', icon: 'cast', color: 'system-blue', nav: 'cast' }
+    ]},
+    { header: 'Preferences', rows: [
+      { title: 'Printing', icon: 'print', color: 'system-gray', nav: 'print' },
+      { title: 'Chromebook', icon: 'apps', color: 'system-blue', nav: 'chromebook' },
+      { title: 'USB', icon: 'usb', color: 'system-gray', nav: 'usb' }
+    ]}
+  ]},
+  bluetooth: { title: 'Bluetooth', parent: 'devices', sections: [
+    { rows: [{ title: 'Use Bluetooth', toggle: true, on: true }]},
+    { header: 'Paired devices', rows: [
+      { title: 'POCO Buds Pro', sub: 'Connected · 80%', value: 'ⓘ', nav: 'bluetooth-device' },
+      { title: 'Redmi Watch', sub: 'Not connected', value: 'ⓘ', nav: 'bluetooth-device' }
+    ]},
+    { header: 'Available devices', rows: [
+      { title: 'JBL Flip 6', nav: 'bluetooth-device' },
+      { title: 'Logitech MX Keys', nav: 'bluetooth-device' }
+    ]}
+  ]},
+  'bluetooth-device': { title: 'Bluetooth device', parent: 'bluetooth', sections: [{ rows: [
+    { title: 'Connected', value: '80%' },
+    { title: 'Rename' },
+    { title: 'Forget', destructive: true },
+    { title: 'Media audio', toggle: true, on: true },
+    { title: 'Phone calls', toggle: true, on: true },
+    { title: 'Contact sharing', toggle: true, on: false }
+  ]}]},
+  pair: { title: 'Pair new device', parent: 'devices', sections: [{ rows: [
+    { title: 'Searching…', sub: 'Make sure your device is discoverable' },
+    { title: 'JBL Flip 6', nav: 'bluetooth-device' },
+    { title: 'Logitech MX Keys', nav: 'bluetooth-device' }
+  ]}]},
+  cast: { title: 'Cast', parent: 'devices', sections: [{ rows: [
+    { title: 'Cast screen', toggle: true, on: false },
+    { title: 'Enable wireless display', toggle: true, on: true }
+  ]}]},
+  print: { title: 'Printing', parent: 'devices', sections: [{ rows: [
+    { title: 'Default Print Service', sub: 'On' },
+    { title: 'Add service', color: 'system-blue' }
+  ]}]},
+  chromebook: { title: 'Chromebook', parent: 'devices', sections: [{ rows: [{ title: 'Connect to Chromebook', sub: 'Link your phone to nearby Chromebooks' }]}]},
+  usb: { title: 'USB', parent: 'devices', sections: [{ rows: [
+    { title: 'File transfer / Android Auto', radio: true, on: true },
+    { title: 'USB tethering', toggle: true, on: false },
+    { title: 'MIDI' }, { title: 'PTP' }, { title: 'No data transfer' }
+  ]}]},
+  apps: { title: 'Apps', parent: 'root', sections: [
+    { rows: [
+      { title: 'See all apps', nav: 'all-apps' },
+      { title: 'Default apps', nav: 'default-apps' },
+      { title: 'App permissions', nav: 'app-permissions' },
+      { title: 'Special app access', nav: 'special-access' }
+    ]},
+    { header: 'Recently opened', rows: [
+      { title: 'Chrome', sub: 'Yesterday', nav: 'app-detail' },
+      { title: 'Messages', sub: 'Today', nav: 'app-detail' },
+      { title: 'YouTube', sub: 'Today', nav: 'app-detail' }
+    ]}
+  ]},
+  'all-apps': { title: 'All apps', parent: 'apps', sections: [{ rows: [
+    { title: 'Calculator', nav: 'app-detail' }, { title: 'Calendar', nav: 'app-detail' },
+    { title: 'Camera', nav: 'app-detail' }, { title: 'Chrome', nav: 'app-detail' },
+    { title: 'Clock', nav: 'app-detail' }, { title: 'Contacts', nav: 'app-detail' },
+    { title: 'Files', nav: 'app-detail' }, { title: 'Gmail', nav: 'app-detail' },
+    { title: 'Google', nav: 'app-detail' }, { title: 'Maps', nav: 'app-detail' },
+    { title: 'Messages', nav: 'app-detail' }, { title: 'Phone', nav: 'app-detail' },
+    { title: 'Photos', nav: 'app-detail' }, { title: 'Play Store', nav: 'app-detail' },
+    { title: 'Settings', nav: 'app-detail' }, { title: 'YouTube', nav: 'app-detail' }
+  ]}]},
+  'app-detail': { title: 'App info', parent: 'all-apps', sections: [
+    { rows: [
+      { title: 'Open', color: 'system-blue' },
+      { title: 'Force stop', destructive: true },
+      { title: 'Uninstall', destructive: true }
+    ]},
+    { header: 'App info', rows: [
+      { title: 'Notifications', nav: 'app-notifications' },
+      { title: 'Permissions', nav: 'app-permissions' },
+      { title: 'Storage & cache', value: '128 MB' },
+      { title: 'Mobile data & Wi-Fi', value: '2.1 GB' },
+      { title: 'Battery', value: 'Normal' },
+      { title: 'Open by default' }
+    ]},
+    { rows: [{ title: 'Version', value: '1.0.0' }]}
+  ]},
+  'default-apps': { title: 'Default apps', parent: 'apps', sections: [{ rows: [
+    { title: 'Browser app', value: 'Chrome' },
+    { title: 'Caller ID & spam app', value: 'Google' },
+    { title: 'Home app', value: 'Launcher3' },
+    { title: 'Phone app', value: 'Phone' },
+    { title: 'SMS app', value: 'Messages' },
+    { title: 'Digital assistant app', value: 'Google' },
+    { title: 'Opening links' }
+  ]}]},
+  'app-permissions': { title: 'App permissions', parent: 'apps', sections: [{ rows: [
+    { title: 'Camera', value: '5 apps', nav: 'perm-detail' },
+    { title: 'Contacts', value: '3 apps', nav: 'perm-detail' },
+    { title: 'Files & media', value: '8 apps', nav: 'perm-detail' },
+    { title: 'Location', value: '6 apps', nav: 'perm-detail' },
+    { title: 'Microphone', value: '4 apps', nav: 'perm-detail' },
+    { title: 'Phone', value: '2 apps', nav: 'perm-detail' },
+    { title: 'SMS', value: '2 apps', nav: 'perm-detail' }
+  ]}]},
+  'perm-detail': { title: 'Permission', parent: 'app-permissions', sections: [{ rows: [
+    { title: 'Allowed all the time', sub: 'Chrome, Maps' },
+    { title: 'Allowed only while in use', sub: 'Photos, Camera' },
+    { title: 'Ask every time' },
+    { title: 'Not allowed' }
+  ]}]},
+  'special-access': { title: 'Special app access', parent: 'apps', sections: [{ rows: [
+    { title: 'Alarms & reminders' },
+    { title: 'All files access' },
+    { title: 'Battery optimization' },
+    { title: 'Display over other apps' },
+    { title: 'Install unknown apps' },
+    { title: 'Picture-in-picture' },
+    { title: 'Premium SMS access' },
+    { title: 'Usage access' },
+    { title: 'VR helper services' }
+  ]}]},
+  notifications: { title: 'Notifications', parent: 'root', sections: [
+    { rows: [
+      { title: 'App notifications', nav: 'app-notifications' },
+      { title: 'Notification history', nav: 'notification-history' },
+      { title: 'Bubbles', nav: 'bubbles' },
+      { title: 'Conversations', nav: 'conversations' }
+    ]},
+    { header: 'Lock screen', rows: [
+      { title: 'Notifications on lock screen', value: 'Show all' },
+      { title: 'Sensitive notifications', toggle: true, on: true }
+    ]},
+    { header: 'Do Not Disturb', rows: [{ title: 'Modes', nav: 'modes' }]},
+    { header: 'Advanced', rows: [
+      { title: 'Wireless emergency alerts', nav: 'wea' },
+      { title: 'Notification cooldown', toggle: true, on: true },
+      { title: 'Hide silent notifications', toggle: true, on: false }
+    ]}
+  ]},
+  'app-notifications': { title: 'App notifications', parent: 'notifications', sections: [{ rows: [
+    { title: 'Chrome', sub: 'On', toggle: true, on: true },
+    { title: 'Gmail', sub: 'On', toggle: true, on: true },
+    { title: 'Messages', sub: 'On', toggle: true, on: true },
+    { title: 'Photos', sub: 'Off', toggle: true, on: false },
+    { title: 'YouTube', sub: 'On', toggle: true, on: true }
+  ]}]},
+  'notification-history': { title: 'Notification history', parent: 'notifications', sections: [
+    { rows: [{ title: 'Use notification history', toggle: true, on: true }]},
+    { rows: [
+      { title: 'Chrome', sub: '3 notifications · 2h ago' },
+      { title: 'Messages', sub: '1 notification · 4h ago' }
+    ]}
+  ]},
+  bubbles: { title: 'Bubbles', parent: 'notifications', sections: [{ rows: [
+    { title: 'Allow bubbles', toggle: true, on: true },
+    { title: 'Chrome', sub: 'Allowed', toggle: true, on: true }
+  ]}]},
+  conversations: { title: 'Conversations', parent: 'notifications', sections: [{ rows: [
+    { title: 'Alex Chen', sub: 'Messages', nav: 'conversation-detail' },
+    { title: 'Sam Rivera', sub: 'Messages', nav: 'conversation-detail' }
+  ]}]},
+  'conversation-detail': { title: 'Conversation', parent: 'conversations', sections: [{ rows: [
+    { title: 'Messages', toggle: true, on: true },
+    { title: 'Override Do Not Disturb', toggle: true, on: true },
+    { title: 'Bubble', toggle: true, on: true }
+  ]}]},
+  wea: { title: 'Wireless emergency alerts', parent: 'notifications', sections: [{ rows: [
+    { title: 'Extreme threats', toggle: true, on: true },
+    { title: 'Severe threats', toggle: true, on: true },
+    { title: 'Amber alerts', toggle: true, on: true },
+    { title: 'Public safety messages', toggle: true, on: true },
+    { title: 'Test alerts', toggle: true, on: false }
+  ]}]},
+  sound: { title: 'Sound & vibration', parent: 'root', sections: [
+    { header: 'Media', rows: [
+      { slider: true, title: 'Media volume', value: 80 },
+      { slider: true, title: 'Call volume', value: 70 },
+      { slider: true, title: 'Ring & notification volume', value: 65 },
+      { slider: true, title: 'Alarm volume', value: 80 }
+    ]},
+    { header: 'Sounds', rows: [
+      { title: 'Phone ringtone', value: 'Reflection', nav: 'ringtone' },
+      { title: 'Default notification sound', value: 'Note', nav: 'notification-sound' },
+      { title: 'Default alarm sound', value: 'Chord', nav: 'alarm-sound' }
+    ]},
+    { header: 'Vibration', rows: [
+      { title: 'Vibrate for calls', toggle: true, on: true },
+      { title: 'Vibration intensity', value: 'Medium', nav: 'vibration-intensity' },
+      { title: 'Touch feedback', toggle: true, on: true }
+    ]},
+    { header: 'Other', rows: [{ title: 'Do Not Disturb', nav: 'modes' }]}
+  ]},
+  ringtone: { title: 'Phone ringtone', parent: 'sound', sections: [{ rows: [
+    { title: 'Reflection', radio: true, on: true },
+    { title: 'Aurora' }, { title: 'Bounce' }, { title: 'Chime' },
+    { title: 'Add ringtone', color: 'system-blue' }
+  ]}]},
+  'notification-sound': { title: 'Notification sound', parent: 'sound', sections: [{ rows: [
+    { title: 'Note', radio: true, on: true }, { title: 'Bubble' }, { title: 'Pop' }
+  ]}]},
+  'alarm-sound': { title: 'Alarm sound', parent: 'sound', sections: [{ rows: [
+    { title: 'Chord', radio: true, on: true }, { title: 'Radiate' }, { title: 'Sunbeam' }
+  ]}]},
+  'vibration-intensity': { title: 'Vibration intensity', parent: 'sound', sections: [{ rows: [
+    { title: 'Light' }, { title: 'Medium', radio: true, on: true }, { title: 'Strong' }
+  ]}]},
+  display: { title: 'Display', parent: 'root', sections: [
+    { header: 'Brightness', rows: [
+      { slider: true, title: 'Brightness level', value: 70 },
+      { title: 'Adaptive brightness', toggle: true, on: true },
+      { title: 'Night Light', value: 'Off', nav: 'night-light' }
+    ]},
+    { header: 'Appearance', rows: [
+      { title: 'Dark theme', toggle: true, on: true },
+      { title: 'Font size', value: 'Default', nav: 'font-size' },
+      { title: 'Display size', value: 'Default', nav: 'display-size' }
+    ]},
+    { header: 'Screen', rows: [
+      { title: 'Screen timeout', value: '1 minute', nav: 'screen-timeout' },
+      { title: 'Lock screen', nav: 'lock-screen-settings' },
+      { title: 'Screen saver', nav: 'screen-saver' },
+      { title: 'Auto-rotate screen', toggle: true, on: true }
+    ]},
+    { header: 'Refresh rate', rows: [
+      { title: 'Smooth Display', sub: 'Up to 90 Hz', toggle: true, on: true }
+    ]}
+  ]},
+  'night-light': { title: 'Night Light', parent: 'display', sections: [
+    { rows: [{ title: 'Schedule', value: 'Sunset to sunrise', nav: 'night-light-schedule' }]},
+    { rows: [{ title: 'Intensity', value: 'Medium' }]}
+  ]},
+  'night-light-schedule': { title: 'Night Light schedule', parent: 'night-light', sections: [{ rows: [
+    { title: 'None' }, { title: 'Sunset to sunrise', radio: true, on: true }, { title: 'Custom schedule' }
+  ]}]},
+  'font-size': { title: 'Font size', parent: 'display', sections: [{ rows: [{ slider: true, title: 'Font size', value: 50 }]}]},
+  'display-size': { title: 'Display size', parent: 'display', sections: [{ rows: [{ slider: true, title: 'Display size', value: 50 }]}]},
+  'screen-timeout': { title: 'Screen timeout', parent: 'display', sections: [{ rows: [
+    { title: '15 seconds' }, { title: '30 seconds' }, { title: '1 minute', radio: true, on: true },
+    { title: '2 minutes' }, { title: '5 minutes' }, { title: '10 minutes' }, { title: '30 minutes' }
+  ]}]},
+  'lock-screen-settings': { title: 'Lock screen', parent: 'display', sections: [{ rows: [
+    { title: 'Notifications on lock screen', value: 'Show all' },
+    { title: 'Add text on lock screen' },
+    { title: 'Double-line clock', toggle: true, on: false },
+    { title: 'Show music player', toggle: true, on: true }
+  ]}]},
+  'screen-saver': { title: 'Screen saver', parent: 'display', sections: [{ rows: [
+    { title: 'Current screen saver', value: 'Clock' },
+    { title: 'Start when charging', toggle: true, on: true },
+    { title: 'When to start', value: 'While docked' }
+  ]}]},
+  <!-- AppleUX correction 2026-10-15: parent was 'wallpaper' (self-parented, back button looped). Fixed to 'root'. -->
+  wallpaper: { title: 'Wallpaper & style', parent: 'root', sections: [
+    { rows: [{ title: 'Change wallpaper', nav: 'wallpaper-picker' }]},
+    { header: 'Colors', rows: [
+      { title: 'Wallpaper colors', value: 'Default', nav: 'wallpaper-colors' },
+      { title: 'Basic colors', nav: 'basic-colors' }
+    ]},
+    { header: 'Themed icons', rows: [{ title: 'Themed icons', toggle: true, on: true }]},
+    { header: 'Lock screen', rows: [{ title: 'Lock screen shortcuts', value: 'Default', nav: 'lock-shortcuts' }]}
+  ]},
+  'wallpaper-picker': { title: 'Wallpaper', parent: 'wallpaper', sections: [{ rows: [
+    { title: 'My photos' }, { title: 'Wallpaper & style' }, { title: 'Live wallpapers' }
+  ]}]},
+  'wallpaper-colors': { title: 'Wallpaper colors', parent: 'wallpaper', sections: [{ rows: [
+    { title: 'Default' }, { title: 'Pastel' }, { title: 'Vivid' }
+  ]}]},
+  'basic-colors': { title: 'Basic colors', parent: 'wallpaper', sections: [{ rows: [
+    { title: 'Blue' }, { title: 'Green' }, { title: 'Purple' }, { title: 'Red' }
+  ]}]},
+  'lock-shortcuts': { title: 'Lock screen shortcuts', parent: 'wallpaper', sections: [{ rows: [
+    { title: 'Left shortcut', value: 'Phone' },
+    { title: 'Right shortcut', value: 'Camera' }
+  ]}]},
+  'home-screen': { title: 'Home screen', parent: 'root', sections: [
+    { rows: [
+      { title: 'Home screen layout', value: 'Standard' },
+      { title: 'App grid', value: '4×6' },
+      { title: 'Add apps to Home screen', toggle: true, on: true }
+    ]},
+    { header: 'App icon badges', rows: [{ title: 'Notification dots', toggle: true, on: true }]}
+  ]},
+  accessibility: { title: 'Accessibility', parent: 'root', sections: [
+    { header: 'Vision', rows: [
+      { title: 'TalkBack', value: 'Off', nav: 'talkback' },
+      { title: 'Magnification', value: 'Off', nav: 'magnification' },
+      { title: 'Text and display', nav: 'text-display' },
+      { title: 'Color correction', value: 'Off', nav: 'color-correction' },
+      { title: 'Color inversion', toggle: true, on: false }
+    ]},
+    { header: 'Hearing', rows: [
+      { title: 'Mono audio', toggle: true, on: false },
+      { title: 'Audio balance', value: 'Center', nav: 'audio-balance' },
+      { title: 'Live Caption', toggle: true, on: false },
+      { title: 'Caption preferences', nav: 'caption-prefs' }
+    ]},
+    { header: 'Interaction & dexterity', rows: [
+      { title: 'Accessibility Menu', toggle: true, on: true },
+      { title: 'Select to Speak', toggle: true, on: false },
+      { title: 'Switch Access', value: 'Off', nav: 'switch-access' },
+      { title: 'Voice Access', value: 'Off', nav: 'voice-access' },
+      { title: 'Touch & hold delay', value: 'Short', nav: 'touch-delay' }
+    ]},
+    { header: 'General', rows: [
+      { title: 'Remove animations', toggle: true, on: false },
+      { title: 'Accessibility shortcuts', nav: 'a11y-shortcuts' }
+    ]}
+  ]},
+  talkback: { title: 'TalkBack', parent: 'accessibility', sections: [
+    { rows: [{ title: 'Use TalkBack', toggle: true, on: false }]},
+    { rows: [
+      { title: 'Verbosity', value: 'Default' },
+      { title: 'Speak passwords', toggle: true, on: false },
+      { title: 'Sound feedback', toggle: true, on: true },
+      { title: 'Vibration feedback', toggle: true, on: true }
+    ]}
+  ]},
+  magnification: { title: 'Magnification', parent: 'accessibility', sections: [
+    { rows: [{ title: 'Use magnification', toggle: true, on: false }]},
+    { rows: [
+      { title: 'Magnification shortcut', value: 'Triple-tap screen' },
+      { title: 'Magnifier camera', toggle: true, on: true }
+    ]}
+  ]},
+  'text-display': { title: 'Text and display', parent: 'accessibility', sections: [{ rows: [
+    { slider: true, title: 'Font size', value: 50 },
+    { title: 'Bold text', toggle: true, on: false },
+    { title: 'High contrast text', toggle: true, on: false },
+    { title: 'Color correction', nav: 'color-correction' }
+  ]}]},
+  'color-correction': { title: 'Color correction', parent: 'text-display', sections: [
+    { rows: [{ title: 'Use color correction', toggle: true, on: false }]},
+    { rows: [
+      { title: 'Deuteranomaly (red-green)', radio: true, on: true },
+      { title: 'Protanomaly (red-green)' },
+      { title: 'Tritanomaly (blue-yellow)' },
+      { title: 'Grayscale' }
+    ]}
+  ]},
+  'audio-balance': { title: 'Audio balance', parent: 'accessibility', sections: [{ rows: [{ slider: true, title: 'Left / Right balance', value: 50 }]}]},
+  'caption-prefs': { title: 'Caption preferences', parent: 'accessibility', sections: [{ rows: [
+    { title: 'Language', value: 'English' },
+    { title: 'Text size', value: 'Medium' },
+    { title: 'Caption style', value: 'White on black' }
+  ]}]},
+  'switch-access': { title: 'Switch Access', parent: 'accessibility', sections: [{ rows: [{ title: 'Use Switch Access', toggle: true, on: false }]}]},
+  'voice-access': { title: 'Voice Access', parent: 'accessibility', sections: [{ rows: [{ title: 'Use Voice Access', toggle: true, on: false }]}]},
+  'touch-delay': { title: 'Touch & hold delay', parent: 'accessibility', sections: [{ rows: [
+    { title: 'Short', radio: true, on: true }, { title: 'Medium' }, { title: 'Long' }, { title: 'Custom' }
+  ]}]},
+  'a11y-shortcuts': { title: 'Accessibility shortcuts', parent: 'accessibility', sections: [{ rows: [
+    { title: 'Volume up + volume down', toggle: true, on: true },
+    { title: 'Side + volume up', toggle: true, on: false }
+  ]}]},
+  security: { title: 'Security & privacy', parent: 'root', sections: [
+    { header: 'Security', rows: [
+      { title: 'App security', nav: 'app-security' },
+      { title: 'Screen lock', value: 'PIN', nav: 'screen-lock' },
+      { title: 'Find My Device', toggle: true, on: true },
+      { title: 'Security update', value: 'October 2026' }
+    ]},
+    { header: 'Privacy', rows: [
+      { title: 'Permission manager', nav: 'app-permissions' },
+      { title: 'Privacy dashboard', nav: 'privacy-dashboard' },
+      { title: 'Location', nav: 'location' },
+      { title: 'Camera & microphone', nav: 'camera-mic' }
+    ]},
+    { header: 'Advanced', rows: [
+      { title: 'Device admin apps', nav: 'device-admin' },
+      { title: 'Lockdown mode', value: 'Off', nav: 'lockdown' },
+      { title: 'Encryption & credentials', nav: 'encryption' },
+      { title: 'VPN', nav: 'vpn' }
+    ]}
+  ]},
+  'app-security': { title: 'App security', parent: 'security', sections: [{ rows: [
+    { title: 'Google Play Protect', toggle: true, on: true },
+    { title: 'Scan apps with Play Protect', toggle: true, on: true },
+    { title: 'Improve harmful app detection', toggle: true, on: true }
+  ]}]},
+  'screen-lock': { title: 'Screen lock', parent: 'security', sections: [{ rows: [
+    { title: 'PIN', radio: true, on: true },
+    { title: 'Pattern' }, { title: 'Password' }, { title: 'None' }
+  ]}]},
+  'privacy-dashboard': { title: 'Privacy dashboard', parent: 'security', sections: [{ rows: [
+    { title: 'Location', value: '2 apps' }, { title: 'Camera', value: '1 app' },
+    { title: 'Microphone', value: '3 apps' }
+  ]}]},
+  'camera-mic': { title: 'Camera & microphone', parent: 'security', sections: [
+    { rows: [{ title: 'Camera access', toggle: true, on: true }, { title: 'Microphone access', toggle: true, on: true }]},
+    { rows: [{ title: 'Recent access', sub: 'Chrome used camera · 2h ago' }]}
+  ]},
+  'device-admin': { title: 'Device admin apps', parent: 'security', sections: [{ rows: [
+    { title: 'Find My Device', sub: 'Active', toggle: true, on: true }
+  ]}]},
+  lockdown: { title: 'Lockdown mode', parent: 'security', sections: [{ rows: [{ title: 'Enable lockdown', toggle: true, on: false }]}]},
+  encryption: { title: 'Encryption & credentials', parent: 'security', sections: [{ rows: [
+    { title: 'Encrypt phone', sub: 'Encrypted' },
+    { title: 'Storage type', value: 'Hardware-backed' },
+    { title: 'Trusted credentials', nav: 'trusted-creds' },
+    { title: 'User credentials', nav: 'user-creds' },
+    { title: 'Install a certificate', nav: 'install-cert' }
+  ]}]},
+  'trusted-creds': { title: 'Trusted credentials', parent: 'encryption', sections: [{ rows: [
+    { title: 'System', value: '146' }, { title: 'User', value: '0' }
+  ]}]},
+  'user-creds': { title: 'User credentials', parent: 'encryption', sections: [{ rows: [{ title: 'No user credentials installed' }]}]},
+  'install-cert': { title: 'Install a certificate', parent: 'encryption', sections: [{ rows: [
+    { title: 'CA certificate' }, { title: 'VPN & app user certificate' }, { title: 'Wi-Fi certificate' }
+  ]}]},
+  faceid: { title: 'Face ID & Passcode', parent: 'root', sections: [
+    { header: 'Face unlock', rows: [
+      { title: 'Set up face unlock', sub: 'Uses front camera · 2D recognition', nav: 'face-setup' },
+      { title: 'Unlock phone', toggle: true, on: true },
+      { title: 'Auto-unlock after waking', toggle: true, on: true },
+      { title: 'Require eyes to be open', toggle: true, on: false },
+      { title: 'Remove face data', destructive: true }
+    ]},
+    { header: 'Fingerprint', rows: [
+      { title: 'Add fingerprint', sub: 'Side-mounted sensor', nav: 'finger-setup' },
+      { title: 'Unlock phone', toggle: true, on: true },
+      { title: 'Touch to wake', toggle: true, on: true },
+      { title: 'Delete all fingerprints', destructive: true }
+    ]},
+    { header: 'Passcode', rows: [
+      { title: 'Change passcode', nav: 'change-passcode' },
+      { title: 'Screen lock type', value: 'PIN', nav: 'screen-lock' },
+      { title: 'Automatically lock', value: 'Immediately', nav: 'auto-lock' },
+      { title: 'Power button instantly locks', toggle: true, on: true }
+    ]},
+    { header: 'Allow when locked', rows: [
+      { title: 'Notification content', toggle: true, on: true },
+      { title: 'Quick settings', toggle: true, on: true },
+      { title: 'Voice commands', toggle: true, on: true },
+      { title: 'Return missed calls', toggle: true, on: true },
+      { title: 'USB accessories', toggle: true, on: false }
+    ]},
+    { header: 'Smart Lock', rows: [
+      { title: 'Trusted devices', nav: 'smart-lock-devices' },
+      { title: 'Trusted places', nav: 'smart-lock-places' }
+    ]},
+    { rows: [{ title: 'Erase data after failed attempts', destructive: true, toggle: true, on: false }]}
+  ]},
+  'face-setup': { title: 'Set up face unlock', parent: 'faceid', sections: [{ rows: [{ title: 'Position your face in the frame', sub: 'Hold still' }]}]},
+  'finger-setup': { title: 'Add fingerprint', parent: 'faceid', sections: [{ rows: [{ title: 'Touch the sensor', sub: 'Lift and place repeatedly' }]}]},
+  'change-passcode': { title: 'Change passcode', parent: 'faceid', sections: [{ rows: [{ title: 'Enter current PIN', nav: 'new-passcode' }]}]},
+  'new-passcode': { title: 'Enter new PIN', parent: 'change-passcode', sections: [{ rows: [{ title: '••••', sub: 'Tap keypad to enter' }]}]},
+  'auto-lock': { title: 'Automatically lock', parent: 'faceid', sections: [{ rows: [
+    { title: 'Immediately', radio: true, on: true }, { title: '5 seconds' }, { title: '15 seconds' },
+    { title: '30 seconds' }, { title: '1 minute' }
+  ]}]},
+  'smart-lock-devices': { title: 'Trusted devices', parent: 'faceid', sections: [{ rows: [
+    { title: 'Add trusted device', color: 'system-blue' },
+    { title: 'POCO Buds Pro', sub: 'Keep unlocked while connected' }
+  ]}]},
+  'smart-lock-places': { title: 'Trusted places', parent: 'faceid', sections: [{ rows: [
+    { title: 'Add trusted place', color: 'system-blue' },
+    { title: 'Home', sub: 'Set location' }
+  ]}]},
+  location: { title: 'Location', parent: 'root', sections: [
+    { rows: [{ title: 'Use location', toggle: true, on: true }]},
+    { header: 'Recent access', rows: [
+      { title: 'Chrome', sub: 'Used location · 10 min ago' },
+      { title: 'Maps', sub: 'Used location · 1h ago' }
+    ]},
+    { header: 'App access', rows: [
+      { title: 'Chrome', sub: 'While in use' },
+      { title: 'Maps', sub: 'All the time' },
+      { title: 'Photos', sub: 'Ask every time' }
+    ]},
+    { rows: [{ title: 'Location services', nav: 'location-services' }]}
+  ]},
+  'location-services': { title: 'Location services', parent: 'location', sections: [{ rows: [
+    { title: 'Wi-Fi scanning', toggle: true, on: true },
+    { title: 'Bluetooth scanning', toggle: true, on: true },
+    { title: 'Google Location Accuracy', toggle: true, on: true }
+  ]}]},
+  safety: { title: 'Safety & emergency', parent: 'root', sections: [
+    { header: 'Emergency', rows: [
+      { title: 'Emergency SOS', nav: 'sos' },
+      { title: 'Emergency contacts', value: '2 contacts', nav: 'emergency-contacts' }
+    ]},
+    { header: 'Medical info', rows: [{ title: 'Medical info', sub: 'Blood type, allergies', nav: 'medical-info' }]},
+    { header: 'Safety', rows: [
+      { title: 'Car crash detection', toggle: true, on: true },
+      { title: 'Earthquake alerts', toggle: true, on: true }
+    ]}
+  ]},
+  sos: { title: 'Emergency SOS', parent: 'safety', sections: [{ rows: [
+    { title: 'Auto call', toggle: true, on: true },
+    { title: 'Countdown sound', toggle: true, on: true },
+    { title: 'Call with power button', toggle: true, on: true },
+    { title: 'Call with 5 power presses', toggle: true, on: true }
+  ]}]},
+  'emergency-contacts': { title: 'Emergency contacts', parent: 'safety', sections: [{ rows: [
+    { title: 'Add contact', color: 'system-blue' },
+    { title: 'Mom', sub: '+1 555-0123' },
+    { title: 'Dad', sub: '+1 555-0456' }
+  ]}]},
+  'medical-info': { title: 'Medical info', parent: 'safety', sections: [{ rows: [
+    { title: 'Blood type', value: 'O+' },
+    { title: 'Allergies', value: 'Penicillin' },
+    { title: 'Medications', value: 'None' },
+    { title: 'Organ donor', toggle: true, on: true }
+  ]}]},
+  passwords: { title: 'Passwords & accounts', parent: 'root', sections: [
+    { header: 'Passwords', rows: [
+      { title: 'Google Password Manager', nav: 'password-manager' },
+      { title: 'Autofill service', value: 'Google', nav: 'autofill' }
+    ]},
+    { header: 'Accounts', rows: [
+      { title: 'Google', sub: 'alex.chen@gmail.com', nav: 'account' },
+      { title: 'Add account', color: 'system-blue' }
+    ]},
+    { header: 'Other', rows: [{ title: 'Smart Lock for Passwords', toggle: true, on: true }]}
+  ]},
+  'password-manager': { title: 'Password Manager', parent: 'passwords', sections: [{ rows: [
+    { title: 'Saved passwords', value: '42' },
+    { title: 'Password checkup', nav: 'pw-checkup' },
+    { title: 'Settings' }
+  ]}]},
+  'pw-checkup': { title: 'Password checkup', parent: 'password-manager', sections: [{ rows: [
+    { title: 'Weak passwords', value: '2' },
+    { title: 'Reused passwords', value: '5' },
+    { title: 'Compromised passwords', value: '1' }
+  ]}]},
+  autofill: { title: 'Autofill service', parent: 'passwords', sections: [{ rows: [
+    { title: 'Google', radio: true, on: true }, { title: 'None' }
+  ]}]},
+  wellbeing: { title: 'Digital Wellbeing', parent: 'root', sections: [
+    { rows: [{ title: 'Dashboard', sub: 'See time spent in apps', nav: 'dw-dashboard' }]},
+    { header: 'Ways to disconnect', rows: [
+      { title: 'App timers', nav: 'dw-timers' },
+      { title: 'Focus mode', nav: 'dw-focus' },
+      { title: 'Bedtime mode', nav: 'dw-bedtime' }
+    ]},
+    { header: 'Reduce interruptions', rows: [{ title: 'Modes', nav: 'modes' }]}
+  ]},
+  'dw-dashboard': { title: 'Dashboard', parent: 'wellbeing', sections: [{ rows: [
+    { title: 'Chrome', sub: '2 h 14 m', value: '42%' },
+    { title: 'YouTube', sub: '1 h 8 m', value: '21%' },
+    { title: 'Messages', sub: '42 m', value: '14%' },
+    { title: 'Photos', sub: '28 m', value: '9%' }
+  ]}]},
+  'dw-timers': { title: 'App timers', parent: 'wellbeing', sections: [{ rows: [
+    { title: 'Chrome', value: '1 h' }, { title: 'YouTube', value: '30 m' }
+  ]}]},
+  'dw-focus': { title: 'Focus mode', parent: 'wellbeing', sections: [{ rows: [{ title: 'Chrome' }, { title: 'YouTube' }]}]},
+  'dw-bedtime': { title: 'Bedtime mode', parent: 'wellbeing', sections: [{ rows: [
+    { title: 'Bedtime mode', toggle: true, on: false },
+    { title: 'Schedule', value: '10:00 PM – 7:00 AM' },
+    { title: 'Do Not Disturb', toggle: true, on: true },
+    { title: 'Grayscale', toggle: true, on: false }
+  ]}]},
+  google: { title: 'Google', parent: 'root', sections: [
+    { rows: [{ title: 'Google Account', sub: 'alex.chen@gmail.com', nav: 'account' }]},
+    { header: 'Services', rows: [
+      { title: 'Backup', nav: 'backup' },
+      { title: 'Find My Device' },
+      { title: 'Ads', nav: 'ads' },
+      { title: 'Autofill', nav: 'autofill' }
+    ]},
+    { header: 'Privacy', rows: [
+      { title: 'Location', nav: 'location' },
+      { title: 'Personal results', toggle: true, on: true },
+      { title: 'Usage & diagnostics', toggle: true, on: true }
+    ]}
+  ]},
+  ads: { title: 'Ads', parent: 'google', sections: [{ rows: [
+    { title: 'Delete advertising ID', destructive: true },
+    { title: 'Opt out of Ads Personalization', toggle: true, on: false }
+  ]}]},
+  backup: { title: 'Backup', parent: 'system', sections: [
+    { rows: [{ title: 'Back up to Google Drive', toggle: true, on: true }]},
+    { rows: [
+      { title: 'Account', value: 'alex.chen@gmail.com' },
+      { title: 'Back up now', color: 'system-blue' }
+    ]}
+  ]},
+  battery: { title: 'Battery', parent: 'root', sections: [
+    { rows: [
+      { title: 'Battery percentage', toggle: true, on: true },
+      { title: 'Battery Saver', toggle: true, on: false }
+    ]},
+    { footer: 'Battery Saver reduces background activity to extend battery life.' },
+    { rows: [
+      { title: 'Battery health', nav: 'battery-health' },
+      { title: 'Adaptive preferences', toggle: true, on: true }
+    ]},
+    { header: 'Usage', rows: [{ title: 'Last 24 hours', value: '7 h 12 m' }]},
+    { chart: true },
+    { header: 'By app', rows: [
+      { title: 'Chrome', value: '42%' },
+      { title: 'Messages', value: '18%' },
+      { title: 'YouTube', value: '14%' },
+      { title: 'Photos', value: '11%' }
+    ]}
+  ]},
+  'battery-health': { title: 'Battery health', parent: 'battery', sections: [
+    { rows: [{ title: 'Maximum capacity', value: '96%' }]},
+    { rows: [{ title: 'Peak performance capability', value: 'Normal' }]},
+    { rows: [{ title: 'Optimized charging', toggle: true, on: true }]}
+  ]},
+  storage: { title: 'Storage', parent: 'root', sections: [
+    { rows: [{ title: 'Total', value: '64 GB' }, { title: 'Used', value: '38.2 GB' }, { title: 'Free', value: '25.8 GB' }]},
+    { header: 'Categories', rows: [
+      { title: 'Apps', value: '18.4 GB', nav: 'storage-apps' },
+      { title: 'Images', value: '8.1 GB' },
+      { title: 'Videos', value: '5.2 GB' },
+      { title: 'Audio', value: '3.1 GB' },
+      { title: 'Documents', value: '1.4 GB' },
+      { title: 'System', value: '2.0 GB' }
+    ]},
+    { rows: [{ title: 'Free up space', nav: 'free-space' }, { title: 'Storage manager' }]}
+  ]},
+  'storage-apps': { title: 'Apps', parent: 'storage', sections: [{ rows: [
+    { title: 'Chrome', value: '2.1 GB' }, { title: 'Photos', value: '1.8 GB' },
+    { title: 'YouTube', value: '1.4 GB' }, { title: 'Maps', value: '920 MB' }
+  ]}]},
+  'free-space': { title: 'Free up space', parent: 'storage', sections: [{ rows: [
+    { title: 'Photos on device', value: '8.1 GB' },
+    { title: 'Downloads', value: '320 MB' },
+    { title: 'Trash', value: '48 MB' }
+  ]}]},
+  modes: { title: 'Modes', parent: 'root', sections: [
+    { rows: [
+      { title: 'Do Not Disturb', icon: 'moon', color: 'system-indigo', nav: 'mode-dnd' },
+      { title: 'Bedtime', icon: 'moon', color: 'system-indigo', nav: 'mode-bedtime' },
+      { title: 'Driving', icon: 'moon', color: 'system-indigo', nav: 'mode-driving' },
+      { title: 'Theatre', icon: 'moon', color: 'system-indigo', nav: 'mode-theatre' }
+    ]},
+    { rows: [{ title: 'Add mode', color: 'system-blue', nav: 'mode-add' }]}
+  ]},
+  'mode-dnd': { title: 'Do Not Disturb', parent: 'modes', sections: [
+    { rows: [{ title: 'Turn on now', toggle: true, on: false }]},
+    { rows: [{ title: 'People', nav: 'mode-people' }, { title: 'Apps', nav: 'mode-apps' }]},
+    { rows: [
+      { title: 'Alarms can override', toggle: true, on: true },
+      { title: 'Duration', value: 'Until I turn off' }
+    ]}
+  ]},
+  'mode-bedtime': { title: 'Bedtime', parent: 'modes', sections: [{ rows: [
+    { title: 'Turn on now', toggle: true, on: false },
+    { title: 'Schedule', value: '10 PM – 7 AM' }
+  ]}]},
+  'mode-driving': { title: 'Driving', parent: 'modes', sections: [{ rows: [
+    { title: 'Turn on now', toggle: true, on: false },
+    { title: 'Turn on automatically', value: 'When driving' }
+  ]}]},
+  'mode-theatre': { title: 'Theatre', parent: 'modes', sections: [{ rows: [{ title: 'Turn on now', toggle: true, on: false }]}]},
+  'mode-add': { title: 'Add mode', parent: 'modes', sections: [{ rows: [{ title: 'Create your own', nav: 'mode-custom' }]}]},
+  'mode-custom': { title: 'Custom mode', parent: 'mode-add', sections: [{ rows: [
+    { title: 'Name', value: 'My mode' },
+    { title: 'Icon', value: 'Star' },
+    { title: 'Color', value: 'Blue' }
+  ]}]},
+  'mode-people': { title: 'People', parent: 'modes', sections: [{ rows: [
+    { title: 'Calls from', value: 'Contacts only' },
+    { title: 'Messages from', value: 'Contacts only' },
+    { title: 'Repeat callers', toggle: true, on: true }
+  ]}]},
+  'mode-apps': { title: 'Apps', parent: 'modes', sections: [{ rows: [
+    { title: 'Chrome', toggle: true, on: false },
+    { title: 'Messages', toggle: true, on: true },
+    { title: 'Gmail', toggle: true, on: false }
+  ]}]},
+  system: { title: 'System', parent: 'root', sections: [
+    { header: 'System', rows: [
+      { title: 'Languages & input', icon: 'gear', color: 'system-gray', nav: 'languages' },
+      { title: 'Gestures', icon: 'gesture', color: 'system-blue', nav: 'gestures' },
+      { title: 'Date & time', icon: 'info', color: 'system-gray', nav: 'date-time' },
+      { title: 'Backup', icon: 'cloud', color: 'system-blue', nav: 'backup' },
+      { title: 'Multiple users', icon: 'users', color: 'system-blue', nav: 'users' },
+      { title: 'Developer options', icon: 'dev', color: 'system-gray', nav: 'dev-options' }
+    ]},
+    { header: 'Update', rows: [
+      { title: 'Software update', icon: 'info', color: 'system-blue', nav: 'update' }
+    ]},
+    { header: 'Reset', rows: [
+      { title: 'Reset options', icon: 'reset', color: 'system-red', nav: 'reset' }
+    ]}
+  ]},
+  languages: { title: 'Languages & input', parent: 'system', sections: [
+    { rows: [{ title: 'Languages', value: 'English (US)', nav: 'languages-list' }]},
+    { rows: [{ title: 'Spell checker', toggle: true, on: true }]},
+    { header: 'Keyboards', rows: [
+      { title: 'Gboard', nav: 'keyboard-detail' },
+      { title: 'On-screen keyboard' }
+    ]},
+    { rows: [
+      { title: 'Text-to-speech output', nav: 'tts' },
+      { title: 'Pointer speed', value: 'Medium' }
+    ]}
+  ]},
+  'languages-list': { title: 'Languages', parent: 'languages', sections: [{ rows: [
+    { title: 'English (United States)', radio: true, on: true },
+    { title: 'हिन्दी (भारत)' },
+    { title: 'Add a language', color: 'system-blue' }
+  ]}]},
+  'keyboard-detail': { title: 'Gboard', parent: 'languages', sections: [{ rows: [
+    { title: 'Languages', value: 'English (US)' },
+    { title: 'Preferences', nav: 'gboard-prefs' },
+    { title: 'Glide typing', toggle: true, on: true },
+    { title: 'Voice typing', toggle: true, on: true },
+    { title: 'Emoji', nav: 'gboard-emoji' }
+  ]}]},
+  'gboard-prefs': { title: 'Preferences', parent: 'keyboard-detail', sections: [{ rows: [
+    { title: 'Auto-correction', toggle: true, on: true },
+    { title: 'Smart compose', toggle: true, on: true },
+    { title: 'Number row', toggle: true, on: false }
+  ]}]},
+  'gboard-emoji': { title: 'Emoji', parent: 'keyboard-detail', sections: [{ rows: [
+    { title: 'Emoji suggestions', toggle: true, on: true },
+    { title: 'Emoji skin tone', value: 'Default' }
+  ]}]},
+  tts: { title: 'Text-to-speech', parent: 'languages', sections: [{ rows: [
+    { title: 'Preferred engine', value: 'Google' },
+    { title: 'Language', value: 'English (US)' },
+    { title: 'Speech rate', value: 'Normal' },
+    { title: 'Pitch', value: 'Normal' }
+  ]}]},
+  gestures: { title: 'Gestures', parent: 'system', sections: [
+    { rows: [
+      { title: 'Navigation mode', value: 'Gesture navigation', nav: 'nav-mode' },
+      { title: 'Three-finger screenshot', toggle: true, on: true }
+    ]},
+    { rows: [
+      { title: 'Flip to shhh', toggle: true, on: false },
+      { title: 'Lift to check phone', toggle: true, on: false },
+      { title: 'Double-tap to wake', toggle: true, on: true },
+      { title: 'Double-tap back for camera', toggle: true, on: false }
+    ]},
+    { rows: [
+      { title: 'System navigation', nav: 'nav-mode' },
+      { title: 'One-handed mode', nav: 'one-handed' }
+    ]}
+  ]},
+  'nav-mode': { title: 'Navigation mode', parent: 'gestures', sections: [{ rows: [
+    { title: 'Gesture navigation', radio: true, on: true },
+    { title: '3-button navigation' }
+  ]}]},
+  'one-handed': { title: 'One-handed mode', parent: 'gestures', sections: [{ rows: [
+    { title: 'One-handed mode', toggle: true, on: false },
+    { title: 'Show shortcut', value: 'Swipe down on home' }
+  ]}]},
+  'date-time': { title: 'Date & time', parent: 'system', sections: [
+    { rows: [{ title: 'Set time automatically', toggle: true, on: true }]},
+    { rows: [
+      { title: 'Date', value: 'Oct 15, 2026' },
+      { title: 'Time', value: '9:41 AM' },
+      { title: 'Time zone', value: 'GMT+05:45 · Kathmandu' }
+    ]},
+    { rows: [
+      { title: 'Use 24-hour format', toggle: true, on: false },
+      { title: 'Set time zone automatically', toggle: true, on: true }
+    ]}
+  ]},
+  users: { title: 'Multiple users', parent: 'system', sections: [{ rows: [
+    { title: 'Alex Chen', sub: 'Owner · You' },
+    { title: 'Add user', color: 'system-blue' },
+    { title: 'Add guest' }
+  ]}]},
+  'dev-options': { title: 'Developer options', parent: 'system', sections: [
+    { rows: [{ title: 'Use developer options', toggle: true, on: true }]},
+    { rows: [
+      { title: 'USB debugging', toggle: true, on: true },
+      { title: 'Wireless debugging', toggle: true, on: false },
+      { title: 'Show taps', toggle: true, on: false },
+      { title: 'Pointer location', toggle: true, on: false },
+      { title: 'Show layout bounds', toggle: true, on: false },
+      { title: 'Force GPU rendering', toggle: true, on: false }
+    ]},
+    { rows: [
+      { title: 'Animator duration scale', value: '1×' },
+      { title: 'Background process limit', value: 'Standard' },
+      { title: 'OEM unlocking', toggle: true, on: true }
+    ]}
+  ]},
+  update: { title: 'Software update', parent: 'system', sections: [
+    { rows: [{ title: 'Check for update', sub: 'Last checked: today 8:00 AM', color: 'system-blue' }]},
+    { rows: [
+      { title: 'Current version', value: 'Android 16 · AP2A.240905' },
+      { title: 'Security patch', value: 'October 2026' },
+      { title: 'Auto-download over Wi-Fi', toggle: true, on: true }
+    ]}
+  ]},
+  reset: { title: 'Reset options', parent: 'root', sections: [{ rows: [
+    { title: 'Reset Wi-Fi, mobile & Bluetooth', nav: 'reset-network' },
+    { title: 'Reset app preferences', nav: 'reset-apps' },
+    { title: 'Erase all data (factory reset)', destructive: true, nav: 'factory-reset' }
+  ]}]},
+  'reset-network': { title: 'Reset network settings', parent: 'reset', sections: [{ rows: [
+    { title: 'Reset settings', destructive: true }
+  ]}]},
+  'reset-apps': { title: 'Reset app preferences', parent: 'reset', sections: [{ rows: [
+    { title: 'Reset preferences', destructive: true }
+  ]}]},
+  'factory-reset': { title: 'Erase all data', parent: 'reset', sections: [
+    { rows: [{ title: 'This will erase all data from your phone internal storage.', sub: 'This action cannot be undone.', destructive: true }]},
+    { rows: [{ title: 'Erase all data', destructive: true }]}
+  ]},
+  about: { title: 'About phone', parent: 'root', sections: [
+    { rows: [{ title: 'POCO M5', sub: 'rock / stone', icon: 'info', color: 'system-gray' }]},
+    { header: 'Device', rows: [
+      { title: 'Device name', value: 'POCO M5' },
+      { title: 'Model', value: '22071219AI' },
+      { title: 'Android version', value: '16' },
+      { title: 'Android security update', value: 'October 2026' },
+      { title: 'Baseband version', value: 'MT6789' },
+      { title: 'Kernel version', value: '5.15.104' },
+      { title: 'Build number', value: 'AP2A.240905.003' }
+    ]},
+    { header: 'Status', rows: [
+      { title: 'IP address', value: '192.168.1.42' },
+      { title: 'Wi-Fi MAC address', value: 'A4:5E:60:12:34:56' },
+      { title: 'Bluetooth address', value: 'A4:5E:60:12:34:57' },
+      { title: 'Up time', value: '2 h 14 m' },
+      { title: 'IMEI (SIM 1)', value: '•••••••••••••' }
+    ]},
+    { header: 'Hardware', rows: [
+      { title: 'CPU', value: 'MediaTek Helio G99' },
+      { title: 'RAM', value: '4 GB' },
+      { title: 'Storage', value: '64 GB' },
+      { title: 'Screen', value: '6.58" · 2408 × 1080 · 90 Hz' },
+      { title: 'Battery', value: '5000 mAh' }
+    ]}
+  ]}
+};
+
+/* ============================================================
+   BACKEND MAP
+   ============================================================ */
+const BACKENDS = [
+  ['Network', 'ConnectivityManager', 'getNetworkCapabilities()'],
+  ['Wi-Fi', 'WifiManager', 'setWifiEnabled() · connect() · getScanResults()'],
+  ['Wi-Fi Direct', 'WifiP2pManager', 'discoverPeers() · connect()'],
+  ['Bluetooth', 'BluetoothAdapter', 'enable() · connectGatt() · getBondedDevices()'],
+  ['Hotspot', 'WifiManager', 'startSoftAp() · stopSoftAp()'],
+  ['VPN', 'VpnManager', 'startProvisionedVpn()'],
+  ['Mobile data', 'TelephonyManager', 'setDataEnabled() · setDataRoamingEnabled()'],
+  ['APN', 'Telephony.Carriers', 'CONTENT_URI query'],
+  ['Notifications', 'NotificationManager', 'setZenMode() · getActiveNotifications()'],
+  ['Modes', 'NotificationManager', 'setZenMode(MODE_IMPORTANT_INTERRUPTIONS)'],
+  ['Sounds', 'AudioManager', 'adjustStreamVolume() · setStreamVolume()'],
+  ['Ringtone', 'RingtoneManager', 'setActualDefaultRingtoneUri()'],
+  ['Vibration', 'Vibrator', 'vibrate()'],
+  ['Display', 'DisplayManager', 'setBrightness() · getSupportedModes()'],
+  ['Night Light', 'NightDisplayManager', 'setActivated() · setColorTemperature()'],
+  ['Dark theme', 'UiModeManager', 'setNightMode()'],
+  ['Font scale', 'Configuration', 'fontScale · fontWeightAdjustment'],
+  ['Wallpaper', 'WallpaperManager', 'setBitmap() · setWallpaperComponent()'],
+  ['Launcher', 'Launcher3', 'Workspace · Hotseat · Folder'],
+  ['Face unlock', 'FaceManager', 'enroll() · authenticate() · remove()'],
+  ['Fingerprint', 'FingerprintManager', 'enroll() · authenticate() · remove()'],
+  ['Passcode', 'KeyguardManager', 'createConfirmDeviceCredentialIntent()'],
+  ['Smart Lock', 'SmartLock', 'TrustedDevices · TrustedPlaces'],
+  ['Permissions', 'PermissionController', 'checkPermission()'],
+  ['AppOps', 'AppOpsManager', 'checkOp() · setMode()'],
+  ['Location', 'LocationManager', 'isProviderEnabled()'],
+  ['Emergency', 'EmergencyAffordanceManager', 'emergencyCall()'],
+  ['Autofill', 'AutofillManager', 'requestAutofill()'],
+  ['Accounts', 'AccountManager', 'getAccountsByType() · addAccount()'],
+  ['Digital Wellbeing', 'UsageStatsManager', 'queryUsageStats()'],
+  ['Backup', 'BackupManager', 'dataChanged() · requestBackup()'],
+  ['Users', 'UserManager', 'createUser() · createGuest()'],
+  ['Battery', 'BatteryManager', 'BATTERY_PROPERTY_CAPACITY'],
+  ['Battery Saver', 'PowerManager', 'setPowerSaveMode()'],
+  ['Storage', 'StorageManager', 'getAllocatableBytes()'],
+  ['Package', 'PackageManager', 'getInstalledApplications()'],
+  ['Activity', 'ActivityManager', 'forceStopPackage()'],
+  ['Accessibility', 'AccessibilityManager', 'getEnabledAccessibilityServiceList()'],
+  ['TalkBack', 'TalkBackSettings', 'Prefs: com.google.android.marvin.talkback'],
+  ['Magnification', 'MagnificationSettings', 'setMagnificationMode()'],
+  ['Switch Access', 'SwitchAccessSettings', 'AccessibilityService'],
+  ['Voice Access', 'VoiceAccessSettings', 'AccessibilityService'],
+  ['TTS', 'TextToSpeech', 'setLanguage() · setSpeechRate()'],
+  ['Input Method', 'InputMethodManager', 'showInputMethodPicker()'],
+  ['Locale', 'LocaleManager', 'setApplicationLocales()'],
+  ['Alarm / time', 'AlarmManager', 'setTime() · setTimeZone()'],
+  ['Adb', 'AdbManager', 'enableAdb() · enableWirelessDebugging()'],
+  ['Update', 'UpdateEngine', 'applyPayload() · checkForUpdate()'],
+  ['Reset', 'DevicePolicyManager', 'wipeData() · resetPassword()'],
+  ['Power', 'GlobalActionsDialog', 'PowerManager.shutdown() · reboot()'],
+  ['Build', 'Build', 'MODEL · VERSION.RELEASE · DISPLAY'],
+  ['Nearby', 'NearbyConnections', 'startDiscovery()'],
+  ['Media', 'MediaRouter', 'selectRoute()'],
+  ['MediaProjection', 'MediaProjectionManager', 'createScreenCaptureIntent()'],
+  ['NFC', 'NfcAdapter', 'enable() · enableReaderMode()'],
+  ['Print', 'PrintManager', 'getPrintServices() · print()'],
+  ['USB', 'UsbManager', 'getDeviceList() · openDevice()'],
+  ['Google Services', 'GoogleServices', 'PlayServices · Ads · Play Protect'],
+  ['Ads', 'AdvertisingIdClient', 'getId() · deleteId()']
+];
+
+/* ============================================================
+   RENDER
+   ============================================================ */
+const elContent = document.getElementById('content');
+const elNavBar = document.getElementById('nav-bar');
+const elNavBack = document.getElementById('nav-back');
+const elNavTitle = document.getElementById('nav-title');
+
+function colorVar(c) { return c ? `var(--${c})` : 'var(--system-blue)'; }
+
+function rowHTML(row) {
+  const isTwoLine = row.sub ? 'two-line' : '';
+  const isNoIcon = (!row.icon && !row.avatar) ? 'no-icon' : '';
+  const destCls = row.destructive ? ' destructive' : '';
+
+  let iconHTML = '';
+  if (row.avatar) {
+    iconHTML = `<div class="icon-sq avatar">${row.avatar}</div>`;
+  } else if (row.icon && I[row.icon]) {
+    iconHTML = `<div class="icon-sq" style="background:${colorVar(row.color)}"><svg viewBox="0 0 24 24">${I[row.icon]}</svg></div>`;
+  }
+
+  let rightHTML = '';
+  if (row.toggle) {
+    rightHTML = `<div class="toggle${row.on ? ' on' : ''}" data-toggle></div>`;
+  } else if (row.radio) {
+    rightHTML = row.on
+      ? `<div class="chevron" style="color:var(--system-blue);font-size:17px">✓</div>`
+      : `<div class="chevron" style="visibility:hidden">✓</div>`;
+  } else if (row.value !== undefined && row.value !== null && row.value !== '') {
+    rightHTML = `<div class="row-value">${row.value}</div>`;
+    if (row.nav) rightHTML += `<div class="chevron">›</div>`;
+  } else if (row.nav) {
+    rightHTML = `<div class="chevron">›</div>`;
+  }
+
+  const dataNav = row.nav ? ` data-nav="${row.nav}"` : '';
+  return `<div class="row ${isTwoLine} ${isNoIcon}"${dataNav}>
+    ${iconHTML}
+    <div class="row-main">
+      <div class="row-title${destCls}">${row.title}</div>
+      ${row.sub ? `<div class="row-sub">${row.sub}</div>` : ''}
+    </div>
+    ${rightHTML}
+  </div>`;
+}
+
+function renderScreen(key) {
+  const s = TREE[key];
+  if (!s) {
+    return { html: `<div style="padding:100px 20px;color:#888;text-align:center;">Screen not found: ${key}</div>`, title: '', parent: null };
+  }
+
+  let html = '';
+  const isRoot = key === 'root';
+
+  if (isRoot) {
+    html += `<div class="large-title">Settings</div>`;
+    html += `<div class="search-wrap"><div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <span>Search settings</span>
+    </div></div>`;
+  }
+
+  s.sections.forEach(sec => {
+    html += `<div class="section">`;
+    if (sec.header) html += `<div class="section-header">${sec.header}</div>`;
+    if (sec.rows) {
+      html += `<div class="card">`;
+      sec.rows.forEach(r => { html += rowHTML(r); });
+      html += `</div>`;
+    }
+    if (sec.chart) {
+      html += `<div class="card" style="padding:16px;"><div style="display:flex;align-items:flex-end;gap:4px;height:80px;">`;
+      [45,62,78,55,90,70,35,50].forEach(h => {
+        html += `<div style="flex:1;background:var(--system-green);height:${h}%;border-radius:2px;"></div>`;
+      });
+      html += `</div></div>`;
+    }
+    if (sec.footer) html += `<div class="section-footer">${sec.footer}</div>`;
+    html += `</div>`;
+  });
+
+  html += `<div style="height:32px"></div>`;
+
+  return { html, title: s.title, parent: s.parent, isRoot };
+}
+
+function showScreen(key) {
+  const { html, title, parent, isRoot } = renderScreen(key);
+
+  if (isRoot) {
+    elNavBar.classList.remove('shown');
+    elContent.classList.remove('has-nav');
+  } else {
+    elNavBar.classList.add('shown');
+    elContent.classList.add('has-nav');
+    elNavTitle.textContent = title;
+    elNavBack.dataset.nav = parent || 'root';
+  }
+
+  elContent.innerHTML = html;
+  elContent.scrollTop = 0;
+
+  /* Wire up nav rows inside content */
+  elContent.querySelectorAll('[data-nav]').forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showScreen(el.dataset.nav);
+    });
+  });
+
+  /* Wire up toggles */
+  elContent.querySelectorAll('.toggle').forEach(t => {
+    t.addEventListener('click', (e) => {
+      e.stopPropagation();
+      t.classList.toggle('on');
+    });
+  });
+}
+
+/* Nav bar back button */
+elNavBack.addEventListener('click', () => {
+  showScreen(elNavBack.dataset.nav || 'root');
+});
+
+/* Page chrome */
+document.getElementById('btn-home').addEventListener('click', () => showScreen('root'));
+
+const backendPanel = document.getElementById('backend-panel');
+document.getElementById('backend-table').innerHTML = BACKENDS.map(([cat, cls, method]) =>
+  `<tr><td><span class="badge">${cat}</span>${cls}</td><td>${method}</td></tr>`
+).join('');
+
+document.getElementById('btn-backend').addEventListener('click', function() {
+  const visible = backendPanel.style.display === 'block';
+  backendPanel.style.display = visible ? 'none' : 'block';
+  this.classList.toggle('active', !visible);
+});
+
+/* Light / dark */
+const btnLight = document.getElementById('btn-light');
+const btnDark = document.getElementById('btn-dark');
+const root = document.documentElement;
+
+function applyTheme(dark) {
+  if (dark) {
+    root.style.setProperty('--system-background', '#000000');
+    root.style.setProperty('--card-bg', '#1C1C1E');
+    root.style.setProperty('--label', '#FFFFFF');
+    root.style.setProperty('--secondary-label', 'rgba(235,235,245,0.60)');
+    root.style.setProperty('--tertiary-label', 'rgba(235,235,245,0.30)');
+    root.style.setProperty('--separator', 'rgba(84,84,88,0.65)');
+    root.style.setProperty('--system-blue', '#0A84FF');
+    root.style.setProperty('--system-green', '#30D158');
+    root.style.setProperty('--system-red', '#FF453A');
+    root.style.setProperty('--system-orange', '#FF9F0A');
+    root.style.setProperty('--system-pink', '#FF375F');
+    root.style.setProperty('--system-teal', '#64D2FF');
+    root.style.setProperty('--system-indigo', '#5E5CE6');
+    root.style.setProperty('--system-gray4', '#3A3A3C');
+    btnDark.classList.add('active');
+    btnLight.classList.remove('active');
+    elNavBar.style.background = 'rgba(0,0,0,0.72)';
+  } else {
+    root.style.setProperty('--system-background', '#FFFFFF');
+    root.style.setProperty('--card-bg', '#FFFFFF');
+    root.style.setProperty('--label', '#000000');
+    root.style.setProperty('--secondary-label', 'rgba(60,60,67,0.60)');
+    root.style.setProperty('--tertiary-label', 'rgba(60,60,67,0.30)');
+    root.style.setProperty('--separator', 'rgba(60,60,67,0.36)');
+    root.style.setProperty('--system-blue', '#007AFF');
+    root.style.setProperty('--system-green', '#34C759');
+    root.style.setProperty('--system-red', '#FF3B30');
+    root.style.setProperty('--system-orange', '#FF9500');
+    root.style.setProperty('--system-pink', '#FF2D55');
+    root.style.setProperty('--system-teal', '#5AC8FA');
+    root.style.setProperty('--system-indigo', '#5856D6');
+    root.style.setProperty('--system-gray4', '#D1D1D6');
+    btnLight.classList.add('active');
+    btnDark.classList.remove('active');
+    elNavBar.style.background = 'rgba(242,242,247,0.72)';
+  }
+}
+btnLight.addEventListener('click', () => applyTheme(false));
+btnDark.addEventListener('click', () => applyTheme(true));
+
+/* Live clock */
+function tick() {
+  const now = new Date();
+  const h = now.getHours();
+  const m = now.getMinutes().toString().padStart(2, '0');
+  document.getElementById('clock').textContent = `${h}:${m}`;
+}
+tick();
+setInterval(tick, 10000);
+
+/* Boot */
+showScreen('root');
+</script>
+</body>
+</html>

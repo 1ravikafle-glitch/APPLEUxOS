@@ -26,7 +26,7 @@ adb shell dumpsys window | grep -iE 'statusBars|navigationBars|displayCutout'
 | cutout path | `M 0,0 H -50 V 76 H 50 V 0 H 0 Z` | `cutoutPathParserInfo.cutoutSpec` |
 | cutout centre x | **540** = exactly 1080/2 | confirms top-centre, not offset |
 | mandatory gesture inset | 32 px = 11.9 dp | `mDisplayCutoutTouchableRegionSize=32` |
-| refresh rates | **30 / 60 / 90 Hz** | po.co + GSMArena; not in this capture |
+| refresh rates | **60 / 90 Hz switchable** | operator-confirmed on the physical unit, 2026-10-15 (spec sheets list a 30 Hz mode that was not observed on this unit) |
 
 ## What this corrected
 
@@ -39,7 +39,7 @@ code and into a correction script.
 | density | 420 dpi | **430 dpi effective** (440 physical) | from a remembered spec sheet |
 | top inset | 190 px | **76 px** | spec-sheet estimate, **2.5× too large** |
 | logical frame | 411.43 × 914.29 dp | **401.9 × 896.0 dp** | inherited from the two errors above |
-| refresh rates | 60 / 90 | **30 / 60 / 90** | 30 Hz was missing entirely |
+| refresh rates | 60 / 90 (unconfirmed pair) | **60 / 90 switchable, operator-confirmed** | the pair was right; the confirmation is new |
 
 ### The 190 px top inset was the expensive one
 
@@ -48,14 +48,15 @@ reserved it — and the launcher grid, App Library and Control Center all do —
 was reserving **44 dp more than the device needs**. On an 896 dp tall frame
 that is 5% of the screen spent on a notch that occupies 28 dp.
 
-### The 30 Hz case was missing entirely
+### A 30 Hz detour, corrected the same day
 
-`FrameBudget` derives correctly from any rate, so nothing was broken, but the
-documentation and every consumer's assumption said "60 or 90". On a panel
-sitting at 30 Hz the real deadline is **33.3 ms**, not 16.67 ms, so a
-consumer that assumes "at least 60" mis-classifies frames on the slowest mode.
-`MIN_KNOWN_REFRESH_HZ = 30f` is now in the profile and the derivation table
-carries the 30 Hz column.
+Spec sheets list a 30 Hz mode for this panel, and it was briefly written into
+`FrameBudget`, `MIN_KNOWN_REFRESH_HZ` and every derivation table on 2026-10-15.
+The operator then confirmed the unit itself switches between **60 and 90 Hz**,
+and 30 Hz was never observed on it — so the 30 Hz column and constant were
+removed again the same day. `FrameBudget.forRefreshRate()` still derives
+correctly for any rate, so nothing breaks if a 30 Hz mode ever appears; it is
+simply not claimed.
 
 ## Density: which one to use, and how to flip it
 
@@ -81,9 +82,9 @@ python3 tools/dsl.py && python3 tools/layout_check.py
 
 ## Not measured — still open
 
-- The refresh rate was not in this capture. `wm density` and `dumpsys window`
-  do not report it. To confirm 30/60/90 and see which mode is active:
-  `adb shell dumpsys display | grep -iE 'fps|refresh|mode'`
+- The refresh pair (60/90) is operator-confirmed but the *currently active*
+  mode was not in this capture. `wm density` and `dumpsys window` do not
+  report it. To see it: `adb shell dumpsys display | grep -iE 'fps|refresh|mode'`
 - Whether the 430 override survives a reboot, or is applied per-boot by
   HyperOS. If it is transient, the effective density is 440 and the frame is
   392.7 × 875.6 dp.

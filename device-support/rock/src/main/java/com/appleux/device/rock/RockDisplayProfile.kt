@@ -58,7 +58,8 @@ import android.view.WindowManager
  *  - display: 1080 x 2408 px, effective 430 dpi -> density 2.6875,
  *    401.9 x 896.0 dp
  *  - cutout: top-centre waterdrop notch (not a hole-punch, not symmetric)
- *  - panel: reports 30, 60 and 90 Hz; never assume 60
+ *  - panel: switchable 60 Hz / 90 Hz (operator-confirmed on the physical
+ *    unit, 2026-10-15); never assume one rate
  *  - RAM: 4 GB physical, 3 GB engineering budget
  */
 object RockDisplayProfile {
@@ -110,12 +111,12 @@ object RockDisplayProfile {
     const val NOMINAL_REFRESH_HZ = 60f
 
     /**
-     * Lowest rate the rock panel is known to advertise. The panel lists 30 Hz
-     * as well as 60 and 90 (po.co / GSMArena). At 30 Hz a frame budget of
-     * 33.3 ms applies, so a consumer that assumes "at least 60" will
-     * mis-classify a third of all frames on this panel.
+     * Lowest rate the rock panel is known to drive. Operator-confirmed on the
+     * physical unit (2026-10-15): the panel switches between 60 Hz and 90 Hz.
+     * Spec sheets also list a 30 Hz mode, but it was not observed on this unit
+     * and is not claimed here.
      */
-    const val MIN_KNOWN_REFRESH_HZ = 30f
+    const val MIN_KNOWN_REFRESH_HZ = 60f
 
     /** Highest rate the rock panel is known to drive. */
     const val MAX_KNOWN_REFRESH_HZ = 90f

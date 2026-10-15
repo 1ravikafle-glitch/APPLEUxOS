@@ -35,7 +35,8 @@ it is kept rather than discarded.
 
 Insets, measured: top **76 px** (28.3 dp), bottom **127 px** (47.3 dp), cutout
 **100 × 76 px** top-centre, centre x = 540 = exactly half the width. Refresh
-**30 / 60 / 90 Hz**.
+**60 / 90 Hz switchable**, operator-confirmed (spec sheets list a 30 Hz mode
+that was not observed on this unit).
 
 So a dp value from *any* source is only correct for the frame it was derived
 on. The home-grid numbers previously in this file were derived on the wrong
@@ -48,7 +49,7 @@ re-derived is:
 | cell pitch | 90.5 dp for 4 columns | files5's own `size.cell` / grid def |
 | vertical band | 896.0 − 28.3 (notch) − dock | live insets, not a constant |
 | dock radius | **34** | source 1 wins (`REGULAR_CORNER_RADIUS_DP`), not files5's 38 |
-| refresh rate | **30 / 60 / 90**, live read | `Display.getMode()` |
+| refresh rate | **60 / 90 switchable**, live read | `Display.getMode()` |
 
 The pattern: take the layout *tree* from files5, re-derive the *numbers* for
 the measured frame. Never copy a dp literal across frames.
@@ -67,8 +68,7 @@ Kept deliberately; do not "fix" these back toward the sources:
   and `FLAG_BLUR_BEHIND`.
 - **Frame budget.** files5 assumes a fixed rate. Ours derives good/jank/severe
   thresholds from the live rate — 14.00/16.67/20.00 ms at 60 Hz,
-  9.33/11.11/13.33 ms at 90 Hz, 28.00/33.33/40.00 ms at 30 Hz — because the
-  panel runs all three.
+  9.33/11.11/13.33 ms at 90 Hz — because the panel switches between the two.
 - **Insets.** files5 reads them live in Kotlin and keeps dp values in the
   profile as a fallback. Ours does the same, but the fallback is now measured
   rather than assumed (28.3 / 47.3 dp, previously 72.4 dp).
@@ -90,6 +90,15 @@ python3 scripts/compare-glass-tokens.py --in design/spec/extracted/design-tokens
 
 `layout_check.py` printing `OK` is a claim about **geometry only**. It says
 nothing about colour, provenance, or whether anything binds to an AOSP API.
+
+## Settings has its own layout reference
+
+`design/spec/settings-layout-reference.md` + the board it describes,
+`design-reference/inbox/settings-aosp16-ios27-tree.html` (136 screens,
+machine-checked: 186 nav refs all resolve, 38/38 icons defined, one
+self-parent defect fixed in our copy). Row anatomy, metrics and a 59-entry
+backend map, five of which are flagged against `frameworks/base`. Use it for
+every settings row built from here on.
 
 ## Unresolved
 
