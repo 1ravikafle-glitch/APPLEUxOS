@@ -382,7 +382,10 @@ class AppleuxSystemUIService : Service() {
                 activeRadios = radios,
                 airplaneMode = isAirplaneOn(),
                 charging = charging,
-                batteryPercent = pct
+                batteryPercent = pct,
+                chargeTimeText =
+                    com.appleux.design.components.AppleuxDynamicIsland
+                        .chargeTimeText(this)
             )
         } catch (e: Exception) {
             android.util.Log.w(TAG, "header refresh: ${e.message}")

@@ -26,6 +26,7 @@ class AppleuxControlCenter @JvmOverloads constructor(
     private val motionEngine: AppleuxMotionEngine = AppleuxMotionEngine.getInstance(context)
     private val tileContainer: GridLayout
     private val headerView: AppleuxControlCenterHeader
+    private val islandView: AppleuxDynamicIsland
 
     private val tiles: MutableList<ControlTile> = mutableListOf()
     private val tileViews: MutableList<AppleuxControlTile> = mutableListOf()
@@ -63,6 +64,13 @@ class AppleuxControlCenter @JvmOverloads constructor(
         AppleuxDisplayInsets.applyTopInset(context, this, extraTopDp = 4f)
 
         headerView = AppleuxControlCenterHeader(context)
+        // Dynamic Island on the emulated iPhone 11 notch: first child, centred,
+        // sitting in the reserved cutout band above the header text.
+        islandView = AppleuxDynamicIsland(context)
+        addView(islandView, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply { gravity = android.view.Gravity.CENTER_HORIZONTAL })
         addView(headerView, LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
@@ -141,9 +149,11 @@ class AppleuxControlCenter @JvmOverloads constructor(
         activeRadios: List<String>,
         airplaneMode: Boolean,
         charging: Boolean,
-        batteryPercent: Int
+        batteryPercent: Int,
+        chargeTimeText: String? = null
     ) {
         headerView.bind(activeRadios, airplaneMode, charging, batteryPercent)
+        islandView.bindBattery(charging, batteryPercent, chargeTimeText)
     }
 
     fun addTile(tile: ControlTile) {
