@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="appleux_surface">#1C1C1E</color>
+    <color name="appleux_background">#000000</color>
+    <color name="appleux_label">#FFFFFF</color>
+    <color name="appleux_system_blue">#0A84FF</color>
+</resources>

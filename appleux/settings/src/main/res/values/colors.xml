@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="appleux_settings_surface">#F2F2F7</color>
+    <color name="appleux_settings_label">#000000</color>
+    <color name="appleux_settings_summary">#8E8E93</color>
+    <color name="appleux_settings_accent">#007AFF</color>
+</resources>

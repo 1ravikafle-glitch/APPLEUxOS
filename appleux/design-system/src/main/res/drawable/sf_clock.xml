@@ -1,0 +1,8 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="2048" android:viewportHeight="2048">
+    <!-- Apple SF Symbols geometry (wght 400): clock.tag.color.medium -->
+    <group android:scaleX="1" android:scaleY="-1" android:translateY="2048">
+        <path android:fillColor="#FF000000" android:pathData="M391 654C363 654 343 674 343 702C343 730 363 750 391 750H615V1055C615 1082 637 1103 664 1103C691 1103 713 1082 713 1055V702C713 675 691 654 664 654ZM665 185C958 185 1201 429 1201 722C1201 1015 958 1259 664 1259C371 1259 128 1015 128 722C128 429 372 185 665 185Z"/>
+    </group>
+</vector>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AppleUX Launcher</string>
+    <string name="widget_clock">Clock</string>
+    <string name="widget_clock_desc">AppleUX clock widget</string>
+    <string name="widget_battery">Battery</string>
+    <string name="widget_battery_desc">AppleUX battery widget</string>
+    <string name="widget_calendar">Calendar</string>
+    <string name="widget_calendar_desc">AppleUX calendar widget</string>
+    <string name="widget_gallery_title">Add Widget</string>
+    <string name="widget_add">Add Widget</string>
+    <string name="app_menu_info">App Info</string>
+    <string name="app_menu_remove">Remove App</string>
+    <string name="app_menu_widgets">Widgets</string>
+    <string name="app_info_unavailable">No app details screen for %1$s</string>
+    <string name="app_remove_unavailable">%1$s cannot be removed</string>
+</resources>

@@ -1,0 +1,8 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="2048" android:viewportHeight="2048">
+    <!-- Apple SF Symbols geometry (wght 400): wallet.tag.color.medium -->
+    <group android:scaleX="1" android:scaleY="-1" android:translateY="2048">
+        <path android:fillColor="#FF000000" android:pathData="M328 255H1119C1259 255 1319 316 1319 453V989C1319 1126 1259 1186 1119 1186H328C188 1186 128 1126 128 989V453C128 316 188 255 328 255ZM218 1001V1023C218 1068 249 1095 297 1095H1150C1198 1095 1229 1068 1229 1023V1001ZM218 856V898C218 931 240 951 278 951H1169C1207 951 1229 931 1229 898V856ZM218 711V753C218 786 240 806 278 806H1169C1207 806 1229 786 1229 753V711H922C890 711 868 704 847 675C806 614 776 587 724 587C671 587 641 614 600 675C579 704 557 711 525 711Z"/>
+    </group>
+</vector>

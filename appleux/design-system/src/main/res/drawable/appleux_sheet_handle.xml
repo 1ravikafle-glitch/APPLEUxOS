@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Sheet grab handle.
+
+  PROVENANCE: AppleUX-chosen colour. iOS draws the handle in a translucent
+  label colour that reads on any material beneath it; it has no fixed
+  published value, so this tracks ColorTokens.systemGray.
+
+  This file previously declared
+    <solid android:color="@android:color/transparent">
+  which made the handle's only affordance completely invisible. AppleuxSheet
+  no longer loads this drawable (it paints the handle so the theme can be
+  re-resolved at runtime), but the resource is kept so any layout XML that
+  references it still gets a visible handle.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#338E8E93" />
+    <corners android:radius="3dp" />
+    <size android:width="36dp" android:height="5dp" />
+</shape>

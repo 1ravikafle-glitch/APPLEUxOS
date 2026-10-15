@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="system_blue">#0A84FF</color>
+    <color name="system_blue_pressed">#0077E0</color>
+    <color name="system_green">#30D158</color>
+    <color name="system_red">#FF3B30</color>
+    <color name="system_orange">#FF9500</color>
+    <color name="system_yellow">#FFCC00</color>
+    <color name="system_purple">#BF5AF2</color>
+    <color name="system_pink">#FF2E83</color>
+    <color name="system_teal">#00C4D4</color>
+    <color name="system_indigo">#5E5CE6</color>
+    <color name="system_mint">#33D686</color>
+    <color name="system_cyan">#00C7BE</color>
+    <color name="system_background">#000000</color>
+    <color name="system_background_elevated">#1C1C1E</color>
+    <color name="system_background_secondary">#2C2C2E</color>
+    <color name="system_background_tertiary">#3A3A3C</color>
+    <color name="label">#FFFFFF</color>
+    <color name="secondary_label">#98989D</color>
+    <color name="tertiary_label">#6E6E73</color>
+    <color name="separator">#38383A</color>
+    <color name="fill_tertiary">#767680</color>
+    <color name="fill_quaternary">#78787880</color>
+
+    <!--
+      Sheet grab handle, dark appearance. AppleUX-chosen; see
+      values/colors.xml for the provenance note.
+    -->
+    <color name="appleux_sheet_handle">#4DE8E8ED</color>
+</resources>

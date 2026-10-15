@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">AppleUX Settings</string>
+    <string name="adaptive_performance">Adaptive Performance</string>
+    <string name="adaptive_performance_summary">Auto-adjust quality for smooth interaction</string>
+    <string name="low_power_mode">Low Power Mode</string>
+    <string name="low_power_summary">Reduce performance for battery</string>
+    <string name="reduce_motion">Reduce Motion</string>
+    <string name="reduce_motion_summary">Minimize animation intensity</string>
+    <string name="dark_mode">Dark Mode</string>
+    <string name="dark_mode_summary">Use dark theme</string>
+    <string name="glass_intensity">Glass Effect</string>
+    <string name="glass_intensity_summary">Blur intensity for dock, panels and sheets</string>
+    <string name="auto_brightness">Auto-Brightness</string>
+    <string name="brightness">Brightness</string>
+    <string name="display">Display</string>
+    <string name="security">Security</string>
+    <string name="lock_screen">Lock Screen</string>
+    <string name="notifications">Notifications</string>
+    <string name="notifications_summary">Allow AppleUX to show notifications</string>
+    <string name="overlay_permission">Display Over Other Apps</string>
+    <string name="overlay_permission_summary">Required for Control Center and Notification Center</string>
+    <string name="appleux">AppleUX</string>
+    <string name="quality_level">Quality level</string>
+    <string name="render_scale">Render scale</string>
+    <string name="monitoring_level">Monitoring level</string>
+</resources>

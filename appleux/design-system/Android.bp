@@ -1,0 +1,27 @@
+// AppleUX Design System - AOSP build module
+// Android library providing iOS-27-inspired design tokens, motion constants,
+// and reusable UI components for low-end hardware optimization.
+
+package {
+    default_applicable_licenses: ["Android-src-setup"],
+}
+
+android_library {
+    name: "appleux-design-system",
+    owner: "appleux",
+    manifest: "src/main/AndroidManifest.xml",
+    srcs: ["src/main/java/**/*.java", "src/main/java/**/*.kt"],
+    kotlin: {
+        enabled: true,
+    },
+    sdk_version: "current",
+    min_sdk_version: "36",
+    resource_dirs: ["src/main/res"],
+    static_libs: [
+        "androidx.appcompat_appcompat",
+        "androidx.recyclerview_recyclerview",
+        "androidx.core_core-ktx",
+        "androidx.dynamicanimation_dynamicanimation",
+    ],
+    libs: ["android.framework"],
+}

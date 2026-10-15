@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- iOS system blue replaces dynamic Material accent (replica intent). -->
+    <color name="accent_device_default_light">#007AFF</color>
+    <color name="accent_device_default_dark">#0A84FF</color>
+</resources>

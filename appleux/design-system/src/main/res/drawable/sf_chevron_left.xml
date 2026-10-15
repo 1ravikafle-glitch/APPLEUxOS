@@ -1,0 +1,8 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="2048" android:viewportHeight="2048">
+    <!-- Apple SF Symbols geometry (wght 400): chevron.left.tag.color.medium -->
+    <group android:scaleX="1" android:scaleY="-1" android:translateY="2048">
+        <path android:fillColor="#FF000000" android:pathData="M692 227C723 257 722 306 693 334L282 721L693 1107C723 1136 722 1186 691 1214C663 1242 617 1240 586 1211L169 819C113 766 113 675 169 623L586 230C614 203 666 201 692 227Z"/>
+    </group>
+</vector>

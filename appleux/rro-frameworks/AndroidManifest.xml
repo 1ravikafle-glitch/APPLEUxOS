@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.appleux.overlay.frameworks">
+    <application android:hasCode="false" />
+    <!-- Static runtime overlay retargeting framework-res toward iOS 27:
+         fixed iOS blue accent (replaces dynamic Material You), iOS alert radius. -->
+    <overlay
+        android:targetPackage="android"
+        android:isStatic="true"
+        android:priority="10" />
+</manifest>

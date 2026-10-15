@@ -1,0 +1,8 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="2048" android:viewportHeight="2048">
+    <!-- Apple SF Symbols geometry (wght 400): checkmark.tag.color.medium -->
+    <group android:scaleX="1" android:scaleY="-1" android:translateY="2048">
+        <path android:fillColor="#FF000000" android:pathData="M480 225C513 225 541 241 561 271L1018 991C1029 1010 1042 1032 1042 1055C1042 1099 1002 1128 961 1128C935 1128 910 1113 891 1083L476 417L279 672C255 704 233 713 205 713C162 713 128 678 128 633C128 612 137 590 151 571L395 271C420 238 447 225 480 225Z"/>
+    </group>
+</vector>

@@ -1,0 +1,16 @@
+package {
+    default_applicable_licenses: ["Android-src-setup"],
+}
+
+android_library {
+    name: "appleux-performance-lib",
+    manifest: "src/main/AndroidManifest.xml",
+    srcs: ["src/main/java/**/*.kt"],
+    sdk_version: "current",
+    min_sdk_version: "36",
+    kotlin: {
+        enabled: true,
+    },
+    static_libs: ["androidx.core_core-ktx"],
+    libs: ["android.framework"],
+}

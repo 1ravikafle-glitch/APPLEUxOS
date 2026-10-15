@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Section header of the grouped settings list: small grey caps, aligned with the
+  card inset and sitting OUTSIDE the group, exactly like an iOS grouped list.
+  Never used as a body row, so the title is the root and has no accessory.
+-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settingSectionTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="8dp"
+    android:textSize="13sp"
+    android:textAllCaps="true"
+    android:letterSpacing="0.04"
+    android:textColor="@color/appleux_settings_summary" />

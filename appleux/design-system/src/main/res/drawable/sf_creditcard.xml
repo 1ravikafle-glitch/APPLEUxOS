@@ -1,0 +1,8 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="2048" android:viewportHeight="2048">
+    <!-- Apple SF Symbols geometry (wght 400): creditcard.tag.color.medium -->
+    <group android:scaleX="1" android:scaleY="-1" android:translateY="2048">
+        <path android:fillColor="#FF000000" android:pathData="M279 307H1115C1215 307 1266 357 1266 457V829H128V457C128 357 179 307 279 307ZM326 457C298 457 279 476 279 504V593C279 621 298 640 326 640H445C473 640 492 621 492 593V504C492 476 473 457 445 457ZM128 940H1266V984C1266 1084 1215 1134 1115 1134H279C179 1134 128 1084 128 984Z"/>
+    </group>
+</vector>

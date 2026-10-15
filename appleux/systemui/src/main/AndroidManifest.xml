@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.appleux.systemui">
+
+    <uses-permission android:name="android.permission.EXPEND_WINDOWS" />
+    <uses-permission android:name="android.permission.SYS_BOOT" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- Wi-Fi connect/disassociate: the platform needs network state to hand a
+         network to, and take one from, a non-privileged requester. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- Brightness writes and auto-brightness hand-off go to Settings.System,
+         which is gated by the user-granted WRITE_SETTINGS app-op. -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Overlay panels (Control Center, notification shade). -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- android:process below equals the package name, i.e. the DEFAULT process.
+     It reads like it splits the app off, but AppleuxNotificationListener and
+     AppleuxSystemUIService rely on sharing this one process for the
+     in-memory AppleuxNotificationBus. Do NOT give any component its own
+     android:process: the notification feed dies at once. -->
+    <application
+        android:label="@string/app_name"
+        android:process="com.appleux.systemui"
+        android:sharedUserLabel="@string/app_name">
+
+        <service
+            android:name=".AppleuxSystemUIService"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:foregroundServiceType="specialUse">
+            <property
+                android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
+                android:value="AppleUX Control Center and notification shade" />
+        </service>
+
+        <receiver android:name="com.appleux.systemui.AppleuxBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.SCREEN_ON" />
+                <action android:name="android.intent.action.SCREEN_OFF" />
+                <action android:name="android.intent.action.USER_PRESENT" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Real notification feed (user grants access in Settings). -->
+        <service
+            android:name=".AppleuxNotificationListener"
+            android:exported="false"
+            android:label="@string/listener_label"
+            android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.notification.NotificationListenerService" />
+            </intent-filter>
+        </service>
+
+        <!-- Quick Settings tile: the platform-sanctioned Control Center entry. -->
+        <service
+            android:name=".AppleuxControlTileService"
+            android:exported="true"
+            android:label="@string/control_tile_label"
+            android:icon="@drawable/sf_settings"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+        <!-- Quick Settings tile: notification shade entry. -->
+        <service
+            android:name=".AppleuxShadeTileService"
+            android:exported="true"
+            android:label="@string/shade_tile_label"
+            android:icon="@drawable/sf_bell"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
+        </service>
+
+    </application>
+
+</manifest>

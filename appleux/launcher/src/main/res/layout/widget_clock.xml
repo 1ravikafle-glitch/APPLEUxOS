@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- iOS medium-widget proportions: wide card, left-aligned stack. RemoteViews-safe views only. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_clock_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_card_dark"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextClock
+        android:id="@+id/widget_clock_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="h:mm"
+        android:format24Hour="H:mm"
+        android:textColor="#FFFFFFFF"
+        android:textSize="44sp" />
+
+    <TextClock
+        android:id="@+id/widget_clock_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="EEEE, MMM d"
+        android:format24Hour="EEEE, MMM d"
+        android:textColor="#99FFFFFF"
+        android:textSize="15sp" />
+</LinearLayout>
