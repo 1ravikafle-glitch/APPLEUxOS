@@ -59,3 +59,33 @@ default-placement work.
 IPSW plists that parse as data (bundle IDs, default orders, display names)
 are facts and may be transcribed with a citation. Anything requiring Apple
 keys, Apple binaries, Apple fonts, or Apple artwork stays outside the repo.
+
+## Icon reference set (macOS 27, user-supplied Drive folder)
+
+37 valid 1024x1024 PNGs in `/tmp/opencode/icons-ref/` (reference only — Apple
+artwork, never enters the repo or any APK; `app store.png` failed to download,
+HTTP 500). These are macOS-style icons (e.g. Safari WITH tick marks — iOS
+Safari has none), so they inform glyph SHAPE language, not iOS-exact art.
+
+Notable for our redraws: Messages bubble (tail bottom-left, ~barely tapered),
+Safari compass (needle red/white, 60 tick ring on macOS only), Photos pinwheel
+(8 petals, specific hue order). Our launcher shows real Android app icons, so
+these feed the settings-badge / CC-tile glyph set (`sf_*`/`il_ic_*`), where
+18-24dp white-on-color rendering means shape transfers, detail does not.
+
+## SF Symbols 27 DMG — verified against the harvest (2026-10-15)
+
+Second drive: `/media/elfakiris/323EA7F52BCB4EB5/SF-Symbols-27.dmg` (445,052,983
+bytes). Extracted on Linux with 7z (DMG) → cpio (`Payload~`) — no macOS needed
+— to `/tmp/opencode/sfdmg/payload` (631 MB, reference only, NOT in repo).
+
+- App version: SF Symbols 27, full app + `SFSymbolsFallback.otf` (41.7 MB).
+- `Metadata/name_availability.plist`: 9524 symbols; **2026 set is 340/340
+  identical** to our `sf27-catalog.json` — the harvest is complete and
+  accurate, nothing new to transcribe.
+- Geometry pipeline proven but parked: fallback font holds **41,986 glyphs**
+  as CFF2 outlines, parseable with fontTools (tables CFF2/GDEF/GPOS/GSUB/HVAR
+  present). Usable in future ONLY as redraw reference (stroke weights,
+  proportions) — Apple vectors never enter an APK.
+- Rule restated: names/versions are facts and bankable; font files, glyph
+  outlines, and artwork stay outside the tree.

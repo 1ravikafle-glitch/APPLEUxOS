@@ -57,3 +57,10 @@ The surface **inventory** (which surfaces exist, grouped by area) is worth
 keeping, after the blocked and no-equivalent backends are removed. It is a
 useful checklist against the replace-from-source sequence. The **code** in the
 spec did not survive review — see the review's § Rejected.
+## Figma data, local for future use (2026-10-15)
+
+- SSD archive `/media/elfakiris/ElfakIris1/AppleUX-figma/`: July Apple kit dump
+  (38 MB), October Drafts-copy dump (47 MB), `cc-modules.json`.
+- Repo-sized extraction: `design-reference/ios27/figma-drafts-copy/`
+  (meta/pages/components/styles/materials + README). Tokens re-verified
+  identical October-vs-July; nothing changed in our code.

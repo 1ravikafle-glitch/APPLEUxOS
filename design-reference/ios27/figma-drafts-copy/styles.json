@@ -1,0 +1,604 @@
+{
+ "6398:3172": {
+  "key": "2deb18b572163ada0674aaef38ba2114375624a9",
+  "name": "XLTitle1",
+  "styleType": "TEXT",
+  "remote": true,
+  "description": ""
+ },
+ "6398:3175": {
+  "key": "caaab9b4e5b678de9e906de0a5488d9e89839411",
+  "name": "Colors/Gray",
+  "styleType": "FILL",
+  "remote": true,
+  "description": ""
+ },
+ "1:54200": {
+  "key": "510d73d176c071c2838b6c086cc46e5f667d0b16",
+  "name": "Body/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55742": {
+  "key": "2330ff5f87b85f5e1eca8967cff5b28d39048ba0",
+  "name": "Footnote/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "5412:25236": {
+  "key": "e1fd3c81fdceaf73868578377da934b489d41eaa",
+  "name": "Vibrant Labels/Dark/Vibrant Primary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5412:25237": {
+  "key": "879b17264924e382099b5b438645b2e3b4522e8c",
+  "name": "Vibrant Labels/Dark/Vibrant Secondary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55719": {
+  "key": "47377de286832b23849a3d466ebb3bea98be17c3",
+  "name": "Colors/Pink",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "57:56710": {
+  "key": "46b5e6f71af47eee2b82a784fd090fc966378a4f",
+  "name": "Vibrant Fills/Dark/Vibrant Tertiary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5412:25238": {
+  "key": "b9040eb23a139454b987bd735f1e45880fffe7b3",
+  "name": "Vibrant Labels/Dark/Vibrant Tertiary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55725": {
+  "key": "9a2712894c2d7418b6335875ad8f42cff9424f11",
+  "name": "Large Title/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "5:55733": {
+  "key": "ceca9c81d6fef6e7640edb00df57b1bf65b75b3b",
+  "name": "Colors/Blue",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55738": {
+  "key": "446dea09b67d74ff646778ca5f20ab926c95837c",
+  "name": "Subheadline/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55732": {
+  "key": "5120ae773949ac82f4c51519dca032fcc1268a01",
+  "name": "Headline/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "1:54203": {
+  "key": "b2019840e395e4fa363484c10d538984db704dfd",
+  "name": "Body/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:56054": {
+  "key": "285400fa8270135093fc62ade3e9eb49650fe15a",
+  "name": "Backgrounds/Primary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55750": {
+  "key": "1650f8698a9eb0cc7195323c4fd38b03542ee055",
+  "name": "Caption2/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:56052": {
+  "key": "0b23ac9f36668ac63f307f7213592779642b5763",
+  "name": "Grays/White",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "57:56708": {
+  "key": "56c85eb3f6f9ab0892f66b72e7cae7706b9b144b",
+  "name": "Vibrant Fills/Dark/Vibrant Primary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55743": {
+  "key": "06994ef8b6832b10c456c642bee5e8a58e592e56",
+  "name": "Footnote/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:56042": {
+  "key": "0f6b4020dd471644e1bd8080f32f292103eaee55",
+  "name": "Grays/Gray 2",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5412:25239": {
+  "key": "4239ac92317268e17d29d18367a09bce2e25de23",
+  "name": "Vibrant Labels/Dark/Vibrant Quaternary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5412:25242": {
+  "key": "a04f1fa7ca04b2c5b0ee75c5235fca43a17b5946",
+  "name": "Vibrant Fills/Light/Vibrant Tertiary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5412:25241": {
+  "key": "d68abb4035e23ad926d5a634e8dc0c975304e1a2",
+  "name": "Vibrant Fills/Light/Vibrant Secondary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5412:25240": {
+  "key": "280e3d7412795b9adc2b33c72f89e0b15d695f45",
+  "name": "Vibrant Fills/Light/Vibrant Primary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "57:56702": {
+  "key": "d361bfe6a92a022effb83ecdd0ee09978aeff6e8",
+  "name": "Vibrant Labels/Light/Vibrant Tertiary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "57:56701": {
+  "key": "7918a4fa80b1412d95ce166bd36bbecbb7ae5a47",
+  "name": "Vibrant Labels/Light/Vibrant Secondary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "57:56700": {
+  "key": "38e1dd81d74c8b0a42f7f096a2882c3a10bf7698",
+  "name": "Vibrant Labels/Light/Vibrant Primary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "57:56703": {
+  "key": "c798cdf7d47265d810f462b64876e3846b55d94e",
+  "name": "Vibrant Labels/Light/Vibrant Quaternary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55784": {
+  "key": "7a449409d743b9deb4fef55a65457911a01f68ae",
+  "name": "Labels/Primary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55746": {
+  "key": "20ec66f97817ff10bdfce71d4857373458cc9986",
+  "name": "Caption1/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55734": {
+  "key": "1b5b52ff08a2f192da3c17ae4fdd801c5880d301",
+  "name": "Callout/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55730": {
+  "key": "da68ce26af4901aad47f0913206bc8280c669e5c",
+  "name": "Title3/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55728": {
+  "key": "c53251c109ec859485084a4d0dc2b0714a98cf9a",
+  "name": "Title2/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55726": {
+  "key": "2b793afcf8544719bbe560afc28780d2ff5bc679",
+  "name": "Title1/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55724": {
+  "key": "d724b470a1b10f5f47876371b3a1f381edc3d0f6",
+  "name": "Large Title/Regular",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55753": {
+  "key": "1666ddc1ae7b9071b7472fd2e79b49cd5f347896",
+  "name": "Caption2/Emphasized Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55752": {
+  "key": "8efc10681016aaaf904fa2b5584b50d6953dbe72",
+  "name": "Caption2/Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55751": {
+  "key": "17073b349476d5d4e982b6f19164782a539f4966",
+  "name": "Caption2/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55749": {
+  "key": "bdd8fe788415fea833e2073cc551b44b296ccfbf",
+  "name": "Caption1/Emphasized Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55748": {
+  "key": "26d81df2feca7ef62acda108554465ff89a06066",
+  "name": "Caption1/Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55747": {
+  "key": "1e4b9d53733d82362b87fd05a97b48bb181da51c",
+  "name": "Caption1/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55745": {
+  "key": "1f847b8b5eabb6bf24b66e83271b9b874b69c873",
+  "name": "Footnote/Emphasized Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55744": {
+  "key": "4ef20262a25cffc81850df3f86be84d015de2467",
+  "name": "Footnote/Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55741": {
+  "key": "281bccb1b91a3c6985f1b11ec3f543eda3cd4816",
+  "name": "Subheadline/Emphaized Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55740": {
+  "key": "0687eb2a4c07aa22a0974f2b23dccadfb6536c1c",
+  "name": "Subheadline/Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55739": {
+  "key": "1ecab7d5955f606fecd9ae4a9326b06b5949538f",
+  "name": "Subheadline/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55737": {
+  "key": "d8da5a25f23766a82444e05aefee8f31efb4d5ce",
+  "name": "Callout/Emphasized Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55736": {
+  "key": "7798702613657834599c1850cf24bd683840d618",
+  "name": "Callout/Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55735": {
+  "key": "0d095a4ee9f29e34cfd58c10afe787069c72cc98",
+  "name": "Callout/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "1:54205": {
+  "key": "bd28258debc6a069a8260b6346480ef319e52f54",
+  "name": "Body/Emphasized Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "1:54204": {
+  "key": "b00d5b1f50740d51682896d7bd7fcf001df59355",
+  "name": "Body/Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55733": {
+  "key": "7493b32dfdb9cf33ee4fc1e35fca078efa34aebf",
+  "name": "Headline/Italic",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55731": {
+  "key": "e46e8f627be64bd66ebde5c304fb855b47706b19",
+  "name": "Title3/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55729": {
+  "key": "923a420b21d13c6e094be9821199cb929e5af1cb",
+  "name": "Title2/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55727": {
+  "key": "89a36ea133ab2dc6ccabe688d0ad3fd7b484d5ad",
+  "name": "Title1/Emphasized",
+  "styleType": "TEXT",
+  "remote": false,
+  "description": ""
+ },
+ "6:55786": {
+  "key": "9d943e247f118b4f95c73c98e0ac48da5225d61d",
+  "name": "Labels/Tertiary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56077": {
+  "key": "96a0e0df2d8a1dd4cc8e94ed2c013e9035db1dd1",
+  "name": "Fills/Tertiary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55719": {
+  "key": "b5eb54de50eb195067ec4a64dc6b8272c5089ad4",
+  "name": "Colors/Red",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55721": {
+  "key": "5fa615b9be279878aa36afc699b85a8671adf132",
+  "name": "Colors/Orange",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55723": {
+  "key": "decc572a2e9d942c7d89884fc1270f50b40a0107",
+  "name": "Colors/Yellow",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55725": {
+  "key": "79e5b1dbfb387295187125c913e75eed953f01a3",
+  "name": "Colors/Green",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55727": {
+  "key": "183e1aba99679e0227f5b2a66de128610d66aa86",
+  "name": "Colors/Mint",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55729": {
+  "key": "04de6ece08fde791e034e9dfb5798b83dfe9280d",
+  "name": "Colors/Teal",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55731": {
+  "key": "9f556b9629aef96510a5b555026fa5923c7a8750",
+  "name": "Colors/Cyan",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55735": {
+  "key": "1f3d841fcb40a484bfc8d428962dbaf16830619f",
+  "name": "Colors/Indigo",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "5:55737": {
+  "key": "3ac98b4c9f23d9c50c9094ee9229e4ff42bebbcc",
+  "name": "Colors/Purple",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55721": {
+  "key": "e44728c44b16fa889861e9a1b98c94cb8ed0c062",
+  "name": "Colors/Brown",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55785": {
+  "key": "8f928c5be32bccd98357ba05c5fb7362cb2bad2b",
+  "name": "Labels/Secondary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:55787": {
+  "key": "9e5e973999fbec8510d14ac5223ed7067d6e5515",
+  "name": "Labels/Quaternary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56038": {
+  "key": "acb88f250e3969433da2ac36b6cc26bc61d5f65f",
+  "name": "Grays/Black",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56040": {
+  "key": "4870bb12a9c37125b4f3f22e7d4e9c83f8ca7a9d",
+  "name": "Grays/Gray",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56044": {
+  "key": "232e04379196b3f7430d5dd4f608990ebf414cc8",
+  "name": "Grays/Gray 3",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56046": {
+  "key": "acd2afd4713dd6742106391aaf5c53db7fa2e435",
+  "name": "Grays/Gray 4",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56048": {
+  "key": "ce3ccc01e2fbf25fded33b5fa522c0eceee391b1",
+  "name": "Grays/Gray 5",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56050": {
+  "key": "f9bd24a0ce48cb43fdaf58b0a7acfba9f1e70e2c",
+  "name": "Grays/Gray 6",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56055": {
+  "key": "0f9cb6a0f311bdec58eb2a85aba7fa479694c034",
+  "name": "Backgrounds/Secondary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56056": {
+  "key": "7c334a66e1ed55a5c2d94d0caed9999788fd77de",
+  "name": "Backgrounds/Tertiary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56063": {
+  "key": "158965599ffbf74b6f444afed88bee1aa0494267",
+  "name": "Backgrounds Grouped/Primary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56066": {
+  "key": "cf1c899981338a747130d7684be65cdb8e2c44d6",
+  "name": "Backgrounds Grouped/Secondary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56069": {
+  "key": "cecb7a517846e65e072891e62243fd354db87c6e",
+  "name": "Backgrounds Grouped/Tertiary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56072": {
+  "key": "2b7163818ae4b31bf33acec6f3dc895690c78dda",
+  "name": "Fills/Primary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56075": {
+  "key": "16b7b1165b80c0f552622790a309d3bab8fc77c9",
+  "name": "Fills/Secondary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56079": {
+  "key": "75c3b8e7e2a69a52b51c5daa77883974953899d1",
+  "name": "Fills/Quaternary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56080": {
+  "key": "754839acd3458ff9727bb67b8d5911f4d065ae15",
+  "name": "Separators/Opaque",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "6:56082": {
+  "key": "e31d289138d4fe1b6a1e85311703ebed82f87cfb",
+  "name": "Separators/Non-opaque",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ },
+ "57:56709": {
+  "key": "05db334098ea3c63d5ee4dda907362ba9b88221a",
+  "name": "Vibrant Fills/Dark/Vibrant Secondary",
+  "styleType": "FILL",
+  "remote": false,
+  "description": ""
+ }
+}
