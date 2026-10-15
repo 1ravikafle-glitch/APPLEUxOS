@@ -179,7 +179,6 @@ class DockPreferences(context: Context) {
                     "com.google.android.dialer",
                     "com.android.server.telecom",
                     "com.s.android.dialer",
-                    "com.miui.player",
                     "com.android.incallui"
                 )
             ),

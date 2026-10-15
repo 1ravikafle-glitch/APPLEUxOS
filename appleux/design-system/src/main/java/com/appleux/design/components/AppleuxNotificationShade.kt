@@ -37,6 +37,8 @@ class AppleuxNotificationShade @JvmOverloads constructor(
 
     private var notificationAdapter: NotificationAdapter? = null
 
+    private val islandView: AppleuxDynamicIsland
+
     private val clearAllButton: AppleuxText = AppleuxText(context).apply {
         text = "Clear All"
         textSize = 14f
@@ -110,6 +112,40 @@ class AppleuxNotificationShade @JvmOverloads constructor(
             LinearLayout.LayoutParams.WRAP_CONTENT
         )
         column.addView(clearAllButton)
+
+        // Dynamic Island on the emulated iPhone 11 notch. The shade root is a
+        // FrameLayout, so the island floats top-centre over the column exactly
+        // like in Control Center — same view, same API, same pushed battery
+        // state. No receivers here either; see bindIsland.
+        islandView = AppleuxDynamicIsland(context)
+        addView(
+            islandView,
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.TOP or Gravity.CENTER_HORIZONTAL
+            )
+        )
+    }
+
+    /**
+     * Pushes live battery state to the island. Called by the service on the
+     * same refresh path as the Control Center header; never reads anything
+     * itself. Full-slot pushes go through [pushIsland].
+     */
+    fun bindIsland(charging: Boolean, batteryPercent: Int, chargeTimeText: String?) {
+        pushIsland(
+            AppleuxDynamicIsland.LiveSlots(
+                charging = charging,
+                batteryPercent = batteryPercent,
+                chargeText = chargeTimeText
+            )
+        )
+    }
+
+    /** Full live-slot push; the service owns every read behind it. */
+    fun pushIsland(slots: AppleuxDynamicIsland.LiveSlots) {
+        islandView.bindSlots(slots)
     }
 
     fun setNotifications(

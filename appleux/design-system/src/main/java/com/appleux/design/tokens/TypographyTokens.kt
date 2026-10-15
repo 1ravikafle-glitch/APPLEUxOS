@@ -27,9 +27,13 @@ import android.graphics.Typeface
  */
 object TypographyTokens {
     const val FONT_FAMILY_SYSTEM: String = "system"
-    const val FONT_FAMILY_SCONTROL: String = "san Francisco"
+    // Unused legacy aliases, kept spelled correctly so nobody wires them up
+    // thinking they name real families. There is no file-level evidence for
+    // an "SF Pro"-named family in the IPSW harvest (only older SFUI/SFCompact
+    // shells), and we ship system sans in any case — see the header above.
+    const val FONT_FAMILY_SCONTROL: String = "San Francisco"
     const val FONT_FAMILY_MONO: String = "SF Mono"
-    const val FONT_FAMILY_ROUNDSED: String = "SF Round Rounded"
+    const val FONT_FAMILY_ROUNDSED: String = "SF Rounded"
 
     val largeTitle: FontSpec = FontSpec(
         name = "Large Title",

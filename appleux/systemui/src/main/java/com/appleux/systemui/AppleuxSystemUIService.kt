@@ -18,6 +18,7 @@ import android.net.NetworkCapabilities
 import android.net.NetworkRequest
 import android.net.wifi.SupplicantState
 import android.net.wifi.WifiManager
+import android.media.AudioManager
 import android.os.Build
 import android.os.Handler
 import android.os.IBinder
@@ -319,10 +320,21 @@ class AppleuxSystemUIService : Service() {
             "system_bluetooth",
             toggle = !bluetoothIsSettingsOnly
         ) { toggleBluetooth() }
+        // DIVERGENCE (documented, not fixed): iOS owns this in its
+        // ConnectivityModule alongside Wi-Fi/Bluetooth/cellular; here it is a
+        // standalone tile because no such module exists in this codebase.
         addTile("airplane", "Airplane", "system_airplane", true) { toggleAirplane() }
         addTile("flashlight", "Flashlight", "system_flashlight", true) { toggleTorch() }
+        // DIVERGENCE (documented, not fixed): iOS groups this under its
+        // FocusUIModule with per-Focus toggles; here it is one switch that
+        // flips the platform interruption filter between ALL and PRIORITY.
         addTile("dnd", "Do Not Disturb", "system_dnd", true) { toggleDnd() }
+        // DIVERGENCE (documented, not fixed): iOS drives this from its
+        // DisplayModule brightness slider; here a tap walks a fixed 6-step
+        // ladder and wraps, because there is no slider surface in this panel.
         addTile("brightness", "Brightness", "system_brightness", false) { cycleBrightness() }
+        addTile("rotation", "Rotation Lock", "system_rotation", true) { toggleRotation() }
+        addTile("mute", "Mute", "system_bell", true) { toggleMute() }
     }
 
     private fun addTile(id: String, name: String, icon: String, toggle: Boolean, onClick: () -> Unit) {
@@ -358,6 +370,8 @@ class AppleuxSystemUIService : Service() {
         // Brightness is a level, not a switch: the control reads as raised
         // whenever the screen sits anywhere above the bottom of the ladder.
         setTile("brightness", brightnessStep() > 0)
+        setTile("rotation", isAutoRotateOn())
+        setTile("mute", isMuted())
         refreshHeader()
     }
 
@@ -378,15 +392,29 @@ class AppleuxSystemUIService : Service() {
             val (pct, charging) =
                 com.appleux.design.components.AppleuxControlCenterHeader
                     .batteryState(this)
+            val slots =
+                com.appleux.design.components.AppleuxDynamicIsland.LiveSlots(
+                    charging = charging,
+                    batteryPercent = pct,
+                    chargeText =
+                        com.appleux.design.components.AppleuxDynamicIsland
+                            .chargeTimeText(this),
+                    callText = activeCallText(),
+                    timerText = null, // No system timer source; our Clock app pushes via pushIsland when it exists.
+                    musicText = nowPlayingText().first,
+                    musicPlaying = nowPlayingText().second
+                )
             controlCenter.bindHeader(
                 activeRadios = radios,
                 airplaneMode = isAirplaneOn(),
                 charging = charging,
                 batteryPercent = pct,
-                chargeTimeText =
-                    com.appleux.design.components.AppleuxDynamicIsland
-                        .chargeTimeText(this)
+                chargeTimeText = slots.chargeText
             )
+            // Same live pill on the shade's emulated notch. One refresh path,
+            // both surfaces — the island never diverges between them.
+            controlCenter.pushIsland(slots)
+            notificationShade.pushIsland(slots)
         } catch (e: Exception) {
             android.util.Log.w(TAG, "header refresh: ${e.message}")
         }
@@ -395,6 +423,51 @@ class AppleuxSystemUIService : Service() {
     private fun setTile(id: String, active: Boolean) {
         try { controlCenter.setTileActive(id, active) } catch (e: Exception) {}
     }
+
+    /**
+     * In-call text ("Ongoing call" / "Incoming call") or null. Reads
+     * [TelephonyManager.callState], which needs READ_PHONE_STATE: without the
+     * grant this returns null and the slot hides — the island never claims a
+     * call it cannot see.
+     */
+    private fun activeCallText(): String? = runCatching {
+        if (androidx.core.content.ContextCompat.checkSelfPermission(
+                this, android.Manifest.permission.READ_PHONE_STATE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) return null
+        val tm = getSystemService(Context.TELEPHONY_SERVICE)
+            as? android.telephony.TelephonyManager ?: return null
+        @Suppress("DEPRECATION")
+        when (tm.callState) {
+            android.telephony.TelephonyManager.CALL_STATE_OFFHOOK -> "Ongoing call"
+            android.telephony.TelephonyManager.CALL_STATE_RINGING -> "Incoming call"
+            else -> null
+        }
+    }.getOrNull()
+
+    /**
+     * Now-playing "Title — Artist" + playing flag, or null pair. Reads the
+     * first active media session; needs our notification-listener grant (same
+     * grant the shade itself needs). No grant, no session, no metadata —
+     * any failure hides the slot.
+     */
+    private fun nowPlayingText(): Pair<String?, Boolean> = runCatching {
+        val msm = getSystemService(Context.MEDIA_SESSION_SERVICE)
+            as? android.media.session.MediaSessionManager ?: return Pair(null, false)
+        val listener = android.content.ComponentName(
+            this, AppleuxNotificationListener::class.java
+        )
+        val sessions = msm.getActiveSessions(listener) ?: return Pair(null, false)
+        val session = sessions.firstOrNull() ?: return Pair(null, false)
+        val md = session.metadata ?: return Pair(null, false)
+        val title = md.getString(android.media.MediaMetadata.METADATA_KEY_TITLE)
+        val artist = md.getString(android.media.MediaMetadata.METADATA_KEY_ARTIST)
+        val playing = session.playbackState?.state ==
+            android.media.session.PlaybackState.STATE_PLAYING
+        val text = listOfNotNull(title, artist).joinToString(" — ")
+            .takeIf { it.isNotEmpty() }
+        Pair(text, playing)
+    }.getOrNull() ?: Pair(null, false)
 
     // ---- Radios: disconnect, never disable ----
     //
@@ -773,6 +846,56 @@ class AppleuxSystemUIService : Service() {
         } catch (e: Exception) {}
     }
 
+    /** Rotation follows the real auto-rotate setting: 1 = rotating. */
+    private fun isAutoRotateOn(): Boolean = try {
+        Settings.System.getInt(
+            contentResolver, Settings.System.ACCELEROMETER_ROTATION, 0
+        ) != 0
+    } catch (e: Exception) {
+        false
+    }
+
+    private fun toggleRotation() {
+        // Writing needs the WRITE_SETTINGS app-op; without it the tile asks
+        // for the grant instead of silently doing nothing (same pattern as
+        // the brightness tile). Reading is always allowed.
+        if (!Settings.System.canWrite(this)) {
+            openWriteSettings()
+            return
+        }
+        try {
+            Settings.System.putInt(
+                contentResolver, Settings.System.ACCELEROMETER_ROTATION,
+                if (isAutoRotateOn()) 0 else 1
+            )
+        } catch (e: Exception) {
+            android.util.Log.w(TAG, "rotation write: ${e.message}")
+        }
+    }
+
+    private fun audioManager(): AudioManager? = try {
+        getSystemService(Context.AUDIO_SERVICE) as AudioManager
+    } catch (e: Exception) {
+        null
+    }
+
+    /** Muted means anything but NORMAL (SILENT or VIBRATE): the phone will not ring. */
+    private fun isMuted(): Boolean = try {
+        audioManager()?.ringerMode != AudioManager.RINGER_MODE_NORMAL
+    } catch (e: Exception) {
+        false
+    }
+
+    private fun toggleMute() {
+        try {
+            audioManager()?.ringerMode =
+                if (isMuted()) AudioManager.RINGER_MODE_NORMAL
+                else AudioManager.RINGER_MODE_SILENT
+        } catch (e: Exception) {
+            android.util.Log.w(TAG, "ringer mode: ${e.message}")
+        }
+    }
+
     private fun cycleBrightness() {
         // The platform range is 0-255; a fixed +55 overshot the top, skipped
         // everything under 30 and had nothing to do with "25%". The ladder
@@ -838,6 +961,18 @@ class AppleuxSystemUIService : Service() {
     } catch (e: Exception) {
         android.util.Log.w(TAG, "brightness write (needs WRITE_SETTINGS app-op): ${e.message}")
         false
+    }
+
+    /** Route to the WRITE_SETTINGS grant page for this package. */
+    private fun openWriteSettings() {
+        try {
+            startActivity(
+                Intent(
+                    Settings.ACTION_MANAGE_WRITE_SETTINGS,
+                    android.net.Uri.parse("package:$packageName")
+                ).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            )
+        } catch (e: Exception) {}
     }
 
     /** Ask for the app-op instead of letting the tile quietly do nothing. */

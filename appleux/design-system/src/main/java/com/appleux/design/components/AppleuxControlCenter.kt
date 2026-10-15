@@ -153,7 +153,18 @@ class AppleuxControlCenter @JvmOverloads constructor(
         chargeTimeText: String? = null
     ) {
         headerView.bind(activeRadios, airplaneMode, charging, batteryPercent)
-        islandView.bindBattery(charging, batteryPercent, chargeTimeText)
+        pushIsland(
+            AppleuxDynamicIsland.LiveSlots(
+                charging = charging,
+                batteryPercent = batteryPercent,
+                chargeText = chargeTimeText
+            )
+        )
+    }
+
+    /** Full live-slot push; the service owns every read behind it. */
+    fun pushIsland(slots: AppleuxDynamicIsland.LiveSlots) {
+        islandView.bindSlots(slots)
     }
 
     fun addTile(tile: ControlTile) {

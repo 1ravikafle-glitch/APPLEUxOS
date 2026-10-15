@@ -30,9 +30,39 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
-    /** Idle notch or expanded live pill. No intermediate pill: with a single
-     * live state there is nothing a third size would carry. */
+    /** Idle notch or expanded live pill. No intermediate pill: the expanded
+     * card shows the single highest-priority live slot (call > timer >
+     * music > battery), so a third size would carry nothing extra. */
     enum class IslandState { IDLE, EXPANDED }
+
+    /**
+     * One refresh of everything the island can show. The view stores and
+     * prioritises; the owner (service) only reads platform state. All fields
+     * nullable: an absent slot hides, never shows a placeholder.
+     */
+    data class LiveSlots(
+        val charging: Boolean = false,
+        val batteryPercent: Int = 0,
+        val chargeText: String? = null,
+        /** e.g. "Mom · 02:14" or "Incoming call". Null = no call. */
+        val callText: String? = null,
+        /** e.g. "04:32 remaining". Null = no timer. Pushed by our Clock app. */
+        val timerText: String? = null,
+        /** e.g. "Blinding Lights — The Weeknd". Null = nothing playing. */
+        val musicText: String? = null,
+        val musicPlaying: Boolean = false
+    ) {
+        /** call > timer > music > battery. Battery always exists. */
+        fun topKind(): Kind = when {
+            callText != null -> Kind.CALL
+            timerText != null -> Kind.TIMER
+            musicText != null -> Kind.MUSIC
+            else -> Kind.BATTERY
+        }
+        enum class Kind { CALL, TIMER, MUSIC, BATTERY }
+        fun hasLiveActivity(): Boolean =
+            callText != null || timerText != null || musicText != null
+    }
 
     var islandState: IslandState = IslandState.IDLE
         private set
@@ -46,9 +76,46 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
     private val line1: AppleuxText
     private val line2: AppleuxText
 
-    private var charging: Boolean = false
-    private var batteryPercent: Int = 0
-    private var chargeText: String? = null
+    private var slots = LiveSlots()
+
+    /**
+     * Pushes live state. The view registers no receivers and reads no
+     * platform APIs (except the passive battery query in [chargeTimeText],
+     * which the owner calls); everything arrives here.
+     */
+    fun bindSlots(next: LiveSlots) {
+        slots = next
+        val dotOn = (slots.hasLiveActivity() || slots.charging) &&
+            islandState == IslandState.IDLE
+        chargeDot.visibility = if (dotOn) VISIBLE else GONE
+        if (islandState == IslandState.EXPANDED) renderExpanded()
+        contentDescription = when (slots.topKind()) {
+            LiveSlots.Kind.CALL -> "Dynamic Island: ${slots.callText}"
+            LiveSlots.Kind.TIMER -> "Dynamic Island, timer: ${slots.timerText}"
+            LiveSlots.Kind.MUSIC ->
+                "Dynamic Island: ${slots.musicText}" +
+                    if (slots.musicPlaying) ", playing" else ", paused"
+            LiveSlots.Kind.BATTERY -> if (slots.charging) {
+                "Dynamic Island: charging, ${slots.batteryPercent} percent"
+            } else {
+                "Dynamic Island: battery ${slots.batteryPercent} percent"
+            }
+        }
+    }
+
+    /**
+     * Pushes the only live state v1 binds. [chargeText] is a preformatted
+     * "≈ 40 min to full" line or null; formatting lives with the caller.
+     */
+    fun bindBattery(charging: Boolean, batteryPercent: Int, chargeText: String?) {
+        bindSlots(
+            slots.copy(
+                charging = charging,
+                batteryPercent = batteryPercent,
+                chargeText = chargeText
+            )
+        )
+    }
 
     init {
         isClickable = true
@@ -115,24 +182,6 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
         setOnClickListener { setExpanded(islandState == IslandState.IDLE) }
     }
 
-    /**
-     * Pushes the only live state v1 binds. [chargeText] is a preformatted
-     * "≈ 40 min to full" line or null; formatting lives with the caller.
-     */
-    fun bindBattery(charging: Boolean, batteryPercent: Int, chargeText: String?) {
-        this.charging = charging
-        this.batteryPercent = batteryPercent
-        this.chargeText = chargeText
-        chargeDot.visibility =
-            if (charging && islandState == IslandState.IDLE) VISIBLE else GONE
-        if (islandState == IslandState.EXPANDED) renderExpanded()
-        contentDescription = if (charging) {
-            "Dynamic Island: charging, $batteryPercent percent"
-        } else {
-            "Dynamic Island: battery $batteryPercent percent"
-        }
-    }
-
     fun setExpanded(expanded: Boolean) {
         islandState =
             if (expanded) IslandState.EXPANDED else IslandState.IDLE
@@ -154,18 +203,49 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
             setColor(ColorTokens.black)
         }
         notchBack.requestLayout()
+        // Kit rim + inner edge over the expanded pill. Cleared when idle: the
+        // notch is uniform black with no rim light to model. dark=true always:
+        // the pill is black in both appearances (like the iOS island), so the
+        // dark-context rim/shade values are the matching ones.
+        notchBack.foreground = if (expanded) {
+            AppleuxGlassForeground(
+                context = context,
+                cornerRadiusDp = NotchTokens.ISLAND_EXPANDED_RADIUS_DP,
+                dark = true
+            )
+        } else {
+            null
+        }
         expandedBox.visibility = if (expanded) VISIBLE else GONE
-        chargeDot.visibility =
-            if (charging && !expanded) VISIBLE else GONE
+        val dotOn = (slots.hasLiveActivity() || slots.charging) && !expanded
+        chargeDot.visibility = if (dotOn) VISIBLE else GONE
         if (expanded) renderExpanded()
     }
 
     private fun renderExpanded() {
-        line1.text = if (charging) "⚡ $batteryPercent%" else "$batteryPercent%"
-        line2.text = when {
-            charging && chargeText != null -> chargeText
-            charging -> "Charging"
-            else -> "Not charging"
+        when (slots.topKind()) {
+            LiveSlots.Kind.CALL -> {
+                line1.text = "📞 ${slots.callText}"
+                line2.text = "Tap to return to call"
+            }
+            LiveSlots.Kind.TIMER -> {
+                line1.text = "⏱ ${slots.timerText}"
+                line2.text = "Timer"
+            }
+            LiveSlots.Kind.MUSIC -> {
+                line1.text =
+                    (if (slots.musicPlaying) "▶ " else "⏸ ") + slots.musicText
+                line2.text = "Now Playing"
+            }
+            LiveSlots.Kind.BATTERY -> {
+                line1.text =
+                    if (slots.charging) "⚡ ${slots.batteryPercent}%" else "${slots.batteryPercent}%"
+                line2.text = when {
+                    slots.charging && slots.chargeText != null -> slots.chargeText
+                    slots.charging -> "Charging"
+                    else -> "Not charging"
+                }
+            }
         }
     }
 

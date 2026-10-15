@@ -126,6 +126,7 @@ object AppleuxIconRegistry {
         put("system_share", R.drawable.il_ic_share)
         put("system_accessibility", R.drawable.il_ic_accessibility)
         put("system_dnd", R.drawable.il_ic_dnd)
+        put("system_rotation", R.drawable.il_ic_rotation)
     }
 
     fun getDrawableRes(name: String): Int? = vectorDrawables[name]

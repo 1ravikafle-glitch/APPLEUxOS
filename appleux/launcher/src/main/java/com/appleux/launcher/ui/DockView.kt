@@ -57,6 +57,36 @@ class DockView @JvmOverloads constructor(
     /** Background-only glass bar; icons in the RecyclerView stay sharp. */
     val glassBackground: View = findViewById(R.id.dockGlassBg)
 
+    /** Dark mode the rim/shade foreground was built for; null = not yet set. */
+    private var glassForegroundDark: Boolean? = null
+
+    /**
+     * Kit rim ring + dark inner edge over the bar fill, drawn as a foreground
+     * so it lands on top of the frost. Rebuilt only when dark mode flips;
+     * re-set after every resize because layout passes can drop drawables.
+     */
+    private fun syncGlassForeground() {
+        val dark = com.appleux.design.tokens.ColorTokens.darkMode
+        if (glassForegroundDark != dark) {
+            glassForegroundDark = dark
+            glassBackground.foreground =
+                com.appleux.design.components.AppleuxGlassForeground(
+                    context = context,
+                    cornerRadiusDp =
+                        com.appleux.design.tokens.LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP,
+                    dark = dark
+                )
+        } else if (glassBackground.foreground == null) {
+            glassBackground.foreground =
+                com.appleux.design.components.AppleuxGlassForeground(
+                    context = context,
+                    cornerRadiusDp =
+                        com.appleux.design.tokens.LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP,
+                    dark = dark
+                )
+        }
+    }
+
     fun syncGlassSize() {
         val w = recyclerView.measuredWidth
         val h = recyclerView.measuredHeight
@@ -69,6 +99,7 @@ class DockView @JvmOverloads constructor(
             lp.gravity = Gravity.CENTER
             glassBackground.layoutParams = lp
         }
+        syncGlassForeground()
     }
 
     fun submitApps(apps: List<AppIconItem>) {
