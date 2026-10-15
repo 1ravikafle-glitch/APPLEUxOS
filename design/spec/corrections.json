@@ -7,7 +7,7 @@
       "id": "C01",
       "area": "device",
       "replacements": 1,
-      "evidence": "POCO M5 is MediaTek Helio G99 = MT6765. mt6789 is Dimensity 1080. AGENTS.md 'Project Overview'."
+      "evidence": "An earlier revision changed mt6789 to mt6765 on the strength of a\nremembered part table. The device itself reports mt6789 on both\nro.hardware and ro.board.platform. See\ndeliverables/m20/rock-display-measurement.md."
     },
     {
       "id": "C02",

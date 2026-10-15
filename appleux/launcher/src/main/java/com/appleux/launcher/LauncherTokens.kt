@@ -11,51 +11,58 @@ package com.appleux.launcher
  *
  * ============================ THE 5 x 7 GRID =============================
  *
- * The grid is 5 columns x 7 rows. Every number below is DERIVED from the rock
- * panel's real geometry, not copied from the prototype or from an iPhone:
+ * The grid is 5 columns x 7 rows. Every number below is DERIVED from the
+ * MEASURED rock panel geometry (2026-10-15, physical unit, stock HyperOS —
+ * deliverables/m20/rock-display-measurement.md), not copied from the prototype
+ * or from an iPhone. An earlier revision derived all of this from a wrong
+ * frame (1080x2400 @ 420 dpi -> 411.43 x 914.29 dp); the constants below are
+ * the re-derivation at the true frame:
  *
- *   panel            1080 x 2400 px @ 420 dpi
- *   density          420 / 160 = 2.625
- *   logical size     411.43 x 914.29 dp
+ *   panel            1080 x 2408 px, effective 430 dpi (HyperOS overrides 440)
+ *   density          430 / 160 = 2.6875
+ *   logical size     401.9 x 896.0 dp
  *
  * Horizontal — this is the binding axis:
- *   usable width     411.43 - 2 x GRID_SIDE_MARGIN_DP(20)      = 371.43 dp
- *   cell pitch       371.43 / 5                                = 74.29 dp
- *   icon edge        0.76 x cell pitch                          = 56.5 dp -> 56
+ *   usable width     401.9 - 2 x GRID_SIDE_MARGIN_DP(20)       = 361.9 dp
+ *   cell pitch       361.9 / 5                                 = 72.38 dp
+ *   icon edge        56 dp (kept; 56 / 72.38 = 0.774, still under the
+ *                    0.81 merge limit below, so no shrink was needed)
  *
- *   The 0.76 factor is the icon-to-cell ratio that leaves a visible gutter
+ *   The merge limit is the icon-to-cell ratio that leaves a visible gutter
  *   between neighbouring icons at 5 columns. It is also the constraint that
  *   forced the icon DOWN from the 60 dp a 4-column grid affords: at 5 columns
  *   60 dp icons would sit 0.81 of the pitch apart and visually merge. This is
  *   the real cost of a 5-wide grid and it is not hidden here.
  *
  *   Label check: the longest common label ("Calculator") sets at ~66 dp in
- *   the 12sp label style, inside the 74.29 dp cell. That is why the label
- *   stayed at 12sp rather than the 10sp it shipped with.
+ *   the 12sp label style, inside the 72.38 dp cell — 6.4 dp of slack, tighter
+ *   than before but it fits. That is why the label stayed at 12sp rather
+ *   than the 10sp it shipped with.
  *
  * Vertical — has slack, and is sized to consume it without crowding:
- *   top inset (notch)     RockDisplayProfile, 190 px fallback = 72.4 dp
- *   dock clearance        164 dp (see below)
- *   band available        914.29 - 72.4 - 164                  = 677.9 dp
- *   per row               677.9 / 7                             = 96.8 dp
- *   row pitch used        96 dp  ->  7 x 96 = 672 dp, 5.9 dp slack
+ *   top inset (notch)     MEASURED 76 px = 28.3 dp (the old 190 px fallback
+ *                         was 2.5x too large and is gone)
+ *   dock clearance        147 dp (see below; was 164)
+ *   band available        896.0 - 28.3 - 147                   = 720.7 dp
+ *   per row               720.7 / 7                             = 103.0 dp
+ *   row pitch used        102 dp  ->  7 x 102 = 714 dp, 6.7 dp slack
  *
  *   Row content is icon(56) + icon-to-label gap(4) + label(15) = 75 dp, so
- *   each row carries ~21 dp of breathing space. That is the iOS rhythm: the
+ *   each row carries ~27 dp of breathing space. That is the iOS rhythm: the
  *   cell pitch is wider than the icon, and the icon+label group is centred in
  *   it. Going denser would have meant shrinking the icon further, which the
  *   horizontal axis already caps.
  *
  * Dock clearance, bottom-up:
- *   gesture-navigation bar   48 dp  (SizingTokens-style fallback; the real
- *                                  value comes from WindowInsets at runtime)
+ *   gesture-navigation bar   47.3 dp  (MEASURED 127 px; the real value still
+ *                                    comes from WindowInsets at runtime)
  *   dock-to-grid gap         16 dp
  *   dock bar                 84 dp  (icon 56 + 2 x 14 dp vertical padding)
  *   ------------------------------------------------
- *                              164 dp
+ *                              147 dp
  *
  * PROVENANCE: every figure here is **AppleUX-chosen**, derived from the
- * public POCO M5 display geometry. Apple publishes no numeric spec for the
+ * MEASURED POCO M5 display geometry. Apple publishes no numeric spec for the
  * launcher grid, and the 4-column/60dp icon we shipped before was ours too.
  * Nothing in this file comes from Apple's documentation.
  */
@@ -63,7 +70,7 @@ object LauncherTokens {
 
     // ---- Grid -------------------------------------------------------------
 
-    /** Columns on the home screen. 5, not 4: the panel is 411 dp wide, not 375. */
+    /** Columns on the home screen. 5, not 4: the panel is 402 dp wide, not 375. */
     const val GRID_COLUMNS: Int = 5
 
     /** Rows that must fit above the dock. */
@@ -72,8 +79,8 @@ object LauncherTokens {
     /** Side margin, so the first column is not flush with the screen edge. */
     const val GRID_SIDE_MARGIN_DP: Float = 20f
 
-    /** One cell's pitch: (411.43 - 2 x 20) / 5. */
-    const val GRID_CELL_PITCH_DP: Float = 74.29f
+    /** One cell's pitch: (401.9 - 2 x 20) / 5. */
+    const val GRID_CELL_PITCH_DP: Float = 72.38f
 
     /** Home-screen app-icon edge. See the derivation above. */
     const val HOME_ICON_SIZE_DP: Float = 56f
@@ -82,25 +89,24 @@ object LauncherTokens {
     const val ICON_LABEL_GAP_DP: Float = 4f
 
     /** Row pitch: icon + gap + label + breathing space, 7 of which fit. */
-    const val GRID_ROW_PITCH_DP: Float = 96f
+    const val GRID_ROW_PITCH_DP: Float = 102f
 
     /**
      * Bottom padding on the homescreen grid: the last row must stop above the
-     * floating dock instead of sliding underneath its glass bar. Derived in the
-     * header; unchanged numerically from the old value, but now it is a result
-     * rather than a guess.
+     * floating dock instead of sliding underneath its glass bar. Re-derived in
+     * the header at the measured frame (was 164 dp on the wrong frame).
      */
-    const val HOMESCREEN_DOCK_CLEARANCE_DP: Float = 164f
+    const val HOMESCREEN_DOCK_CLEARANCE_DP: Float = 147f
 
     /**
      * Height of one pinned widget cell. Derived from the same cell pitch:
      * a 3-column iOS medium widget is ~1.5:1, so
-     * 3 x 74.29 / 1.5 = 148.6 -> 148 dp. Small (2-span) and medium (3-span)
+     * 3 x 72.38 / 1.5 = 144.8 -> 144 dp. Small (2-span) and medium (3-span)
      * widgets share the row height, exactly as they do on iOS, where a small
      * widget is 2x2 cells and a medium one is 4x2 — same height, twice the
      * width.
      */
-    const val WIDGET_CELL_HEIGHT_DP: Float = 148f
+    const val WIDGET_CELL_HEIGHT_DP: Float = 144f
 
     /** Widget spans, expressed in the 5-column grid. Each row sums to 5. */
     const val WIDGET_SPAN_MEDIUM: Int = 3

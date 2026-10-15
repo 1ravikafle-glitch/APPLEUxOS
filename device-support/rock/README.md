@@ -17,8 +17,9 @@ layout **and** that cannot be derived from a constant:
 | Logical width | 375–447 pt | **401.9 dp** (1080 / 2.6875) |
 | Top inset | 24 dp status bar | **76 px = 28.3 dp** — and on this panel the status-bar band and the waterdrop cutout are the same 76 px |
 | Bottom inset | ~24 dp gesture bar | **127 px = 47.3 dp** |
-| Cutout | assumed waterdrop | **100 × 76 px, top-centre, centre x = 540** (= exactly 1080/2) |
-| Refresh | **60 Hz, hardcoded** | **60 / 90 Hz switchable**, operator-confirmed |
+| Cutout | assumed waterdrop | **100 × 76 px, top-centre, centre x = 540** |
+| Corners | square (assumed) | **106 px radius, all four** (39.4 dp) |
+| Refresh | **60 Hz, hardcoded** | **30 / 50 / 60 / 90 Hz**, 90 active at capture |
 | RAM | 15 GB host | 4 GB device, 3 GB budget |
 | GPU | SwiftShader (emulator) | Mali-G57 MC2 |
 
@@ -57,11 +58,11 @@ in `appleux/design-system/Android.bp`).
 
 ## Derivation (frame budget)
 
-| threshold | ratio | 60 Hz | 90 Hz |
-|---|---|---|---|
-| good frame | 0.84 | 14.00 ms | 9.33 ms |
-| jank (deadline) | 1.00 | 16.67 ms | 11.11 ms |
-| severe | 1.20 | 20.00 ms | 13.33 ms |
+| threshold | ratio | 30 Hz | 50 Hz | 60 Hz | 90 Hz |
+|---|---|---|---|---|---|
+| good frame | 0.84 | 28.00 ms | 16.80 ms | 14.00 ms | 9.33 ms |
+| jank (deadline) | 1.00 | 33.33 ms | 20.00 ms | 16.67 ms | 11.11 ms |
+| severe | 1.20 | 40.00 ms | 24.00 ms | 20.00 ms | 13.33 ms |
 
 The ratios are the ones already in use at 60 Hz, so **60 Hz behaviour is
 bit-for-bit unchanged**. Before this, a 13 ms frame on a 90 Hz panel was
@@ -78,10 +79,9 @@ the effective value), 76 px top inset, 127 px bottom inset, 100×76 px top-centr
 waterdrop cutout. Full capture:
 `deliverables/m20/rock-display-measurement.md`.
 
-The refresh-rate list is **operator-confirmed**: the panel switches between
-**60 Hz and 90 Hz** on the physical unit (2026-10-15). Spec sheets also list a
-30 Hz mode, but it was not observed on this unit and is not claimed. To see the
-currently active mode: `adb shell dumpsys display | grep -iE 'fps|refresh|mode'`.
+The refresh-rate list is **measured**: `dumpsys display` supportedModes lists
+30.000002, 50.0, 60.0 and 90.0 Hz, with 90 active at capture (default peak 60).
+To see the currently active mode: `adb shell dumpsys display | grep -iE 'fps|refresh|mode'`.
 
 These constants are only reached when a platform read fails or returns a
 degenerate value — the live values always come from the platform.
@@ -94,7 +94,7 @@ degenerate value — the live values always come from the platform.
 | 420 dpi | **430** effective (440 physical) | HyperOS density override was unknown |
 | 190 px top inset | **76 px** | spec-sheet estimate, 2.5× too large — it cost 44 dp of vertical space on every layout that reserved it |
 | 411.43 × 914.29 dp | **401.9 × 896.0 dp** | inherited all three errors above |
-| 60 / 90 Hz (assumed pair) | **60 / 90 Hz switchable (operator-confirmed)** | the pair was right; the confirmation is new. A 30 Hz mode some spec sheets list was briefly claimed here on 2026-10-15 and removed the same day — never observed on this unit |
+| 60 / 90 Hz (assumed pair) | **30 / 50 / 60 / 90 Hz measured** | live `dumpsys display` lists all four; 90 active at capture |
 
 ## Known gaps
 
@@ -111,10 +111,9 @@ degenerate value — the live values always come from the platform.
 
    `AppleuxDisplayInsets` is already public in the design system and already
    applied to the Control Center, so nothing else is needed.
-2. **The active refresh mode is still worth confirming on demand.** The 60/90 Hz
-   pair is operator-confirmed, but which mode is active by default and under
-   load is not recorded. Check with
-   `adb shell dumpsys display | grep -iE 'fps|refresh|mode'` when it matters.
+2. **The active refresh mode is worth re-checking on demand.** All four modes
+   are confirmed advertised, 90 was active at capture, default peak 60. Check
+   with `adb shell dumpsys display | grep -iE 'fps|refresh|mode'` when it matters.
 3. **The launcher grid metrics were derived on the wrong frame.** The 5×7
    derivation (icon 56 dp, pitch 74.29 dp, row pitch 96 dp) used
    411.43 × 914.29 dp, which came from the wrong panel height and density. At

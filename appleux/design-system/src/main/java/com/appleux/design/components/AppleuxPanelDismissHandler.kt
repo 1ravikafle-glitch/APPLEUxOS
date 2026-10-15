@@ -19,7 +19,7 @@ import android.view.ViewConfiguration
  * this handler covers the swipe case, which never fires onClick.
  *
  * Threshold is touch-slop relative, not a fixed pixel count, so it behaves
- * the same at 420 dpi (POCO M5) and at emulator densities.
+ * the same at every density (device, emulator).
  */
 class AppleuxPanelDismissHandler(
     private val view: View,

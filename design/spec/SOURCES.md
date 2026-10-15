@@ -34,22 +34,24 @@ it is kept rather than discarded.
 | no-override case | 1080 × 2408 | 440 | 392.7 × 875.6 |
 
 Insets, measured: top **76 px** (28.3 dp), bottom **127 px** (47.3 dp), cutout
-**100 × 76 px** top-centre, centre x = 540 = exactly half the width. Refresh
-**60 / 90 Hz switchable**, operator-confirmed (spec sheets list a 30 Hz mode
-that was not observed on this unit).
+**100 × 76 px** top-centre, centre x = 540 = exactly half the width, corners
+**106 px radius** all four (39.4 dp). Refresh **30 / 50 / 60 / 90 Hz**
+(`dumpsys display` supportedModes, 90 active at capture).
 
 So a dp value from *any* source is only correct for the frame it was derived
 on. The home-grid numbers previously in this file were derived on the wrong
 frame and have been superseded; the derivation to redo when the grid is
 re-derived is:
 
-| | files5 dp (401.9 wide) | how it was derived |
+| | our 5×7 grid at 401.9 dp wide | how it was derived |
 |---|---|---|
 | usable width | 401.9 − 2×20 = 361.9 | screen margin |
-| cell pitch | 90.5 dp for 4 columns | files5's own `size.cell` / grid def |
-| vertical band | 896.0 − 28.3 (notch) − dock | live insets, not a constant |
+| cell pitch | **72.38** (361.9 / 5) | binding axis |
+| app icon | **56 kept** (56/72.38 = 0.774, under the 0.81 merge limit) | LauncherTokens |
+| row pitch | **102** (7 rows = 714, 6.7 dp slack) | 896.0 − 28.3 − 147 = 720.7 band |
+| widget height | **144** (3 × 72.38 / 1.5) | same formula, true pitch |
 | dock radius | **34** | source 1 wins (`REGULAR_CORNER_RADIUS_DP`), not files5's 38 |
-| refresh rate | **60 / 90 switchable**, live read | `Display.getMode()` |
+| refresh rate | **30 / 50 / 60 / 90**, live read | `Display.getMode()` |
 
 The pattern: take the layout *tree* from files5, re-derive the *numbers* for
 the measured frame. Never copy a dp literal across frames.
@@ -68,7 +70,8 @@ Kept deliberately; do not "fix" these back toward the sources:
   and `FLAG_BLUR_BEHIND`.
 - **Frame budget.** files5 assumes a fixed rate. Ours derives good/jank/severe
   thresholds from the live rate — 14.00/16.67/20.00 ms at 60 Hz,
-  9.33/11.11/13.33 ms at 90 Hz — because the panel switches between the two.
+  9.33/11.11/13.33 ms at 90 Hz, 16.80/20.00/24.00 ms at 50 Hz,
+  28.00/33.33/40.00 ms at 30 Hz — because the panel advertises all four.
 - **Insets.** files5 reads them live in Kotlin and keeps dp values in the
   profile as a fallback. Ours does the same, but the fallback is now measured
   rather than assumed (28.3 / 47.3 dp, previously 72.4 dp).

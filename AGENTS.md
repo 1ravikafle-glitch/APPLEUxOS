@@ -97,6 +97,7 @@ that had already been written into code.
 | Top inset | **76 px = 28.3 dp** — status bar and waterdrop cutout are the same 76 px |
 | Bottom inset | **127 px = 47.3 dp** |
 | Cutout | **100 × 76 px, top-centre**, centre x = 540 = exactly 1080/2 |
+| Corners | **106 px radius, all four** (39.4 dp — reserve in fullscreen surfaces) |
 | Refresh | **30 / 50 / 60 / 90 Hz** (`dumpsys display` supportedModes, 90 active at capture) |
 
 Full capture and the corrections it forced:
@@ -221,11 +222,13 @@ The AppleUX Adaptive Performance Controller (`appleux/performance/`) uses:
 ### Key Thresholds
 
 These are canonical **as the 60 Hz readout**. Any document or comment that
-disagrees is wrong. The rock panel switches between **60 Hz and 90 Hz**, so
-these numbers only describe one of two modes: the values below are scaled from
-the live refresh rate by `FrameBudget.forRefreshRate()` —
-14.00/16.67/20.00 ms at 60 Hz, 9.33/11.11/13.33 ms at 90 Hz. Nothing in the
-policy engine reads the constants; they exist as the documented 60 Hz case.
+disagrees is wrong. The rock panel advertises **30 / 50 / 60 / 90 Hz**
+(`dumpsys display` supportedModes, 90 active at capture), so these numbers
+describe one of four modes: the values below are scaled from the live refresh
+rate by `FrameBudget.forRefreshRate()` — 28.00/33.33/40.00 ms at 30 Hz,
+16.80/20.00/24.00 ms at 50 Hz, 14.00/16.67/20.00 ms at 60 Hz,
+9.33/11.11/13.33 ms at 90 Hz. Nothing in the policy engine reads the
+constants; they exist as the documented 60 Hz case.
 
 - **Good frame**: ≤14 ms
 - **Warning**: >14, ≤16.67 ms

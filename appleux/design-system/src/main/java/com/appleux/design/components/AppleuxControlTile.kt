@@ -94,8 +94,9 @@ class AppleuxControlTile @JvmOverloads constructor(
         container.addView(iconView)
         // iOS Control Center controls carry NO text label. Measured from
         // Apple's own screenshot (scripts/measure-cc-from-screenshot.py):
-        // circular controls are 16.1% of screen width, i.e. ~63pt on a 393pt
-        // iPhone -> 70dp on the POCO M5 at 420dpi.
+        // circular controls are 16.1% of screen width. 0.161 x 1080 px =
+        // 173.9 px -> 64.7 dp at the MEASURED effective density 2.6875
+        // (was 70 dp, derived at an assumed 2.625).
         //
         // The label is kept in the tree but hidden so it stays available as
         // an accessibility label rather than being drawn where iOS has none.
@@ -110,8 +111,8 @@ class AppleuxControlTile @JvmOverloads constructor(
     }
 
     companion object {
-        /** 16.1% of a 1080px screen, expressed in dp for density 2.625. */
-        const val CONTROL_DIAMETER_DP = 70f
+        /** 16.1% of a 1080px screen, expressed in dp at density 2.6875. */
+        const val CONTROL_DIAMETER_DP = 65f
 
         /**
          * Inactive control fill. Dark translucent, matching Apple's own

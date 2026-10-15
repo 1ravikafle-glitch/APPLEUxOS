@@ -243,8 +243,8 @@ class AppleuxSystemUIService : Service() {
 
     /**
      * iOS Control Center material blur radius. Blur-behind is in PIXELS, and
-     * the panel must look identical on the 420 dpi POCO M5 and on lower
-     * density emulators, so the radius is scaled from dp rather than fixed.
+     * the panel must look identical on the effective-430dpi POCO M5 and on
+     * lower density emulators, so the radius is scaled from dp rather than fixed.
      */
     private val GLASS_BLUR_BEHIND_RADIUS_PX: Int
         get() = (60 * resources.displayMetrics.density).toInt()

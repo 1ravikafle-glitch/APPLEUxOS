@@ -38,7 +38,7 @@ Jump to latest ↓
 {
   "screen": "lock-screen",
   "referenceScreenshot": "DESIGN-REFERENCE/ios27/official-guide/images/(lock-screen) [ASSUMED MATCH - UNVERIFIED]",
-  "screenSize": {"w": 401.9, "h": 896.0, "unit": "dp", "source": "MEASURED. 1080x2408 px at the EFFECTIVE density 430 dpi (HyperOS overrides the panel's 440), so 2.6875 -> 401.9 x 896.0 dp. Read live at runtime via device-support/rock/RockDisplayProfile.kt. At 440 with no override it would be 392.7 x 875.6 dp. Refresh 60/90 Hz switchable, operator-confirmed."},
+  "screenSize": {"w": 401.9, "h": 896.0, "unit": "dp", "source": "MEASURED. 1080x2408 px at the EFFECTIVE density 430 dpi (HyperOS overrides the panel's 440), so 2.6875 -> 401.9 x 896.0 dp. Read live at runtime via device-support/rock/RockDisplayProfile.kt. At 440 with no override it would be 392.7 x 875.6 dp. Refresh modes 30/50/60/90 Hz (`dumpsys display` supportedModes, active 90 Hz at capture); operator-confirmed switchable 60/90 in everyday use."},
   "elements": [
     {"id":"wallpaper","type":"image","frame":{"x":0,"y":0,"w":1,"h":1},
      "notes":"Full-bleed wallpaper with depth effect"},
@@ -4417,7 +4417,13 @@ TARGET_2ND_ARCH_VARIANT := armv8-a
 TARGET_2ND_CPU_ABI := armeabi-v7a
 TARGET_2ND_CPU_VARIANT := cortex-a55
 
-TARGET_BOARD_PLATFORM := mt6765
+TARGET_BOARD_PLATFORM := mt6789  # CONFIRMED. Helio G99 IS MT6789
+                                # (`adb shell getprop ro.hardware` +
+                                # ro.board.platform on the physical POCO M5,
+                                # 2026-10-15). An earlier revision of this
+                                # script 'corrected' this to mt6765 from a
+                                # misremembered part number (mt6765 is Helio
+                                # P35/G25-class); that was wrong and is reverted.
 TARGET_BOOTLOADER_BOARD_NAME := rock
 TARGET_NO_BOOTLOADER := true
 TARGET_USES_64_BIT_BINDER := true

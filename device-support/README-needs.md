@@ -14,21 +14,26 @@ This output is treated as absolute. Full capture and derivations:
 | top inset | **76 px** = 28.3 dp (status bar and waterdrop are the same 76 px) |
 | bottom inset | **127 px** = 47.3 dp |
 | cutout | **100 × 76 px**, top-centre, centre x = 540 = exactly half the width |
-| refresh | **60 / 90 Hz switchable**, operator-confirmed |
+| corners | **106 px radius, all four** (39.4 dp) |
+| refresh | **30 / 50 / 60 / 90 Hz** (`dumpsys display` supportedModes, 90 active) |
 
 `device-support/rock/` exists and its fallbacks are these measured values.
 `RockDisplayProfile` reads live values at runtime; the constants are fallback
-only. Frame budget derives from the live rate (14.00/16.67/20.00 ms at 60 Hz,
-9.33/11.11/13.33 ms at 90 Hz).
+only. Frame budget derives from the live rate (all four modes tabulated in
+`device-support/rock/README.md`).
 
-## Closed by that paste
+## Closed by that paste + the live sweep
 
 - Panel height (2408, not 2400), effective density (430, not 420), top inset
-  (76 px, not 190), logical frame (401.9 × 896.0), refresh pair (60/90).
+  (76 px, not 190), logical frame (401.9 × 896.0), refresh modes (all four,
+  not a 60/90 pair), corners (106 px), SoC platform (mt6789 — an earlier
+  "correction" to mt6765 was wrong and is reverted).
+- Biometrics: face unlock present (enrolled) + fingerprint + passcode.
+- No NFC hardware → NFC settings row removed from the catalog.
 - Dock persistence is implemented (`DockPreferences`); the "first four apps
   alphabetically" behavior is gone.
-- Grid density decision (5×7) stands; only the metrics need re-deriving at the
-  true frame.
+- Grid density decision (5×7) stands; metrics re-derived at the true frame
+  (pitch 72.38, row 102, clearance 147, widget 144; icon kept at 56).
 
 ## Still genuinely open (this output cannot answer these)
 

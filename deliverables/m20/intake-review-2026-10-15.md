@@ -228,9 +228,9 @@ already that they are under-used; a JSON renderer makes that strictly worse.
 
 | incoming | reality |
 |---|---|
-| `TARGET_BOARD_PLATFORM := mt6789` | Helio G99 is **mt6765**. mt6789 is Dimensity 1080. |
-| `TARGET_SCREEN_HEIGHT := 2408` | Documented panel is **2400**. |
-| `BOARD_KERNEL_BASE := 0x40078000` | the mt6789 value; not transferable |
+| `TARGET_BOARD_PLATFORM := mt6789` | ~~Helio G99 is **mt6765**. mt6789 is Dimensity 1080.~~ **CORRECTED 2026-10-15: wrong.** Helio G99 IS MT6789 — the physical unit reports mt6789 on `ro.hardware` and `ro.board.platform`. The incoming value was right; the reviewer's part table was wrong. Correction C01 reverted with device evidence. |
+| `TARGET_SCREEN_HEIGHT := 2408` | ~~Documented panel is **2400**.~~ **CORRECTED 2026-10-15: wrong.** `wm size` reports 1080x2408. Correction C02 reverted. |
+| `BOARD_KERNEL_BASE := 0x40078000` | ~~the mt6789 value; not transferable~~ **re-examine**: it is the mt6789 value, which is now the RIGHT platform — but a kernel base still must come from the real rock boot.img header, not from the incoming sketch. Unverified either way. |
 | `PRODUCT_OVERRIDE_PACKAGES += ...` | **not a real variable** — no definition anywhere in `build/make/` |
 | `PRODUCT_ENFORCE_RRO_TARGETS += ...` | real but deprecated |
 | `fastboot flash super` on POCO M5 | plausible, **untested** — no device attached |
