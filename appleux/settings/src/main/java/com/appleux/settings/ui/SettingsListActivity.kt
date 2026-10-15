@@ -227,13 +227,15 @@ data class SettingsItem(
  * category, 29dp badge + white glyph per row, chevron for navigation.
  *
  * iOS names are renamed to their AOSP equivalents, never carried over:
- * Siri -> Voice input, StandBy -> Screen saver, Wallet & Apple Pay ->
- * NFC & payments, AirDrop -> Quick Share. Apple-only services with no AOSP
- * backend are OMITTED, not faked: Game Center (Play Games is GMS), iCloud
- * cloud rows (BackupManager exposes no settings UI), Search settings page
- * (in-app search, no public action), Transfer/Reset + Shut Down (no verified
- * public action; MASTER_CLEAR is absent from the Settings provider and
- * shutdown needs a privileged PowerManager).
+ * Siri -> Voice input, StandBy -> Screen saver, Face ID -> Fingerprint (the
+ * unit has fingerprint hardware only), AirDrop -> Quick Share. Apple-only
+ * services with no AOSP backend are OMITTED, not faked: Game Center (Play
+ * Games is GMS), iCloud cloud rows (BackupManager exposes no settings UI),
+ * NFC & payments (no android.hardware.nfc on this unit — verified by
+ * `pm list features`, 95 entries, 2026-10-15), Search settings page (in-app
+ * search, no public action), Transfer/Reset + Shut Down (no verified public
+ * action; MASTER_CLEAR is absent from the Settings provider and shutdown
+ * needs a privileged PowerManager).
  *
  * No placeholder values: the board shows demo data (HomeWiFi, 64 GB, names).
  * Rows here show no value text unless it is live. A row whose backend needs a
@@ -479,6 +481,13 @@ object SettingsCatalog {
                     com.appleux.settings.security.SecuritySettingsActivity::class.java
                 )
             ),
+            // Face unlock is real on this unit: com.miui.face is installed,
+            // miui.face.FaceService runs, and a face is enrolled
+            // (settings_face_id_prefix_1="Face 1", lockscreen enable_facelock).
+            // It is software 2D, so `pm list features` shows no
+            // android.hardware.face — the feature flag only covers HAL
+            // biometrics. The side fingerprint sensor is ALSO present, and the
+            // system enroll flow offers whichever modalities exist.
             nav(
                 key = "faceid", titleRes = R.string.faceid,
                 iconKey = "system_faceid", badgeColor = ColorTokens.systemGreen,
@@ -494,14 +503,10 @@ object SettingsCatalog {
                 iconKey = "system_shield", badgeColor = ColorTokens.systemBlue,
                 target = act(android.provider.Settings.ACTION_PRIVACY_SETTINGS)
             ),
-            header("section_services", R.string.section_services),
-            // Renamed from Wallet & Apple Pay: Apple Pay needs Apple's
-            // proprietary NFC entitlement; NFC settings are the AOSP part.
-            nav(
-                key = "nfc", titleRes = R.string.nfc_payments,
-                iconKey = "system_nfc", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_NFC_SETTINGS)
-            ),
+            // No "NFC & payments" row: `pm list features` on the physical rock
+            // unit (2026-10-15, 95 features) contains NO android.hardware.nfc,
+            // so ACTION_NFC_SETTINGS would open a page for absent hardware.
+            // The glyph stays registered; the row stays out.
             header("section_apps", R.string.section_apps),
             nav(
                 key = "apps", titleRes = R.string.apps,

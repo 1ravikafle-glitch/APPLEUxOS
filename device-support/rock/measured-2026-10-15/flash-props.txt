@@ -1,0 +1,15 @@
+=== flash-relevant (read-only props) ===
+ro.build.ab_update:                   true
+ro.boot.slot_suffix:                  _b
+ro.boot.slot:                         
+ro.boot.flash.locked:                 1
+ro.boot.vbmeta.device_state:          locked
+ro.boot.verifiedbootstate:            green
+ro.boot.dynamic_partitions:           true
+ro.boot.super_partition:              
+ro.vendor.build.fingerprint:          POCO/rock_p_in/rock:13/TP1A.220624.014/V816.0.8.0.ULUINXM:user/release-keys
+ro.vendor.build.version.release:      12
+persist.sys.timezone:                 Asia/Kathmandu
+persist.sys.locale:                   en-US
+ro.product.locale:                    en-GB
+ro.telephony.default_network:         9,9,9,9

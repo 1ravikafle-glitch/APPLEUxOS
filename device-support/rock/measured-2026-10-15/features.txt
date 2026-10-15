@@ -1,0 +1,42 @@
+=== hardware features ===
+feature:android.hardware.bluetooth_le
+feature:android.hardware.camera.capability.manual_sensor
+feature:android.hardware.fingerprint
+feature:android.hardware.location
+feature:android.hardware.location.gps
+feature:android.hardware.location.network
+feature:android.hardware.opengles.aep
+feature:android.hardware.sensor.accelerometer
+feature:android.hardware.sensor.compass
+feature:android.hardware.sensor.gyroscope
+feature:android.hardware.sensor.light
+feature:android.hardware.sensor.proximity
+feature:android.hardware.sensor.stepcounter
+feature:android.hardware.sensor.stepdetector
+feature:android.hardware.telephony
+feature:android.hardware.telephony.cdma
+feature:android.hardware.telephony.gsm
+feature:android.hardware.telephony.ims
+feature:android.hardware.usb.host
+feature:android.hardware.vulkan.compute
+feature:android.hardware.vulkan.level=1
+feature:android.hardware.vulkan.version=4198400
+feature:android.hardware.wifi
+feature:android.hardware.wifi.direct
+feature:android.hardware.wifi.passpoint
+feature:android.software.opengles.deqp.level=132449025
+feature:android.software.picture_in_picture
+feature:android.software.vulkan.deqp.level=132449025
+=== sensors ===
+feature:android.hardware.audio.low_latency
+feature:android.hardware.audio.output
+feature:android.hardware.fingerprint
+feature:com.google.android.apps.dialer.call_recording_audio
+95
+=== face unlock: PRESENT (software 2D, HyperOS) ===
+service: miui.face.FaceService (running)
+package: com.miui.face (installed)
+note: no android.hardware.face feature flag (software unlock does not declare one); fingerprint HW also present
+face_unlock_has_feature=1, face_unlock_valid_feature=1, face_unlcok_apply_for_lock=1
+lockscreen.options=enable_facelock, settings_face_id_prefix_1="Face 1" (a face is ENROLLED)
+feature:android.hardware.consumerir

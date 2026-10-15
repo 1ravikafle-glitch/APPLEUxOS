@@ -97,7 +97,7 @@ that had already been written into code.
 | Top inset | **76 px = 28.3 dp** — status bar and waterdrop cutout are the same 76 px |
 | Bottom inset | **127 px = 47.3 dp** |
 | Cutout | **100 × 76 px, top-centre**, centre x = 540 = exactly 1080/2 |
-| Refresh | **60 / 90 Hz switchable**, operator-confirmed on the physical unit |
+| Refresh | **30 / 50 / 60 / 90 Hz** (`dumpsys display` supportedModes, 90 active at capture) |
 
 Full capture and the corrections it forced:
 `deliverables/m20/rock-display-measurement.md`. The refresh-rate list is from

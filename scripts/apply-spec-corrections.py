@@ -66,10 +66,19 @@ NAMING = [
 # ---------------------------------------------------------------------------
 CORRECTIONS = [
     ("C01", "device", "re",
-     r"TARGET_BOARD_PLATFORM := mt6789",
-     "TARGET_BOARD_PLATFORM := mt6765",
-     "POCO M5 is MediaTek Helio G99 = MT6765. mt6789 is Dimensity 1080. "
-     "AGENTS.md 'Project Overview'."),
+     r"TARGET_BOARD_PLATFORM := mt6789\n",
+     "TARGET_BOARD_PLATFORM := mt6789  # CONFIRMED. Helio G99 IS MT6789\n"
+     "                                # (`adb shell getprop ro.hardware` +\n"
+     "                                # ro.board.platform on the physical POCO M5,\n"
+     "                                # 2026-10-15). An earlier revision of this\n"
+     "                                # script 'corrected' this to mt6765 from a\n"
+     "                                # misremembered part number (mt6765 is Helio\n"
+     "                                # P35/G25-class); that was wrong and is reverted.\n",
+
+     "An earlier revision changed mt6789 to mt6765 on the strength of a\n"
+     "remembered part table. The device itself reports mt6789 on both\n"
+     "ro.hardware and ro.board.platform. See\n"
+     "deliverables/m20/rock-display-measurement.md."),
 
     ("C02", "device", "re",
      r"TARGET_SCREEN_HEIGHT := 2408\n",
@@ -149,8 +158,9 @@ CORRECTIONS = [
      '"source": "MEASURED. 1080x2408 px at the EFFECTIVE density 430 dpi (HyperOS '
      'overrides the panel\'s 440), so 2.6875 -> 401.9 x 896.0 dp. Read live at '
      'runtime via device-support/rock/RockDisplayProfile.kt. At 440 with no '
-     'override it would be 392.7 x 875.6 dp. Refresh 60/90 Hz switchable, '\
-     'operator-confirmed."}',
+     'override it would be 392.7 x 875.6 dp. Refresh modes 30/50/60/90 Hz '\
+     '(`dumpsys display` supportedModes, active 90 Hz at capture); '\
+     'operator-confirmed switchable 60/90 in everyday use."}',
 
      "411x916 is an iPhone figure and is 9.6 dp wider than this panel. The earlier\n"
      "revision used 411.43 x 914.29, derived from a wrong 2400/420 assumption."),

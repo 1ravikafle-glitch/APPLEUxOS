@@ -1,0 +1,18 @@
+ro.product.model:                         22071219CI
+ro.product.device:                        rock
+ro.product.name:                          rock_p_in
+ro.product.board:                         rock
+ro.build.fingerprint:                     POCO/rock_p_in/rock:14/UP1A.231005.007/V816.0.8.0.ULUINXM:user/release-keys
+ro.build.version.release:                 14
+ro.build.version.sdk:                     34
+ro.build.version.security_patch:          2024-10-01
+ro.miui.version:                          
+ro.mi.os.version.incremental:             OS1.0.8.0.ULUINXM
+ro.hyperos.version:                       
+ro.hardware:                              mt6789
+ro.hardware.chipname:                     
+ro.board.platform:                        mt6789
+ro.mediatek.platform:                     
+ro.product.cpu.abi:                       arm64-v8a
+ro.sf.lcd_density:                        440
+persist.vendor.display.primary:           

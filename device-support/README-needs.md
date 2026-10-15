@@ -38,7 +38,9 @@ only. Frame budget derives from the live rate (14.00/16.67/20.00 ms at 60 Hz,
    it. Biggest perf unknown, unchanged.
 3. **Kernel patches (6) have never booted.** Still hypotheses.
 4. **Wallpaper source** (iOS 18 harvest vs. originals) — operator's call.
-5. **RAM variant confirmation** (4/64 assumed for the 3 GB budget).
+5. **Bootloader unlock + userdata backup.** Still locked, 87% full. No action
+   without the word. Flash plan must be A/B-safe (slot `_b`, dynamic
+   partitions) — fastbootd / OTA-style, not `fastboot flash super`.
 
 ## What is explicitly NOT needed
 

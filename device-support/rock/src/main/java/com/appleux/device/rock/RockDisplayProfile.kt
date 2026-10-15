@@ -54,13 +54,16 @@ import android.view.WindowManager
  * These constants exist only for the case where a platform read fails or
  * returns something degenerate.
  *
- * Device facts this module is built around:
+ * Device facts this module is built around (all MEASURED 2026-10-15 on the
+ * physical unit, stock HyperOS — see deliverables/m20/rock-display-measurement):
  *  - display: 1080 x 2408 px, effective 430 dpi -> density 2.6875,
  *    401.9 x 896.0 dp
  *  - cutout: top-centre waterdrop notch (not a hole-punch, not symmetric)
- *  - panel: switchable 60 Hz / 90 Hz (operator-confirmed on the physical
- *    unit, 2026-10-15); never assume one rate
- *  - RAM: 4 GB physical, 3 GB engineering budget
+ *  - panel modes: 30 / 50 / 60 / 90 Hz (`dumpsys display` supportedModes),
+ *    90 active at capture; never assume one rate
+ *  - corners: 106 px radius all four (39.4 dp)
+ *  - RAM: 3758996 kB (4 GB variant), 3 GB engineering budget
+ *  - stock: Android 14, HyperOS 1.0.8.0 (vendor is A14, not A12)
  */
 object RockDisplayProfile {
 
@@ -111,12 +114,21 @@ object RockDisplayProfile {
     const val NOMINAL_REFRESH_HZ = 60f
 
     /**
-     * Lowest rate the rock panel is known to drive. Operator-confirmed on the
-     * physical unit (2026-10-15): the panel switches between 60 Hz and 90 Hz.
-     * Spec sheets also list a 30 Hz mode, but it was not observed on this unit
-     * and is not claimed here.
+     * Lowest rate the rock panel is known to drive. MEASURED: `dumpsys display`
+     * on the physical unit (2026-10-15) lists supportedModes at 30.000002,
+     * 50.0, 60.0 and 90.0 Hz, with 90.0 active at capture time. The operator
+     * confirms 60/90 in everyday switching; 30 and 50 are real modes the
+     * panel advertises, so the floor is 30, not 60.
      */
-    const val MIN_KNOWN_REFRESH_HZ = 60f
+    const val MIN_KNOWN_REFRESH_HZ = 30f
+
+    /**
+     * Corner radius of the panel itself in px. MEASURED: `dumpsys display`
+     * reports RoundedCorners radius=106 at all four corners
+     * (106 / 2.6875 = 39.4 dp). Content laid out to the raw frame corners is
+     * clipped; reserve this in fullscreen surfaces.
+     */
+    const val NOMINAL_CORNER_RADIUS_PX = 106
 
     /** Highest rate the rock panel is known to drive. */
     const val MAX_KNOWN_REFRESH_HZ = 90f
