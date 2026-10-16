@@ -1,0 +1,14 @@
+diff --git a/hardware/mediatek/Android.bp b/hardware/mediatek/Android.bp
+index e69df8d..0fdc598 100644
+--- a/hardware/mediatek/Android.bp
++++ b/hardware/mediatek/Android.bp
+@@ -1,3 +1,9 @@
++// AppleUX bring-up: this namespace block exists so modules under
++// hardware/mediatek can SEE hardware/google/pixel (libpixelusb-aidl for the
++// USB gadget service). An earlier revision removed the block entirely, which
++// broke the vendor tree's import of this namespace instead. Narrow imports
++// (not a bare removal) are the correct shape: visibility OUT is handled by
++// per-module grants, visibility IN by this list.
+ soong_namespace {
+     imports: [
+         "hardware/google/interfaces",

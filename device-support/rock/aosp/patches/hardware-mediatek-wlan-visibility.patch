@@ -1,0 +1,33 @@
+diff --git a/hardware/mediatek/wlan/Android.bp b/hardware/mediatek/wlan/Android.bp
+index 7fa37a2..8768715 100644
+--- a/hardware/mediatek/wlan/Android.bp
++++ b/hardware/mediatek/wlan/Android.bp
+@@ -5,7 +5,10 @@
+ 
+ cc_defaults {
+     name: "libwifi-hal-mediatek",
++    // AppleUX bring-up: upstream relies on Lineage tree namespace context;
++    // in pure AOSP the frameworks wifi HAL cannot see this module without it.
++    visibility: ["//visibility:public"],
+     whole_static_libs: [
+-        "//hardware/mediatek/wlan/wifi_hal:libwifi-hal-mediatek",
++        "//hardware/mediatek/wlan/wifi_hal:libwifi-hal-mediatek-lib",
+     ],
+ }
+diff --git a/hardware/mediatek/wlan/wifi_hal/Android.bp b/hardware/mediatek/wlan/wifi_hal/Android.bp
+index f577625..694f88d 100644
+--- a/hardware/mediatek/wlan/wifi_hal/Android.bp
++++ b/hardware/mediatek/wlan/wifi_hal/Android.bp
+@@ -7,7 +7,11 @@ soong_namespace {
+ }
+ 
+ cc_library {
+-    name: "libwifi-hal-mediatek",
++    // AppleUX bring-up: renamed from "libwifi-hal-mediatek". The wrapper
++    // cc_defaults in ../Android.bp MUST keep that exact name (frameworks
++    // wifi HAL depends on it), and two same-named modules in different
++    // namespaces resolve to neither ("found in these namespaces" error).
++    name: "libwifi-hal-mediatek-lib",
+     vendor: true,
+     cflags: [
+         "-Wno-unused-parameter",

@@ -1,0 +1,46 @@
+diff --git a/hardware/mediatek/aidl/codec2/Android.bp b/hardware/mediatek/aidl/codec2/Android.bp
+index 8d88924..fe4d781 100644
+--- a/hardware/mediatek/aidl/codec2/Android.bp
++++ b/hardware/mediatek/aidl/codec2/Android.bp
+@@ -30,29 +30,24 @@ cc_binary {
+         "libavservices_minijail",
+         "libbinder",
+         "libbinder_ndk",
+-        "libcodec2_mtk_c2store",
+-        "libcodec2_mtk_vdec",
+-        "libcodec2_mtk_venc",
++        // AppleUX bring-up: absolute labels to the vendor prebuilts. The
++        // source stubs these names referred to were empty (no srcs) and
++        // collided with the device-tested blobs in vendor/xiaomi/rock;
++        // removed in hardware-mediatek-codec-stubs.patch.
++        "//vendor/xiaomi/rock:libcodec2_mtk_c2store",
++        "//vendor/xiaomi/rock:libcodec2_mtk_vdec",
++        "//vendor/xiaomi/rock:libcodec2_mtk_venc",
+     ] + select(soong_config_variable("android_hardware_mediatek_codec2", "link_v33_libstagefright_foundation"), {
+         true: ["libstagefright_foundation-v33"],
+         default: [],
+     }),
+ }
+ 
+-cc_library_shared {
+-    name: "libcodec2_mtk_c2store",
+-    soc_specific: true,
+-}
+-
+-cc_library_shared {
+-    name: "libcodec2_mtk_vdec",
+-    soc_specific: true,
+-}
+-
+-cc_library_shared {
+-    name: "libcodec2_mtk_venc",
+-    soc_specific: true,
+-}
++// AppleUX bring-up: three EMPTY stub declarations (libcodec2_mtk_c2store /
++// vdec / venc, name + soc_specific only, no srcs) REMOVED (were here). They
++// collide by name with the vendor prebuilt blobs carrying the real code, and
++// Soong rejects the duplicate when including the vendor partition. The C2
++// service above links the vendor prebuilts by the same names.
+ 
+ prebuilt_etc {
+     name: "android.hardware.media.c2-mediatek-seccomp-policy",

@@ -1,0 +1,12 @@
+--- a/hardware/xiaomi/hardware_xiaomi/vibrator/effect/Android.bp
++++ b/hardware/xiaomi/hardware_xiaomi/vibrator/effect/Android.bp
+@@ -13,9 +13,6 @@
+         "libbase",
+         "libcutils",
+         "libutils",
+     ],
+-    static_libs: [
+-        "libc++fs",
+-    ],
+     export_include_dirs: ["."]
+ }

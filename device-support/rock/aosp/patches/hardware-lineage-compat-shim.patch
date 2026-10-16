@@ -1,0 +1,13 @@
+--- a/hardware/lineage/compat/Android.bp
++++ b/hardware/lineage/compat/Android.bp
+@@ -304,6 +304,4 @@
+-cc_library {
+-    name: "libgui_shim_vendor",
+-    defaults: ["libgui_shim_defaults"],
+-    shared_libs: ["libgui_vendor"],
+-    vendor: true,
+-}
++// AppleUX bring-up: libgui_shim_vendor REMOVED (was here). It depended on
++// libgui_vendor, which does not exist in AOSP 16, and nothing in the rock
++// tree references the shim. If a future blob needs it, restore from upstream
++// hardware/lineage instead of inventing a replacement.

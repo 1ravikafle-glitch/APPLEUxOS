@@ -1,0 +1,39 @@
+diff --git a/vendor/xiaomi/rock/Android.bp b/vendor/xiaomi/rock/Android.bp
+index 23afcb5..09fe721 100644
+--- a/vendor/xiaomi/rock/Android.bp
++++ b/vendor/xiaomi/rock/Android.bp
+@@ -5,7 +5,6 @@
+ soong_namespace {
+     imports: [
+         "device/xiaomi/rock",
+-        "hardware/mediatek",
+         "hardware/xiaomi",
+         "hardware/mediatek/libmtkperf_client",
+         "vendor/xiaomi/rock",
+@@ -19941,6 +19940,8 @@ cc_prebuilt_library_shared {
+ cc_prebuilt_library_shared {
+     name: "libcodec2_mtk_c2store",
+     owner: "xiaomi",
++    // AppleUX bring-up: visible to the mediatek C2 service outside this namespace.
++    visibility: ["//visibility:public"],
+     strip: {
+         none: true,
+     },
+@@ -19977,6 +19978,8 @@ cc_prebuilt_library_shared {
+ cc_prebuilt_library_shared {
+     name: "libcodec2_mtk_vdec",
+     owner: "xiaomi",
++    // AppleUX bring-up: visible to the mediatek C2 service outside this namespace.
++    visibility: ["//visibility:public"],
+     strip: {
+         none: true,
+     },
+@@ -20026,6 +20029,8 @@ cc_prebuilt_library_shared {
+ cc_prebuilt_library_shared {
+     name: "libcodec2_mtk_venc",
+     owner: "xiaomi",
++    // AppleUX bring-up: visible to the mediatek C2 service outside this namespace.
++    visibility: ["//visibility:public"],
+     strip: {
+         none: true,
+     },

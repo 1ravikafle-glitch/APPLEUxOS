@@ -1,0 +1,15 @@
+diff --git a/hardware/google/pixel/usb/Android.bp b/hardware/google/pixel/usb/Android.bp
+index 7047a00..da687fc 100644
+--- a/hardware/google/pixel/usb/Android.bp
++++ b/hardware/google/pixel/usb/Android.bp
+@@ -64,6 +64,10 @@ cc_library_static {
+ 
+ cc_library_static {
+     name: "libpixelusb-aidl",
++    // AppleUX bring-up: mediatek's USB gadget service (outside the
++    // hardware/google/pixel namespace) links this. Upstream needs no grant
++    // because Pixel consumers sit inside the same namespace.
++    visibility: ["//visibility:public"],
+     vendor: true,
+     export_include_dirs: [
+         "aidl/include",

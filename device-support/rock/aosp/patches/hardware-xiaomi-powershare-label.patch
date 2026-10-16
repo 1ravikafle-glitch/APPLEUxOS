@@ -1,0 +1,12 @@
+--- a/hardware/xiaomi/hardware_xiaomi/hidl/powershare/Android.bp
++++ b/hardware/xiaomi/hardware_xiaomi/hidl/powershare/Android.bp
+@@ -40,7 +40,8 @@
+         "libhidlbase",
+         "liblog",
+         "libutils",
+-        "vendor.lineage.powershare@1.0",
++        // AppleUX bring-up: absolute label (see touch service fix).
++        "//hardware/lineage/interfaces/powershare/1.0:vendor.lineage.powershare@1.0",
+     ],
+     proprietary: true,
+ }

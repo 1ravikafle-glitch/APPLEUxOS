@@ -1,0 +1,64 @@
+diff --git a/hardware/mediatek/aidl/vibrator/Android.bp b/hardware/mediatek/aidl/vibrator/Android.bp
+index e780762..e9bd58a 100644
+--- a/hardware/mediatek/aidl/vibrator/Android.bp
++++ b/hardware/mediatek/aidl/vibrator/Android.bp
+@@ -24,23 +24,9 @@ mediatek_vibrator_defaults {
+     },
+ }
+ 
+-cc_binary {
+-    name: "android.hardware.vibrator-service.mediatek",
+-    defaults: ["mediatek_vibrator_defaults"],
+-    vintf_fragments: ["android.hardware.vibrator.mediatek.xml"],
+-    init_rc: ["vibrator-mediatek.rc"],
+-    vendor: true,
+-    relative_install_path: "hw",
+-
+-    srcs: [
+-        "Vibrator.cpp",
+-        "VibratorUtils.cpp",
+-        "main.cpp",
+-    ],
+-
+-    shared_libs: [
+-        "libbase",
+-        "libbinder_ndk",
+-        "android.hardware.vibrator-V2-ndk",
+-    ],
+-}
++// AppleUX bring-up: source-built vibrator service REMOVED (was here). It
++// collides by name with the vendor prebuilt binary carrying Xiaomi-tested
++// code, and Soong rejects the duplicate in the vendor partition. The
++// prebuilt wins for the first bootable; revisit from source only with
++// on-device effect comparison in hand. (mediatek_vibrator_defaults above is
++// now unreferenced but harmless — keep it for that revisit.)
+diff --git a/hardware/mediatek/libmtkperf_client/Android.bp b/hardware/mediatek/libmtkperf_client/Android.bp
+index 2d15c3b..64a09b4 100644
+--- a/hardware/mediatek/libmtkperf_client/Android.bp
++++ b/hardware/mediatek/libmtkperf_client/Android.bp
+@@ -19,12 +19,6 @@ cc_defaults {
+     shared_libs: ["liblog"],
+ }
+ 
+-cc_library_shared {
+-    name: "libmtkperf_client_vendor",
+-    defaults: ["libmtkperf_client_defaults"],
+-    vendor: true,
+-}
+-
+ cc_library_shared {
+     name: "libmtkperf_client",
+     defaults: ["libmtkperf_client_defaults"],
+@@ -35,8 +29,7 @@ cc_library_shared {
+     defaults: ["libpowerhalwrap_defaults"],
+ }
+ 
+-cc_library_shared {
+-    name: "libpowerhalwrap_vendor",
+-    defaults: ["libpowerhalwrap_defaults"],
+-    vendor: true,
+-}
++// AppleUX bring-up: source-built libmtkperf_client_vendor and
++// libpowerhalwrap_vendor REMOVED (were here). They collide by name with the
++// vendor prebuilt blobs (device-tested), which win for the first bootable.
++// The non-vendor variants above stay: no collision, still available.

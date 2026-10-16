@@ -1,0 +1,14 @@
+diff --git a/hardware/mediatek/wlan/wpa_supplicant_8_lib/Android.bp b/hardware/mediatek/wlan/wpa_supplicant_8_lib/Android.bp
+index cdeab5d..79f2abb 100644
+--- a/hardware/mediatek/wlan/wpa_supplicant_8_lib/Android.bp
++++ b/hardware/mediatek/wlan/wpa_supplicant_8_lib/Android.bp
+@@ -5,6 +5,9 @@
+ 
+ cc_library_static {
+     name: "lib_driver_cmd_mt66xx",
++    // AppleUX bring-up: pure-AOSP consumers (wpa_supplicant/hostapd) cannot
++    // see this module through the tree's soong namespaces without it.
++    visibility: ["//visibility:public"],
+     vendor: true,
+     sanitize: {
+         cfi: true,

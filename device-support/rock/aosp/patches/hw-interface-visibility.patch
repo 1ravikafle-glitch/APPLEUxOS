@@ -1,0 +1,53 @@
+diff --git a/hardware/google/interfaces/power/Android.bp b/hardware/google/interfaces/power/Android.bp
+index 5d3defd..28020f2 100644
+--- a/hardware/google/interfaces/power/Android.bp
++++ b/hardware/google/interfaces/power/Android.bp
+@@ -6,6 +6,9 @@ package {
+ aidl_interface {
+     name: "pixel-power-ext",
+     owner: "google",
++    // AppleUX bring-up: mediatek thermal service links the -V1-ndk backend
++    // from outside this namespace.
++    visibility: ["//visibility:public"],
+     vendor_available: true,
+     srcs: [
+         "google/hardware/power/extension/pixel/IPowerExt.aidl",
+diff --git a/hardware/lineage/interfaces/touch/1.0/Android.bp b/hardware/lineage/interfaces/touch/1.0/Android.bp
+index 7184ef5..a7e1144 100644
+--- a/hardware/lineage/interfaces/touch/1.0/Android.bp
++++ b/hardware/lineage/interfaces/touch/1.0/Android.bp
+@@ -3,6 +3,8 @@
+ hidl_interface {
+     name: "vendor.lineage.touch@1.0",
+     root: "vendor.lineage",
++    // AppleUX bring-up: xiaomi touch service links this from outside.
++    visibility: ["//visibility:public"],
+     system_ext_specific: true,
+     srcs: [
+         "types.hal",
+diff --git a/hardware/lineage/interfaces/powershare/1.0/Android.bp b/hardware/lineage/interfaces/powershare/1.0/Android.bp
+index f50f4b9..b5c5f4d 100644
+--- a/hardware/lineage/interfaces/powershare/1.0/Android.bp
++++ b/hardware/lineage/interfaces/powershare/1.0/Android.bp
+@@ -3,6 +3,8 @@
+ hidl_interface {
+     name: "vendor.lineage.powershare@1.0",
+     root: "vendor.lineage",
++    // AppleUX bring-up: xiaomi powershare service links this from outside.
++    visibility: ["//visibility:public"],
+     system_ext_specific: true,
+     srcs: [
+         "IPowerShare.hal",
+diff --git a/hardware/mediatek/interfaces/hardware/mtkpower/1.0/Android.bp b/hardware/mediatek/interfaces/hardware/mtkpower/1.0/Android.bp
+index 1512e09..69f3145 100644
+--- a/hardware/mediatek/interfaces/hardware/mtkpower/1.0/Android.bp
++++ b/hardware/mediatek/interfaces/hardware/mtkpower/1.0/Android.bp
+@@ -5,6 +5,8 @@
+ hidl_interface {
+     name: "vendor.mediatek.hardware.mtkpower@1.0",
+     root: "vendor.mediatek.hardware",
++    // AppleUX bring-up: vendor prebuilts and services link this from outside.
++    visibility: ["//visibility:public"],
+     system_ext_specific: true,
+     srcs: [
+         "IMtkPerf.hal",

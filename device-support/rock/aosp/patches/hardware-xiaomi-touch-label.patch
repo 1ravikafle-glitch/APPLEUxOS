@@ -1,0 +1,13 @@
+--- a/hardware/xiaomi/hardware_xiaomi/hidl/touch/Android.bp
++++ b/hardware/xiaomi/hardware_xiaomi/hidl/touch/Android.bp
+@@ -40,6 +40,9 @@
+         "libbinder",
+         "libhidlbase",
+         "libutils",
+-        "vendor.lineage.touch@1.0",
++        // AppleUX bring-up: absolute label. Short-name cross-namespace deps
++        // do not resolve in this tree; absolute labels do (proven on the
++        // wifi HAL dep). Same module, same code.
++        "//hardware/lineage/interfaces/touch/1.0:vendor.lineage.touch@1.0",
+     ],
+ }

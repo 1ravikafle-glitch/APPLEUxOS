@@ -1,0 +1,12 @@
+diff --git a/vendor/xiaomi/rock/Android.bp b/vendor/xiaomi/rock/Android.bp
+index 23afcb5..d417fd7 100644
+--- a/vendor/xiaomi/rock/Android.bp
++++ b/vendor/xiaomi/rock/Android.bp
+@@ -5,7 +5,6 @@
+ soong_namespace {
+     imports: [
+         "device/xiaomi/rock",
+-        "hardware/mediatek",
+         "hardware/xiaomi",
+         "hardware/mediatek/libmtkperf_client",
+         "vendor/xiaomi/rock",
