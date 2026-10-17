@@ -11,6 +11,7 @@ import com.appleux.design.components.AppleuxCard
 import com.appleux.design.components.AppleuxListItem
 import com.appleux.settings.R
 import com.appleux.settings.detail.SettingsDetailActivity
+import com.appleux.design.components.AppleuxToast
 
 /**
  * Owned Security & Privacy page.
@@ -113,6 +114,6 @@ class SecuritySettingsActivity : SettingsDetailActivity() {
 
     /** Say plainly that enrolment is unavailable; never silent-fail. */
     private fun reportEnrolUnavailable() {
-        Toast.makeText(this, R.string.biometric_enroll_unavailable, Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, getString(R.string.biometric_enroll_unavailable))
     }
 }

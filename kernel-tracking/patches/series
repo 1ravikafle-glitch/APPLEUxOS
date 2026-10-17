@@ -1,0 +1,26 @@
+# Patch series for MT6765V (Helio G99) -- EXPERIMENTAL / UNVERIFIED
+#
+# Nothing here has been built, booted or measured. See
+# patches/0000-MT6765V-experimental-perf-cover.txt for the honesty statement
+# and for the list of forbidden changes (thermal / lmk / max clocks) that are
+# deliberately absent.
+#
+# Base tree : https://github.com/oppo-source/android_kernel_oppo_mt6765
+# Branch    : oppo/mt6765_u_14.0_oppo_a77
+# Commit    : 9b1c9a531dd08e68bf778dcf7ed13f811ec1f153  (Linux 4.19.191)
+# Base cfg  : arch/arm64/configs/k65v1_64_bsp_defconfig  (CONFIG_MACH_MT6765=y)
+#
+# Ordering is by RISK, ascending. Bring up the cheap ones first so that a
+# measurement failure in P05 is never confused with a regression elsewhere.
+
+# --- low risk, independent, start here ---------------------------------------
+01-io-sched-deadline.config            # I/O      CFQ -> deadline
+02-mem-nr-cpus-8.config                # Memory   NR_CPUS 64 -> 8
+03-sched-no-autogroup.config           # Sched    drop SCHED_AUTOGROUP
+04-cpufreq-governors-minimal.config    # Power    drop powersave+conservative governors
+
+# --- gated: run the grep in the header BEFORE applying ------------------------
+06-sched-no-mtk-sched-tracers.config   # Sched    drop MTK sched tracers [GATED]
+
+# --- high risk, LAST and ALONE: expect vendor-module link failures ------------
+05-lto-thin.config                     # Build    enable ThinLTO [HIGH RISK]

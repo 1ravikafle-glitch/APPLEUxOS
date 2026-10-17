@@ -1,0 +1,394 @@
+{
+  "_status": "BEST-EFFORT, UNVERIFIED. Recalled from memory of iOS HIG/UIKit defaults (pre-Liquid-Glass). Not measured from the iOS 27 kit; iOS 27 values may differ.",
+  "referenceScreen": {
+    "widthPt": 393,
+    "heightPt": 852,
+    "basis": "claude-recall",
+    "inferred": true,
+    "verified": false
+  },
+  "color": {
+    "systemBackground": {
+      "light": "#FFFFFF",
+      "dark": "#000000",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "secondarySystemBackground": {
+      "light": "#F2F2F7",
+      "dark": "#1C1C1E",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "tertiarySystemBackground": {
+      "light": "#FFFFFF",
+      "dark": "#2C2C2E",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemGroupedBackground": {
+      "light": "#F2F2F7",
+      "dark": "#000000",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "secondarySystemGroupedBackground": {
+      "light": "#FFFFFF",
+      "dark": "#1C1C1E",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "tertiarySystemGroupedBackground": {
+      "light": "#F2F2F7",
+      "dark": "#2C2C2E",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "label": {
+      "light": "#000000",
+      "dark": "#FFFFFF",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "secondaryLabel": {
+      "light": "#3C3C43",
+      "dark": "#EBEBF5",
+      "lightAlpha": 0.6,
+      "darkAlpha": 0.6,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "tertiaryLabel": {
+      "light": "#3C3C43",
+      "dark": "#EBEBF5",
+      "lightAlpha": 0.3,
+      "darkAlpha": 0.3,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "quaternaryLabel": {
+      "light": "#3C3C43",
+      "dark": "#EBEBF5",
+      "lightAlpha": 0.18,
+      "darkAlpha": 0.16,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "separator": {
+      "light": "#3C3C43",
+      "dark": "#545458",
+      "lightAlpha": 0.29,
+      "darkAlpha": 0.6,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "opaqueSeparator": {
+      "light": "#C6C6C8",
+      "dark": "#38383A",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemFill": {
+      "light": "#787880",
+      "dark": "#787880",
+      "lightAlpha": 0.2,
+      "darkAlpha": 0.36,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemBlue": {
+      "light": "#007AFF",
+      "dark": "#0A84FF",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemGreen": {
+      "light": "#34C759",
+      "dark": "#30D158",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemRed": {
+      "light": "#FF3B30",
+      "dark": "#FF453A",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemOrange": {
+      "light": "#FF9500",
+      "dark": "#FF9F0A",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemYellow": {
+      "light": "#FFCC00",
+      "dark": "#FFD60A",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemPink": {
+      "light": "#FF2D55",
+      "dark": "#FF375F",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemPurple": {
+      "light": "#AF52DE",
+      "dark": "#BF5AF2",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemTeal": {
+      "light": "#30B0C7",
+      "dark": "#40C8E0",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemIndigo": {
+      "light": "#5856D6",
+      "dark": "#5E5CE6",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "systemGray": {
+      "light": "#8E8E93",
+      "dark": "#8E8E93",
+      "lightAlpha": 1.0,
+      "darkAlpha": 1.0,
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    }
+  },
+  "typography": {
+    "largeTitle": {
+      "size": 34,
+      "lineHeight": 41,
+      "weight": "regular",
+      "tracking": 0.4,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "title1": {
+      "size": 28,
+      "lineHeight": 34,
+      "weight": "regular",
+      "tracking": 0.38,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "title2": {
+      "size": 22,
+      "lineHeight": 28,
+      "weight": "regular",
+      "tracking": -0.26,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "title3": {
+      "size": 20,
+      "lineHeight": 25,
+      "weight": "regular",
+      "tracking": -0.45,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "headline": {
+      "size": 17,
+      "lineHeight": 22,
+      "weight": "semibold",
+      "tracking": -0.41,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "body": {
+      "size": 17,
+      "lineHeight": 22,
+      "weight": "regular",
+      "tracking": -0.41,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "callout": {
+      "size": 16,
+      "lineHeight": 21,
+      "weight": "regular",
+      "tracking": -0.32,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "subheadline": {
+      "size": 15,
+      "lineHeight": 20,
+      "weight": "regular",
+      "tracking": -0.24,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "footnote": {
+      "size": 13,
+      "lineHeight": 18,
+      "weight": "regular",
+      "tracking": -0.08,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "caption1": {
+      "size": 12,
+      "lineHeight": 16,
+      "weight": "regular",
+      "tracking": 0,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    },
+    "caption2": {
+      "size": 11,
+      "lineHeight": 13,
+      "weight": "regular",
+      "tracking": 0.07,
+      "family": "SF Pro",
+      "basis": "claude-recall",
+      "inferred": true,
+      "verified": false
+    }
+  },
+  "spacing": {
+    "inset": {
+      "xxs": 2,
+      "xs": 4,
+      "sm": 8,
+      "md": 12,
+      "lg": 16,
+      "xl": 20,
+      "xxl": 24,
+      "xxxl": 32
+    },
+    "listRowMinHeight": 44,
+    "screenMargin": 16,
+    "groupedInsetMargin": 16,
+    "tabBarHeight": 49,
+    "basis": "claude-recall",
+    "inferred": true,
+    "verified": false
+  },
+  "radius": {
+    "button": null,
+    "card": null,
+    "sheet": null,
+    "control": null,
+    "appIcon": null,
+    "_note": "null: iOS 26/27 use concentric/capsule shapes; no recalled number is reliable."
+  },
+  "material": {
+    "liquidGlassRegular": {
+      "cornerRadius": 34,
+      "cornerRadius_basis": "user-supplied (MIT transcription of kit)",
+      "fillLight": null,
+      "fillDark": null,
+      "rimLight": null,
+      "rimDark": null,
+      "shadowBlur": null,
+      "shadowOffsetY": null,
+      "shadowAlphaLight": null
+    },
+    "liquidGlassClear": {
+      "cornerRadius": null,
+      "base": null,
+      "overlay": null,
+      "overlayAlpha": null
+    },
+    "transparencySlider": {
+      "min": 0,
+      "max": 1,
+      "default": 0.5,
+      "opacityScale": null,
+      "blurScale": null,
+      "_note": "min/max/default copied from the request template, not verified"
+    }
+  },
+  "icon": {
+    "appIconGrid": 1024,
+    "appIconSuperellipseN": 4.4,
+    "appIconSuperellipseN_basis": "user-supplied fit",
+    "appIconCornerRadius": null,
+    "controlDiameter": null,
+    "homeScreenIconSizePt": 60,
+    "homeScreenIconSizePt_basis": "claude-recall, unverified"
+  }
+}

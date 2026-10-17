@@ -1,5 +1,29 @@
 package com.appleux.launcher.apps
 
+    // android.R.drawable -> vendored iOS vector (2026-10-17):
+    //   android.R.drawable.ic_lock_lock               -> sf_lock          iOS lock
+    //   android.R.drawable.ic_media_play              -> il_ic_play       iOS play triangle
+    //   android.R.drawable.ic_menu_add                -> sf_add           iOS plus
+    //   android.R.drawable.ic_menu_agenda             -> il_ic_grid       iOS list/grid
+    //   android.R.drawable.ic_menu_camera             -> il_ic_camera     iOS camera
+    //   android.R.drawable.ic_menu_compass            -> sf_compass       NEW: see sf_compass.xml, created 2026-10-17
+    //   android.R.drawable.ic_menu_crop               -> sf_crop          NEW: see sf_crop.xml, created 2026-10-17
+    //   android.R.drawable.ic_menu_delete             -> sf_trash         iOS trash can
+    //   android.R.drawable.ic_menu_directions         -> sf_compass       NEW: see sf_compass.xml, created 2026-10-17
+    //   android.R.drawable.ic_menu_edit               -> sf_pencil        NEW: see sf_pencil.xml, created 2026-10-17
+    //   android.R.drawable.ic_menu_gallery            -> il_ic_photos     iOS photos flower
+    //   android.R.drawable.ic_menu_info_details       -> il_ic_info       iOS info circle
+    //   android.R.drawable.ic_menu_month              -> sf_calendar      no month-only glyph exists in the vendored set
+    //   android.R.drawable.ic_menu_my_calendar        -> sf_calendar      iOS calendar
+    //   android.R.drawable.ic_menu_mylocation         -> sf_location      iOS location arrow
+    //   android.R.drawable.ic_menu_myplaces           -> sf_location      iOS location pin
+    //   android.R.drawable.ic_menu_recent_history     -> sf_clock         iOS clock
+    //   android.R.drawable.ic_menu_revert             -> sf_undo          NEW: see sf_undo.xml, created 2026-10-17
+    //   android.R.drawable.ic_menu_rotate             -> il_ic_rotation   iOS rotation lock
+    //   android.R.drawable.ic_menu_search             -> il_ic_search     iOS magnifying glass
+    //   android.R.drawable.ic_menu_set_as             -> sf_checkmark     iOS 'set as' is a check/apply mark; no dedicated SF Symbol
+    //   android.R.drawable.ic_menu_share              -> il_ic_share      iOS share
+    //   android.R.drawable.star_big_on                -> sf_star          iOS filled star
 import android.Manifest
 import android.content.ContentUris
 import android.content.Context
@@ -22,6 +46,7 @@ import android.widget.ScrollView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.appleux.design.components.AppleuxDialogs
 import com.appleux.design.components.AppleuxDisplayInsets
 import com.appleux.design.components.AppleuxNavigationBar
 import com.appleux.design.components.AppleuxSurface
@@ -54,6 +79,8 @@ import org.json.JSONObject
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.TimeUnit
+import com.appleux.design.components.AppleuxToast
+import com.appleux.launcher.R
 
 /**
  * iOS 27 Photos app UI for AppleUX.
@@ -125,7 +152,6 @@ class PhotosActivity : AppCompatActivity() {
     private val searchSuggestions = listOf("Screenshots", "Videos", "Selfies", "Favorites", "Recently Added")
 
     // Photo viewer state
-    private var viewerDialog: androidx.appcompat.app.AlertDialog? = null
     private var viewerCurrentIndex = 0
     private var viewerPhotoUris = mutableListOf<Uri>()
     private var isControlsVisible = true
@@ -434,7 +460,7 @@ class PhotosActivity : AppCompatActivity() {
 
         // Search icon
         val searchIcon = ImageView(this).apply {
-            setImageResource(android.R.drawable.ic_menu_search)
+            setImageResource(R.drawable.il_ic_search)
             setColorFilter(ColorTokens.secondaryLabel)
             layoutParams = LinearLayout.LayoutParams(
                 LayoutUtils.dpToPx(IconTokens.SIZE_SMALL, this@PhotosActivity),
@@ -506,27 +532,27 @@ class PhotosActivity : AppCompatActivity() {
             addItem(AppleuxNavigationBar.NavigationItem(
                 id = TAB_LIBRARY,
                 label = "Library",
-                iconRes = android.R.drawable.ic_menu_gallery
+                iconRes = R.drawable.il_ic_photos
             ))
             addItem(AppleuxNavigationBar.NavigationItem(
                 id = TAB_COLLECTIONS,
                 label = "Collections",
-                iconRes = android.R.drawable.ic_menu_myplaces
+                iconRes = R.drawable.sf_location
             ))
             addItem(AppleuxNavigationBar.NavigationItem(
                 id = TAB_ALBUMS,
                 label = "Albums",
-                iconRes = android.R.drawable.ic_menu_agenda
+                iconRes = R.drawable.il_ic_grid
             ))
             addItem(AppleuxNavigationBar.NavigationItem(
                 id = TAB_SEARCH,
                 label = "Search",
-                iconRes = android.R.drawable.ic_menu_search
+                iconRes = R.drawable.il_ic_search
             ))
             addItem(AppleuxNavigationBar.NavigationItem(
                 id = TAB_HIDDEN,
                 label = "Hidden",
-                iconRes = android.R.drawable.ic_lock_lock
+                iconRes = R.drawable.sf_lock
             ))
             // Recently Deleted is a separate tab from Hidden: Hidden is a
             // privacy lock, this is a 30-day timer with a restore path.
@@ -538,7 +564,7 @@ class PhotosActivity : AppCompatActivity() {
             addItem(AppleuxNavigationBar.NavigationItem(
                 id = TAB_RECENTLY_DELETED,
                 label = "Deleted",
-                iconRes = android.R.drawable.ic_menu_delete
+                iconRes = R.drawable.sf_trash
             ))
             setActiveItem(TAB_LIBRARY)
             // setOnItemSelectedListener, not an `onItemSelected =` property:
@@ -747,7 +773,7 @@ class PhotosActivity : AppCompatActivity() {
             name = name.ifEmpty { uri.lastPathSegment.orEmpty() }
         ))
         saveTrash()
-        Toast.makeText(this, "Moved to Recently Deleted", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Moved to Recently Deleted")
         refreshAfterTrashChange()
     }
 
@@ -761,11 +787,7 @@ class PhotosActivity : AppCompatActivity() {
         val existed = photoStillExists(entry)
         trash.removeAll { it.uri == entry.uri }
         saveTrash()
-        Toast.makeText(
-            this,
-            if (existed) "Restored to Library" else "Photo is no longer on this device",
-            Toast.LENGTH_SHORT
-        ).show()
+        AppleuxToast.show(this, if (existed) "Restored to Library" else "Photo is no longer on this device")
         refreshAfterTrashChange()
     }
 
@@ -776,26 +798,25 @@ class PhotosActivity : AppCompatActivity() {
             contentResolver.delete(Uri.parse(entry.uri), null, null)
             Unit
         }.onFailure {
-            Toast.makeText(this, "Could not delete", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Could not delete")
         }
         trash.removeAll { it.uri == entry.uri }
         saveTrash()
-        Toast.makeText(this, "Deleted permanently", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Deleted permanently")
         refreshAfterTrashChange()
     }
 
     private fun confirmEmptyTrash() {
         if (trash.isEmpty()) return
-        androidx.appcompat.app.AlertDialog.Builder(this)
-            .setTitle("Empty Recently Deleted?")
-            .setMessage(
-                trash.size.toString() + " " +
+        AppleuxDialogs.alert(
+            this,
+            title = "Empty Recently Deleted?",
+            message = trash.size.toString() + " " +
                     (if (trash.size == 1) "photo" else "photos") +
-                    " will be deleted permanently."
-            )
-            .setPositiveButton("Delete") { _, _ -> emptyTrash() }
-            .setNegativeButton("Cancel", null)
-            .show()
+                    " will be deleted permanently.",
+            confirmLabel = "Delete",
+            cancelLabel = "Cancel",
+        ) { emptyTrash() }
     }
 
     private fun emptyTrash() {
@@ -809,7 +830,7 @@ class PhotosActivity : AppCompatActivity() {
         }
         trash.clear()
         saveTrash()
-        Toast.makeText(this, "Recently Deleted emptied", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Recently Deleted emptied")
         refreshAfterTrashChange()
     }
 
@@ -875,7 +896,6 @@ class PhotosActivity : AppCompatActivity() {
     // ---- Context Menu (iOS 27 Bottom Sheet) --------------------------------
 
     private fun showContextMenu(uri: Uri, position: Int) {
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this).create()
         val sheet = FrameLayout(this).apply {
             layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
@@ -900,34 +920,34 @@ class PhotosActivity : AppCompatActivity() {
 
         val isHidden = isPhotoHidden(uri)
         val options = mutableListOf(
-            ContextMenuOption("Share", android.R.drawable.ic_menu_share) {
+            ContextMenuOption("Share", R.drawable.il_ic_share) {
                 sharePhoto(uri)
-                dialog.dismiss()
+
             },
             ContextMenuOption(if (isHidden) "Unhide" else "Hide",
-                android.R.drawable.ic_menu_set_as) {
+                R.drawable.sf_checkmark) {
                 setPhotoHidden(uri, !isHidden)
-                dialog.dismiss()
+
             },
-            ContextMenuOption("Favorite", android.R.drawable.star_big_on) {
+            ContextMenuOption("Favorite", R.drawable.sf_star) {
                 toggleFavorite(uri)
-                dialog.dismiss()
+
             },
-            ContextMenuOption("Edit", android.R.drawable.ic_menu_edit) {
+            ContextMenuOption("Edit", R.drawable.sf_pencil) {
                 openEditMode(uri)
-                dialog.dismiss()
+
             },
-            ContextMenuOption("Crop", android.R.drawable.ic_menu_crop) {
+            ContextMenuOption("Crop", R.drawable.sf_crop) {
                 showCropDialog(uri)
-                dialog.dismiss()
+
             },
-            ContextMenuOption("Info", android.R.drawable.ic_menu_info_details) {
+            ContextMenuOption("Info", R.drawable.il_ic_info) {
                 showPhotoInfo(uri)
-                dialog.dismiss()
+
             },
-            ContextMenuOption("Delete", android.R.drawable.ic_menu_delete) {
+            ContextMenuOption("Delete", R.drawable.sf_trash) {
                 movePhotoToTrash(uri)
-                dialog.dismiss()
+
             }
         )
 
@@ -949,7 +969,7 @@ class PhotosActivity : AppCompatActivity() {
             )
             isClickable = true
             isFocusable = true
-            setOnClickListener { dialog.dismiss() }
+            setOnClickListener {}
         }
 
         val cancelContainer = FrameLayout(this).apply {
@@ -967,8 +987,7 @@ class PhotosActivity : AppCompatActivity() {
         }
 
         sheet.addView(sheetContent)
-        dialog.setView(sheet)
-        dialog.show()
+        AppleuxDialogs.custom(this@PhotosActivity, sheet)
     }
 
     private fun buildContextMenuItem(option: ContextMenuOption): View {
@@ -1068,7 +1087,6 @@ class PhotosActivity : AppCompatActivity() {
     }
 
     private fun showPinEntryDialog() {
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this).create()
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setPadding(
@@ -1147,7 +1165,7 @@ class PhotosActivity : AppCompatActivity() {
                                 if (pinBuilder.length == PIN_LENGTH) {
                                     if (verifyPin(pinBuilder.toString())) {
                                         isPinUnlocked = true
-                                        dialog.dismiss()
+
                                         loadHiddenPhotos()
                                     } else {
                                         pinBuilder.clear()
@@ -1164,8 +1182,7 @@ class PhotosActivity : AppCompatActivity() {
         }
 
         container.addView(keypad)
-        dialog.setView(container)
-        dialog.show()
+        AppleuxDialogs.custom(this@PhotosActivity, container)
     }
 
     private fun verifyPin(pin: String): Boolean {
@@ -1197,7 +1214,7 @@ class PhotosActivity : AppCompatActivity() {
 
     private fun toggleFavorite(uri: Uri) {
         // Placeholder: would integrate with MediaStore favorites
-        android.widget.Toast.makeText(this, "Favorites not yet implemented", android.widget.Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Favorites not yet implemented")
     }
 
     private fun deletePhoto(uri: Uri, position: Int) {
@@ -1272,7 +1289,6 @@ class PhotosActivity : AppCompatActivity() {
      * sheets are visually identical — only the rows differ.
      */
     private fun showTrashActionSheet(entry: TrashPhoto) {
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this).create()
         val pad = LayoutUtils.dpToPx(SpacingTokens.INSETS_MD, this)
         val sheet = FrameLayout(this).apply {
             layoutParams = ViewGroup.LayoutParams(
@@ -1316,18 +1332,18 @@ class PhotosActivity : AppCompatActivity() {
         })
 
         container.addView(buildContextMenuItem(ContextMenuOption(
-            "Restore", android.R.drawable.ic_menu_revert,
+            "Restore", R.drawable.sf_undo,
             action = {
                 restoreTrashPhoto(entry)
-                dialog.dismiss()
+
             }
         )))
         container.addView(buildContextMenuItem(ContextMenuOption(
-            "Delete Permanently", android.R.drawable.ic_menu_delete,
+            "Delete Permanently", R.drawable.sf_trash,
             tint = ColorTokens.systemRed,
             action = {
                 deleteTrashPhotoPermanently(entry)
-                dialog.dismiss()
+
             }
         )))
 
@@ -1344,7 +1360,7 @@ class PhotosActivity : AppCompatActivity() {
             )
             isClickable = true
             isFocusable = true
-            setOnClickListener { dialog.dismiss() }
+            setOnClickListener {}
         }
 
         val cancelContainer = FrameLayout(this).apply {
@@ -1366,8 +1382,7 @@ class PhotosActivity : AppCompatActivity() {
             addView(container)
             addView(cancelContainer)
         })
-        dialog.setView(sheet)
-        dialog.show()
+        AppleuxDialogs.custom(this@PhotosActivity, sheet)
     }
 
     /**
@@ -1424,10 +1439,10 @@ class PhotosActivity : AppCompatActivity() {
     }
 
     private fun buildHiddenEmptyView(): LinearLayout =
-        buildAlbumEmptyState(android.R.drawable.ic_lock_lock, "No Hidden Photos")
+        buildAlbumEmptyState(R.drawable.sf_lock, "No Hidden Photos")
 
     private fun buildTrashEmptyView(): LinearLayout =
-        buildAlbumEmptyState(android.R.drawable.ic_menu_delete, "No Recently Deleted")
+        buildAlbumEmptyState(R.drawable.sf_trash, "No Recently Deleted")
 
     /**
      * The shared empty state for an album tab: a large glyph over centred
@@ -1485,20 +1500,20 @@ class PhotosActivity : AppCompatActivity() {
 
         // Build collections list
         collections.addAll(listOf(
-            CollectionItem(CollectionType.MEMORIES, "Memories", "Auto-grouped by date & location", android.R.drawable.ic_menu_recent_history, getRecentPhotosCount(7)),
-            CollectionItem(CollectionType.MEMORIES, "Last 30 Days", "Photos from the past month", android.R.drawable.ic_menu_month, getRecentPhotosCount(30)),
-            CollectionItem(CollectionType.MEMORIES, "Last Year", "Photos from the past year", android.R.drawable.ic_menu_my_calendar, getRecentPhotosCount(365)),
-            CollectionItem(CollectionType.PEOPLE, "People", "Contacts with photos", android.R.drawable.ic_menu_myplaces, getPeopleCount()),
-            CollectionItem(CollectionType.PLACES, "Places", "Photos with GPS data", android.R.drawable.ic_menu_mylocation, getPlacesCount()),
-            CollectionItem(CollectionType.TRIPS, "Trips", "Photos >100km from home", android.R.drawable.ic_menu_directions, getTripsCount()),
-            CollectionItem(CollectionType.MEDIA_TYPES, "Screenshots", "Captured screen images", android.R.drawable.ic_menu_camera, getMediaTypeCount(MediaType.SCREENSHOTS)),
-            CollectionItem(CollectionType.MEDIA_TYPES, "Videos", "Video recordings", android.R.drawable.ic_media_play, getMediaTypeCount(MediaType.VIDEOS)),
-            CollectionItem(CollectionType.MEDIA_TYPES, "Selfies", "Front camera photos", android.R.drawable.ic_menu_rotate, getMediaTypeCount(MediaType.SELFIES)),
-            CollectionItem(CollectionType.MEDIA_TYPES, "Live Photos", "Animated photos", android.R.drawable.ic_menu_compass, getMediaTypeCount(MediaType.LIVE_PHOTOS)),
-            CollectionItem(CollectionType.MEDIA_TYPES, "RAW", "RAW format photos", android.R.drawable.ic_menu_gallery, getMediaTypeCount(MediaType.RAW)),
-            CollectionItem(CollectionType.MEDIA_TYPES, "Panoramas", "Wide panoramic photos", android.R.drawable.ic_menu_crop, getMediaTypeCount(MediaType.PANORAMAS)),
-            CollectionItem(CollectionType.FEATURED, "Featured", "Your best photos", android.R.drawable.star_big_on, getFeaturedCount()),
-            CollectionItem(CollectionType.FEATURED, "Recently Added", "Latest imports", android.R.drawable.ic_menu_add, getRecentPhotosCount(7))
+            CollectionItem(CollectionType.MEMORIES, "Memories", "Auto-grouped by date & location", R.drawable.sf_clock, getRecentPhotosCount(7)),
+            CollectionItem(CollectionType.MEMORIES, "Last 30 Days", "Photos from the past month", R.drawable.sf_calendar, getRecentPhotosCount(30)),
+            CollectionItem(CollectionType.MEMORIES, "Last Year", "Photos from the past year", R.drawable.sf_calendar, getRecentPhotosCount(365)),
+            CollectionItem(CollectionType.PEOPLE, "People", "Contacts with photos", R.drawable.sf_location, getPeopleCount()),
+            CollectionItem(CollectionType.PLACES, "Places", "Photos with GPS data", R.drawable.sf_location, getPlacesCount()),
+            CollectionItem(CollectionType.TRIPS, "Trips", "Photos >100km from home", R.drawable.sf_compass, getTripsCount()),
+            CollectionItem(CollectionType.MEDIA_TYPES, "Screenshots", "Captured screen images", R.drawable.il_ic_camera, getMediaTypeCount(MediaType.SCREENSHOTS)),
+            CollectionItem(CollectionType.MEDIA_TYPES, "Videos", "Video recordings", R.drawable.il_ic_play, getMediaTypeCount(MediaType.VIDEOS)),
+            CollectionItem(CollectionType.MEDIA_TYPES, "Selfies", "Front camera photos", R.drawable.il_ic_rotation, getMediaTypeCount(MediaType.SELFIES)),
+            CollectionItem(CollectionType.MEDIA_TYPES, "Live Photos", "Animated photos", R.drawable.sf_compass, getMediaTypeCount(MediaType.LIVE_PHOTOS)),
+            CollectionItem(CollectionType.MEDIA_TYPES, "RAW", "RAW format photos", R.drawable.il_ic_photos, getMediaTypeCount(MediaType.RAW)),
+            CollectionItem(CollectionType.MEDIA_TYPES, "Panoramas", "Wide panoramic photos", R.drawable.sf_crop, getMediaTypeCount(MediaType.PANORAMAS)),
+            CollectionItem(CollectionType.FEATURED, "Featured", "Your best photos", R.drawable.sf_star, getFeaturedCount()),
+            CollectionItem(CollectionType.FEATURED, "Recently Added", "Latest imports", R.drawable.sf_add, getRecentPhotosCount(7))
         ))
 
         buildCollectionsView()
@@ -1595,7 +1610,7 @@ class PhotosActivity : AppCompatActivity() {
             putExtra("collection_title", collection.title)
         }
         // For now, show a toast - full implementation would open a detail view
-        Toast.makeText(this, "Opening: ${collection.title}", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Opening: ${collection.title}")
     }
 
     // ---- Collection Data Helpers -------------------------------------------
@@ -1734,7 +1749,7 @@ class PhotosActivity : AppCompatActivity() {
         }
 
         val icon = ImageView(this).apply {
-            setImageResource(if (album.isSmartAlbum) android.R.drawable.ic_menu_agenda else android.R.drawable.ic_menu_edit)
+            setImageResource(if (album.isSmartAlbum) R.drawable.il_ic_grid else R.drawable.sf_pencil)
             setColorFilter(ColorTokens.systemBlue)
             layoutParams = LinearLayout.LayoutParams(
                 LayoutUtils.dpToPx(IconTokens.SIZE_MEDIUM, this@PhotosActivity),
@@ -1762,7 +1777,7 @@ class PhotosActivity : AppCompatActivity() {
             showTab(TAB_RECENTLY_DELETED)
             return
         }
-        Toast.makeText(this, "Opening album: ${album.name}", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Opening album: ${album.name}")
     }
 
     // ---- Search ------------------------------------------------------------
@@ -1792,7 +1807,7 @@ class PhotosActivity : AppCompatActivity() {
             // instead: 17pt, tracking 0.40pt. Line height stays unset because
             // android:lineSpacingMultiplier scales the font's own leading.
             setTextSize(TypedValue.COMPLEX_UNIT_SP, TypographyTokens.body.size)
-            letterSpacing = TypographyTokens.body.tracking / 1000f
+            letterSpacing = TypographyTokens.body.emTracking
             hint = "Search photos, people, places..."
             setHintTextColor(ColorTokens.secondaryLabel)
             setTextColor(ColorTokens.label)
@@ -1890,7 +1905,7 @@ class PhotosActivity : AppCompatActivity() {
         }
 
         val icon = ImageView(this).apply {
-            setImageResource(android.R.drawable.ic_menu_recent_history)
+            setImageResource(R.drawable.sf_clock)
             setColorFilter(ColorTokens.secondaryLabel)
             layoutParams = LinearLayout.LayoutParams(
                 LayoutUtils.dpToPx(IconTokens.SIZE_SMALL, this@PhotosActivity),
@@ -2053,9 +2068,8 @@ class PhotosActivity : AppCompatActivity() {
         if (viewerCurrentIndex < 0 || viewerCurrentIndex >= viewerPhotoUris.size) return
 
         val currentUri = viewerPhotoUris[viewerCurrentIndex]
-        viewerDialog?.dismiss()
+        AppleuxDialogs.dismiss(this)
 
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this).create()
         val root = FrameLayout(this).apply {
             setBackgroundColor(ColorTokens.black)
             layoutParams = ViewGroup.LayoutParams(
@@ -2096,7 +2110,6 @@ class PhotosActivity : AppCompatActivity() {
             // Single tap - toggle controls
             setOnClickListener {
                 isControlsVisible = !isControlsVisible
-                updateViewerControls()
             }
         }
         root.addView(photoView)
@@ -2164,7 +2177,7 @@ class PhotosActivity : AppCompatActivity() {
             )
             isClickable = true
             isFocusable = true
-            setOnClickListener { dialog.dismiss() }
+            setOnClickListener {}
             layoutParams = FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -2235,22 +2248,16 @@ class PhotosActivity : AppCompatActivity() {
             root.addView(nextButton)
         }
 
-        dialog.setView(root)
-        dialog.show()
-        viewerDialog = dialog
-    }
-
-    private fun updateViewerControls() {
-        // Toggle visibility of controls
-        viewerDialog?.window?.decorView?.let { decor ->
-            // In a full implementation, this would animate controls in/out
-        }
+        // The viewer used to keep the AlertDialog to hide it on rotation. The
+        // AppleUX dialog is an in-view child of the content host, so the Activity
+        // destroying its views already removes it — there is nothing to dismiss
+        // and nothing to retain, which is one fewer leaked window reference.
+        AppleuxDialogs.custom(this@PhotosActivity, root)
     }
 
     private fun showPhotoInfo(uri: Uri) {
         val info = extractPhotoInfo(uri)
 
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this).create()
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(ColorTokens.systemBackground)
@@ -2310,8 +2317,7 @@ class PhotosActivity : AppCompatActivity() {
             }
         }
 
-        dialog.setView(container)
-        dialog.show()
+        AppleuxDialogs.custom(this@PhotosActivity, container)
     }
 
     private fun extractPhotoInfo(uri: Uri): PhotoInfo {
@@ -2394,7 +2400,6 @@ class PhotosActivity : AppCompatActivity() {
         editHistory.clear()
         editHistoryIndex = -1
 
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this).create()
         val root = FrameLayout(this).apply {
             setBackgroundColor(ColorTokens.black)
             layoutParams = ViewGroup.LayoutParams(
@@ -2508,15 +2513,14 @@ class PhotosActivity : AppCompatActivity() {
 
         val doneButton = Button(this).apply {
             text = "Done"
-            setOnClickListener { saveEdits(uri); dialog.dismiss() }
+            setOnClickListener { saveEdits(uri);}
         }
         actionContainer.addView(doneButton)
 
         controlsContainer.addView(actionContainer)
 
         root.addView(controlsContainer)
-        dialog.setView(root)
-        dialog.show()
+        AppleuxDialogs.custom(this@PhotosActivity, root)
     }
 
     private fun buildAdjustmentSlider(name: String, initialValue: Float): View {
@@ -2580,13 +2584,12 @@ class PhotosActivity : AppCompatActivity() {
     private fun saveEdits(uri: Uri) {
         // Non-destructive: store edits separately from original
         // In a full implementation, this would apply edits and save to a new file
-        Toast.makeText(this, "Edits saved", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Edits saved")
     }
 
     // ---- Crop & Rotate -----------------------------------------------------
 
     private fun showCropDialog(uri: Uri) {
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this).create()
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(ColorTokens.systemBackground)
@@ -2611,7 +2614,7 @@ class PhotosActivity : AppCompatActivity() {
                 text = ratio
                 setOnClickListener {
                     applyCrop(uri, ratio)
-                    dialog.dismiss()
+
                 }
             }
             container.addView(button)
@@ -2621,7 +2624,7 @@ class PhotosActivity : AppCompatActivity() {
             text = "Rotate 90°"
             setOnClickListener {
                 rotateImage(uri, 90f)
-                dialog.dismiss()
+
             }
         }
         container.addView(rotateButton)
@@ -2630,18 +2633,17 @@ class PhotosActivity : AppCompatActivity() {
             text = "Flip Horizontal"
             setOnClickListener {
                 flipImage(uri, horizontal = true)
-                dialog.dismiss()
+
             }
         }
         container.addView(flipButton)
 
-        dialog.setView(container)
-        dialog.show()
+        AppleuxDialogs.custom(this@PhotosActivity, container)
     }
 
     private fun applyCrop(uri: Uri, aspectRatio: String) {
         // Simplified crop - would use Canvas in full implementation
-        Toast.makeText(this, "Crop: $aspectRatio", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Crop: $aspectRatio")
     }
 
     private fun rotateImage(uri: Uri, degrees: Float) {
@@ -2657,9 +2659,9 @@ class PhotosActivity : AppCompatActivity() {
             }
 
             // In full implementation, would update the original or create edited version
-            Toast.makeText(this, "Rotated ${degrees}°", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Rotated ${degrees}°")
         } catch (e: Exception) {
-            Toast.makeText(this, "Rotation failed", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Rotation failed")
         }
     }
 
@@ -2676,16 +2678,15 @@ class PhotosActivity : AppCompatActivity() {
                 flipped.compress(Bitmap.CompressFormat.JPEG, 95, out)
             }
 
-            Toast.makeText(this, "Flipped", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Flipped")
         } catch (e: Exception) {
-            Toast.makeText(this, "Flip failed", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Flip failed")
         }
     }
 
     // ---- Long Press Quick Actions ------------------------------------------
 
     private fun showQuickActions(uri: Uri, position: Int) {
-        val dialog = androidx.appcompat.app.AlertDialog.Builder(this).create()
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             setBackgroundColor(ColorTokens.systemBackground)
@@ -2712,14 +2713,13 @@ class PhotosActivity : AppCompatActivity() {
                 text = label
                 setOnClickListener {
                     action()
-                    dialog.dismiss()
+
                 }
             }
             container.addView(row)
         }
 
-        dialog.setView(container)
-        dialog.show()
+        AppleuxDialogs.custom(this@PhotosActivity, container)
     }
 
     // ---- Photo Cell View ---------------------------------------------------

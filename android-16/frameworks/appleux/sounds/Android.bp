@@ -27,7 +27,11 @@ android_library {
     manifest: "src/main/AndroidManifest.xml",
     sdk_version: "current",
     min_sdk_version: "36",
-    kotlin: {
-        enabled: true,
-    },
+    // NOTE: there is deliberately no `kotlin: { enabled: true }` block here.
+    // That property does not exist on android_library / android_app in this AOSP
+    // 16 tree — grep for "kotlin: {" across every Android.bp returns only these
+    // AppleUX files. Soong picks Kotlin up automatically from .kt entries in
+    // srcs; AOSP's own mixed Java/Kotlin modules (e.g. SystemUI-application)
+    // just list "src/**/*.kt" and set kotlincflags. Having written it anyway is
+    // how these files stayed unparseable: they had never been analysed.
 }

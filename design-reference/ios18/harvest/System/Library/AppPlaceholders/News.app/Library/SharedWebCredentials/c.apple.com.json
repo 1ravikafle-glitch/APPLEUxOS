@@ -1,0 +1,33 @@
+{
+  "activitycontinuation": {
+    "apps": [
+      "ZL6BUSYGB3.com.apple.news"
+    ]
+  },
+  "applinks" : {
+    "details" : [
+      {
+          "components": [
+              {
+                  "/": "news*",
+                  "?": { "v": "?*", "la": "?*", "lc": "?*", "a": "?*" },
+                  "comment": "Used by system app placeholder to match Chatterbox URLs"
+              }
+          ],
+          "appID" : "com.apple.news",
+          "alwaysEnabled": true
+      },
+      {
+          "components": [
+              {
+                  "/": "news*",
+                  "?": { "v": "?*", "la": "?*", "lc": "?*", "a": "?*" },
+                  "comment": "Used by regular app to match Chatterbox URLs"
+              }
+          ],
+          "appID": "ZL6BUSYGB3.com.apple.news",
+          "alwaysEnabled": true
+      }
+    ]
+  }
+}

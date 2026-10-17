@@ -26,3 +26,33 @@ osbuild/out/*.img
 *.idsig
 __pycache__/
 *.pyc
+node_modules/
+
+# tools/ is ignored (build tooling, large binaries), but the token-drift gate is
+# referenced from design-system/values/colors.xml and must be versioned or the
+# check it enforces cannot be re-run by anyone else.
+!tools/check-token-drift.py
+
+# android-16 is ignored because it is a huge AOSP checkout that is upstream-
+# managed by `repo`. But the AppleUX sources now live INSIDE that tree
+# (android-16/frameworks/appleux, android-16/hardware/xiaomi-appleux), because
+# Soong's module finder does not descend into symlinked directories and every
+# AppleUX module was invisible to the build until they were moved in.
+#
+# These negations keep the AppleUX sources under version control while leaving
+# the rest of the AOSP tree ignored. Without them the tracked appleux/ paths
+# become symlinks pointing at untracked files: the bytes would exist on disk and
+# in no commit at all.
+!android-16/frameworks/appleux/
+!android-16/frameworks/appleux/**
+!android-16/hardware/xiaomi-appleux/
+!android-16/hardware/xiaomi-appleux/**
+!android-16/frameworks/base/packages/SystemUI/res/layout/navigation_bar.xml
+!android-16/frameworks/base/packages/SystemUI/res/values/strings.xml
+!android-16/frameworks/base/packages/SystemUI/res/values/styles.xml
+!android-16/frameworks/base/packages/SystemUI/Android.bp
+!android-16/frameworks/base/packages/SystemUI/AndroidManifest.xml
+!android-16/device/xiaomi/rock/rro_overlay/**
+!android-16/device/xiaomi/rock/appleux.mk
+!android-16/device/xiaomi/rock/device.mk
+!android-16/device/xiaomi/rock/permissions/**

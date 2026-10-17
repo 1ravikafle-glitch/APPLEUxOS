@@ -83,7 +83,7 @@ class AppleuxText @JvmOverloads constructor(
      */
     fun applyTypography(spec: TypographyTokens.FontSpec) {
         setTextSize(TypedValue.COMPLEX_UNIT_SP, spec.size)
-        letterSpacing = spec.tracking / 1000f
+        letterSpacing = spec.emTracking
         typeface = typefaceForWeight(spec.fontWeight)
     }
 

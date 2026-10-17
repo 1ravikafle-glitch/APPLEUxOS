@@ -37,6 +37,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.appleux.design.components.AppleuxDialogs
 import com.appleux.design.components.AppleuxButton
 import com.appleux.design.components.AppleuxCard
 import com.appleux.design.components.AppleuxIconRegistry
@@ -55,6 +56,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.appleux.design.components.AppleuxToast
 
 /**
  * iOS 27 Contacts.
@@ -727,14 +729,14 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     private fun confirmMoveToTrash(e: Entry) {
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Delete ${e.name.ifEmpty { "Contact" }}?")
-            .setMessage(
-                "This contact moves to Recently Deleted, where it stays for 30 " +
-                    "days. Swipe right on it there to restore.")
-            .setPositiveButton("Delete") { _, _ -> moveContactToTrash(e) }
-            .setNegativeButton("Cancel", null)
-            .show()
+        AppleuxDialogs.alert(
+            this,
+            title = "Delete ${e.name.ifEmpty { "Contact" }}?",
+            message = "This contact moves to Recently Deleted, where it stays for 30 " +
+                    "days. Swipe right on it there to restore.",
+            confirmLabel = "Delete",
+            cancelLabel = "Cancel",
+        ) { moveContactToTrash(e) }
     }
 
     /**
@@ -1983,21 +1985,19 @@ class ContactsActivity : AppCompatActivity() {
     }
 
     private fun promptNewGroup() {
-        val input = EditText(this).apply { hint = "Group name" }
-        android.app.AlertDialog.Builder(this)
-            .setTitle("New Group")
-            .setView(input)
-            .setPositiveButton("Create") { _, _ ->
-                val name = input.text.toString().trim()
-                if (name.isNotEmpty()) {
-                    val groups = loadGroups()
-                    groups[name] = mutableListOf()
-                    saveGroups(groups)
-                    showGroups()
-                }
+        AppleuxDialogs.prompt(
+            this,
+            title = "New Group",
+            placeholder = "Group name",
+            confirmLabel = "Create",
+        ) { name ->
+            if (name.isNotEmpty()) {
+                val groups = loadGroups()
+                groups[name] = mutableListOf()
+                saveGroups(groups)
+                showGroups()
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+        }
     }
 
     private fun showGroupDetail(name: String) {
@@ -2071,19 +2071,18 @@ class ContactsActivity : AppCompatActivity() {
         val groups = loadGroups()
         val current = groups[name] ?: mutableListOf()
         val checked = BooleanArray(all.size) { current.contains(all[it].id) }
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Add to $name")
-            .setMultiChoiceItems(all.map { it.name }.toTypedArray(), checked) { _, which, isChecked ->
-                checked[which] = isChecked
-            }
-            .setPositiveButton("Done") { _, _ ->
+        AppleuxDialogs.chooseMany(
+            this,
+            items = all.map { it.name }.toTypedArray(),
+            checked = checked,
+            title = "Add to $name",
+            confirmLabel = "Done",
+        ) { checked ->
                 val ids = all.filterIndexed { i, _ -> checked[i] }.map { it.id }.toMutableList()
                 groups[name] = ids
                 saveGroups(groups)
                 showGroupDetail(name)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+        }
     }
 
     private fun removeMembersPicker(name: String) {
@@ -2094,20 +2093,19 @@ class ContactsActivity : AppCompatActivity() {
             return
         }
         val checked = BooleanArray(members.size) { false }
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Remove from $name")
-            .setMultiChoiceItems(members.map { it.name }.toTypedArray(), checked) { _, which, isChecked ->
-                checked[which] = isChecked
-            }
-            .setPositiveButton("Remove") { _, _ ->
+        AppleuxDialogs.chooseMany(
+            this,
+            items = members.map { it.name }.toTypedArray(),
+            checked = checked,
+            title = "Remove from $name",
+            confirmLabel = "Remove", destructive = true,
+        ) { checked ->
                 val groups = loadGroups()
                 val remaining = members.filterIndexed { i, _ -> !checked[i] }.map { it.id }.toMutableList()
                 groups[name] = remaining
                 saveGroups(groups)
                 showGroupDetail(name)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+        }
     }
 
     private fun assignContactToGroup(e: Entry) {
@@ -2117,20 +2115,19 @@ class ContactsActivity : AppCompatActivity() {
             return
         }
         val names = groups.keys.toTypedArray()
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Add ${e.name} to group")
-            .setItems(names) { _, which ->
-                val name = names[which]
+        AppleuxDialogs.choose(
+            this,
+            items = names,
+            title = "Add ${e.name} to group",
+            cancelLabel = "Cancel",
+        ) { index -> val name = names[index]
                 val ids = groups[name] ?: mutableListOf()
                 if (!ids.contains(e.id)) {
                     ids.add(e.id)
                     groups[name] = ids
                     saveGroups(groups)
                 }
-                showDetail(e)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
+                showDetail(e) }
     }
 
     private fun messageGroup(name: String) {
@@ -2699,7 +2696,7 @@ class ContactsActivity : AppCompatActivity() {
         return ContextCompat.getDrawable(this, res)?.mutate()?.apply { setTint(tint) }
     }
 
-    private fun toast(text: String) = Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    private fun toast(text: String) = AppleuxToast.show(this, text)
 
     private fun dp(value: Float): Int = LayoutUtils.dpToPx(value, this)
 

@@ -16,6 +16,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.appleux.sounds.AppleuxSoundPlayer
 import com.appleux.design.components.AppleuxGlass
 import com.appleux.design.components.AppleuxHaptics
 import com.appleux.design.components.AppleuxIconRegistry
@@ -25,6 +26,7 @@ import com.appleux.design.tokens.*
 import java.io.File
 import java.util.concurrent.Semaphore
 import java.util.concurrent.TimeUnit
+import com.appleux.design.components.AppleuxToast
 
 /**
  * iOS 27 Camera UI for AppleUX.
@@ -383,6 +385,9 @@ class CameraActivity : AppCompatActivity() {
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     animateShutterPress(false)
                     if (event.action == MotionEvent.ACTION_UP) {
+                        // The shutter sound belongs to the capture, not the
+                        // press: on ACTION_DOWN the photo has not happened yet.
+                        AppleuxSoundPlayer.shutter(this)
                         capturePhoto()
                     }
                     true
@@ -830,7 +835,7 @@ class CameraActivity : AppCompatActivity() {
                 throw RuntimeException("Time out waiting to lock camera opening.")
             }
             val id = getCameraId(isFrontCamera) ?: run {
-                Toast.makeText(this, "Camera not available", Toast.LENGTH_SHORT).show()
+                AppleuxToast.show(this, "Camera not available")
                 finish()
                 return
             }
@@ -1082,7 +1087,7 @@ class CameraActivity : AppCompatActivity() {
             if (grantResults.firstOrNull() == PackageManager.PERMISSION_GRANTED) {
                 setupCamera()
             } else {
-                Toast.makeText(this, "Camera permission required", Toast.LENGTH_SHORT).show()
+                AppleuxToast.show(this, "Camera permission required")
                 finish()
             }
         }

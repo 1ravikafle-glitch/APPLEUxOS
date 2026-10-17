@@ -17,8 +17,22 @@ android_library {
     manifest: "src/main/AndroidManifest.xml",
     sdk_version: "current",
     min_sdk_version: "36",
-    kotlin: {
-        enabled: true,
-    },
-    product_specific: true,
+    // NOTE: there is deliberately no `kotlin: { enabled: true }` block here.
+    // That property does not exist on android_library / android_app in this AOSP
+    // 16 tree — grep for "kotlin: {" across every Android.bp returns only these
+    // AppleUX files. Soong picks Kotlin up automatically from .kt entries in
+    // srcs; AOSP's own mixed Java/Kotlin modules (e.g. SystemUI-application)
+    // just list "src/**/*.kt" and set kotlincflags. Having written it anyway is
+    // how these files stayed unparseable: they had never been analysed.
+    // NOT product_specific. It was, and that broke the tree:
+    //
+    //   error: module "aosp_shared_system_image" variant "android_common":
+    //   includes non-generic modules:
+    //           "appleux-systemui-chrome" from "SystemUI-application",
+    //
+    // product_specific: true makes a module build only for a named product, but
+    // SystemUI-application is a GENERIC module (it has no product_ variant), so
+    // a product-only library cannot be linked into it. These are pure code+res
+    // libraries with nothing product-conditional in them, so generic is both
+    // correct and cheaper: no product_-prefixed duplicate is emitted.
 }

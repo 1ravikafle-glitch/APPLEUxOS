@@ -10,6 +10,7 @@ import com.appleux.design.components.AppleuxListItem
 import com.appleux.design.components.AppleuxToggle
 import com.appleux.settings.R
 import com.appleux.settings.detail.SettingsDetailActivity
+import com.appleux.design.components.AppleuxToast
 
 /**
  * Owned Display & Brightness page.
@@ -139,11 +140,7 @@ class DisplaySettingsActivity : SettingsDetailActivity() {
         runCatching {
             Settings.System.putInt(contentResolver, key, value)
         }.onFailure {
-            android.widget.Toast.makeText(
-                this,
-                R.string.write_settings_required,
-                android.widget.Toast.LENGTH_LONG
-            ).show()
+            AppleuxToast.show(this, getString(R.string.write_settings_required))
         }
     }
 

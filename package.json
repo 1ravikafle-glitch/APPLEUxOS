@@ -1,0 +1,25 @@
+{
+  "name": "osproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/1ravikafle-glitch/APPLEUxOS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/1ravikafle-glitch/APPLEUxOS/issues"
+  },
+  "homepage": "https://github.com/1ravikafle-glitch/APPLEUxOS#readme",
+  "devDependencies": {
+    "@oxlint/plugins": "^1.88.0",
+    "oxlint": "^1.88.0"
+  },
+  "type": "module"
+}

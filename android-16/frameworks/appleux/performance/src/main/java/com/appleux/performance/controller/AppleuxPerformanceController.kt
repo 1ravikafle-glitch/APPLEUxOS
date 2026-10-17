@@ -5,10 +5,12 @@ import android.hardware.display.DisplayManager
 import android.os.Handler
 import android.os.Looper
 import android.os.SystemClock
+import android.util.Log
 import android.view.Choreographer
 import com.appleux.device.rock.RockDisplayProfile
 import com.appleux.performance.monitor.FrameTimeMonitor
 import com.appleux.performance.monitor.PressureMonitor
+import com.appleux.performance.device.DeviceProfile
 import com.appleux.performance.quality.AppleuxQualityLevel
 import com.appleux.performance.quality.BottleneckState
 import java.lang.ref.WeakReference
@@ -34,6 +36,8 @@ import java.util.concurrent.TimeUnit
  * forces clocks, or reserves memory. The controller only observes and scales
  * its own rendering.
  */
+private const val TAG = "AppleuxPerfController"
+
 class AppleuxPerformanceController private constructor() {
 
     private val frameMonitor = FrameTimeMonitor()
@@ -53,6 +57,26 @@ class AppleuxPerformanceController private constructor() {
     private var currentBottleneck: BottleneckState = BottleneckState.NORMAL
     @Volatile
     private var currentQuality: AppleuxQualityLevel = AppleuxQualityLevel.QUALITY_100
+
+    /**
+     * The highest quality this device may ever be raised to.
+     *
+     * Set from [DeviceProfile] at start and never changed afterwards. The
+     * reactive jank policy may still lower quality below this, but recovery
+     * stops here instead of climbing back to Q100 on a machine that cannot
+     * afford Q100.
+     *
+     * AppleUX is engineered to a 2 GB floor. On that tier the ceiling is Q75,
+     * which is below the Q90 the blur gate requires, so the most expensive
+     * effect in the system is switched off by this clamp alone — no separate
+     * effect switch needed, and no way for a late recovery pass to switch it
+     * back on.
+     *
+     * The POCO M5 (4 GB) lifts the ceiling to Q100 and gets the full Liquid Glass
+     * stack with no retuning, which is the intended behaviour: 4 GB is strictly
+     * faster than 2 GB and nothing has to be changed to make it so.
+     */
+    private var qualityCeiling: AppleuxQualityLevel = AppleuxQualityLevel.QUALITY_100
     @Volatile
     private var currentRenderScale: Float = 1.0f
 
@@ -162,6 +186,21 @@ class AppleuxPerformanceController private constructor() {
             appContext?.let { RockDisplayProfile.currentRefreshRateHz(it) }
                 ?: FrameTimeMonitor.FrameBudget60_HZ
         )
+
+        // Size to the device BEFORE judging any frame. Previously currentQuality
+        // began at Q100 on every device, so a 3 GB phone paid for full effects
+        // on its first frames — the frames with the least headroom — and only
+        // discovered the cost by dropping them.
+        appContext?.let { ctx ->
+            val profile = DeviceProfile.of(ctx)
+            qualityCeiling = profile.baselineQuality()
+            if (currentQuality.level > qualityCeiling.level) {
+                currentQuality = qualityCeiling
+                currentRenderScale = qualityCeiling.scale
+            }
+            Log.i(TAG, "device tier applied: $profile ceiling=$qualityCeiling")
+        }
+        applyBlurGate(currentLevel)
 
         val now = SystemClock.elapsedRealtime()
         qualityChangeTimeMs = now
@@ -499,15 +538,19 @@ class AppleuxPerformanceController private constructor() {
     }
 
     private fun setQuality(newQuality: AppleuxQualityLevel, now: Long) {
-        if (newQuality == currentQuality) return
+        // The device ceiling outranks the jank policy on the way UP. Downward
+        // moves are always allowed: pressure is pressure.
+        val requested: AppleuxQualityLevel =
+            if (newQuality.level > qualityCeiling.level) qualityCeiling else newQuality
+        if (requested.level >= currentQuality.level) return
 
-        currentQuality = newQuality
-        currentRenderScale = newQuality.scale
+        currentQuality = requested
+        currentRenderScale = requested.scale
         qualityChangeTimeMs = now
 
         applyBlurGate(currentLevel)
         postToMain {
-            notifyQuality(newQuality)
+            notifyQuality(requested)
         }
     }
 

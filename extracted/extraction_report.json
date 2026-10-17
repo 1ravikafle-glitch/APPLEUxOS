@@ -1,0 +1,13 @@
+{
+  "total_car_files": 1637,
+  "files_with_valid_content": 450,
+  "total_extracted_assets": 16304,
+  "format_breakdown": {
+    "png": 984,
+    "jpeg": 247,
+    "pdf": 3300,
+    "svg": 11773,
+    "ttf": 0,
+    "otf": 0
+  }
+}

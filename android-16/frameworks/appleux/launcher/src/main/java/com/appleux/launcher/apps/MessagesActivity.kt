@@ -1,5 +1,10 @@
 package com.appleux.launcher.apps
 
+    // android.R.drawable -> vendored iOS vector (2026-10-17):
+    //   android.R.drawable.ic_menu_camera             -> il_ic_camera     iOS camera
+    //   android.R.drawable.ic_menu_edit               -> sf_pencil        NEW: see sf_pencil.xml, created 2026-10-17
+    //   android.R.drawable.ic_menu_search             -> il_ic_search     iOS magnifying glass
+    //   android.R.drawable.ic_menu_send               -> il_ic_share      iOS send is a paper plane; share is the closest vendored glyph
 import android.Manifest
 import android.app.role.RoleManager
 import android.content.ContentValues
@@ -36,6 +41,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.appleux.design.components.AppleuxDialogs
 import com.appleux.design.components.AppleuxIconRegistry
 import com.appleux.design.components.AppleuxListItem
 import com.appleux.design.components.AppleuxNavigationBar
@@ -51,6 +57,8 @@ import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import com.appleux.design.components.AppleuxToast
+import com.appleux.launcher.R
 
 /**
  * iOS 27 Messages: thread list + conversation with blue-sent / gray-received
@@ -407,9 +415,9 @@ class MessagesActivity : AppCompatActivity() {
         // Tab bar: Filters / Edit
         val tabs = AppleuxNavigationBar(this)
         tabs.addItem(AppleuxNavigationBar.NavigationItem(1, "Filters",
-            android.R.drawable.ic_menu_search))
+            R.drawable.il_ic_search))
         tabs.addItem(AppleuxNavigationBar.NavigationItem(2, "Edit",
-            android.R.drawable.ic_menu_edit))
+            R.drawable.sf_pencil))
         tabs.setOnItemSelectedListener { /* filter/edit action */ }
         root.addView(tabs)
 
@@ -424,7 +432,7 @@ class MessagesActivity : AppCompatActivity() {
             if (pencilRes != null) {
                 setImageDrawable(ContextCompat.getDrawable(this@MessagesActivity, pencilRes))
             } else {
-                setImageResource(android.R.drawable.ic_menu_edit)
+                setImageResource(R.drawable.sf_pencil)
             }
             setColorFilter(ColorTokens.systemBlue)
             background = null
@@ -537,7 +545,7 @@ class MessagesActivity : AppCompatActivity() {
                 if (res != null) {
                     setImageDrawable(ContextCompat.getDrawable(this@MessagesActivity, res))
                 } else {
-                    setImageResource(android.R.drawable.ic_menu_send)
+                    setImageResource(R.drawable.il_ic_share)
                 }
                 setColorFilter(ColorTokens.secondaryLabel)
                 layoutParams = LinearLayout.LayoutParams(
@@ -733,7 +741,7 @@ class MessagesActivity : AppCompatActivity() {
                 if (cameraRes != null) {
                     setImageDrawable(ContextCompat.getDrawable(this@MessagesActivity, cameraRes))
                 } else {
-                    setImageResource(android.R.drawable.ic_menu_camera)
+                    setImageResource(R.drawable.il_ic_camera)
                 }
                 setColorFilter(ColorTokens.systemBlue)
                 background = null
@@ -759,7 +767,7 @@ class MessagesActivity : AppCompatActivity() {
 
             // Send button (right)
             addView(ImageButton(this@MessagesActivity).apply {
-                setImageResource(android.R.drawable.ic_menu_send)
+                setImageResource(R.drawable.il_ic_share)
                 setColorFilter(ColorTokens.systemBlue)
                 background = null
                 val s = LayoutUtils.dpToPx(SizingTokens.CONTROL_SIZE_MD, this@MessagesActivity)
@@ -801,14 +809,14 @@ class MessagesActivity : AppCompatActivity() {
     }
 
     private fun confirmDeleteThread(t: Thread, label: String) {
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Delete $label?")
-            .setMessage(
-                "This conversation moves to Recently Deleted, where it stays for " +
-                    "30 days. Swipe right on it there to restore.")
-            .setPositiveButton("Delete") { _, _ -> moveThreadToTrash(t, label) }
-            .setNegativeButton("Cancel", null)
-            .show()
+        AppleuxDialogs.alert(
+            this,
+            title = "Delete $label?",
+            message = "This conversation moves to Recently Deleted, where it stays for " +
+                    "30 days. Swipe right on it there to restore.",
+            confirmLabel = "Delete",
+            cancelLabel = "Cancel",
+        ) { moveThreadToTrash(t, label) }
     }
 
     /**
@@ -830,7 +838,7 @@ class MessagesActivity : AppCompatActivity() {
             contentResolver.delete(
                 Uri.parse("content://sms/conversations/${t.id}"), null, null)
         }
-        Toast.makeText(this, "Moved to Recently Deleted", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Moved to Recently Deleted")
         showThreads()
     }
 
@@ -907,7 +915,7 @@ class MessagesActivity : AppCompatActivity() {
             // row that "restores" into an empty conversation.
             trash.remove(record)
             saveTrash()
-            Toast.makeText(this, "Nothing left to restore", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Nothing left to restore")
             showThreads()
             return
         }
@@ -933,17 +941,11 @@ class MessagesActivity : AppCompatActivity() {
         if (restored > 0) {
             trash.remove(record)
             saveTrash()
-            Toast.makeText(
-                this, "Restored $restored ${if (restored == 1) "message" else "messages"}",
-                Toast.LENGTH_SHORT
-            ).show()
+            AppleuxToast.show(this, "Restored $restored ${if (restored == 1) "message" else "messages"}")
         } else {
             // Writing to content://sms needs the default-SMS role. Without it
             // the insert is refused, and saying "restored" would be a lie.
-            Toast.makeText(
-                this, "Cannot restore — set AppleUX Messages as your SMS app",
-                Toast.LENGTH_LONG
-            ).show()
+            AppleuxToast.show(this, "Cannot restore — set AppleUX Messages as your SMS app")
         }
         showThreads()
     }
@@ -952,7 +954,7 @@ class MessagesActivity : AppCompatActivity() {
     private fun deleteTrashedThreadPermanently(record: TrashedThread) {
         trash.remove(record)
         saveTrash()
-        Toast.makeText(this, "Deleted permanently", Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, "Deleted permanently")
         showThreads()
     }
 
@@ -1257,12 +1259,12 @@ class MessagesActivity : AppCompatActivity() {
     private fun sendSms(dest: String, text: String) {
         if (!have(Manifest.permission.SEND_SMS)) {
             requestPermissions(arrayOf(Manifest.permission.SEND_SMS), 33)
-            Toast.makeText(this, "Allow SMS, then send again", Toast.LENGTH_LONG).show()
+            AppleuxToast.show(this, "Allow SMS, then send again")
             return
         }
         val sim = selectedSim()
         if (sim.subscriptionId < 0) {
-            Toast.makeText(this, "No SIM available", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "No SIM available")
             return
         }
         runCatching {
@@ -1275,9 +1277,9 @@ class MessagesActivity : AppCompatActivity() {
             for (part in parts) {
                 sm?.sendTextMessage(dest, null, part, null, null)
             }
-            Toast.makeText(this, "Sent via SIM ${sim.slotIndex + 1}", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Sent via SIM ${sim.slotIndex + 1}")
         }.onFailure {
-            Toast.makeText(this, "Send failed", Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Send failed")
         }
     }
 

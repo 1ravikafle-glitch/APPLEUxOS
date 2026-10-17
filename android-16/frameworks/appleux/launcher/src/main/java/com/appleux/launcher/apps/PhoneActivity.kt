@@ -29,6 +29,8 @@ import android.widget.ScrollView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.appleux.design.components.AppleuxDialogs
+import com.appleux.sounds.AppleuxSoundPlayer
 import com.appleux.design.components.AppleuxButton
 import com.appleux.design.components.AppleuxCard
 import com.appleux.design.components.AppleuxIconRegistry
@@ -58,6 +60,7 @@ import java.text.DateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.Executors
+import com.appleux.design.components.AppleuxToast
 
 /**
  * iOS 27 Phone — five-tab Phone app.
@@ -1039,17 +1042,16 @@ class PhoneActivity : AppCompatActivity() {
                 .onFailure { toast("Cannot place call") }
             return
         }
-        val dialog = android.app.AlertDialog.Builder(this)
-            .setTitle("Call with")
-            .setItems(sims.map { "SIM ${it.slotIndex + 1} (${it.carrierName})" }.toTypedArray()) { _, which ->
-                val sim = sims[which]
-                saveSelectedSim(sim.subscriptionId)
-                runCatching { startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))) }
-                    .onFailure { toast("Cannot place call") }
-            }
-            .setNegativeButton("Cancel", null)
-            .create()
-        dialog.show()
+        AppleuxDialogs.choose(
+            this,
+            items = sims.map { "SIM ${it.slotIndex + 1} (${it.carrierName})" }.toTypedArray(),
+            title = "Call with",
+        ) { index ->
+            val sim = sims[index]
+            saveSelectedSim(sim.subscriptionId)
+            runCatching { startActivity(Intent(Intent.ACTION_CALL, Uri.parse("tel:$number"))) }
+                .onFailure { toast("Cannot place call") }
+        }
     }
 
     // ---- Default dialer / auto record --------------------------------------
@@ -1170,7 +1172,7 @@ class PhoneActivity : AppCompatActivity() {
     }
 
     private fun toast(text: String) =
-        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+        AppleuxToast.show(this, text)
 
     // ---- Active call screen (iOS 27) ----------------------------------------
 
@@ -1622,6 +1624,9 @@ class PhoneActivity : AppCompatActivity() {
                     setChecked(true)
                     setOnCheckedChangeListener { enabled ->
                         // Toggle SIM state (would use SubscriptionManager API on real device)
+                        // Confirmed, not bound: this listener only fires from a
+                        // tap, so setChecked(true) above stays silent.
+                        AppleuxSoundPlayer.confirm(this@PhoneActivity)
                         toast("SIM ${sim.slotIndex + 1} ${if (enabled) "enabled" else "disabled"}")
                     }
                 })
@@ -1643,18 +1648,18 @@ class PhoneActivity : AppCompatActivity() {
     /** Dialog to choose the default SIM for calls. */
     private fun showDefaultSimDialog() {
         val options = arrayOf("Always Ask") + activeSims().map { "SIM ${it.slotIndex + 1}" }.toTypedArray()
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Default SIM for Calls")
-            .setItems(options) { _, which ->
-                if (which == 0) {
+        AppleuxDialogs.choose(
+            this,
+            items = options,
+            title = "Default SIM for Calls",
+            cancelLabel = "Cancel",
+        ) { index -> if (index == 0) {
                     simPrefs.edit().remove(KEY_CALL_DEFAULT_SUB).apply()
                 } else {
-                    val sim = activeSims().getOrNull(which - 1)
+                    val sim = activeSims().getOrNull(index - 1)
                     if (sim != null) saveSelectedSim(sim.subscriptionId)
                 }
-                showTab(Tab.VOICEMAIL)
-            }
-            .show()
+                showTab(Tab.VOICEMAIL) }
     }
 
     // ---- Call management ----------------------------------------------------
@@ -1811,13 +1816,13 @@ class PhoneActivity : AppCompatActivity() {
     /** Per-contact ringtone: stored locally, chosen from system options. */
     private fun pickRingtone(contactId: Long) {
         val options = arrayOf("Default", "Ringtone 1", "Ringtone 2")
-        android.app.AlertDialog.Builder(this)
-            .setTitle("Ringtone")
-            .setItems(options) { _, which ->
-                prefs.edit().putString("ringtone_$contactId", options[which]).apply()
-                toast("Ringtone set: ${options[which]}")
-            }
-            .show()
+        AppleuxDialogs.choose(
+            this,
+            items = options,
+            title = "Ringtone",
+            cancelLabel = "Cancel",
+        ) { index -> prefs.edit().putString("ringtone_$contactId", options[index]).apply()
+                toast("Ringtone set: ${options[index]}") }
     }
 
     /** Resolve a contact name from a phone number via PhoneLookup. */

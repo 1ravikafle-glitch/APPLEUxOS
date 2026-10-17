@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import com.appleux.design.components.AppleuxDialogs
 import com.appleux.design.components.AppleuxSuperellipse
 import com.appleux.design.components.AppleuxComponentsWiring
 import com.appleux.design.runtime.AppleuxRuntimeConfig
@@ -21,6 +22,8 @@ import com.appleux.performance.controller.AdaptiveRenderPolicy
 import com.appleux.performance.controller.AppleuxPerformanceController
 import com.appleux.performance.controller.MonitoringLevel
 import com.appleux.performance.quality.AppleuxQualityLevel
+import com.appleux.design.components.AppleuxToast
+import com.appleux.launcher.R
 
 class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.PerformanceListener {
 
@@ -149,24 +152,23 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             showWidgetPicker()
             return
         }
-        android.app.AlertDialog.Builder(this)
-            .setTitle(R.string.widget_gallery_title)
-            .setItems(placed.map { widgetTitleFor(it.first) }.toTypedArray()) { dialog, which ->
-                removeWidget(placed[which].second)
-                dialog.dismiss()
-            }
-            .setNeutralButton(R.string.widget_add) { _, _ -> showWidgetPicker() }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        AppleuxDialogs.choose(
+            this,
+            items = placed.map { widgetTitleFor(it.first) }.toTypedArray(),
+            title = getString(R.string.widget_gallery_title),
+            cancelLabel = getString(android.R.string.cancel),
+        ) { index -> removeWidget(placed[index].second)
+}
     }
 
     private fun showWidgetPicker() {
         val titles = widgetDefs.map { getString(it.titleRes) }.toTypedArray()
-        android.app.AlertDialog.Builder(this)
-            .setTitle(R.string.widget_gallery_title)
-            .setItems(titles) { _, which -> requestBindWidget(widgetDefs[which]) }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        AppleuxDialogs.choose(
+            this,
+            items = titles,
+            title = getString(R.string.widget_gallery_title),
+            cancelLabel = getString(android.R.string.cancel),
+        ) { index -> requestBindWidget(widgetDefs[index]) }
     }
 
     private fun widgetTitleFor(providerClassName: String): String =
@@ -176,7 +178,7 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
 
     private fun requestBindWidget(def: WidgetDef) {
         if (loadWidgetSpecs().size >= 3) {
-            android.widget.Toast.makeText(this, "Widget limit reached", android.widget.Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Widget limit reached")
             return
         }
         val provider = android.content.ComponentName(packageName, packageName + def.providerClass)
@@ -744,20 +746,22 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             loadApps()
         }
 
-        android.app.AlertDialog.Builder(this)
-            .setTitle(current?.label ?: getString(R.string.dock_menu_title))
-            .setItems(options.toTypedArray()) { _, which -> actions[which]() }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        AppleuxDialogs.choose(
+            this,
+            items = options.toTypedArray(),
+            title = current?.label ?: getString(R.string.dock_menu_title),
+            cancelLabel = getString(android.R.string.cancel),
+        ) { index -> actions[index]() }
     }
 
     private fun showDockAppPicker(slot: Int, all: List<AppIconItem>) {
         val labels = all.map { it.label }.toTypedArray()
-        android.app.AlertDialog.Builder(this)
-            .setTitle(R.string.dock_picker_title)
-            .setItems(labels) { _, which -> setDockSlot(slot, all[which]) }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+        AppleuxDialogs.choose(
+            this,
+            items = labels,
+            title = getString(R.string.dock_picker_title),
+            cancelLabel = getString(android.R.string.cancel),
+        ) { index -> setDockSlot(slot, all[index]) }
     }
 
     private fun setDockSlot(slot: Int, app: AppIconItem?) {
@@ -845,19 +849,18 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             getString(R.string.app_menu_remove),
             getString(R.string.app_menu_widgets)
         )
-        android.app.AlertDialog.Builder(this)
-            .setTitle(item.label)
-            .setItems(labels) { _, which ->
-                when (which) {
+        AppleuxDialogs.choose(
+            this,
+            items = labels,
+            title = item.label,
+            cancelLabel = getString(android.R.string.cancel),
+        ) { index -> when (index) {
                     0 -> addToDock(item)
                     1 -> addToFolder(item)
                     2 -> openAppInfo(item)
                     3 -> showRemoveDialog(item)
                     else -> openWidgetGallery()
-                }
-            }
-            .setNegativeButton(android.R.string.cancel, null)
-            .show()
+                } }
     }
 
     private fun openAppInfo(item: AppIconItem) {
@@ -870,11 +873,7 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
                 }
             )
         }.onFailure {
-            android.widget.Toast.makeText(
-                this,
-                getString(R.string.app_info_unavailable, item.label),
-                android.widget.Toast.LENGTH_SHORT
-            ).show()
+            AppleuxToast.show(this, getString(R.string.app_info_unavailable, item.label))
         }
     }
 
@@ -899,11 +898,7 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
                 )
             )
         }.onFailure {
-            android.widget.Toast.makeText(
-                this,
-                getString(R.string.app_remove_unavailable, item.label),
-                android.widget.Toast.LENGTH_SHORT
-            ).show()
+            AppleuxToast.show(this, getString(R.string.app_remove_unavailable, item.label))
         }
     }
 
@@ -947,19 +942,19 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             appLibraryView.cachedApps().firstOrNull { it.label == label }?.let { launchApp(it) }
         }
         view.setOnTitleLongClickListener {
-            val input = android.widget.EditText(this).apply { setText(name); selectAll() }
-            android.app.AlertDialog.Builder(this)
-                .setTitle("Rename Folder")
-                .setView(input)
-                .setPositiveButton(android.R.string.ok) { _, _ ->
-                    val renamed = input.text.toString().trim().ifEmpty { name }
-                    val updated = folders.mapValues { (_, v) -> if (v == name) renamed else v }
-                    folderPrefs().edit().putStringSet("folders",
-                        updated.map { "${it.key}|${it.value}" }.toSet()).apply()
-                    loadApps()
-                }
-                .setNegativeButton(android.R.string.cancel, null)
-                .show()
+            AppleuxDialogs.prompt(
+                this,
+                title = "Rename Folder",
+                initialText = name,
+                confirmLabel = getString(android.R.string.ok),
+                cancelLabel = getString(android.R.string.cancel),
+            ) { typed ->
+                val renamed = typed.ifEmpty { name }
+                val updated = folders.mapValues { (_, v) -> if (v == name) renamed else v }
+                folderPrefs().edit().putStringSet("folders",
+                    updated.map { "${it.key}|${it.value}" }.toSet()).apply()
+                loadApps()
+            }
         }
         com.appleux.design.components.AppleuxComponentsWiring.detailSheet(this, view).present()
     }
@@ -969,7 +964,7 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             rememberLaunch(item.packageName)
             startActivity(item.intent.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK))
         } catch (e: android.content.ActivityNotFoundException) {
-            android.widget.Toast.makeText(this, "Cannot open ${item.label}", android.widget.Toast.LENGTH_SHORT).show()
+            AppleuxToast.show(this, "Cannot open ${item.label}")
         }
     }
 

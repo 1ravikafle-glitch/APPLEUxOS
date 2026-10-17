@@ -1,0 +1,29 @@
+{
+  "activitycontinuation": {
+    "apps": [
+      "ZL6BUSYGB3.com.apple.stocks"
+    ]
+  },
+  "applinks" : {
+    "apps" : [
+    ],
+    "details" : [
+      {
+        "comment" : "Used for system app placeholder",
+        "paths" : [
+          "NOT /A??????????????????????", "NOT /articles/A??????????????????????", "*"
+        ],
+        "appID" : "com.apple.stocks",
+        "alwaysEnabled": true
+      },
+      {
+          "comment" : "Used for regular app",
+          "appID": "ZL6BUSYGB3.com.apple.stocks",
+          "paths": [
+              "*"
+          ],
+          "alwaysEnabled": true
+      }
+    ]
+  }
+}

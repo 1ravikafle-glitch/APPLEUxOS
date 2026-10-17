@@ -1,0 +1,84 @@
+{
+  "screen": "notification-center",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "nc-status",
+      "type": "statusBar",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.06
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "nc-clock",
+      "type": "text",
+      "frame": {
+        "x": 0.15,
+        "y": 0.085,
+        "w": 0.7,
+        "h": 0.1
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "nc-group-1",
+      "type": "notificationGroup",
+      "frame": {
+        "x": 0.04,
+        "y": 0.25,
+        "w": 0.92,
+        "h": 0.12
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "nc-group-2",
+      "type": "notificationGroup",
+      "frame": {
+        "x": 0.04,
+        "y": 0.39,
+        "w": 0.92,
+        "h": 0.12
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "nc-clear-button",
+      "type": "button",
+      "frame": {
+        "x": 0.78,
+        "y": 0.2,
+        "w": 0.18,
+        "h": 0.035
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "top-centre",
+      "action": "swipe-down",
+      "opens": "notification-center"
+    }
+  ],
+  "notes": "Notifications render as glass cards; stacking behaviour is not numerically specified here."
+}

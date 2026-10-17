@@ -18,15 +18,24 @@ android_app {
     srcs: ["src/main/java/**/*.kt"],
     manifest: "src/main/AndroidManifest.xml",
     resource_dirs: ["src/main/res"],
-    kotlin: {
-        enabled: true,
-    },
+    // NOTE: there is deliberately no `kotlin: { enabled: true }` block here.
+    // That property does not exist on android_library / android_app in this AOSP
+    // 16 tree — grep for "kotlin: {" across every Android.bp returns only these
+    // AppleUX files. Soong picks Kotlin up automatically from .kt entries in
+    // srcs; AOSP's own mixed Java/Kotlin modules (e.g. SystemUI-application)
+    // just list "src/**/*.kt" and set kotlincflags. Having written it anyway is
+    // how these files stayed unparseable: they had never been analysed.
     sdk_version: "current",
     min_sdk_version: "36",
     static_libs: [
         "androidx_runtime",
         "appleux-design-system",
         "appleux-performance-lib",
+        // AppleUXSounds is deliberately NOT here, though it was here until
+        // 2026-10-17. Settings has no playback call site, and static_libs
+        // packages the library's entire res/raw tree into the APK — 7.7 MB of
+        // audio in an app that never plays a sound. Launcher is the only module
+        // that links it, for the camera shutter and the toggle confirm.
     ],
     privileged: true,
     required: ["appleux-design-system", "appleux-performance-lib"],

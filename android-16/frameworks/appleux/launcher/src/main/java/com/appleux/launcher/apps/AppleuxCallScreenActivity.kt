@@ -1,5 +1,7 @@
 package com.appleux.launcher.apps
 
+    // android.R.drawable -> vendored iOS vector (2026-10-17):
+    //   android.R.drawable.ic_menu_add                -> sf_add           iOS plus
 import android.os.Bundle
 import android.telecom.Call
 import android.telecom.CallAudioState
@@ -12,6 +14,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.appleux.design.tokens.ColorTokens
+import com.appleux.design.components.AppleuxToast
+import com.appleux.launcher.R
 
 /**
  * iOS in-call screen (Apple design rules: press-down feedback, large
@@ -119,8 +123,7 @@ class AppleuxCallScreenActivity : AppCompatActivity() {
             text = "Remind Me"; isAllCaps = false; textSize = 15f
             setTextColor(ColorTokens.systemBlue)
             setOnClickListener {
-                android.widget.Toast.makeText(this@AppleuxCallScreenActivity,
-                    "Reminder set for 1 hour", android.widget.Toast.LENGTH_SHORT).show()
+                AppleuxToast.show(this@AppleuxCallScreenActivity, "Reminder set for 1 hour")
             }
         }
         val msg = Button(this, null, android.R.attr.borderlessButtonStyle).apply {
@@ -245,7 +248,7 @@ class AppleuxCallScreenActivity : AppCompatActivity() {
                     .getDrawableRes(icon ?: "system_grid")
                     ?: com.appleux.design.components.AppleuxIconRegistry
                         .getDrawableRes("system_add")
-                    ?: android.R.drawable.ic_menu_add
+                    ?: R.drawable.sf_add
                 setImageDrawable(androidx.core.content.ContextCompat.getDrawable(
                     this@AppleuxCallScreenActivity, res))
             }

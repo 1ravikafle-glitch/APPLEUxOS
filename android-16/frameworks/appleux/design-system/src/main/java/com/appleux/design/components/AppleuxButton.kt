@@ -138,7 +138,7 @@ class AppleuxButton @JvmOverloads constructor(
         if (textPaint.typeface == null) {
             textPaint.typeface = AppleuxText.typefaceForWeight(fontSpec.fontWeight)
         }
-        textPaint.letterSpacing = fontSpec.tracking / 1000f
+        textPaint.letterSpacing = fontSpec.emTracking
 
         val textWidth = textPaint.measureText(buttonText)
         val textX = (width - textWidth) / 2f

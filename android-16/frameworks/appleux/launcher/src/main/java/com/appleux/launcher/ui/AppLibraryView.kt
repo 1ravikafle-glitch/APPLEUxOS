@@ -15,6 +15,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.appleux.design.components.AppleuxDialogs
 import com.appleux.design.components.AppleuxDisplayInsets
 import com.appleux.design.components.AppleuxText
 import com.appleux.design.tokens.ColorTokens
@@ -22,13 +23,100 @@ import com.appleux.launcher.LauncherTokens
 import com.appleux.launcher.R
 import com.appleux.performance.quality.AppleuxQualityLevel
 
+/**
+ * One launchable app.
+ *
+ * ## Why `icon` is lazy, and why that matters on this device
+ *
+ * `icon` used to be a constructor parameter eagerly filled with
+ * `pm.getApplicationIcon(appInfo.packageName)`. That call is a binder
+ * round-trip into the other package's resource loader AND it materialises a
+ * full-resolution Drawable — commonly a 192x192 (or larger) adaptive-icon
+ * bitmap.
+ *
+ * It was paid for EVERY installed launcher activity at cold start, on the main
+ * thread, inside `onCreate`, for the ~50 apps that are never on screen. On a
+ * Helio G99 with a 3 GB budget that is the single largest avoidable cost in the
+ * launcher, and it holds N decoded icon bitmaps alive for the process lifetime.
+ *
+ * It is now resolved on demand through [LauncherIconCache], keyed by package,
+ * with a small LRU bound. Only what is actually drawn is ever loaded, and the
+ * working set is capped.
+ *
+ * Note it is NOT in equals/hashCode/copy, which is correct: two AppIconItems for
+ * the same package are the same app regardless of which icon has been resolved.
+ */
 data class AppIconItem(
     val label: String,
-    val icon: Drawable?,
     val intent: Intent,
     val packageName: String,
     val isSystemApp: Boolean = false
-)
+) {
+    /**
+     * The app's own launcher icon, resolved on first use.
+     *
+     * Nullable because the vector in [AppleuxIconPack] or the squircle is used
+     * whenever it exists; this is the fallback path for apps with neither.
+     */
+    val icon: Drawable? by lazy { LauncherIconCache.load(packageName) }
+}
+
+/**
+ * Bounded, lazily-populated launcher-icon cache.
+ *
+ * ## Sizing
+ *
+ * 48 entries at 3 GB. The home grid shows at most
+ * `LauncherTokens.GRID_COLUMNS * GRID_ROWS` icons plus 4 dock slots, and the
+ * App Library shows a screen at a time, so anything past a couple of screens
+ * worth is speculative. LruCache evicts least-recently-used on overflow, which
+ * is the right policy here because paging is a sweep: the icons being dropped
+ * are the ones furthest from where the user just was.
+ *
+ * The cache is static because it must outlive any single view, and because a
+ * cold start should not have to rebuild it.
+ */
+private object LauncherIconCache {
+    private const val MAX_ENTRIES = 48
+
+    private val cache = object : android.util.LruCache<String, Drawable>(MAX_ENTRIES) {
+        override fun entryRemoved(
+            evicted: Boolean,
+            key: String,
+            old: Drawable?,
+            new: Drawable?,
+        ) {
+            // Drawables can hold a Bitmap. Dropping the reference is enough for
+            // GC; calling recycle() would be wrong here because a Drawable that
+            // is still bound to a live ImageView shares the same Bitmap.
+            super.entryRemoved(evicted, key, old, new)
+        }
+    }
+
+    /** Not cached: a missing icon stays missing until the package changes. */
+    private val misses = mutableSetOf<String>()
+
+    @Synchronized
+    fun load(packageName: String): Drawable? {
+        cache.get(packageName)?.let { return it }
+        if (packageName in misses) return null
+        val d = runCatching {
+            val ctx = appContext ?: return null
+            ctx.packageManager.getApplicationIcon(packageName)
+        }.getOrNull()
+        if (d == null) misses += packageName else cache.put(packageName, d)
+        return d
+    }
+
+    /** Set once by the launcher so a data-class lazy can reach a Context. */
+    var appContext: Context? = null
+
+    /** Called when the package set changes (install/uninstall). */
+    fun invalidate() {
+        cache.evictAll()
+        misses.clear()
+    }
+}
 
 fun AppleuxQualityLevel.shouldSimplifyIcons(): Boolean = this.level <= 3
 
@@ -111,17 +199,24 @@ class AppLibraryView @JvmOverloads constructor(
 
     fun loadApps(): List<AppIconItem> {
         val pm = context.packageManager
+        // Populated once so the per-app lazy in AppIconItem.icon has a Context.
+        LauncherIconCache.appContext = context.applicationContext
+
         val apps = pm.queryIntentActivities(Intent(Intent.ACTION_MAIN).apply {
             addCategory(Intent.CATEGORY_LAUNCHER)
         }, 0).mapNotNull { info ->
             val ai = info.activityInfo ?: return@mapNotNull null
-            val appInfo = pm.getApplicationInfo(ai.packageName, 0)
+            // NOT pm.getApplicationInfo(ai.packageName, 0): ActivityInfo already
+            // carries its own ApplicationInfo, fully populated, because
+            // queryIntentActivities filled it. Calling getApplicationInfo per
+            // app was one extra binder round-trip per installed app on the main
+            // thread at cold start, to obtain a value already in hand.
+            val appInfo = ai.applicationInfo
             AppIconItem(
+                // Still a binder call per app (the label lives in the other
+                // package's resources), but it is a small String rather than a
+                // decoded icon, and sorting by label needs it eagerly.
                 label = pm.getApplicationLabel(appInfo).toString(),
-                // Raw artwork here; AppIconView.bind resolves the iOS pack
-                // (AppleuxIconPack) per package and rasterizes everything to
-                // the squircle, so there is exactly one icon pipeline.
-                icon = pm.getApplicationIcon(appInfo.packageName),
                 intent = Intent(Intent.ACTION_MAIN).apply {
                     setClassName(ai.packageName, ai.name)
                     addCategory(Intent.CATEGORY_LAUNCHER)
@@ -193,12 +288,11 @@ class AppLibraryView @JvmOverloads constructor(
     }
 
     private fun openFolder(folder: Folder) {
-        val dlg = android.app.AlertDialog.Builder(context)
-            .setTitle(folder.name)
-            .setNegativeButton(android.R.string.cancel, null)
-            .create()
-        dlg.setView(wrapFolderGrid(folder))
-        dlg.show()
+        AppleuxDialogs.custom(
+            context,
+            content = wrapFolderGrid(folder),
+            title = folder.name,
+        )
     }
 
     private fun wrapFolderGrid(folder: Folder): View {

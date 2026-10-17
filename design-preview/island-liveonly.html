@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<!-- AppleUX Dynamic Island / notch preview at exact POCO M5 specs.
+     1080x2408, cutout 100x76 top-center, notch 0.502w x 29dp (NotchTokens).
+     ?state=idle|live|expanded & ?hw=1 (hardware waterdrop overlay, proves
+     the notch fully covers the lens). ?wall=tan|dark -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AppleUX Island @POCO M5</title>
+<style>
+  * { margin:0; box-sizing:border-box; }
+  html,body { width:1080px; height:2408px; overflow:hidden; background:#111; }
+  .stage { position:relative; width:1080px; height:2408px; overflow:hidden;
+    border-radius:106px;
+    background:linear-gradient(180deg,#e8b06a,#d89a55 40%,#3a2c22); }
+  .stage.dark { background:linear-gradient(180deg,#000,#0a0f1e 60%,#101828); }
+  /* measured hardware waterdrop: 100x76 top-center (toggle ?hw=1) */
+  .hw { position:absolute; top:0; left:490px; width:100px; height:76px;
+    background:#000; border-radius:0 0 50px 50px; display:none; z-index:5; }
+  body.hw .hw { display:block; }
+  body.hw .hw::after { content:""; position:absolute; inset:18px 32px;
+    background:#0a1628; border-radius:50%;
+    box-shadow:inset 0 0 8px #1e3a5f, 0 0 3px #000; }
+  /* emulated notch: 0.502*1080=542px x 29dp*2.75=80px, 10dp=27px bottom radius */
+  .notch { position:absolute; top:0; left:269px; width:542px; height:80px;
+    background:#000; border-radius:0 0 27px 27px; z-index:6; }
+  .dot { position:absolute; top:37px; left:596px; width:17px; height:17px;
+    background:#3ddc84; border-radius:50%; z-index:7; display:none;
+    box-shadow:0 0 12px #3ddc84; }
+  body.live .dot { display:block; }
+  /* status row: time left, icons right (iPhone 11, no carrier on home) */
+  .status { position:absolute; top:0; left:0; width:1080px; height:110px;
+    color:#fff; font:600 44px -apple-system,"Helvetica Neue",Arial,sans-serif;
+    z-index:4; }
+  .status .t { position:absolute; left:70px; top:22px; }
+  .status .r { position:absolute; right:70px; top:30px; font-size:38px;
+    letter-spacing:6px; }
+  /* expanded pill: 0.9w, 34dp radius, glass rim */
+  .pill { position:absolute; top:22px; left:54px; width:972px; min-height:412px;
+    background:#000; border-radius:93px; z-index:8; display:none;
+    border:2px solid rgba(255,255,255,.22);
+    box-shadow:inset 0 2px 2px rgba(255,255,255,.35), 0 18px 50px rgba(0,0,0,.6);
+    color:#fff; text-align:center; padding:110px 60px 60px;
+    font:500 52px -apple-system,"Helvetica Neue",Arial,sans-serif; }
+  body.expanded .pill { display:block; }
+  body.expanded .notch { display:none; }
+  .pill .g { font-size:96px; display:block; margin-bottom:20px; }
+  .pill small { display:block; color:#86868b; font-size:38px; margin-top:14px; }
+  .cap { position:absolute; bottom:26px; width:1080px; text-align:center;
+    color:#fff; font:600 30px -apple-system,Arial,sans-serif; z-index:9;
+    text-shadow:0 2px 8px #000; }
+  #toolbar { position:absolute; top:130px; right:14px; z-index:50; display:flex;
+    gap:10px; }
+  #toolbar a { font:600 22px -apple-system,Arial,sans-serif; color:#fff;
+    background:rgba(0,122,255,.9); border-radius:12px; padding:10px 16px;
+    text-decoration:none; }
+</style>
+</head>
+<body class="live">
+<div class="stage" id="stage">
+  <div class="hw"></div>
+  <div class="notch"></div>
+  <div class="dot"></div>
+  <div class="status"><span class="t">3:31</span><span class="r">&#9679;&#9679;&#9679;</span></div>
+  <div class="pill"><span class="g">&#9835;</span>Blinding Lights &mdash; The Weeknd<small>Now Playing</small></div>
+  <div id="toolbar">
+    <a href="?state=idle">idle</a><a href="?state=live">live</a>
+    <a href="?state=expanded">expanded</a><a href="?hw=1">hw</a>
+  </div>
+  <div class="cap" id="cap"></div>
+</div>
+<script>
+(() => {
+  const q = new URLSearchParams((location.hash || "#").slice(1));
+  const st = q.get("state") || "idle";
+  document.body.classList.add(st);
+  if (q.get("hw") === "1") document.body.classList.add("hw");
+  if (q.get("wall") === "dark") document.getElementById("stage").classList.add("dark");
+  const dims = { idle: "notch 542x80 r27 — idle",
+    live: "notch + green live dot (offset right of lens)",
+    expanded: "pill 972 wide, r93, glass rim" };
+  document.getElementById("cap").textContent =
+    (dims[st] || st) + (q.get("hw") === "1" ? " + HW waterdrop overlay" : "");
+})();
+</script>
+</body>
+</html>

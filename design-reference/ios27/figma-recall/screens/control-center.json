@@ -1,0 +1,236 @@
+{
+  "screen": "control-center",
+  "referenceScreenshot": "https://support.apple.com/guide/iphone/use-and-customize-control-center-iph59095ec58/27/ios/27",
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "cc-connectivity-cluster",
+      "type": "group",
+      "frame": {
+        "x": 0.04,
+        "y": 0.075,
+        "w": 0.44,
+        "h": 0.17
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true,
+      "children": [
+        {
+          "id": "cc-airplane",
+          "type": "control",
+          "shape": "circle",
+          "centre": {
+            "x": 0.14,
+            "y": 0.108
+          },
+          "diameterPt": null,
+          "label": null,
+          "activeColour": null,
+          "icon": "sf.airplane",
+          "basis": "claude-estimate",
+          "inferred": true
+        },
+        {
+          "id": "cc-cellular",
+          "type": "control",
+          "shape": "circle",
+          "centre": {
+            "x": 0.38,
+            "y": 0.108
+          },
+          "diameterPt": null,
+          "label": null,
+          "activeColour": null,
+          "icon": "sf.antenna.radiowaves.left.and.right",
+          "basis": "claude-estimate",
+          "inferred": true
+        },
+        {
+          "id": "cc-wifi",
+          "type": "control",
+          "shape": "circle",
+          "centre": {
+            "x": 0.14,
+            "y": 0.195
+          },
+          "diameterPt": null,
+          "label": null,
+          "activeColour": null,
+          "icon": "sf.wifi",
+          "basis": "claude-estimate",
+          "inferred": true
+        },
+        {
+          "id": "cc-bluetooth",
+          "type": "control",
+          "shape": "circle",
+          "centre": {
+            "x": 0.38,
+            "y": 0.195
+          },
+          "diameterPt": null,
+          "label": null,
+          "activeColour": null,
+          "icon": "sf.bluetooth",
+          "basis": "claude-estimate",
+          "inferred": true
+        }
+      ]
+    },
+    {
+      "id": "cc-media-player",
+      "type": "glassCard",
+      "frame": {
+        "x": 0.52,
+        "y": 0.075,
+        "w": 0.44,
+        "h": 0.17
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-focus",
+      "type": "glassCard",
+      "frame": {
+        "x": 0.04,
+        "y": 0.26,
+        "w": 0.44,
+        "h": 0.075
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-orientation-lock",
+      "type": "control",
+      "shape": "circle",
+      "centre": {
+        "x": 0.57,
+        "y": 0.285
+      },
+      "diameterPt": null,
+      "label": null,
+      "activeColour": null,
+      "icon": "sf.lock.rotation",
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-screen-mirroring",
+      "type": "control",
+      "shape": "circle",
+      "centre": {
+        "x": 0.8,
+        "y": 0.285
+      },
+      "diameterPt": null,
+      "label": null,
+      "activeColour": null,
+      "icon": "sf.rectangle.on.rectangle",
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-brightness",
+      "type": "slider",
+      "frame": {
+        "x": 0.04,
+        "y": 0.345,
+        "w": 0.2,
+        "h": 0.17
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-volume",
+      "type": "slider",
+      "frame": {
+        "x": 0.28,
+        "y": 0.345,
+        "w": 0.2,
+        "h": 0.17
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-flashlight",
+      "type": "control",
+      "shape": "circle",
+      "centre": {
+        "x": 0.57,
+        "y": 0.38
+      },
+      "diameterPt": null,
+      "label": null,
+      "activeColour": null,
+      "icon": "sf.flashlight.on.fill",
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-timer",
+      "type": "control",
+      "shape": "circle",
+      "centre": {
+        "x": 0.8,
+        "y": 0.38
+      },
+      "diameterPt": null,
+      "label": null,
+      "activeColour": null,
+      "icon": "sf.timer",
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-calculator",
+      "type": "control",
+      "shape": "circle",
+      "centre": {
+        "x": 0.57,
+        "y": 0.46
+      },
+      "diameterPt": null,
+      "label": null,
+      "activeColour": null,
+      "icon": "sf.plus.forwardslash.minus",
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "cc-camera",
+      "type": "control",
+      "shape": "circle",
+      "centre": {
+        "x": 0.8,
+        "y": 0.46
+      },
+      "diameterPt": null,
+      "label": null,
+      "activeColour": null,
+      "icon": "sf.camera.fill",
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "top-right",
+      "action": "swipe-down",
+      "opens": "control-center"
+    }
+  ],
+  "notes": "Layout follows the classic iOS Control Center default arrangement; all fractions estimated. Additional controls are user-configurable."
+}

@@ -9,11 +9,14 @@ sleep 5
 echo "==> set AppleUX as default HOME (stock Launcher3 superseded)"
 "$ADB" shell cmd package set-home-activity com.appleux.launcher/.LauncherActivity
 echo "==> grants for overlays + notifications + brightness"
-"$ADB" shell appops set com.appleux.systemui SYSTEM_ALERT_WINDOW allow
 "$ADB" shell appops set com.appleux.launcher SYSTEM_ALERT_WINDOW allow 2>/dev/null || true
-"$ADB" shell settings put secure enabled_notification_listeners com.appleux.systemui/.AppleuxNotificationListener 2>/dev/null || true
+# The notification listener is declared in com.android.systemui's manifest and
+# bound with a signature permission the platform grants automatically, so there
+# is no enabled_notification_listeners entry to seed any more.
+"$ADB" shell dumpsys notification | grep -m1 "com.appleux.systemui.AppleuxNotificationListener" || \
+  echo "  (listener not yet connected - is SystemUI running?)"
 "$ADB" shell appops set com.appleux.settings WRITE_SETTINGS allow 2>/dev/null || true
-"$ADB" shell appops set com.appleux.systemui WRITE_SETTINGS allow 2>/dev/null || true
+"$ADB" shell appops set com.appleux.settings WRITE_SETTINGS allow 2>/dev/null || true
 echo "==> start SystemUI overlays + lockscreen"
 # com.appleux.systemui was DELETED 2026-10-17 (deliverables/m23): it floated
 # two full-screen TYPE_APPLICATION_OVERLAY windows over SystemUI. There is no

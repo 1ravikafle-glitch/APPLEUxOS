@@ -1,0 +1,58 @@
+{
+  "screen": "recents",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "rc-title",
+      "type": "navTitle",
+      "frame": {
+        "x": 0.04,
+        "y": 0.075,
+        "w": 0.5,
+        "h": 0.05
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "rc-segment",
+      "type": "segmentedControl",
+      "frame": {
+        "x": 0.2,
+        "y": 0.135,
+        "w": 0.6,
+        "h": 0.04
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "rc-list",
+      "type": "list",
+      "frame": {
+        "x": 0,
+        "y": 0.2,
+        "w": 1,
+        "h": 0.7
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "row",
+      "action": "swipe-left",
+      "opens": "delete action"
+    }
+  ],
+  "notes": "Phone > Recents call list (assumed meaning of 'recents'); could also mean the app switcher - clarify."
+}

@@ -64,7 +64,20 @@
                 android:textColor="@color/secondary_label" />
         </LinearLayout>
 
-        <Switch
+        <!--
+            iOS UISwitch, not android.widget.Switch.
+
+            The stock Switch draws a Material switch: a different track shape,
+            a different thumb, and a ripple on press. AppleUXToggle is the
+            project's own animated capsule with a spring, keyboard handling and
+            accessibility state, already used by the launcher, Phone, Clock and
+            Display screens. This row was the most visible place stock UI still
+            showed inside our own Settings app.
+
+            It is NOT a CompoundButton: setChecked(value, animate) and a
+            ((Boolean) -> Unit) listener, not isChecked / OnCheckedChangeListener.
+        -->
+        <com.appleux.design.components.AppleuxToggle
             android:id="@+id/settingToggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

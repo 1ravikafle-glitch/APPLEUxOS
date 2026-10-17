@@ -1,0 +1,20 @@
+{
+  "activitycontinuation": {
+    "apps": [
+      "com.apple.weather"
+    ]
+  },
+  "applinks" : {
+    "apps" : [
+    ],
+    "details" : [
+      {
+          "appID": "com.apple.weather",
+          "paths": [
+              "*"
+          ],
+          "alwaysEnabled": true
+      }
+    ]
+  }
+}

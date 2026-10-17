@@ -1,0 +1,11 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appID": "com.apple.MobileSMS",
+        "paths": [ "*" ],
+        "alwaysEnabled": true
+      }
+    ]
+  }
+}

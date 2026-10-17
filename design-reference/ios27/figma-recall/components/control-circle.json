@@ -1,0 +1,15 @@
+{
+  "name": "control-circle",
+  "viewportWidth": 64,
+  "viewportHeight": 64,
+  "android": {
+    "pathData": "M0,32 a32,32 0 1,0 64,0 a32,32 0 1,0 -64,0 Z",
+    "fillColor": "#FF000000",
+    "strokeColor": null,
+    "strokeWidth": null
+  },
+  "provenance": "plain circle; diameter in pt unknown",
+  "basis": "generated-geometry",
+  "appleVector": false,
+  "inferred": true
+}

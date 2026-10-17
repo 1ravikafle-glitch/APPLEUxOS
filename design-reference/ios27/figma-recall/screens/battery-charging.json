@@ -1,0 +1,39 @@
+{
+  "screen": "battery-charging",
+  "referenceScreenshot": "https://ipcdn-web.apple.com/assets/v2/web/4da64275-aeee-46f3-b6f7-17c30729330c",
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "bc-status-icon",
+      "type": "statusIcon",
+      "frame": {
+        "x": 0.82,
+        "y": 0.015,
+        "w": 0.1,
+        "h": 0.018
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "bc-lockscreen-ring",
+      "type": "text",
+      "frame": {
+        "x": 0.3,
+        "y": 0.45,
+        "w": 0.4,
+        "h": 0.15
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [],
+  "notes": "Status-bar battery turns green/yellow with bolt when charging; full-screen charging view appears on lock screen."
+}

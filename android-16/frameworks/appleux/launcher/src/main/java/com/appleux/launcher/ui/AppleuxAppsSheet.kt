@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.widget.LinearLayout
 import android.widget.ScrollView
-import androidx.appcompat.app.AlertDialog
+import com.appleux.design.components.AppleuxDialogs
 import com.appleux.design.components.AppleuxListItem
 
 /** "AppleUX Apps" sheet: the 9 launcher-owned iOS-lookalike shells. */
@@ -25,18 +25,15 @@ object AppleuxAppsSheet {
 
     fun show(context: Context) {
         val col = LinearLayout(context).apply { orientation = LinearLayout.VERTICAL }
-        val dlg = AlertDialog.Builder(context).setTitle("AppleUX Apps").setView(
-            ScrollView(context).apply { addView(col) }
-        ).create()
+        val scroll = ScrollView(context).apply { addView(col) }
         for (e in entries()) {
             col.addView(AppleuxListItem(context).apply {
                 setTitle(e.label); setSubtitle(e.sub)
                 setOnClickListener {
-                    dlg.dismiss()
                     context.startActivity(Intent(context, e.cls))
                 }
             })
         }
-        dlg.show()
+        AppleuxDialogs.custom(context, content = scroll, title = "AppleUX Apps")
     }
 }

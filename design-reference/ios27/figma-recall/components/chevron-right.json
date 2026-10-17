@@ -1,0 +1,15 @@
+{
+  "name": "chevron-right",
+  "viewportWidth": 8,
+  "viewportHeight": 14,
+  "android": {
+    "pathData": "M1,1 L7,7 L1,13",
+    "fillColor": null,
+    "strokeColor": "#FF000000",
+    "strokeWidth": 1.5
+  },
+  "provenance": "stroke-only chevron; set stroke width in VectorDrawable",
+  "basis": "generated-geometry",
+  "appleVector": false,
+  "inferred": true
+}

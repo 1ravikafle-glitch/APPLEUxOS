@@ -1,0 +1,45 @@
+{
+  "screen": "volume-hud",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "vol-pill",
+      "type": "glassPill",
+      "frame": {
+        "x": 0.04,
+        "y": 0.062,
+        "w": 0.92,
+        "h": 0.04
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "vol-fill",
+      "type": "progress",
+      "frame": {
+        "x": 0.07,
+        "y": 0.074,
+        "w": 0.6,
+        "h": 0.016
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "hardware-button",
+      "action": "press",
+      "opens": "volume-hud"
+    }
+  ],
+  "notes": "iOS 26+ shows volume as a top capsule; width/position here are guesses."
+}

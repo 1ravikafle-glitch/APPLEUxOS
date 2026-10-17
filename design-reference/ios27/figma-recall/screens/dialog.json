@@ -1,0 +1,78 @@
+{
+  "screen": "dialog",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "dlg-scrim",
+      "type": "scrim",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "dlg-card",
+      "type": "glassCard",
+      "frame": {
+        "x": 0.145,
+        "y": 0.38,
+        "w": 0.71,
+        "h": 0.22
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "dlg-title",
+      "type": "text",
+      "frame": {
+        "x": 0.18,
+        "y": 0.4,
+        "w": 0.64,
+        "h": 0.04
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "dlg-message",
+      "type": "text",
+      "frame": {
+        "x": 0.18,
+        "y": 0.445,
+        "w": 0.64,
+        "h": 0.06
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "dlg-button-row",
+      "type": "buttonRow",
+      "frame": {
+        "x": 0.145,
+        "y": 0.54,
+        "w": 0.71,
+        "h": 0.06
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [],
+  "notes": "Alert: centred card, title+message, 1-2 stacked or side-by-side buttons. ~270pt wide in classic iOS."
+}

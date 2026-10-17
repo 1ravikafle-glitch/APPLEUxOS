@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
+import com.appleux.design.components.AppleuxToggle
 import android.widget.ImageView
 import android.widget.SeekBar
 import android.widget.TextView
@@ -23,6 +23,7 @@ import com.appleux.settings.R
 import com.appleux.settings.pref.AppleuxPreferences
 import com.appleux.settings.pref.AppleuxSettingsStore
 import kotlin.math.roundToInt
+import com.appleux.design.components.AppleuxToast
 
 class SettingsListActivity : AppCompatActivity() {
 
@@ -79,11 +80,7 @@ class SettingsListActivity : AppCompatActivity() {
         try {
             startActivity(store.writeSettingsIntent())
         } catch (e: android.content.ActivityNotFoundException) {
-            android.widget.Toast.makeText(
-                this,
-                "AppleUX settings need \"Modify system settings\" to change brightness",
-                android.widget.Toast.LENGTH_LONG
-            ).show()
+            AppleuxToast.show(this, "AppleUX settings need \"Modify system settings\" to change brightness")
         }
     }
 
@@ -158,11 +155,7 @@ class SettingsListActivity : AppCompatActivity() {
                 ?: throw android.content.ActivityNotFoundException()
             startActivity(launch)
         }.onFailure {
-            android.widget.Toast.makeText(
-                this,
-                "Stock Settings is not available",
-                android.widget.Toast.LENGTH_SHORT
-            ).show()
+            AppleuxToast.show(this, "Stock Settings is not available")
         }
     }
 }
@@ -609,7 +602,11 @@ class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val textBox: View = itemView.findViewById(R.id.settingText)
     private val badge: android.widget.FrameLayout = itemView.findViewById(R.id.settingBadge)
     private val glyph: ImageView = itemView.findViewById(R.id.settingGlyph)
-    private val toggle: CompoundButton = itemView.findViewById(R.id.settingToggle)
+    // AppleuxToggle, not CompoundButton: the layout no longer inflates a stock
+    // android.widget.Switch. Its API is setChecked(value, animate) and a
+    // ((Boolean) -> Unit) listener, so every CompoundButton call below had to
+    // change, not just the type.
+    private val toggle: AppleuxToggle = itemView.findViewById(R.id.settingToggle)
     private val seek: SeekBar = itemView.findViewById(R.id.settingSeek)
     private val chevron: ImageView = itemView.findViewById(R.id.settingChevron)
     private val divider: View = itemView.findViewById(R.id.settingDivider)
@@ -687,45 +684,45 @@ class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         when (item.type) {
             SettingsItemType.SWITCH -> {
                 toggle.visibility = View.VISIBLE
-                // iOS UISwitch on-tint is systemGreen (#34C759), not the
-                // Material default teal. Applied here (not theme-wide) so only
-                // switches change, matching iOS control semantics.
-                val states = arrayOf(
-                    intArrayOf(android.R.attr.state_checked),
-                    intArrayOf(-android.R.attr.state_checked)
+                // HIG tint: iOS UISwitch is green when on, not Material teal and
+                // not iOS blue. Set per-control rather than theme-wide so only
+                // switches take the switch tint, matching iOS semantics.
+                toggle.setTrackColorOn(ColorTokens.systemGreen)
+                toggle.setTrackColorOff(ColorTokens.systemFillSecondary)
+                toggle.setThumbColorOn(ColorTokens.white)
+                toggle.setThumbColorOff(ColorTokens.white)
+                // animate = false: this is recycled-view rebind, not a user
+                // action. Animating here would slide every toggle on screen
+                // whenever the list scrolls.
+                toggle.setChecked(
+                    item.preferenceKey?.let { store.getBoolean(it, item.defaultValue) }
+                        ?: item.defaultValue,
+                    false
                 )
-                (toggle as? android.widget.Switch)?.let { sw ->
-                    sw.thumbTintList = ColorStateList(
-                        states,
-                        intArrayOf(ColorTokens.white, ColorTokens.systemGray)
-                    )
-                    sw.trackTintList = ColorStateList(
-                        states,
-                        intArrayOf(ColorTokens.systemGreen, ColorTokens.systemFillSecondary)
-                    )
-                }
-                toggle.isChecked = item.preferenceKey?.let {
-                    store.getBoolean(it, item.defaultValue)
-                } ?: item.defaultValue
-                val listener = object : CompoundButton.OnCheckedChangeListener {
-                    override fun onCheckedChanged(button: CompoundButton, checked: Boolean) {
-                        val key = item.preferenceKey
-                        if (key != null && !store.setBoolean(key, checked)) {
-                            // The write did not land. Do not leave the UI
-                            // claiming a value the rest of the OS cannot see.
-                            button.setOnCheckedChangeListener(null)
-                            button.isChecked = store.getBoolean(key, item.defaultValue)
-                            button.setOnCheckedChangeListener(this)
-                            return
-                        }
-                        // Dark Mode owns the theme, so persisting the flag is
-                        // only half of it: the screen has to repaint too.
-                        if (key == AppleuxRuntimeConfig.KEY_DARK_MODE) {
-                            onDarkModeChanged(checked)
-                        }
+                // Re-entry guard rather than detach/reattach: a val lambda
+                // cannot reference itself in its own initializer, and holding
+                // the listener in a `var` would leak one lambda per recycled
+                // holder. A captured Boolean is per-bind and costs nothing.
+                var reverting = false
+                toggle.setOnCheckedChangeListener { checked ->
+                    if (reverting) return@setOnCheckedChangeListener
+                    val key = item.preferenceKey
+                    if (key != null && !store.setBoolean(key, checked)) {
+                        // The write did not land. Do not leave the UI claiming a
+                        // value the rest of the OS cannot see: put the store's
+                        // real value back. Animate it, because the user did just
+                        // move the control and needs to see it snap back.
+                        reverting = true
+                        toggle.setChecked(store.getBoolean(key, item.defaultValue), true)
+                        reverting = false
+                        return@setOnCheckedChangeListener
+                    }
+                    // Dark Mode owns the theme, so persisting the flag is only
+                    // half of it: the screen has to repaint too.
+                    if (key == AppleuxRuntimeConfig.KEY_DARK_MODE) {
+                        onDarkModeChanged(checked)
                     }
                 }
-                toggle.setOnCheckedChangeListener(listener)
             }
             SettingsItemType.SEEK_BAR -> {
                 seek.visibility = View.VISIBLE

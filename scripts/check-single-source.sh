@@ -17,7 +17,6 @@ ok()   { printf '  \033[32mOK\033[0m    %s\n' "$1"; }
 bad()  { printf '  \033[31mFAIL\033[0m  %s\n' "$1"; FAIL=1; }
 note() { printf '  \033[33mNOTE\033[0m  %s\n' "$1"; }
 
-echo "=== 1. AppleUX modules must be symlinks, not directories ==="
 check_link() {
     local path="$1" want="$2"
     if [[ -L "$path" ]]; then
@@ -38,14 +37,69 @@ check_link() {
     fi
 }
 
-check_link "$TOP/frameworks/appleux"            "$ROOT/appleux/design-system"
-check_link "$TOP/packages/apps/AppleUXLauncher"  "$ROOT/appleux/launcher"
-check_link "$TOP/packages/apps/AppleUXSettings"  "$ROOT/appleux/settings"
-# com.appleux.systemui was DELETED 2026-10-17 (deliverables/m23); its chrome is
-# now the appleux-systemui-chrome library, linked at frameworks/appleux-systemui-chrome.
-check_link "$TOP/frameworks/appleux-systemui-chrome" "$ROOT/appleux/systemui/chrome"
-check_link "$TOP/packages/apps/AppleUXPerformance" "$ROOT/appleux/performance"
-check_link "$TOP/hardware/xiaomi-appleux/rock"   "$ROOT/device-support/rock"
+# ---------------------------------------------------------------------------
+# The invariant is now the OPPOSITE of what this script used to assert.
+#
+# It used to require every AppleUX module to be a SYMLINK into the tree, on the
+# reasoning that the canonical sources live in OsProject/appleux. That is
+# exactly what broke: Soong's module finder reads each directory entry's d_type
+# from getdents and never descends into a symlinked directory
+# (build/soong/finder/fs/readdir.go:210 maps DT_LNK to os.ModeSymlink, so
+# DirEntryInfo.IsDir() is false). Every AppleUX module was therefore absent from
+# out/.module_paths/Android.bp.list and unresolvable by name — 14,149 module
+# paths listed, zero appleux entries.
+#
+# So: the real directories live INSIDE the tree, and the historical
+# OsProject/appleux/<module> paths are symlinks BACK into the tree. One copy of
+# every byte; every pre-existing path still resolves; and Soong can find it.
+# ---------------------------------------------------------------------------
+
+check_real_dir() {   # the canonical source location
+    local path="$1"
+    if [[ -L "$path" ]]; then
+        bad "$path is a SYMLINK. Soong does not descend into symlinked
+         directories, so a module here is invisible to the build. Put the real
+         directory here instead."
+    elif [[ -d "$path" ]]; then
+        ok "$path is a real directory (Soong can see it)"
+    else
+        bad "$path missing — Soong will not find the module at all"
+    fi
+}
+
+check_backlink() {    # the compatibility path back into the tree
+    local path="$1" want="$2"
+    # Resolution is the invariant, not link-ness: appleux/systemui is a symlink
+    # whose child chrome/ is therefore a real directory that resolves correctly.
+    if [[ ! -e "$path" ]]; then
+        bad "$path missing. Old paths (build scripts, deliverables, docs)
+         reference it; it must keep resolving."
+    elif [[ "$(cd "$path" && pwd -P)" != "$(cd "$want" && pwd -P)" ]]; then
+        bad "$path does not resolve to $want"
+    else
+        ok "$path -> $want (same real directory, no copy)"
+    fi
+}
+
+echo
+echo "=== 1. Canonical sources are real directories INSIDE the tree ==="
+check_real_dir "$TOP/frameworks/appleux/design-system"
+check_real_dir "$TOP/frameworks/appleux/performance"
+check_real_dir "$TOP/frameworks/appleux/launcher"
+check_real_dir "$TOP/frameworks/appleux/settings"
+check_real_dir "$TOP/frameworks/appleux/sounds"
+check_real_dir "$TOP/frameworks/appleux/systemui/chrome"
+check_real_dir "$TOP/hardware/xiaomi-appleux/rock"
+
+echo
+echo "=== 1b. Historical paths are backlinks to those directories ==="
+check_backlink "$ROOT/appleux/design-system" "$TOP/frameworks/appleux/design-system"
+check_backlink "$ROOT/appleux/performance"   "$TOP/frameworks/appleux/performance"
+check_backlink "$ROOT/appleux/launcher"      "$TOP/frameworks/appleux/launcher"
+check_backlink "$ROOT/appleux/settings"      "$TOP/frameworks/appleux/settings"
+check_backlink "$ROOT/appleux/sounds"        "$TOP/frameworks/appleux/sounds"
+check_backlink "$ROOT/appleux/systemui/chrome" "$TOP/frameworks/appleux/systemui/chrome"
+check_backlink "$ROOT/device-support/rock"    "$TOP/hardware/xiaomi-appleux/rock"
 
 echo
 echo "=== 2. No stray physical copies of AppleUX anywhere in the tree ==="
@@ -100,9 +154,8 @@ if [[ -f "$MK" ]]; then
         if [[ -n "${IS_LIB[$m]:-}" ]]; then
             bad "$m is in PRODUCT_PACKAGES but it is a library, not an APK"
         elif grep -rq "name: \"$m\"" --include=Android.bp \
-                "$TOP/packages/apps/AppleUXLauncher" "$TOP/packages/apps/AppleUXSettings" \
-                "$TOP/packages/apps/AppleUXPerformance" \
-                "$ROOT/appleux" "$ROOT/device-support" "$TOP/device/xiaomi/rock/rro_overlay" 2>/dev/null; then
+                "$TOP/frameworks/appleux" "$TOP/hardware/xiaomi-appleux/rock" \
+                "$TOP/device/xiaomi/rock/rro_overlay" 2>/dev/null; then
             ok "$m resolves to a module"
         else
             bad "$m in PRODUCT_PACKAGES but no module defines it"
@@ -119,7 +172,11 @@ if [[ -f "$ALLOW" ]]; then
     ok "allowlist present"
     # Every signature|privileged permission needs privileged:true, or the grant
     # is inert because the APK landed in /system/app.
-    for mod in "$ROOT/appleux/launcher" "$ROOT/appleux/settings" "$ROOT/appleux/systemui"; do
+    # com.appleux.systemui was DELETED 2026-10-17 (deliverables/m23). Its chrome
+    # is the appleux-systemui-chrome LIBRARY inside com.android.systemui, which
+    # AOSP already builds privileged with privapp_whitelist_com.android.systemui.
+    # There is no third priv-app here to assert anything about.
+    for mod in "$ROOT/appleux/launcher" "$ROOT/appleux/settings"; do
         name=$(basename "$mod")
         if ! grep -q "privileged: true" "$mod/Android.bp" 2>/dev/null; then
             bad "$name/Android.bp lacks privileged: true — its grants will be denied"
@@ -134,7 +191,6 @@ allow, root = sys.argv[1], sys.argv[2]
 pkgs = {
     "com.appleux.launcher": os.path.join(root, "launcher", "src/main/AndroidManifest.xml"),
     "com.appleux.settings": os.path.join(root, "settings", "src/main/AndroidManifest.xml"),
-    "com.appleux.systemui": os.path.join(root, "systemui", "src/main/AndroidManifest.xml"),
 }
 xml = io.open(allow, encoding="utf-8").read()
 blocks = re.findall(r'<privapp-permissions package="([^"]+)">(.*?)</privapp-permissions>',

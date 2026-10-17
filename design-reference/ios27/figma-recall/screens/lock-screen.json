@@ -1,0 +1,137 @@
+{
+  "screen": "lock-screen",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "lock-status",
+      "type": "statusBar",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.06
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "lock-date",
+      "type": "text",
+      "frame": {
+        "x": 0.3,
+        "y": 0.085,
+        "w": 0.4,
+        "h": 0.03
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "lock-clock",
+      "type": "text",
+      "frame": {
+        "x": 0.15,
+        "y": 0.115,
+        "w": 0.7,
+        "h": 0.12
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "lock-widgets",
+      "type": "widget",
+      "frame": {
+        "x": 0.2,
+        "y": 0.245,
+        "w": 0.6,
+        "h": 0.06
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "lock-notification-stack",
+      "type": "notificationStack",
+      "frame": {
+        "x": 0.04,
+        "y": 0.66,
+        "w": 0.92,
+        "h": 0.2
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "lock-flashlight",
+      "type": "control",
+      "shape": "circle",
+      "centre": {
+        "x": 0.14,
+        "y": 0.915
+      },
+      "diameterPt": null,
+      "label": null,
+      "activeColour": null,
+      "icon": "sf.flashlight.off.fill",
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "lock-camera",
+      "type": "control",
+      "shape": "circle",
+      "centre": {
+        "x": 0.86,
+        "y": 0.915
+      },
+      "diameterPt": null,
+      "label": null,
+      "activeColour": null,
+      "icon": "sf.camera.fill",
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "lock-home-indicator",
+      "type": "homeIndicator",
+      "frame": {
+        "x": 0.35,
+        "y": 0.985,
+        "w": 0.3,
+        "h": 0.006
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "bottom-edge",
+      "action": "swipe-up",
+      "opens": "home (after unlock)"
+    },
+    {
+      "from": "lock-screen",
+      "action": "swipe-down-from-top-centre",
+      "opens": "notification-center"
+    },
+    {
+      "from": "lock-screen",
+      "action": "swipe-left",
+      "opens": "camera"
+    }
+  ],
+  "notes": "Flashlight bottom-left and Camera bottom-right are standard iOS lock-screen quick actions."
+}

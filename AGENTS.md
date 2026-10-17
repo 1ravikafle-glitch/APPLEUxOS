@@ -46,19 +46,71 @@ Check space on the project drive:
 df -h /home/elfakiris/OsProject
 ```
 
+## Where the AppleUX sources actually live — READ THIS FIRST
+
+**The real source directories are inside the AOSP tree:**
+
+```
+android-16/frameworks/appleux/design-system/     tokens + shared components
+android-16/frameworks/appleux/performance/       Adaptive Performance Controller
+android-16/frameworks/appleux/launcher/          Launcher
+android-16/frameworks/appleux/settings/          Settings app
+android-16/frameworks/appleux/sounds/            366 IPSW sounds + SoundRegistry
+android-16/frameworks/appleux/systemui/chrome/   iOS 27 chrome INSIDE SystemUI
+android-16/hardware/xiaomi-appleux/rock/         measured display profile
+```
+
+**`appleux/<module>` and `device-support/rock` are symlinks back into those
+directories.** One copy of every byte, every pre-existing path still resolves,
+`scripts/check-single-source.sh` asserts the invariant, and `.gitignore` has
+negations so the bytes stay under version control.
+
+### Why they moved — this bit every AppleUX module for months
+
+They used to live in `appleux/` and be linked in as
+`frameworks/appleux -> ../../appleux/design-system`. **That never worked.**
+Soong's module finder reads each directory entry's `d_type` from `getdents`
+and never descends into a symlinked directory:
+
+```
+build/soong/finder/fs/readdir.go:210   case DT_LNK: mode = os.ModeSymlink
+build/soong/finder/fs/fs.go:89          func (d *dirEntryInfo) IsDir() bool
+                                           { return d.mode.IsDir() }
+```
+
+So `appleux-design-system` — and every other AppleUX module linked the same way
+— was absent from `out/.module_paths/Android.bp.list` and **unresolvable by
+name**. Proof: that list has 14,149 module paths and **zero** appleux entries.
+
+Any claim that `m -j1 AppleUXLauncher` ever built was false. `m nothing` only
+proves configuration, which is why it kept passing.
+
+**Do not move them back behind a symlink.** It fails silently, exactly as it
+did. Soong analysis is the only thing that catches it, and it takes ~40 minutes
+when it fails and hours when it succeeds.
+
+**The cheap graph-only check is `m -j1 nothing`, not a ninja target.**
+`out/soong/build.ninja` does not exist in this tree and asking for it fails with
+`error: ninja: unknown target 'out/soong/build.ninja'`. This tree's files are
+suffixed with the product name:
+
+| file | size |
+|---|---|
+| `out/combined-aosp_rock.ninja` | entry point |
+| `out/soong/build.aosp_rock.ninja` | 485 MB, the real graph |
+| `out/soong/build.aosp_rock.0-9.ninja` | split subgraphs |
+| `out/soong/build.aosp_rock.incremental.ninja` | 2.9 GB |
+
+If you want to drive ninja directly, use `-f out/combined-aosp_rock.ninja`.
+
 ## Project Structure
 
 ```
-/media/elfakiris/ElfakIris1/OsProject/
-├── android-16/           AOSP source (selective sync)
+/home/elfakiris/OsProject/    (canonical; the old /media path is stale)
+├── android-16/           AOSP source + the AppleUX modules (see above)
 ├── android-sdk/          Android SDK command-line tools
-├── appleux/              AppleUX source tree
-│   ├── design-system/    Shared design tokens and components
-│   ├── performance/      Adaptive Performance Controller
-│   ├── systemui/         SystemUI replacement
-│   ├── launcher/         Launcher replacement
-│   ├── settings/         Settings app replacement
-│   └── motion/           Animation engine
+├── appleux/              symlinks into android-16/frameworks/appleux
+├── device-support/rock   symlink into android-16/hardware/xiaomi-appleux
 ├── cuttlefish/           Cuttlefish emulator source
 ├── tools/                Build tools, JDK, repo
 ├── backups/
@@ -136,12 +188,21 @@ cited corrections; its token file disagreed with the measured Apple kit on 5 of
 1. **Disk**: ~296 GB free on the project drive (`/dev/nvme0n1p4`, 738 GB total).
    A full AOSP sync + build fits. Disk stopped being the constraint on
    2026-10-17 — **RAM is the constraint**, see item 2.
-2. **RAM**: 15 GB total. Whole-tree Soong analysis needs ~11 GB available —
-   check `free -h` and stop the emulator before building, or the build gets
-   OOM-killed and looks like a Soong bug. Use `scripts/soong-capped.sh`, which
-   sets `GOMEMLIMIT=8GiB`. soong_build is Go 1.24, so the soft heap limit is
-   honoured and it trades CPU for memory instead of dying. `-j1` alone is NOT
-   enough: the 9.8 GB peak is live heap, not parallelism. Swap is 49 GB.
+2. **RAM**: 15 GB total, and this is the binding constraint. Whole-tree Soong
+   analysis peaked at **13.2 GiB**. `GOMEMLIMIT` does NOT stop it — it is a soft
+   hint to the Go GC and was measured exceeding a 6 GiB limit, so a build that
+   used it got OOM-killed and took the desktop into swap with it. That is
+   recorded in `deliverables/m26`.
+
+   `scripts/soong-capped.sh` now enforces a **real** cap: a cgroup v2
+   `MemoryMax` via `systemd-run --user`, verified enforced on this box (a 1.5 GB
+   allocation under `MemoryMax=512M` is killed, exit 1). Defaults to 9 GiB RAM +
+   6 GiB swap, and **refuses to run uncapped** if the cgroup is unavailable.
+   `GOMEMLIMIT=7GiB`/`GOGC=40` remain as soft hints set below the hard cap so Go
+   collects before the kernel has to kill anything.
+
+   A silent death after "Globs changed, rerunning soong..." means the cap fired.
+   Rerun with `RAM_CAP_MB=12800 SWAP_CAP_MB=8192` rather than removing the cap.
 3. **No sudo**: Packages must be self-contained; JDK downloaded locally
 4. **No Docker**: Cloud builds must be external
 5. **No physical device yet**: UI verification goes through the Android SDK
@@ -366,44 +427,154 @@ files; deleting the controllers leaves the device with no status bar, no
 keyguard and no QS. Every replacement keeps the AOSP root class so gestures,
 IME, rotation, recents and keyguard mediation keep working.
 
+**`com.appleux.systemui` IS DELETED** (same session). Its 585-line overlay
+service, 2 QS tiles, boot receiver, manifest, res and `Android.bp` are gone, and
+so are its `PRODUCT_PACKAGES` entry, both priv-app allowlist blocks, its appops
+exceptions, its `inject-rootfs.sh` injection, its link check and its
+`ram-report.sh` identity. The image now has **4 AppleUX APKs, not 5**.
+
+- Its two QS tiles were **deleted, not repointed** — they existed only because
+  AppleUX had no SystemUI presence. In iOS both panels open by a top-edge swipe,
+  and `ShadeController` (`instantExpandShade` / `animateExpandQs`) is the correct
+  in-SystemUI accessor, but wiring Dagger blind would break SystemUI at boot.
+  Until the shade is replaced they open via AOSP's own pull-down gesture.
+- `AppleuxNotificationListener` **moved into SystemUI** and is declared in
+  `frameworks/base/packages/SystemUI/AndroidManifest.xml`. That is a functional
+  gain: `BIND_NOTIFICATION_LISTENER_SERVICE` is a signature permission SystemUI
+  holds, so the platform connects the listener — the overlay app's only ran if
+  the user approved it by hand. No `enabled_notification_listeners` seeding
+  remains.
+- Panel toggles from apps go through `appleux/launcher/.../AppleuxSystemUi.kt`,
+  which reflects on `StatusBarManager`'s `@hide` methods (not in the SDK jar, not
+  in `symbols.xml`) and degrades to a logged no-op, never a crash.
+- **Watch for dead `ComponentName`s.** An explicit component pointing at a
+  deleted service does not fail to compile and does not reliably fail at runtime;
+  the caller just sees nothing happen. Four such sites were found and fixed.
+
 **`m SystemUI` has NOT been run** — no warm Soong state, 48 min analysis alone.
-The graph edit and runtime result are unverified.
+The graph linkage, the manifest `<service>` entry under
+`use_resource_processor`, the `config_navBar*` overrides on device, and the home
+indicator rendering are all **unverified**.
 
-`com.appleux.systemui` is **not** deleted yet: its 3 tiles/receiver launch
-`AppleuxSystemUIService` by name to toggle the panels, so removing the service
-first would strand the Control Center and Notification Center. Repoint them at
-SystemUI's `CommandQueue` first, then delete. Full detail and the remaining
-surface order: `deliverables/m23/systemui-takeover-2026-10-17.md`.
+Next surface is quick settings / shade. It cannot be swapped wholesale:
+`status_bar_expanded.xml` carries hundreds of view ids that AOSP controllers
+`requireViewById`, so the Material look has to come off style by style. Full
+detail: `deliverables/m23/systemui-takeover-2026-10-17.md`.
 
-## Other Known Gaps
+## Stock Surfaces Still Present — measured, not estimated
 
-- **P0, unstarted: the real system chrome is still stock.** `AppleuxSystemUIService`
-  draws `TYPE_APPLICATION_OVERLAY` windows and floats above SystemUI; it does
-  not replace it. Stock `frameworks/base/packages/SystemUI` still owns the
-  status bar, quick settings, nav bar, volume/power HUD and keyguard, and
-  Recents is still QuickStep. Making AppleUX *be* SystemUI is a Soong
-  `Android.bp` module inside `frameworks/base/packages/SystemUI`, not an app
-  change, and it is the prerequisite for the items below. Not started.
-- `android.R.drawable` is still referenced in ~43 places across the shells
-  (Photos 34, Messages 6) while the 92 vendored `sf_*` / `il_ic_*` drawables
-  are nearly unused in-app. Needs an icon-by-icon mapping.
-- The 366 extracted sounds exist and nothing plays one.
-- 26 `AlertDialog.Builder` call sites are now **themed** to the iOS card by
-  `Theme.Appleux.Base` (no code change needed), but they are still
-  `AlertDialog`. 36 `Toast` call sites are stock — iOS has no toast surface,
-  so the answer is a replacement, not a restyle.
+Counted on 2026-10-17 with `grep -rE` over `frameworks/appleux`. **These are
+real remaining stock surfaces and the replace-from-source rule says they go.**
 
-- Dock contents **are** now persisted (`DockPreferences`, shared prefs
-  `appleux_launcher_dock`, delimiter-encoded so empty slots are representable).
-  Resolved once by explicit package allowlist → exact label → platform role
-  intent, never positional. Done: the home-grid metrics are derived at our
-  ROM's frame (392.73 x 875.64 dp).
+| Stock surface | Sites | Status |
+|---|---|---|
+| `AlertDialog.Builder` | **15** (11 real) | **11 of 26 converted** to `AppleuxDialogs`. The remainder: 8 use `.create()` + `dialog.show()` as separate statements, 3 pass a non-`EditText` to `setView`. |
+| `android.R.drawable` | **33** | 102 vendored `sf_*`/`il_ic_*` vectors exist. Photos 24, Messages 5, CallScreen 2, Banner 2. |
+| `<SeekBar>` | **6** | No horizontal iOS slider exists. `settings_item.xml:85`, Photos 2557, Phone 635, Camera 584, DisplaySettings 97, plus a dead `AppleuxPowerSlider`. |
+| `Toast.makeText` | **1** | 35 of 36 converted to `AppleuxToast`. **One remains — find it with `grep -rn "Toast.makeText" frameworks/appleux`.** |
+| `android.R.id.` | **3** | |
+| Stock `TextClock`/`ProgressBar` in widgets | 6 | Clock/calendar/battery widgets still use stock controls. |
+
+### 16 declared components with zero references
+
+Each is the *intended* implementation of a surface below, so these are to be
+wired, not deleted. A component with no reference compiles fine and fails
+silently, so treat the count as a live assertion:
+
+`AppleuxCCTileOrder`, `AppleuxJiggle`, `AppleuxLockCustomizeSheet`,
+`AppleuxNotificationBanner`, `AppleuxNotificationExpanded`,
+`AppleuxNotificationFooter`, `AppleuxPanelDismissHandler`, `AppleuxPasscodeView`,
+`AppleuxPowerSlider`, `AppleuxRecentsView`, `AppleuxScreenshotToolbar`,
+`AppleuxSettingsDetailView`, `AppleuxSOSCountdown`, `AppleuxSystemHUD`,
+`AppleuxTouchFeedbackOverlay`, `AppleuxUnavailableTimer`
+
+Check with:
+
+```bash
+cd android-16/frameworks/appleux
+for c in AppleuxCCTileOrder AppleuxJiggle ...; do
+  n=$(grep -rl "\b$c\b" --include=*.kt --include=*.xml . | grep -v "/$c\." | wc -l)
+  [ "$n" -eq 0 ] && echo "DEAD: $c"
+done
+```
+
+`AppleuxNotificationBus` is in the same state: the listener publishes, nothing
+subscribes, so notifications are collected and dropped.
+
+`AppleuxDialogs` is **no longer** in this list — it was dead until 2026-10-17 and
+is now the host for every converted alert.
+
+### Device tiering — the 2 GB floor
+
+`performance/.../device/DeviceProfile.kt`. Tiers read **physical RAM** as the
+primary axis, because that is how the product is specified:
+
+| physical RAM | tier | icons | bitmap pool | heap | baseline | blur |
+|---|---|---|---|---|---|---|
+| **< 2.5 GB** | `TIER_LOW` | 10 | 1 MB | 55% | Q75 | **off** |
+| 2.5–4 GB | `TIER_STANDARD` | 20 | 4 MB | 70% | Q90 | on |
+| ≥ 4 GB | `TIER_ROOMY` | 40 | 10 MB | 80% | Q100 | on |
+
+`memoryClass` is a **floor guard only** — it can push a device down to
+`TIER_LOW`, never down to `TIER_STANDARD` and never up. An earlier version
+combined the two as `minOf(ram, heap)`, which demoted a 4 GB phone with a 384 MB
+heap *below* a 3 GB phone. A guard must guard; it must not also throttle.
+
+`AppleuxPerformanceController` clamps quality to this ceiling at `start()`, so a
+low-memory phone never pays for full effects on its first frames. On `TIER_LOW`
+the ceiling is Q75 and the blur gate needs Q90, so the most expensive effect in
+the system is off with no separate switch to get wrong.
+
+### Sounds — now live (was: 733 resources shipping silent in two APKs)
+
+The 733 `res/raw` entries shipped in both launcher and settings, with zero
+playback call sites. Two independent defects were behind that:
+
+1. **They did not link.** Every one of the 366 sounds had a `.caf` and an `.ogg`
+   twin, and both compile to `R.raw.<stem>` — a duplicate-resource error. This is
+   why `AppleUXSounds` could never be built by `build-emulator-apks.sh` at all,
+   and why it stayed silent. `.caf` is uncompressed PCM at **82.2 MB**; `.ogg` is
+   **6.9 MB**. The `.caf` set now lives in `sounds/extracted-reference/` (see its
+   README): **91 MB → 7.7 MB**, no coverage lost.
+2. **Nothing played them.** `AppleuxSoundPlayer` (lazy `SoundPool`, bounded to 24
+   resident samples, never throws) is wired to the camera shutter and a toggle
+   confirm. `AppleUXSounds` was **dropped from settings**, which has no playback
+   call site and was paying 7.7 MB for it.
+
+Remaining wiring: lock/unlock (needs the keyguard surface), notification, charge.
+
+### `AppleuxDialogs` — the piece that made dialogs possible
+
+`AppleuxDialog` extended `FrameLayout` and its `show()` only toggled visibility.
+With no WindowManager path **and no host to attach it to**, it had zero
+consumers while 26 stock dialogs ran. `AppleuxDialogs` now attaches it to the
+Activity's content view — the same in-view approach as `AppleuxToast`, so an
+alert costs no extra window and no extra composited layer — and exposes
+`alert` / `prompt` / `choose` / `dismiss`, named for the iOS
+`UIAlertController` they map to. That naming is what keeps `setView` out of the
+codebase for good.
+
+### Other open items
+
+- **Control Center is orphaned.** Every `AppleuxControlCenter` reference is
+  internal or a comment. `toggleControlCenter()` still calls AOSP
+  `expandSettingsPanel()`, so the user gets the Material QS shade.
+- **`m SystemUI` has still never run.** No SystemUI intermediates have been
+  built, so the m23 takeover is statically verified and zero verified at runtime.
+- Dock contents **are** persisted (`DockPreferences`, delimiter-encoded).
 - The Notification Center still does not reserve the cutout;
   `AppleuxDisplayInsets.applyTopInset(context, column)` in
   `AppleuxNotificationShade.init` is a one-liner that has not been applied.
-- `reduce_motion` is stored and propagated, but no component consumes it yet.
+- `reduce_motion` is stored and propagated, but no component consumes it.
 - Brightness writes need the user-granted `WRITE_SETTINGS` appop; without it the
   slider silently does nothing.
+- **Typography tracking is probably ~60x too tight.** `spec.tracking / 1000f`
+  yields 0.0001–0.0004 em while the tracking table holds 0.10–0.40, and
+  `navigation_bar.xml`/`styles.xml` hardcode `letterSpacing 0.00015`. Both are
+  visually zero. If Apple's published figures are points-at-size the correct
+  divisor is the point size, which is ~60x larger. **Unresolved** — needs one
+  measurement of real iPhone 11 text width vs the emulator's before any text
+  style is called a match.
 
 ## Touch Handling
 

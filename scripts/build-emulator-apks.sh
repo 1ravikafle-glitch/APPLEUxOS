@@ -43,6 +43,19 @@ STAMP="$OUT/.timestamps"
 DS_SRC="$ROOT/appleux/design-system/src/main/java"
 PERF_SRC="$ROOT/appleux/performance/src/main/java"
 DS_RES="$ROOT/appleux/design-system/src/main/res"
+# appleux-design-system declares `static_libs: ["appleux-device-support-rock"]`
+# in its Android.bp, so this source tree is a hard dependency of the Kotlin
+# compile, not an optional extra. It was MISSING from this list, which only
+# appeared to work because a stale RockDisplayProfile.class was lying around
+# in out/gen from an earlier layout; design-system/.../AppleuxDisplayInsets.kt
+# imports com.appleux.device.rock.RockDisplayProfile and cannot compile
+# without it. Every module that compiles DS_SRC needs ROCK_SRC too.
+ROCK_SRC="$ROOT/device-support/rock/src/main/java"
+# AppleUXSounds: the 366 IPSW-extracted sounds. Launcher only — settings
+# has no playback call site, and shipping 7.7 MB of audio in an app that
+# never plays it is exactly the dead-weight problem.
+SOUNDS_SRC="$ROOT/appleux/sounds/src/main/java"
+SOUNDS_RES="$ROOT/appleux/sounds/src/main/res"
 
 CP="$PLATFORM"
 for j in "$LIBS"/*.jar; do CP="$CP:$j"; done
@@ -56,7 +69,14 @@ rm -f "$STAMP/lib-res"   # resource inputs change often; always recompile
 # must generate those too. Which libraries actually need one is discovered from
 # the constant pools of the vendored classes, not guessed.
 detect_r_packages() {
-  if [ -f "$STAMP/r-packages" ]; then return; fi
+  # The stamp is keyed on a signature, not on a content hash, so adding a local
+  # package has to force a rescan. Without this the sounds R was never generated
+  # and the module failed to compile against a stale stamp.
+  local want="local:design-system,sounds jars:$(ls "$LIBS" 2>/dev/null | wc -l)"
+  if [ -f "$STAMP/r-packages" ] && [ "$(cat "$STAMP/r-packages.sig" 2>/dev/null)" = "$want" ]; then
+    return
+  fi
+  echo "$want" > "$STAMP/r-packages.sig"
   echo "  scanning    library R references"
   local scratch="$GEN/rscan"
   rm -rf "$scratch"; mkdir -p "$scratch"
@@ -78,6 +98,10 @@ detect_r_packages() {
   done
   # design-system is ours, and always needed
   echo "com.appleux.design" >> "$STAMP/r-packages"
+  # AppleUXSounds is ours too. SoundRegistry is a plain object of R.raw ids, so
+  # without a generated com.appleux.sounds.R the whole module fails to compile —
+  # which is exactly why these sounds shipped silent before.
+  echo "com.appleux.sounds" >> "$STAMP/r-packages"
   sort -u "$STAMP/r-packages" -o "$STAMP/r-packages"
   rm -rf "$scratch"
   echo "  r packages: $(tr '\n' ' ' < "$STAMP/r-packages")"
@@ -94,6 +118,10 @@ compile_lib_res() {
   done
   # design-system resources are consumed by every app, so they get their own zip
   "$AAPT2" compile --dir "$DS_RES" -o "$GEN/lib-res-design-system.zip"
+  # Sounds are consumed by the launcher alone. Every file is .ogg — the .caf
+  # twins live in sounds/extracted-reference/, because two files sharing a stem
+  # both become R.raw.<stem> and aapt2 rejects that as a duplicate.
+  "$AAPT2" compile --dir "$SOUNDS_RES" -o "$GEN/lib-res-sounds.zip"
 }
 
 build_androidx_dex() {
@@ -148,6 +176,10 @@ build_app() {
     [ -f "$z" ] || continue
     # design-system supplies its own res when it is the module being built
     [ "$module" = "design-system" ] && [ "$z" = "$GEN/lib-res-design-system.zip" ] && continue
+    # Sounds go to the launcher ONLY. The loop above collects every
+    # lib-res-*.zip as a positional aapt2 input, so without this the 7.7 MB audio
+    # tree also lands in design-system and performance.
+    [ "$module" != "launcher" ] && [ "$z" = "$GEN/lib-res-sounds.zip" ] && continue
     res_inputs="$res_inputs $z"
   done
   [ -f "$GEN/$module-res.zip" ] && res_inputs="$GEN/$module-res.zip $res_inputs"
@@ -208,9 +240,11 @@ build_app() {
   #    library code resolves against THIS app's resource ids.
   local srcdirs="$srcdir"
   case "$module" in
-    design-system) ;;
-    performance)   srcdirs="$srcdir $DS_SRC" ;;
-    *)             srcdirs="$srcdir $PERF_SRC $DS_SRC" ;;
+    design-system) srcdirs="$srcdir $ROCK_SRC" ;;
+    performance)   srcdirs="$srcdir $DS_SRC $ROCK_SRC" ;;
+    # Only the launcher plays a sound (camera shutter, toggle confirm).
+    launcher)      srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC" ;;
+    *)             srcdirs="$srcdir $PERF_SRC $DS_SRC $ROCK_SRC" ;;
   esac
 
   rm -rf "$GEN/$module-classes"; mkdir -p "$GEN/$module-classes"
@@ -222,7 +256,7 @@ build_app() {
   # available; -nowarn also matters because a missing module suppresses the
   # type information that makes those renderings so expensive.
   # shellcheck disable=SC2086
-  "$KOTLINC" -J-Xmx6g -J-XX:MaxMetaspaceSize=1g \
+  "$KOTLINC" -J-Xmx"${KOTLINC_HEAP:-6g}" -J-XX:MaxMetaspaceSize=1g \
     -classpath "$CP:$GEN/$module-r-classes" -jvm-target 17 -nowarn \
     -d "$GEN/$module-classes" $srcdirs 2> "$GEN/$module-kotlinc.log" || true
   grep "error:" "$GEN/$module-kotlinc.log" | sed "s|appleux/||" \

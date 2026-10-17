@@ -1,0 +1,20 @@
+{
+  "applinks": {
+      "substitutionVariables": {
+          "path_variants": [ "redford/sps", "photostream/join" ],
+      },
+      "details": [
+           {
+             "appIDs": [ "com.apple.mobileslideshow" ],
+             "components": [
+               {  "/": "/tryphotos/" },
+               {
+                  "/": "/$(path_variants)/",
+                  "?": { "invitation_id": "?*" }
+               }
+             ],
+             "alwaysEnabled": true
+           }
+       ],
+   }
+}

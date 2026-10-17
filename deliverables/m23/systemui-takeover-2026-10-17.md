@@ -256,3 +256,159 @@ constraints found in the source, not by caution:
 
 Changing the tree without a build to check those three is how the status bar
 breaks. It is worth doing and it needs a build — see §4.
+---
+
+## 7. Part 2 — `com.appleux.systemui` DELETED (same session)
+
+### What was removed
+
+| File | Lines | Why |
+|---|---|---|
+| `appleux/systemui/src/main/java/.../AppleuxSystemUIService.kt` | 585 | the overlay-window machinery — the whole performance problem |
+| `appleux/systemui/src/main/java/.../AppleuxControlTileService.kt` | 54 | QS tile that started the service |
+| `appleux/systemui/src/main/java/.../AppleuxShadeTileService.kt` | 50 | QS tile that started the service |
+| `appleux/systemui/src/main/java/.../AppleuxBroadcastReceiver.kt` | 53 | BOOT/SCREEN_ON receiver that started the service |
+| `appleux/systemui/src/main/AndroidManifest.xml` | 57 | declared the app |
+| `appleux/systemui/src/main/res/values/strings.xml` | 7 | app labels |
+| `appleux/systemui/Android.bp` | 37 | the `AppleUXSystemUI` android_app |
+
+`PRODUCT_PACKAGES` entry removed from `device/xiaomi/rock/appleux.mk`.
+`com.appleux.systemui` priv-app block removed from **both** allowlists
+(`device/xiaomi/rock/permissions/privapp-permissions-appleux.xml` and
+`osbuild/privapp-permissions-com.appleux.xml`) plus the appops exceptions in
+`osbuild/default-permissions-appleux.xml`. `osbuild/inject-rootfs.sh` no longer
+injects it into `/system/priv-app`. `build-emulator-apks.sh` no longer has a
+fifth target. Four APKs now, not five.
+
+### The two QS tiles were deleted, not repointed
+
+They existed only because AppleUX had no presence inside SystemUI — they were
+the way to reach the Control Center and Notification Center from outside it.
+Now that the chrome *is* SystemUI, the tiles are the wrong affordance on two
+counts:
+
+- **design** — in iOS both panels open by a **swipe from the top edge**, not
+  from a tile. The surface under the finger owns the gesture.
+- **stability** — a tile that must reach into a ~4,900-file Dagger graph to
+  expand a panel is fragile coupling for a non-iOS affordance.
+
+The correct in-SystemUI accessor is `ShadeController`
+(`instantExpandShade()` / `animateExpandQs()`), reached through Dagger. Wiring
+that was not attempted blind, because `m SystemUI` has not been run and a wrong
+Dagger binding breaks SystemUI at boot.
+
+Until the shade is replaced, both panels open through AOSP's own pull-down
+gesture — stock behaviour that already works, rather than a path that would
+have silently done nothing.
+
+### What was repointed instead: `AppleuxNotificationListener`
+
+The one component with real work. Moved into `appleux-systemui-chrome` and
+declared in `frameworks/base/packages/SystemUI/AndroidManifest.xml`:
+
+```xml
+<service android:name="com.appleux.systemui.AppleuxNotificationListener"
+    android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE"
+    android:exported="false"
+    android:label="@string/appleux_listener_label">
+    <intent-filter>
+        <action android:name="android.service.notification.NotificationListenerService" />
+    </intent-filter>
+</service>
+```
+
+`android:exported="false"` plus the signature permission is the only correct
+combination — an exported `NotificationListenerService` would be a full read of
+the user's notification contents.
+
+**This is a functional gain, not just tidiness.** `BIND_NOTIFICATION_LISTENER_SERVICE`
+is a signature permission SystemUI itself holds, so a listener declared in its
+manifest is connected by the platform. The overlay app's listener only ran if
+the user had approved it by hand in Settings. The `settings put secure
+enabled_notification_listeners` seeding in `verify-replacement.sh` and
+`prep-emulator-grants.sh` is gone because there is no longer a consent to grant.
+
+`@string/appleux_listener_label` went into SystemUI's own
+`res/values/strings.xml`, not the library's. Manifest attribute values resolve
+against the final app resource table, and SystemUI's manifest is built with
+`use_resource_processor`, so the safest home for a string the manifest itself
+names is the module's own values file.
+
+### Four dangling references found and fixed
+
+An explicit `ComponentName` to a deleted service **does not fail at compile
+time and does not reliably fail at runtime** — it resolves to a dead component
+and the caller sees nothing happen. Four call sites were pointing at the deleted
+service:
+
+| Site | Was | Now |
+|---|---|---|
+| `LauncherActivity.kt:414` | `startForegroundService` to cold-start the overlay | removed — the chrome now comes up with SystemUI, and starting it here would add back the process just deleted |
+| `LauncherActivity.kt:1068` `sendSystemUi()` | explicit-component intent | maps the action names onto `AppleuxSystemUi` |
+| `AppleuxWidgets.kt:42` `handleShowCc()` | explicit-component intent | `AppleuxSystemUi.toggleControlCenter(context)` |
+| `ClockActivity.kt:56` `status()` | `SET_TIMER` intent + extra | **removed, not repointed** — the receiver lived in the deleted app, so there is nothing to send to. Logged, and the missing consumer is recorded rather than papered over with a dead intent |
+
+New `appleux/launcher/src/main/java/com/appleux/launcher/AppleuxSystemUi.kt` uses
+reflection on `StatusBarManager.expandNotificationsPanel()` /
+`expandSettingsPanel()` / `collapsePanels()`. Those are `@hide`: **not in the
+SDK `android.jar` and not declared in `symbols.xml`**, so an app cannot call
+them without reflection. Every path degrades to a logged no-op rather than a
+crash — a launcher that throws because it could not open a panel is strictly
+worse than one that silently does not.
+
+### `SHOW_RECENTS` deliberately not implemented
+
+I wrote a `showRecents()` using `android.app.RecentsManager`, then removed it:
+`javap` reports **class not found** — it is not in the SDK jar either, and AOSP
+declares no `symbols.xml` entry for `showRecentTasks`. There is no app-side
+accessor I could verify, so the action logs that recents is still stock QuickStep
+and the system gesture still works. Shipping a reflective call to an API I
+cannot check would be worse than saying so.
+
+### Build/verification scripts updated
+
+| Script | Change |
+|---|---|
+| `check-single-source.sh` | link check now points at `frameworks/appleux-systemui-chrome`; dropped the `com.appleux.systemui` manifest entry |
+| `soong-capped.sh` | `TARGETS=(AppleUXLauncher AppleUXSettings SystemUI)` — SystemUI itself is now the target |
+| `verify-replacement.sh` | verifies `pm path com.android.systemui` instead of poking the service |
+| `prep-emulator-grants.sh` | no `SYSTEM_ALERT_WINDOW` grant (no overlay windows any more); no notification-listener consent to seed |
+| `ram-report.sh` | counts `com.android.systemui` instead of the deleted package — which is the point: that overlay app was an entire resident process whose only job was drawing chrome on top of SystemUI |
+| `build-emulator-apks.sh` | fourth APK target removed |
+| `.repo/local_manifests/appleux.xml` | stale entry removed |
+
+### Verified
+
+```
+kotlinc -classpath android.jar:out/gen/systemui-r-classes:thirdparty/libs/*.jar \
+        appleux/design-system/src/main/java appleux/systemui/chrome/src/main/java
+  exit=0, 168 classes, 0 errors
+
+fix-context-receivers.py (full build)
+  ==> design-system ==> performance ==> launcher ==> settings
+  BUILD: clean          4 APKs, all fresh
+
+tools/check-token-drift.py     OK: 28 tokens match in both appearances
+bash -n on every touched script  all parse
+XML well-formed on all 9 touched XML files
+aapt2 compile navigation_bar.xml OK
+```
+
+### Not verified
+
+`m SystemUI` **still has not been run.** No warm Soong state; analysis alone took
+48:21. Unverified: the `appleux-systemui-chrome` linkage resolves, the manifest
+`<service>` entry compiles under `use_resource_processor`, the
+`config_navBar*` overrides take effect on device, and the home indicator renders.
+
+`aapt2 compile res/values/styles.xml` still fails on lines 207+ with
+`Resource flag value undefined: com.android.systemui.shade_header_font_update`.
+Pre-existing: those are aconfig feature flags that exist only inside Soong
+(`aconfig/systemui.aconfig`). The AppleUX edit is at line 46.
+
+### Next
+
+Quick settings / shade — the largest remaining stock surface, and the one that
+unlocks a real Control Center inside SystemUI. It cannot be swapped wholesale:
+`status_bar_expanded.xml` carries hundreds of view ids that AOSP controllers
+`requireViewById`, so the Material look has to come off style by style.

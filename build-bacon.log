@@ -1,0 +1,46 @@
+04:32:21 ************************************************************
+04:32:21 You are building on a machine with 15GB of RAM
+04:32:21 
+04:32:21 The minimum required amount of free memory is around 16GB,
+04:32:21 and even with that, some configurations may not work.
+04:32:21 
+04:32:21 If you run into segfaults or other errors, try reducing your
+04:32:21 -j value.
+04:32:21 ************************************************************
+Running product configuration...
+============================================
+PLATFORM_VERSION_CODENAME=REL
+PLATFORM_VERSION=16
+TARGET_PRODUCT=aosp_rock
+TARGET_BUILD_VARIANT=eng
+TARGET_ARCH=arm64
+TARGET_ARCH_VARIANT=armv8-2a-dotprod
+TARGET_CPU_VARIANT=cortex-a76
+TARGET_2ND_ARCH=arm
+TARGET_2ND_ARCH_VARIANT=armv8-2a
+TARGET_2ND_CPU_VARIANT=cortex-a55
+HOST_OS=linux
+HOST_OS_EXTRA=Linux-7.0.0-34-generic-x86_64-Zorin-OS-18.1
+HOST_CROSS_OS=windows
+BUILD_ID=BP4A.251205.006
+OUT_DIR=out
+SOONG_ONLY=false
+============================================
+[100% 1/1] bootstrap blueprint
+Running globs...
+[ 33% 2/6] create out/host/linux-x86/bin/go/soong_build/gen/plugin.go
+[ 50% 3/6] compile out/host/linux-x86/bin/go/soong_build/pkg/soong_build.a
+[100% 4/4] analyzing Android.bp files and generating ninja file at out/soong/build.aosp_rock.ninja
+FAILED: out/soong/build.aosp_rock.ninja
+cd "$(dirname "out/host/linux-x86/bin/soong_build")" && BUILDER="$PWD/$(basename "out/host/linux-x86/bin/soong_build")" && cd / && env -i  "$BUILDER"     --top "$TOP"     --soong_out "out/soong"     --out "out"     --soong_variables out/soong/soong.aosp_rock.variables -o out/soong/build.aosp_rock.ninja --kati_suffix -aosp_rock --kati_enabled -l out/.module_paths/Android.bp.list --available_env out/soong/soong.environment.available --used_env out/soong/soong.environment.used.aosp_rock.build Android.bp
+error: vendor/lineage/build/soong/Android.bp:16:1: module "generated_kernel_headers" already defined
+       device/xiaomi/rock/Android.bp:9:1 <-- previous definition here
+error: vendor/lineage/build/soong/Android.bp:73:26: unrecognized property "soong_config_variables.gralloc_handle_has_custom_content_md_reserved_size.export_cflags"
+error: vendor/lineage/build/soong/Android.bp:90:26: unrecognized property "soong_config_variables.gralloc_handle_has_reserved_size.export_cflags"
+error: vendor/lineage/build/soong/Android.bp:107:26: unrecognized property "soong_config_variables.gralloc_handle_has_ubwcp_format.export_cflags"
+error: vendor/lineage/build/soong/Android.bp:212:26: unrecognized property "soong_config_variables.bootloader_message_offset.export_cflags"
+ninja: build stopped: subcommand failed.
+04:32:27 soong bootstrap failed with: exit status 1
+
+#### failed to build some targets (7 seconds) ####
+

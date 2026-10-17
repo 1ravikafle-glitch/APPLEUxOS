@@ -1,0 +1,17 @@
+{
+    "webcredentials": {
+        "apps": [
+            "com.apple.findmy",
+            "0000000000.com.apple.findmy"
+        ]
+    },
+    "applinks": {
+        "details": [{
+            "appIDs": [
+                "com.apple.findmy",
+                "0000000000.com.apple.findmy"
+            ],
+            "alwaysEnabled": true
+        }]
+    }
+}

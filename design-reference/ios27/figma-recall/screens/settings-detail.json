@@ -1,0 +1,71 @@
+{
+  "screen": "settings-detail",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "sd-nav-bar",
+      "type": "navBar",
+      "frame": {
+        "x": 0,
+        "y": 0.05,
+        "w": 1,
+        "h": 0.07
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sd-group-1",
+      "type": "groupedList",
+      "frame": {
+        "x": 0.04,
+        "y": 0.15,
+        "w": 0.92,
+        "h": 0.17
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sd-group-2",
+      "type": "groupedList",
+      "frame": {
+        "x": 0.04,
+        "y": 0.35,
+        "w": 0.92,
+        "h": 0.22
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sd-footer",
+      "type": "sectionFooter",
+      "frame": {
+        "x": 0.06,
+        "y": 0.58,
+        "w": 0.88,
+        "h": 0.05
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "left-edge",
+      "action": "swipe-right",
+      "opens": "back"
+    }
+  ],
+  "notes": "Typical detail screen with back chevron, inline title and stacked inset groups."
+}

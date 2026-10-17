@@ -1,0 +1,374 @@
+{
+  "screen": "home",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "home-status-bar",
+      "type": "statusBar",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 0.06
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-widget-row",
+      "type": "widget",
+      "frame": {
+        "x": 0.04,
+        "y": 0.075,
+        "w": 0.92,
+        "h": 0.17
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r0c0",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.154,
+        "y": 0.2
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r0c1",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.385,
+        "y": 0.2
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r0c2",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.615,
+        "y": 0.2
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r0c3",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.846,
+        "y": 0.2
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r1c0",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.154,
+        "y": 0.313
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r1c1",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.385,
+        "y": 0.313
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r1c2",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.615,
+        "y": 0.313
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r1c3",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.846,
+        "y": 0.313
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r2c0",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.154,
+        "y": 0.426
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r2c1",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.385,
+        "y": 0.426
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r2c2",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.615,
+        "y": 0.426
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r2c3",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.846,
+        "y": 0.426
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r3c0",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.154,
+        "y": 0.539
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r3c1",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.385,
+        "y": 0.539
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r3c2",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.615,
+        "y": 0.539
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r3c3",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.846,
+        "y": 0.539
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r4c0",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.154,
+        "y": 0.652
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r4c1",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.385,
+        "y": 0.652
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r4c2",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.615,
+        "y": 0.652
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r4c3",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.846,
+        "y": 0.652
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r5c0",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.154,
+        "y": 0.765
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r5c1",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.385,
+        "y": 0.765
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r5c2",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.615,
+        "y": 0.765
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-icon-r5c3",
+      "type": "appIcon",
+      "shape": "squircle",
+      "centre": {
+        "x": 0.846,
+        "y": 0.765
+      },
+      "sizePt": 60,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-page-dots",
+      "type": "pageControl",
+      "frame": {
+        "x": 0.4,
+        "y": 0.865,
+        "w": 0.2,
+        "h": 0.012
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "home-dock",
+      "type": "glassContainer",
+      "frame": {
+        "x": 0.03,
+        "y": 0.88,
+        "w": 0.94,
+        "h": 0.095
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "bottom-edge",
+      "action": "swipe-up",
+      "opens": "app-switcher/home"
+    },
+    {
+      "from": "home-screen",
+      "action": "swipe-left-from-last-page",
+      "opens": "app-library"
+    },
+    {
+      "from": "top-centre",
+      "action": "swipe-down",
+      "opens": "notification-center"
+    },
+    {
+      "from": "top-right",
+      "action": "swipe-down",
+      "opens": "control-center"
+    }
+  ],
+  "notes": "Grid column centres derived from 60pt icons on a 393pt width with equal gutters; row pitch and vertical offsets are guesses."
+}

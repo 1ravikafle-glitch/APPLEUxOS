@@ -1,0 +1,108 @@
+MT6765V (Helio G99) experimental performance patch set -- NOT BUILT, NOT BOOTED, NOT MEASURED
+================================================================================================
+
+Upstream tree : https://github.com/oppo-source/android_kernel_oppo_mt6765
+Branch         : oppo/mt6765_u_14.0_oppo_a77
+Commit         : 9b1c9a531dd08e68bf778dcf7ed13f811ec1f153
+Commit subject : Synchronize code for OPPO CPH2385_14.0.0.110(EX01) Based on MTK
+                 release TAG:t-alps-release-s0.mp1.rc-V14.75
+Kernel version : 4.19.191
+Baseline config: arch/arm64/configs/k65v1_64_bsp_defconfig  (CONFIG_MACH_MT6765=y,
+                 CONFIG_MTK_PLATFORM="mt6765", CONFIG_ARCH_MTK_PROJECT="k65v1_64_bsp")
+Cross-check    : arch/arm64/configs/oppo6765_defconfig @ 220d8e1a728dd8a4d2f25e8aadb66be6f92b440a
+                 (branch oppo/mt6765_r_11.1.4_a16) -- used only to corroborate baseline
+                 values; two independent MT6765 defconfigs agreeing is the evidence
+                 standard used for every claim below.
+
+-------------------------------------------------------------------------------
+READ THIS FIRST -- SCOPE OF THE EVIDENCE
+-------------------------------------------------------------------------------
+There is NO device here. This patch set has NOT been compiled, has NOT been
+booted, and has NOT been benchmarked. Not one of these changes has a single
+measured number attached to it.
+
+Every justification below is an argument read out of the kernel source about
+what code will run on the device. Some of those arguments may be wrong.
+A source-reading argument can only ever produce a HYPOTHESIS. A hypothesis
+becomes knowledge only when VALIDATION.md is run on real hardware against a
+real baseline. Until then, treat every "expected to" in this patch set as an
+untested bet, and be willing to throw the whole thing away if the first
+measurement contradicts it.
+
+What is claimed:      "changing these symbols changes this amount of code
+                       doing this much work, for this stated reason."
+What is NOT claimed:  that any of it makes the device faster, boots quicker,
+                       drains less battery, or scores better on any benchmark.
+No such number appears anywhere in this patch set, because no such number
+exists.
+
+-------------------------------------------------------------------------------
+DELIBERATELY EXCLUDED -- FORBIDDEN BY THE PROJECT CHARTER
+-------------------------------------------------------------------------------
+None of these appear in this patch set, and none should be added later:
+
+  * Anything that removes, weakens or short-circuits THERMAL THROTTLING.
+    No thermal trip point, no thermal governor change, no DT thermal
+    override, no "raise the throttle temperature". Throttling on a Helio G99
+    is a real thermal-safety control. A kernel that runs cooler because it
+    is throttling harder is a slower kernel; a kernel that runs faster
+    because throttling was disabled is a kernel that will be throttled
+    harder still, or damaged, once real use heats the SoC. Benchmarks taken
+    with throttling disabled do not describe this device.
+
+  * Anything that disables or weakens the LOWMEMORYKILLER / ADJ /
+    lmkd path. A 4 GB device survives by aggressively reclaiming and killing.
+    Softening lmk to make a memory benchmark look better is exactly how you
+    get an OOM crash for a user later.
+
+  * Anything that FORCES MAXIMUM CLOCKS. No performance governor, no
+    CPU_DVFS disabling, no cpufreq pinning to the top bin, no "lock at
+    2.0 GHz". Benchmarking a phone pinned at max clock measures a part that
+    does not exist in the hand.
+
+These three are excluded not because they are hard to justify but because
+they make the resulting numbers actively misleading. A number obtained with
+throttling disabled, lmk disabled or clocks pinned is worse than no number
+at all, because it will be believed.
+
+-------------------------------------------------------------------------------
+ALSO CONSIDERED AND REJECTED ON THE EVIDENCE (see REJECTED.md)
+-------------------------------------------------------------------------------
+KSM, Transparent HugePages, ZSWAP, zram writeback, BFQ, Kyber, mq-deadline,
+CONFIG_ZRAM sizing changes, CONFIG_CMA size changes, CONFIG_PAGE_SIZE=16K,
+disabling ftrace/kprobes/perfetto, NUMA, and the whole family of debug-
+option strips -- each rejected with the source evidence that killed it.
+Several of them are things a kernel-tuning guide would tell you to do.
+
+-------------------------------------------------------------------------------
+THE SIX PATCHES
+-------------------------------------------------------------------------------
+P01  01-io-sched-deadline          I/O      CFQ -> deadline.  LOW risk.
+P02  02-mem-nr-cpus-8              Memory   NR_CPUS 64 -> 8.    LOW risk.
+P03  03-sched-no-autogroup         Sched    drop SCHED_AUTOGROUP. LOW risk.
+P04  04-cpufreq-governors-minimal  Power    trim unused governors. LOW risk.
+P05  05-lto-thin                   Build    enable ThinLTO.     HIGH risk.
+P06  06-sched-no-mtk-sched-tracers Sched    drop MTK sched tracers. GATED.
+
+Each fragment in config/fragments/ carries its own full header: what it
+changes, the baseline source evidence with file:line, why it should help on
+a 4 GB MT6765V, the exact measurement that would confirm or refute it, and
+its build/runtime risk. The per-fragment headers are the specification; this
+file is the cover note.
+
+Apply with:
+    cd <kernel-source>
+    cp ../kernel-tracking/config/baseline-k65v1_64_bsp_defconfig \\
+       arch/arm64/configs/k65v1_64_bsp_defconfig
+    for f in ../kernel-tracking/config/fragments/*.config; do
+        cat "$f" | grep -v '^[ \t]*#' | grep -v '^$' >> \\
+            arch/arm64/configs/k65v1_64_bsp_defconfig
+    done
+    # then build as normal for your toolchain
+
+Build order matters: bring up P01-P04 first (low risk, small, independent).
+Take P05 (LTO) last and alone, because a vendor-module link failure there is
+likely and must not be confused with a real regression in the others. P06 is
+gated on a grep and may need to be dropped entirely.
+
+Sign-off: unsigned. No performance claim is being made or endorsed.

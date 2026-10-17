@@ -1,5 +1,7 @@
 package com.appleux.design.components
 
+    // android.R.drawable -> vendored iOS vector (2026-10-17):
+    //   android.R.drawable.sym_def_app_icon           -> il_ic_grid       placeholder for an app with no artwork
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
@@ -75,7 +77,7 @@ class AppleuxNotificationBanner @JvmOverloads constructor(
         title.text = appLabel
         text.text = body
         if (iconDrawable != null) icon.setImageDrawable(iconDrawable)
-        else icon.setImageResource(android.R.drawable.sym_def_app_icon)
+        else icon.setImageResource(com.appleux.design.R.drawable.il_ic_grid)
         contentDescription = "$appLabel: $body"
     }
 
