@@ -1,10 +1,10 @@
 package com.appleux.launcher.apps
 
     // android.R.drawable -> vendored iOS vector (2026-10-17):
-    //   android.R.drawable.ic_menu_camera             -> il_ic_camera     iOS camera
-    //   android.R.drawable.ic_menu_edit               -> sf_pencil        NEW: see sf_pencil.xml, created 2026-10-17
-    //   android.R.drawable.ic_menu_search             -> il_ic_search     iOS magnifying glass
-    //   android.R.drawable.ic_menu_send               -> il_ic_share      iOS send is a paper plane; share is the closest vendored glyph
+    //   com.appleux.design.R.drawable.sf_camera             -> il_ic_camera     iOS camera
+    //   com.appleux.design.R.drawable.sf_pencil               -> sf_pencil        NEW: see sf_pencil.xml, created 2026-10-17
+    //   com.appleux.design.R.drawable.il_ic_search             -> il_ic_search     iOS magnifying glass
+    //   com.appleux.design.R.drawable.sf_next               -> il_ic_share      iOS send is a paper plane; share is the closest vendored glyph
 import android.Manifest
 import android.app.role.RoleManager
 import android.content.ContentValues

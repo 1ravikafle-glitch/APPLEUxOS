@@ -1,29 +1,29 @@
 package com.appleux.launcher.apps
 
     // android.R.drawable -> vendored iOS vector (2026-10-17):
-    //   android.R.drawable.ic_lock_lock               -> sf_lock          iOS lock
-    //   android.R.drawable.ic_media_play              -> il_ic_play       iOS play triangle
-    //   android.R.drawable.ic_menu_add                -> sf_add           iOS plus
-    //   android.R.drawable.ic_menu_agenda             -> il_ic_grid       iOS list/grid
-    //   android.R.drawable.ic_menu_camera             -> il_ic_camera     iOS camera
-    //   android.R.drawable.ic_menu_compass            -> sf_compass       NEW: see sf_compass.xml, created 2026-10-17
-    //   android.R.drawable.ic_menu_crop               -> sf_crop          NEW: see sf_crop.xml, created 2026-10-17
-    //   android.R.drawable.ic_menu_delete             -> sf_trash         iOS trash can
-    //   android.R.drawable.ic_menu_directions         -> sf_compass       NEW: see sf_compass.xml, created 2026-10-17
-    //   android.R.drawable.ic_menu_edit               -> sf_pencil        NEW: see sf_pencil.xml, created 2026-10-17
-    //   android.R.drawable.ic_menu_gallery            -> il_ic_photos     iOS photos flower
-    //   android.R.drawable.ic_menu_info_details       -> il_ic_info       iOS info circle
-    //   android.R.drawable.ic_menu_month              -> sf_calendar      no month-only glyph exists in the vendored set
-    //   android.R.drawable.ic_menu_my_calendar        -> sf_calendar      iOS calendar
-    //   android.R.drawable.ic_menu_mylocation         -> sf_location      iOS location arrow
-    //   android.R.drawable.ic_menu_myplaces           -> sf_location      iOS location pin
-    //   android.R.drawable.ic_menu_recent_history     -> sf_clock         iOS clock
-    //   android.R.drawable.ic_menu_revert             -> sf_undo          NEW: see sf_undo.xml, created 2026-10-17
-    //   android.R.drawable.ic_menu_rotate             -> il_ic_rotation   iOS rotation lock
-    //   android.R.drawable.ic_menu_search             -> il_ic_search     iOS magnifying glass
-    //   android.R.drawable.ic_menu_set_as             -> sf_checkmark     iOS 'set as' is a check/apply mark; no dedicated SF Symbol
-    //   android.R.drawable.ic_menu_share              -> il_ic_share      iOS share
-    //   android.R.drawable.star_big_on                -> sf_star          iOS filled star
+    //   com.appleux.design.R.drawable.il_ic_lock               -> sf_lock          iOS lock
+    //   com.appleux.design.R.drawable.sf_play              -> il_ic_play       iOS play triangle
+    //   com.appleux.design.R.drawable.sf_add                -> sf_add           iOS plus
+    //   com.appleux.design.R.drawable.il_ic_grid             -> il_ic_grid       iOS list/grid
+    //   com.appleux.design.R.drawable.sf_camera             -> il_ic_camera     iOS camera
+    //   com.appleux.design.R.drawable.sf_compass            -> sf_compass       NEW: see sf_compass.xml, created 2026-10-17
+    //   com.appleux.design.R.drawable.sf_crop               -> sf_crop          NEW: see sf_crop.xml, created 2026-10-17
+    //   com.appleux.design.R.drawable.sf_trash             -> sf_trash         iOS trash can
+    //   com.appleux.design.R.drawable.sf_maps         -> sf_compass       NEW: see sf_compass.xml, created 2026-10-17
+    //   com.appleux.design.R.drawable.sf_pencil               -> sf_pencil        NEW: see sf_pencil.xml, created 2026-10-17
+    //   com.appleux.design.R.drawable.il_ic_photos            -> il_ic_photos     iOS photos flower
+    //   com.appleux.design.R.drawable.il_ic_info       -> il_ic_info       iOS info circle
+    //   com.appleux.design.R.drawable.sf_calendar              -> sf_calendar      no month-only glyph exists in the vendored set
+    //   com.appleux.design.R.drawable.sf_calendar        -> sf_calendar      iOS calendar
+    //   com.appleux.design.R.drawable.sf_location         -> sf_location      iOS location arrow
+    //   com.appleux.design.R.drawable.sf_maps           -> sf_location      iOS location pin
+    //   com.appleux.design.R.drawable.sf_clock     -> sf_clock         iOS clock
+    //   com.appleux.design.R.drawable.sf_undo             -> sf_undo          NEW: see sf_undo.xml, created 2026-10-17
+    //   com.appleux.design.R.drawable.il_ic_rotation             -> il_ic_rotation   iOS rotation lock
+    //   com.appleux.design.R.drawable.il_ic_search             -> il_ic_search     iOS magnifying glass
+    //   com.appleux.design.R.drawable.sf_pencil             -> sf_checkmark     iOS 'set as' is a check/apply mark; no dedicated SF Symbol
+    //   com.appleux.design.R.drawable.il_ic_share              -> il_ic_share      iOS share
+    //   com.appleux.design.R.drawable.sf_star                -> sf_star          iOS filled star
 import android.Manifest
 import android.content.ContentUris
 import android.content.Context

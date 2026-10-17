@@ -1,7 +1,7 @@
 package com.appleux.design.components
 
     // android.R.drawable -> vendored iOS vector (2026-10-17):
-    //   android.R.drawable.sym_def_app_icon           -> il_ic_grid       placeholder for an app with no artwork
+    //   com.appleux.design.R.drawable.sf_app_library           -> il_ic_grid       placeholder for an app with no artwork
 import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity

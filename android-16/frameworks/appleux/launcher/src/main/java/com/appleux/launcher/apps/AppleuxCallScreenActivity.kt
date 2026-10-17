@@ -1,7 +1,7 @@
 package com.appleux.launcher.apps
 
     // android.R.drawable -> vendored iOS vector (2026-10-17):
-    //   android.R.drawable.ic_menu_add                -> sf_add           iOS plus
+    //   com.appleux.design.R.drawable.sf_add                -> sf_add           iOS plus
 import android.os.Bundle
 import android.telecom.Call
 import android.telecom.CallAudioState
