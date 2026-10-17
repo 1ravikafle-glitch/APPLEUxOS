@@ -1,16 +1,25 @@
+// AppleUX Adaptive Performance Controller — shared library, not an APK.
+// It reaches the image through static_libs in each app that uses it, and must
+// never appear in PRODUCT_PACKAGES (there is no such module to install).
+//
+// Built from the canonical sources in OsProject/appleux/performance, linked
+// into the AOSP tree at packages/apps/AppleUXPerformance.
+
 package {
-    default_applicable_licenses: ["Android-src-setup"],
+    default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
 android_library {
     name: "appleux-performance-lib",
     manifest: "src/main/AndroidManifest.xml",
     srcs: ["src/main/java/**/*.kt"],
-    sdk_version: "current",
-    min_sdk_version: "36",
     kotlin: {
         enabled: true,
     },
-    static_libs: ["androidx.core_core-ktx"],
-    libs: ["android.framework"],
+    sdk_version: "current",
+    min_sdk_version: "36",
+    static_libs: [
+        "androidx_runtime",
+    ],
+    product_specific: true,
 }

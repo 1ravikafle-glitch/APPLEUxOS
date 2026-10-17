@@ -73,6 +73,7 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
     private val notchBack = View(context)
     private val chargeDot = View(context)
     private val expandedBox: LinearLayout
+    private val glyph: AppleuxIcon
     private val line1: AppleuxText
     private val line2: AppleuxText
 
@@ -164,6 +165,13 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
             setTextColor(ColorTokens.label)
             gravity = Gravity.CENTER
         }
+        // Leading SF-symbol glyph for the expanded card (call/timer/music/
+        // battery). Emoji prefixes used to live in the strings below; glyphs
+        // come from the icon registry like every other surface.
+        glyph = AppleuxIcon(context).apply {
+            iconSize = 30f
+        }
+        expandedBox.addView(glyph)
         line2 = AppleuxText(context).apply {
             textSize = 14f
             setTextStyle(AppleuxText.TextStyle.REGULAR)
@@ -223,23 +231,33 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
     }
 
     private fun renderExpanded() {
+        val white = android.graphics.Color.WHITE
         when (slots.topKind()) {
             LiveSlots.Kind.CALL -> {
-                line1.text = "📞 ${slots.callText}"
+                glyph.iconName = "system_phone"
+                glyph.iconTint = white
+                line1.text = slots.callText
                 line2.text = "Tap to return to call"
             }
             LiveSlots.Kind.TIMER -> {
-                line1.text = "⏱ ${slots.timerText}"
+                glyph.iconName = "system_hourglass"
+                glyph.iconTint = white
+                line1.text = slots.timerText
                 line2.text = "Timer"
             }
             LiveSlots.Kind.MUSIC -> {
-                line1.text =
-                    (if (slots.musicPlaying) "▶ " else "⏸ ") + slots.musicText
+                glyph.iconName =
+                    if (slots.musicPlaying) "system_play" else "system_pause"
+                glyph.iconTint = white
+                line1.text = slots.musicText
                 line2.text = "Now Playing"
             }
             LiveSlots.Kind.BATTERY -> {
+                glyph.iconName = "system_battery"
+                glyph.iconTint = if (slots.charging) ColorTokens.systemGreen
+                else white
                 line1.text =
-                    if (slots.charging) "⚡ ${slots.batteryPercent}%" else "${slots.batteryPercent}%"
+                    if (slots.charging) "${slots.batteryPercent}%" else "${slots.batteryPercent}%"
                 line2.text = when {
                     slots.charging && slots.chargeText != null -> slots.chargeText
                     slots.charging -> "Charging"

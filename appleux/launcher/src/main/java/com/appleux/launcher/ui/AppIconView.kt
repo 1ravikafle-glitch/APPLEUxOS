@@ -95,6 +95,14 @@ class AppIconView @JvmOverloads constructor(
     private fun setFingerDown(value: Boolean) {
         if (fingerDown == value) return
         fingerDown = value
+        // Reduce Motion consumes the flag at last: no press-scale animation.
+        // Haptics stay (not motion).
+        if (com.appleux.design.runtime.AppleuxRuntimeConfig.isReduceMotionEnabled) {
+            animate().cancel()
+            scaleX = 1f
+            scaleY = 1f
+            return
+        }
         val target = if (value) LauncherTokens.PRESS_SCALE else 1f
         animate().cancel()
         animate()
@@ -102,6 +110,40 @@ class AppIconView @JvmOverloads constructor(
             .scaleY(target)
             .setDuration(if (value) PRESS_DOWN_MS else PRESS_UP_MS)
             .start()
+    }
+
+    /**
+     * Rasterizes [drawable] to a [size]x[size] bitmap masked by Apple's
+     * squircle. Adaptive icons are drawn layer-by-layer full-bleed
+     * (background, then foreground) so no platform mask can leak a circle
+     * through; anything else draws normally. Returns null only when there is
+     * nothing to draw or the size is degenerate — the caller then keeps any
+     * previously bound image instead of showing an empty cell.
+     */
+    private fun rasterizeSquircle(
+        drawable: android.graphics.drawable.Drawable?,
+        size: Int
+    ): android.graphics.drawable.Drawable? {
+        if (drawable == null || size <= 0) return null
+        val bmp = android.graphics.Bitmap.createBitmap(
+            size, size, android.graphics.Bitmap.Config.ARGB_8888
+        )
+        val c = android.graphics.Canvas(bmp)
+        c.clipPath(AppleIconSquircle.path(size, size))
+        if (drawable is android.graphics.drawable.AdaptiveIconDrawable) {
+            drawable.background?.let { bg ->
+                bg.setBounds(0, 0, size, size)
+                bg.draw(c)
+            }
+            drawable.foreground?.let { fg ->
+                fg.setBounds(0, 0, size, size)
+                fg.draw(c)
+            }
+        } else {
+            drawable.setBounds(0, 0, size, size)
+            drawable.draw(c)
+        }
+        return android.graphics.drawable.BitmapDrawable(resources, bmp)
     }
 
     /**
@@ -118,7 +160,6 @@ class AppIconView @JvmOverloads constructor(
         showLabel: Boolean = true
     ) {
         boundItem = item
-        iconView.setImageDrawable(item.icon)
         labelView.text = item.label
         labelView.visibility = if (showLabel) View.VISIBLE else View.GONE
 
@@ -130,6 +171,33 @@ class AppIconView @JvmOverloads constructor(
         lp.width = size
         lp.height = size
         iconView.layoutParams = lp
+
+        // iOS ships pre-masked icon assets; we rasterize to the squircle here
+        // instead of relying on view clipping. Clip-based masking proved
+        // unreliable across drawable types (adaptive-icon layers arrived
+        // circular on-device): drawing the raw layers full-bleed through our
+        // own squircle path guarantees the outline for every app.
+        val packed = AppleuxIconPack.resolve(context, item.packageName)
+        val squircle = iconView as? SquircleImageView
+        val drawn = AppleuxIconPack.drawnKind(item.packageName)
+        if (squircle != null) squircle.glyphKind = 0
+        if (drawn != 0 && squircle != null) {
+            squircle.setGlyphTile(drawn)
+        } else if (packed != null && squircle != null) {
+            if (item.packageName.lowercase().contains("calendar")) {
+                val now = java.util.Calendar.getInstance()
+                val wd = now.getDisplayName(
+                    java.util.Calendar.DAY_OF_WEEK,
+                    java.util.Calendar.SHORT, java.util.Locale.getDefault()
+                ) ?: ""
+                squircle.setCalendarArt(packed, wd, now.get(java.util.Calendar.DAY_OF_MONTH).toString())
+            } else {
+                squircle.setPackArt(packed)
+            }
+        } else {
+            squircle?.setPackArt(null)
+            iconView.setImageDrawable(rasterizeSquircle(item.icon, size))
+        }
 
         iconView.setLayerType(
             if (quality.shouldSimplifyIcons()) View.LAYER_TYPE_HARDWARE else View.LAYER_TYPE_NONE,

@@ -62,5 +62,20 @@
             android:exported="false"
             android:label="@string/adaptive_performance"
             android:parentActivityName=".SettingsActivity" />
+
+        <!-- Owned detail pages. These replace rows that used to fire
+             ACTION_WIFI_SETTINGS / ACTION_BATTERY_SAVER_SETTINGS and hand the
+             user to stock Settings. -->
+        <activity
+            android:name=".detail.WifiDetailActivity"
+            android:exported="false"
+            android:label="@string/wifi"
+            android:parentActivityName=".ui.SettingsListActivity" />
+
+        <activity
+            android:name=".detail.BatteryDetailActivity"
+            android:exported="false"
+            android:label="@string/battery"
+            android:parentActivityName=".ui.SettingsListActivity" />
     </application>
 </manifest>

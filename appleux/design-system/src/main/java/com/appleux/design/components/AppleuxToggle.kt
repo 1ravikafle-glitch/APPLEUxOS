@@ -126,7 +126,8 @@ class AppleuxToggle @JvmOverloads constructor(
     fun setChecked(value: Boolean, animate: Boolean = true) {
         if (checked == value && progress == if (value) 1f else 0f) return
         checked = value
-        if (animate) {
+        val rm = runCatching { com.appleux.design.runtime.AppleuxRuntimeConfig.isReduceMotionEnabled }.getOrDefault(false)
+        if (animate && !rm) {
             animateTo(if (value) 1f else 0f)
         } else {
             animator?.cancel()

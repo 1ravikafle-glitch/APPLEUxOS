@@ -38,6 +38,9 @@ class AppleuxNotificationShade @JvmOverloads constructor(
     private var notificationAdapter: NotificationAdapter? = null
 
     private val islandView: AppleuxDynamicIsland
+    private val statusBar = AppleuxStatusBar(context)
+    private val emptyView = AppleuxText(context)
+    val mediaCard = AppleuxMediaCard(context)
 
     private val clearAllButton: AppleuxText = AppleuxText(context).apply {
         text = "Clear All"
@@ -85,6 +88,23 @@ class AppleuxNotificationShade @JvmOverloads constructor(
         }
         addView(column)
 
+        // The shade reserves the cutout like every other panel: without this
+        // the header sits in the waterdrop on the POCO M5.
+        AppleuxDisplayInsets.applyTopInset(context, column)
+
+        statusBar.applyOverlayTheme(true)
+        column.addView(statusBar,
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
+        emptyView.apply {
+            text = "No Notifications"; textSize = 15f
+            setTextColor(ColorTokens.secondaryLabel); gravity = android.view.Gravity.CENTER
+            setPadding(0, 24, 0, 24); visibility = GONE
+        }
+        mediaCard.visibility = GONE
+        column.addView(mediaCard,
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
+        column.addView(emptyView,
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT))
         // The header paints no background of its own: on iOS it sits directly
         // on the frosted shade, so an opaque fill here would defeat the blur.
         column.addView(
@@ -148,14 +168,22 @@ class AppleuxNotificationShade @JvmOverloads constructor(
         islandView.bindSlots(slots)
     }
 
+    fun setMedia(title: String?, artist: String?, playing: Boolean) {
+        if (title == null) { mediaCard.visibility = GONE; return }
+        mediaCard.visibility = VISIBLE
+        mediaCard.bind(title, artist, playing)
+    }
+
     fun setNotifications(
         notifications: List<NotificationData>,
         onAction: ((NotificationData, NotificationAction) -> Unit)? = null,
-        onTap: ((NotificationData) -> Unit)? = null
+        onTap: ((NotificationData) -> Unit)? = null,
+        onReply: ((NotificationData, NotificationAction, String) -> Unit)? = null
     ) {
-        notificationAdapter = NotificationAdapter(notifications, onAction, onTap)
+        notificationAdapter = NotificationAdapter(notifications, onAction, onTap, onReply)
         recyclerView.adapter = notificationAdapter
         clearAllButton.visibility = if (notifications.isEmpty()) GONE else VISIBLE
+        emptyView.visibility = if (notifications.isEmpty()) VISIBLE else GONE
     }
 
     fun setOnClearAllListener(listener: (() -> Unit)?) {
@@ -245,8 +273,12 @@ class AppleuxNotificationShade @JvmOverloads constructor(
 
     data class NotificationAction(
         val title: String,
-        val intent: android.app.PendingIntent
-    )
+        val intent: android.app.PendingIntent,
+        /** Free-form inputs (e.g. messaging reply); null/empty = tap-only button. */
+        val freeFormKeys: List<String> = emptyList()
+    ) {
+        val hasInlineReply: Boolean get() = freeFormKeys.isNotEmpty()
+    }
 
     data class NotificationData(
         val id: String,
@@ -274,7 +306,8 @@ class AppleuxNotificationShade @JvmOverloads constructor(
     class NotificationAdapter(
         private val items: List<NotificationData>,
         private val onAction: ((NotificationData, NotificationAction) -> Unit)? = null,
-        private val onTap: ((NotificationData) -> Unit)? = null
+        private val onTap: ((NotificationData) -> Unit)? = null,
+        private val onReply: ((NotificationData, NotificationAction, String) -> Unit)? = null
     ) : RecyclerView.Adapter<NotificationViewHolder>() {
 
         /**
@@ -295,7 +328,7 @@ class AppleuxNotificationShade @JvmOverloads constructor(
 
         override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
             val item = items[position]
-            holder.bind(item, grouping[position], onAction) { data -> onTap?.invoke(data) }
+            holder.bind(item, grouping[position], onAction, { data -> onTap?.invoke(data) }) { d, a, text -> onReply?.invoke(d, a, text) }
         }
 
         override fun getItemCount() = items.size
@@ -332,7 +365,8 @@ class AppleuxNotificationShade @JvmOverloads constructor(
             data: NotificationData,
             grouping: Grouping,
             onAction: ((NotificationData, NotificationAction) -> Unit)?,
-            onTap: ((NotificationData) -> Unit)? = null
+            onTap: ((NotificationData) -> Unit)? = null,
+            onReply: ((NotificationData, NotificationAction, String) -> Unit)? = null
         ) {
             view.setGroupDecoration(grouping.label, grouping.stacked)
             view.setTitle(data.title)
@@ -340,7 +374,9 @@ class AppleuxNotificationShade @JvmOverloads constructor(
             view.setTimestamp(data.timestamp)
             data.iconRes?.let { view.setIcon(it) }
             view.setIconDrawable(data.icon)
-            view.setActions(data.actions) { action -> onAction?.invoke(data, action) }
+            view.setActions(data.actions,
+                { action -> onAction?.invoke(data, action) },
+                { action, text -> onReply?.invoke(data, action, text) })
             view.setOnClickListener { onTap?.invoke(data) }
         }
     }

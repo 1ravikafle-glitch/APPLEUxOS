@@ -67,9 +67,10 @@ class AppleuxControlCenterHeader @JvmOverloads constructor(
         topRow.addView(batteryText)
         addView(topRow)
 
-        // Row 2: large date, then large time (iOS order, no seconds).
+        // Row 2: compact date + time (iOS CC has NO huge clock — that is
+        // Notification Center. 15/28sp keeps clear of the status bar).
         dateText = AppleuxText(context).apply {
-            textSize = 26f
+            textSize = 15f
             setTextStyle(AppleuxText.TextStyle.SEMIBOLD)
             setTextColor(ColorTokens.label)
             setPadding(0, SpacingTokens.PADDING_SMALL, 0, 0)
@@ -77,7 +78,7 @@ class AppleuxControlCenterHeader @JvmOverloads constructor(
         addView(dateText)
 
         timeText = AppleuxText(context).apply {
-            textSize = 62f
+            textSize = 28f
             setTextStyle(AppleuxText.TextStyle.MEDIUM)
             setTextColor(ColorTokens.label)
             setPadding(0, 0, 0, SpacingTokens.PADDING_SMALL)
@@ -91,6 +92,12 @@ class AppleuxControlCenterHeader @JvmOverloads constructor(
      * @param charging true when the device is plugged in
      * @param batteryPercent 0..100
      */
+    /** iOS mode: summary line only — CC never shows date/time. */
+    fun setCompact(compact: Boolean) {
+        dateText.visibility = if (compact) GONE else VISIBLE
+        timeText.visibility = if (compact) GONE else VISIBLE
+    }
+
     fun bind(
         activeRadios: List<String>,
         airplaneMode: Boolean,

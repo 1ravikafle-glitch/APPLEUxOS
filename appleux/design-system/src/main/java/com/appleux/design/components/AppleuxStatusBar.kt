@@ -69,8 +69,25 @@ class AppleuxStatusBar @JvmOverloads constructor(
     private val iconSize = LayoutUtils.dpToPx(IconTokens.SIZE_STATUS_BAR, context)
     private val iconGap = LayoutUtils.dpToPx(SpacingTokens.INSETS_SM, context)
 
+    private val clockHandler = android.os.Handler(android.os.Looper.getMainLooper())
+    var showClock: Boolean = true
+    private var carrierOverride: String? = null
+    private val clockTick = object : Runnable {
+        override fun run() {
+            if (showClock) {
+                carrier.text = carrierPrefix() + android.text.format.DateFormat.format("h:mm", System.currentTimeMillis())
+                carrier.visibility = VISIBLE
+            }
+            clockHandler.postDelayed(this, 20_000L)
+        }
+    }
+    private fun carrierPrefix(): String =
+        if (carrierOverride.isNullOrEmpty()) "" else "${carrierOverride}  "
+
     init {
         outlineProvider = ViewOutlineProvider.BACKGROUND
+        // iOS 27: transparent over wallpaper/glass, never an opaque strip.
+        setBackgroundColor(android.graphics.Color.TRANSPARENT)
 
         addView(carrier, LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.START or Gravity.CENTER_VERTICAL
@@ -89,6 +106,19 @@ class AppleuxStatusBar @JvmOverloads constructor(
         iconRow.gravity = Gravity.CENTER_VERTICAL
 
         applyTheme()
+        // Live clock: updates once a minute like the lock screen.
+        clockHandler.post(clockTick)
+    }
+
+    /** Live bind: carrier + battery/wifi/cellular icons from platform state. */
+    fun bindSystemState(carrierText: String? = null, batteryPercent: Int = -1, charging: Boolean = false) {
+        if (carrierText != null) carrierOverride = carrierText
+        // Keep at least time visible; icons resolved by caller via setIcons.
+        if (showClock) {
+            carrier.text = carrierPrefix() + android.text.format.DateFormat.format("h:mm", System.currentTimeMillis())
+            carrier.visibility = VISIBLE
+        }
+        contentDescription = "Status bar ${carrier.text} battery $batteryPercent percent"
     }
 
     /** Replaces the trailing icon set. */
@@ -116,10 +146,21 @@ class AppleuxStatusBar @JvmOverloads constructor(
 
     /** Re-resolves the background and label colours from the shared tokens. */
     fun applyTheme() {
-        setBackgroundColor(ColorTokens.systemBackground)
-        carrier.setTextColor(ColorTokens.label)
+        // Transparent glass host: white content over wallpaper/shade.
+        setBackgroundColor(android.graphics.Color.TRANSPARENT)
+        carrier.setTextColor(android.graphics.Color.WHITE)
         for (i in 0 until iconRow.childCount) {
-            (iconRow.getChildAt(i) as? ImageView)?.setColorFilter(ColorTokens.label)
+            (iconRow.getChildAt(i) as? ImageView)?.setColorFilter(android.graphics.Color.WHITE)
+        }
+        invalidate()
+    }
+
+    /** White-on-glass variant for lock/shade/CC overlays. */
+    fun applyOverlayTheme(lightContent: Boolean = true) {
+        val fg = if (lightContent) android.graphics.Color.WHITE else ColorTokens.label
+        carrier.setTextColor(fg)
+        for (i in 0 until iconRow.childCount) {
+            (iconRow.getChildAt(i) as? ImageView)?.setColorFilter(fg)
         }
         invalidate()
     }

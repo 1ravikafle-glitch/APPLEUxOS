@@ -1,23 +1,34 @@
+// AppleUX Settings — replaces packages/apps/Settings.
+//
+// Built from the canonical sources in OsProject/appleux/settings, linked into
+// the AOSP tree at packages/apps/AppleUXSettings. The android.settings.SETTINGS
+// intent-filter with priority 1000 lives in src/main/AndroidManifest.xml.
+//
+// Module name is AppleUXSettings to match device/xiaomi/rock/appleux.mk. The
+// APK package stays com.appleux.settings and it defines the signature-guarded
+// permission com.appleux.settings.permission.READ_APPLEUX_CONFIG.
+
 package {
-    default_applicable_licenses: ["Android-src-setup"],
+    default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
 android_app {
-    name: "AppleuxSettings",
+    name: "AppleUXSettings",
+    owner: "appleux",
     srcs: ["src/main/java/**/*.kt"],
     manifest: "src/main/AndroidManifest.xml",
     resource_dirs: ["src/main/res"],
-    sdk_version: "current",
     kotlin: {
         enabled: true,
     },
+    sdk_version: "current",
+    min_sdk_version: "36",
     static_libs: [
-        "androidx.appcompat_appcompat",
-        "androidx.recyclerview_recyclerview",
-        "androidx.core_core-ktx",
+        "androidx_runtime",
         "appleux-design-system",
         "appleux-performance-lib",
     ],
-    libs: ["android.framework"],
     privileged: true,
+    required: ["appleux-design-system", "appleux-performance-lib"],
+    product_specific: true,
 }

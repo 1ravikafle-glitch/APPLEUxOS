@@ -123,9 +123,8 @@ class HomescreenGrid @JvmOverloads constructor(
 
 /**
  * A pinned widget cell: the host view plus its grid span (S = 2 columns,
- * M = 3 columns on the 5-column home grid). iOS proportions carry over: a
- * small widget is 2x2 cells and a medium one is 3x2, so both share the same
- * row height and differ only in width.
+ * M = full width on the 4-column home grid). A small widget is 2 cells wide
+ * and a medium one spans the full row; both share WIDGET_CELL_HEIGHT_DP.
  */
 data class WidgetCell(
     val appWidgetId: Int,
@@ -135,7 +134,7 @@ data class WidgetCell(
 )
 
 class HomescreenAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var apps: List<AppIconItem> = emptyList()
+    private var apps: MutableList<AppIconItem> = mutableListOf()
     private var widgets: List<WidgetCell> = emptyList()
     private var renderScale: Float = 1f
     private var qualityLevel: AppleuxQualityLevel = AppleuxQualityLevel.QUALITY_100
@@ -196,8 +195,18 @@ class HomescreenAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int = widgets.size + apps.size
 
     fun updateApps(newApps: List<AppIconItem>) {
-        apps = newApps
+        apps = newApps.toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun moveApp(from: Int, to: Int) {
+        val data = apps.toMutableList()
+        val flatFrom = from - widgets.size; val flatTo = to - widgets.size
+        if (flatFrom < 0 || flatTo < 0 || flatFrom >= data.size || flatTo >= data.size) return
+        val item = data.removeAt(flatFrom)
+        data.add(flatTo, item)
+        apps = data
+        notifyItemMoved(from, to)
     }
 
     fun updateWidgets(cells: List<WidgetCell>) {

@@ -64,6 +64,8 @@ class AppleuxListItem @JvmOverloads constructor(
     private val gap = LayoutUtils.dpToPx(SpacingTokens.INSETS_MD, context)
 
     init {
+        // Else onDraw (dividers) never runs on this LinearLayout.
+        setWillNotDraw(false)
         orientation = HORIZONTAL
         gravity = Gravity.CENTER_VERTICAL
         setPadding(insetH, insetV, insetH, insetV)

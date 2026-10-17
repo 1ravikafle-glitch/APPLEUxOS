@@ -32,12 +32,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <ImageView
+        <com.appleux.launcher.ui.SquircleImageView
             android:id="@+id/icon"
             android:layout_width="56dp"
             android:layout_height="56dp"
             android:layout_gravity="center_horizontal"
             android:scaleType="centerCrop" />
+
 
         <TextView
             android:id="@+id/label"
@@ -46,13 +47,12 @@
             android:layout_marginTop="4dp"
             android:ellipsize="end"
             android:gravity="center"
-            android:maxLines="1"
+            android:maxLines="2"
             android:shadowColor="#99000000"
             android:shadowDx="0"
             android:shadowDy="1"
             android:shadowRadius="2"
-            android:singleLine="true"
-            android:textColor="#B3FFFFFF"
+            android:textColor="#FFFFFFFF"
             android:textSize="12sp" />
     </LinearLayout>
 </FrameLayout>

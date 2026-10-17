@@ -66,6 +66,8 @@ class AppleuxNotificationItem @JvmOverloads constructor(
     private val actionRow: LinearLayout
 
     init {
+        // LinearLayout skips onDraw unless cleared (see AppleuxSurface).
+        setWillNotDraw(false)
         orientation = VERTICAL
 
         // Outer padding IS the card geometry: [cardInset, gapTop] is the strip
@@ -194,7 +196,8 @@ class AppleuxNotificationItem @JvmOverloads constructor(
      */
     fun setActions(
         actions: List<AppleuxNotificationShade.NotificationAction>,
-        onTap: (AppleuxNotificationShade.NotificationAction) -> Unit
+        onTap: (AppleuxNotificationShade.NotificationAction) -> Unit,
+        onReply: ((AppleuxNotificationShade.NotificationAction, String) -> Unit)? = null
     ) {
         actionRow.removeAllViews()
         if (actions.isEmpty()) {
@@ -202,6 +205,29 @@ class AppleuxNotificationItem @JvmOverloads constructor(
             return
         }
         actionRow.visibility = VISIBLE
+        // Q5 rule: free-form RemoteInput -> inline reply field; else capsule button.
+        actions.firstOrNull { it.hasInlineReply }?.let { reply ->
+            val box = android.widget.EditText(context).apply {
+                hint = reply.title; isSingleLine = true
+                textSize = 14f
+                layoutParams = LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f)
+            }
+            val send = Button(context, null, android.R.attr.borderlessButtonStyle).apply {
+                text = "Send"; isAllCaps = false; textSize = 14f
+                setTextColor(ColorTokens.systemBlue)
+                setOnClickListener {
+                    onReply?.invoke(reply, box.text.toString())
+                }
+            }
+            val replyRow = LinearLayout(context).apply {
+                orientation = LinearLayout.HORIZONTAL
+                addView(box); addView(send)
+            }
+            actionRow.addView(replyRow, LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT))
+            return
+        }
         val padH = dpInt(ACTION_PILL_PADDING_H_DP)
         val padV = dpInt(ACTION_PILL_PADDING_V_DP)
         for (action in actions.take(3)) {

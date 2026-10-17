@@ -1,23 +1,36 @@
+// AppleUX Launcher — replaces Launcher3 as HOME.
+//
+// Built from the canonical sources in OsProject/appleux/launcher, linked into
+// the AOSP tree at packages/apps/AppleUXLauncher. The HOME intent-filter with
+// priority 1000 lives in src/main/AndroidManifest.xml.
+//
+// Module name is AppleUXLauncher (capital X) to match device/xiaomi/rock/
+// appleux.mk. The APK package stays com.appleux.launcher — those are unrelated
+// identifiers and both appear in the priv-app allowlist.
+
 package {
-    default_applicable_licenses: ["Android-src-setup"],
+    default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
 android_app {
-    name: "AppleuxLauncher",
+    name: "AppleUXLauncher",
+    owner: "appleux",
     srcs: ["src/main/java/**/*.kt"],
     manifest: "src/main/AndroidManifest.xml",
     resource_dirs: ["src/main/res"],
-    sdk_version: "current",
     kotlin: {
         enabled: true,
     },
+    sdk_version: "current",
+    min_sdk_version: "36",
     static_libs: [
-        "androidx.appcompat_appcompat",
-        "androidx.recyclerview_recyclerview",
-        "androidx.core_core-ktx",
+        "androidx_runtime",
         "appleux-design-system",
         "appleux-performance-lib",
     ],
-    libs: ["android.framework"],
+    // priv-app: BIND_APPWIDGET and CAPTURE_AUDIO_OUTPUT are signature|privileged
+    // and are denied for a /system/app APK regardless of the allowlist.
     privileged: true,
+    required: ["appleux-design-system", "appleux-performance-lib"],
+    product_specific: true,
 }

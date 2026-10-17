@@ -64,6 +64,8 @@ class AppleuxSheet @JvmOverloads constructor(
         }
 
     init {
+        // FrameLayout skips onDraw unless this is cleared (see AppleuxSurface).
+        setWillNotDraw(false)
         // Transparent by default: the caller hosts this inside a window that
         // owns the scrim, or adds it to a full-screen container.
         setBackgroundColor(Color.TRANSPARENT)
@@ -132,9 +134,20 @@ class AppleuxSheet @JvmOverloads constructor(
 
     // ---- Presentation ------------------------------------------------------
 
+    private fun reduceMotion(): Boolean = runCatching {
+        com.appleux.design.runtime.AppleuxRuntimeConfig.isReduceMotionEnabled
+    }.getOrDefault(false)
+
     fun present() {
         if (presented) return
         presented = true
+        if (reduceMotion()) {
+            visibility = VISIBLE
+            scrim.visibility = VISIBLE
+            scrim.alpha = 1f
+            applyTheme()
+            return
+        }
         visibility = VISIBLE
         scrim.visibility = VISIBLE
         scrim.alpha = 0f
@@ -158,6 +171,11 @@ class AppleuxSheet @JvmOverloads constructor(
     fun dismiss() {
         if (!presented) return
         presented = false
+        if (reduceMotion()) {
+            visibility = GONE
+            scrim.visibility = GONE
+            return
+        }
         scrim.animate().alpha(0f)
             .setDuration(MotionTokens.DURATION_FAST)
             .start()

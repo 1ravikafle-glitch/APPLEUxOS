@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <!-- iOS sun.max.fill equivalent: disc + 8 rays, drawn for CC sliders.
+         White; the slider tints it to its foreground. -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M12,7m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0" />
+    <path
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:pathData="M12,1.5v2.4M12,20.1v2.4M1.5,12h2.4M20.1,12h2.4M4.7,4.7l1.7,1.7M17.6,17.6l1.7,1.7M19.3,4.7l-1.7,1.7M6.4,17.6l-1.7,1.7" />
+</vector>

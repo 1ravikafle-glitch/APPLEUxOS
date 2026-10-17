@@ -541,6 +541,7 @@ class AppleuxLockScreen @JvmOverloads constructor(
         private val iconView = ImageView(context)
 
         init {
+            setWillNotDraw(false)
             isClickable = true
             isFocusable = true
             addView(
@@ -585,6 +586,11 @@ class AppleuxLockScreen @JvmOverloads constructor(
      * the buttons so the stack reads as one material, not three.
      */
     private inner class NotificationCard(context: Context) : FrameLayout(context) {
+        init {
+            // FrameLayout skips onDraw unless cleared (see AppleuxSurface).
+            setWillNotDraw(false)
+        }
+
         private val fill = Paint(Paint.ANTI_ALIAS_FLAG)
         private val rim = Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.STROKE }
         private val shape = Path()

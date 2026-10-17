@@ -20,7 +20,7 @@ import com.appleux.design.tokens.SizingTokens
  * only ever overrides the default, so a theme flip is still picked up by every
  * card that did not set an explicit colour.
  */
-class AppleuxCard @JvmOverloads constructor(
+open class AppleuxCard @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0

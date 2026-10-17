@@ -211,7 +211,11 @@ class DockPreferences(context: Context) {
                 listOf(
                     "com.android.music",
                     "com.google.android.music",
-                    "com.miui.player"
+                    "com.google.android.apps.youtube.music",
+                    "com.spotify.music",
+                    "com.samsung.android.music",
+                    "com.miui.player",
+                    "org.videolan.vlc"
                 )
             )
         )

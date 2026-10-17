@@ -68,6 +68,9 @@ object AppleuxGlass {
      * unsupported platform clears any effect. Safe to call on every resume.
      */
     fun applyBlur(view: View, level: Int) {
+        // NOTE: blur-budget gating lives in SystemUIService (which sees the
+        // performance module). design-system compiles standalone, so it must
+        // not reference AdaptiveRenderPolicy here (unresolved at kotlinc).
         if (!isBlurSupported() || level <= MIN_LEVEL) {
             view.setRenderEffect(null)
             return

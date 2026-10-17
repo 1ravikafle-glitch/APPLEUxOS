@@ -21,39 +21,36 @@ class AppleuxControlTile @JvmOverloads constructor(
     val tile: AppleuxControlCenter.ControlTile,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : AppleuxSurface(context, attrs, defStyleAttr) {
+) : LinearLayout(context, attrs, defStyleAttr) {
 
+    private val disc: AppleuxSurface
     private val iconView: AppleuxIcon
     private val labelView: AppleuxText
     private val stateText: AppleuxText
-    private val container: LinearLayout
 
     private var isActive: Boolean = false
 
     init {
-        // iOS renders an INACTIVE control as a dark translucent circle, not a
-        // white one. The previous near-white fill vanished against the white
-        // glass sheet (measured from Apple's screenshot: inactive controls read
-        // as dark grey discs, active ones as solid colour).
-        surfaceColor = if (ColorTokens.darkMode) INACTIVE_FILL_DARK else INACTIVE_FILL_LIGHT
-        cornerRadius = SizingTokens.CORNER_RADIUS_ROUND
-        rimColor = if (ColorTokens.darkMode) {
-            LiquidGlassTokens.RIM_DARK
-        } else {
-            LiquidGlassTokens.RIM_LIGHT
-        }
-        rimWidthDp = LiquidGlassTokens.RIM_SPREAD_DP
-        surfaceElevation = 0f
+        orientation = VERTICAL
+        gravity = Gravity.CENTER_HORIZONTAL
+        isClickable = true
+        isFocusable = true
 
-        container = LinearLayout(context).apply {
-            orientation = LinearLayout.VERTICAL
-            gravity = Gravity.CENTER_HORIZONTAL
-            setPadding(SpacingTokens.PADDING_SMALL, SpacingTokens.PADDING_SMALL, SpacingTokens.PADDING_SMALL, SpacingTokens.PADDING_SMALL)
-            layoutParams = FrameLayout.LayoutParams(
-                FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.WRAP_CONTENT
-            )
+        // iOS disc: dark translucent when idle, solid colour when active
+        // (Drive set rule 7: tiny labels sit UNDER the discs).
+        disc = AppleuxSurface(context).apply {
+            surfaceColor = if (ColorTokens.darkMode) INACTIVE_FILL_DARK else INACTIVE_FILL_LIGHT
+            cornerRadius = SizingTokens.CORNER_RADIUS_ROUND
+            rimColor = if (ColorTokens.darkMode) {
+                LiquidGlassTokens.RIM_DARK
+            } else {
+                LiquidGlassTokens.RIM_LIGHT
+            }
+            rimWidthDp = LiquidGlassTokens.RIM_SPREAD_DP
+            surfaceElevation = 0f
         }
+        val px = (CONTROL_DIAMETER_DP * resources.displayMetrics.density).toInt()
+        disc.layoutParams = LayoutParams(px, px)
 
         iconView = AppleuxIcon(context).apply {
             // Fills most of the circle; iOS insets the glyph from the rim.
@@ -65,18 +62,28 @@ class AppleuxControlTile @JvmOverloads constructor(
             }
             iconState = if (isActive) IconTokens.States.ACTIVE else IconTokens.States.NORMAL
         }
+        disc.addView(iconView, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            FrameLayout.LayoutParams.WRAP_CONTENT,
+            Gravity.CENTER
+        ))
+        addView(disc)
 
         labelView = AppleuxText(context).apply {
             text = tile.name
-            textSize = 12f
+            textSize = 10f
             setTextStyle(AppleuxText.TextStyle.REGULAR)
             setTextColor(ColorTokens.secondaryLabel)
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
             gravity = Gravity.CENTER_HORIZONTAL
+            maxLines = 1
+            // iOS tiles carry no caption: kept for accessibility only.
+            visibility = GONE
         }
+        labelView.contentDescription = tile.name
+        addView(labelView, LayoutParams(
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT
+        ))
 
         stateText = AppleuxText(context).apply {
             text = ""
@@ -84,30 +91,14 @@ class AppleuxControlTile @JvmOverloads constructor(
             setTextStyle(AppleuxText.TextStyle.MEDIUM)
             setTextColor(ColorTokens.systemBlue)
             visibility = GONE
-            layoutParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-            )
             gravity = Gravity.CENTER_HORIZONTAL
         }
+        addView(stateText, LayoutParams(
+            LayoutParams.MATCH_PARENT,
+            LayoutParams.WRAP_CONTENT
+        ))
 
-        container.addView(iconView)
-        // iOS Control Center controls carry NO text label. Measured from
-        // Apple's own screenshot (scripts/measure-cc-from-screenshot.py):
-        // circular controls are 16.1% of screen width. 0.161 x 1080 px =
-        // 173.9 px -> 63.2 dp at OUR ROM's density 2.75 (the 65 came from
-        // the HyperOS-override divisor, the 70 from an assumed 2.625).
-        //
-        // The label is kept in the tree but hidden so it stays available as
-        // an accessibility label rather than being drawn where iOS has none.
-        labelView.visibility = GONE
-        labelView.contentDescription = tile.name
-        container.addView(labelView)
-        container.addView(stateText)
-        addView(container)
-
-        val size = (CONTROL_DIAMETER_DP * resources.displayMetrics.density).toInt()
-        layoutParams = FrameLayout.LayoutParams(size, size)
+        contentDescription = tile.name
     }
 
     companion object {
@@ -130,6 +121,8 @@ class AppleuxControlTile @JvmOverloads constructor(
      * its true state, because setActive(realState) and this toggle raced.
      */
     fun animateToggle() {
+        val rm = runCatching { com.appleux.design.runtime.AppleuxRuntimeConfig.isReduceMotionEnabled }.getOrDefault(false)
+        if (rm) return
         animate().scaleX(0.92f).scaleY(0.92f).setDuration(60)
             .withEndAction {
                 animate().scaleX(1f).scaleY(1f).setDuration(120).start()
@@ -139,17 +132,12 @@ class AppleuxControlTile @JvmOverloads constructor(
     /** Single source of truth for a control's appearance. Called by the service. */
     fun setActive(active: Boolean) {
         isActive = active
-        surfaceColor = if (active) ColorTokens.systemBlue
+        disc.surfaceColor = if (active) tile.activeColor
         else if (ColorTokens.darkMode) INACTIVE_FILL_DARK else INACTIVE_FILL_LIGHT
         iconView.iconState = if (isActive) IconTokens.States.ACTIVE else IconTokens.States.NORMAL
-        labelView.setTextColor(if (isActive) ColorTokens.systemBlue else ColorTokens.secondaryLabel)
+        labelView.setTextColor(if (isActive) tile.activeColor else ColorTokens.secondaryLabel)
         stateText.visibility = if (isActive) VISIBLE else GONE
         invalidate()
     }
 
-    override fun onDraw(canvas: Canvas) {
-        super.onDraw(canvas)
-    }
-
-    private fun Int.toFloat(): Float = this.toFloat()
 }

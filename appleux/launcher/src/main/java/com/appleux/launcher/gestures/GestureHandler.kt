@@ -20,7 +20,15 @@ class GestureHandler(
     private val context: Context,
     private val onSwipeUp: () -> Unit,
     private val onSwipeDown: (xFraction: Float) -> Unit = {},
-    private val onLongPress: (x: Float, y: Float) -> Unit = { _, _ -> }
+    private val onLongPress: (x: Float, y: Float) -> Unit = { _, _ -> },
+    /**
+     * Horizontal swipes carry the DOWN position as a height fraction so the
+     * caller can split the bottom edge (iOS recent-app switching) from the
+     * page area (home pages). 1.0 is the bottom edge.
+     */
+    private val onSwipeLeft: (downYFraction: Float) -> Unit = {},
+    private val onSwipeRight: (downYFraction: Float) -> Unit = {},
+    private val onSwipeUpHold: () -> Unit = {}
 ) {
 
     private val haptics: AppleuxHaptics = AppleuxHaptics.getInstance(context)
@@ -53,8 +61,21 @@ class GestureHandler(
         val dx = x - downX
         val dy = y - downY
         val duration = (eventTime - downTime).coerceAtLeast(1L)
+        val adx = kotlin.math.abs(dx)
+        val ady = kotlin.math.abs(dy)
 
-        if (kotlin.math.abs(dy) <= LauncherTokens.SWIPE_DISTANCE_PX) {
+        // Horizontal first: the old order checked |dy| <= slop first, which
+        // caught every flat swipe and returned before reaching here — so no
+        // horizontal swipe (pages, library, edge app-switch) ever fired.
+        // Only a dominant horizontal displacement past slop counts.
+        if (adx > ady && adx > LauncherTokens.SWIPE_DISTANCE_PX) {
+            haptics.impact(AppleuxHaptics.ImpactStyle.LIGHT)
+            val height = context.resources.displayMetrics.heightPixels.coerceAtLeast(1)
+            val downYFraction = (downY / height).coerceIn(0f, 1f)
+            if (dx < 0) onSwipeLeft(downYFraction) else onSwipeRight(downYFraction)
+            return true
+        }
+        if (ady <= LauncherTokens.SWIPE_DISTANCE_PX) {
             // Not a swipe: a slow, nearly stationary hold is a long-press
             // (RecyclerView long-click listeners are unreliable across
             // devices, so the launcher root owns this decision instead).
@@ -76,17 +97,29 @@ class GestureHandler(
             }
             return false
         }
-        if (kotlin.math.abs(dy) <= kotlin.math.abs(dx)) return false
         if (duration > LauncherTokens.SWIPE_MAX_DURATION_MS) return false
 
         haptics.impact(AppleuxHaptics.ImpactStyle.MEDIUM)
         if (dy < 0) {
-            onSwipeUp()
+            // Hold with finger down ~300ms before lifting: recents. Plain fast
+            // swipe: App Library. Thresholds are emulator-verified, not paper.
+            if (duration >= SWIPE_HOLD_DURATION_MS &&
+                kotlin.math.hypot(dx, dy) <= LauncherTokens.LONG_PRESS_SLOP_PX * 3
+            ) {
+                onSwipeUpHold()
+            } else {
+                onSwipeUp()
+            }
         } else {
             val width = context.resources.displayMetrics.widthPixels.coerceAtLeast(1)
             onSwipeDown(x / width)
         }
         return true
+    }
+
+    companion object {
+        /** Hold-vs-flick boundary for swipe-up-and-hold (recents). */
+        const val SWIPE_HOLD_DURATION_MS = 300L
     }
 
     /** Installs this handler into the launcher root container. */

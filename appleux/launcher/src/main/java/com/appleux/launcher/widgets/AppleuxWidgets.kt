@@ -15,19 +15,25 @@ private fun isDark(context: Context): Boolean {
 }
 
 /**
- * Widget tap opens Control Center (test entry + real feature: iOS widgets
- * are tappable). A tap is user interaction, so starting the foreground
- * SystemUI service from here is allowed.
+ * Widget tap deep-links to the relevant content (HIG system experiences §5),
+ * not to a generic surface: clock -> Clock app, calendar -> Calendar app,
+ * battery -> Settings root. First resolvable package wins; nothing happens
+ * when none resolve (no dead tap target is better than a wrong one, and the
+ * CC broadcast path below stays as the manual test entry).
  */
-private fun bindTapToCC(context: Context, views: RemoteViews, rootId: Int) {
-    val intent = android.content.Intent(ACTION_SHOW_CC).apply {
-        component = android.content.ComponentName(
-            context.packageName,
-            AppleuxClockWidgetProvider::class.java.name
-        )
-    }
-    val pi = android.app.PendingIntent.getBroadcast(
-        context, 0, intent,
+private fun bindTapToApp(
+    context: Context,
+    views: RemoteViews,
+    rootId: Int,
+    vararg pkgs: String
+) {
+    val pm = context.packageManager
+    val launch = pkgs.firstNotNullOfOrNull { runCatching {
+        pm.getLaunchIntentForPackage(it)?.addFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK)
+    }.getOrNull() } ?: return
+    val pi = android.app.PendingIntent.getActivity(
+        context, rootId,
+        launch,
         android.app.PendingIntent.FLAG_UPDATE_CURRENT or
             android.app.PendingIntent.FLAG_IMMUTABLE
     )
@@ -67,7 +73,8 @@ class AppleuxClockWidgetProvider : AppWidgetProvider() {
             val secondary = if (dark) 0x99FFFFFF.toInt() else 0xFF6E6E73.toInt()
             views.setTextColor(R.id.widget_clock_time, primary)
             views.setTextColor(R.id.widget_clock_date, secondary)
-            bindTapToCC(context, views, R.id.widget_clock_root)
+            bindTapToApp(context, views, R.id.widget_clock_root,
+                "com.google.android.deskclock", "com.android.deskclock")
             mgr.updateAppWidget(id, views)
         }
     }
@@ -103,7 +110,7 @@ class AppleuxBatteryWidgetProvider : AppWidgetProvider() {
             views.setTextColor(R.id.widget_battery_label, secondary)
             views.setTextViewText(R.id.widget_battery_level, "$pct%")
             views.setProgressBar(R.id.widget_battery_bar, 100, pct.coerceIn(0, 100), false)
-            bindTapToCC(context, views, R.id.widget_battery_root)
+            bindTapToApp(context, views, R.id.widget_battery_root, "com.appleux.settings")
             mgr.partiallyUpdateAppWidget(id, views)
         }
 
@@ -132,7 +139,8 @@ class AppleuxCalendarWidgetProvider : AppWidgetProvider() {
             val secondary = if (dark) 0x99FFFFFF.toInt() else 0xFF6E6E73.toInt()
             views.setTextColor(R.id.widget_calendar_weekday, primary)
             views.setTextColor(R.id.widget_calendar_month, secondary)
-            bindTapToCC(context, views, R.id.widget_calendar_root)
+            bindTapToApp(context, views, R.id.widget_calendar_root,
+                "com.google.android.calendar", "com.android.calendar")
             mgr.updateAppWidget(id, views)
         }
     }

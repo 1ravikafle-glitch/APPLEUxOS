@@ -2,7 +2,20 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.appleux.systemui">
 
-    <uses-permission android:name="android.permission.EXPEND_WINDOWS" />
+    
+    <uses-permission android:name="android.permission.EXPAND_WINDOWS" />
+    <!-- Signature|privileged grants. These MUST be declared here as well
+         as granted in device/xiaomi/rock/permissions/
+         privapp-permissions-appleux.xml: a grant for an undeclared
+         permission is dead, and a declared signature|privileged permission
+         with no grant is denied at runtime. The module is privileged:true,
+         or none of these would be grantable at all. -->
+    <uses-permission android:name="android.permission.STATUS_BAR" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.SYS_BOOT" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />

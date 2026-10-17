@@ -59,4 +59,41 @@
     <string name="quality_level">Quality level</string>
     <string name="render_scale">Render scale</string>
     <string name="monitoring_level">Monitoring level</string>
+
+    <!-- Owned detail pages. These replace rows that used to forward to stock
+         Settings, so each one names the state it is actually reporting. -->
+    <string name="settings_back">Back</string>
+    <string name="wifi_known_networks">Known Networks</string>
+    <string name="wifi_not_connected">Not Connected</string>
+    <string name="wifi_off">Wi-Fi is off</string>
+    <string name="wifi_scanning">Scanning…</string>
+    <string name="wifi_other_network">Other Networks</string>
+    <string name="wifi_no_networks">No networks found</string>
+    <string name="battery_level">Battery Level</string>
+    <string name="battery_state">Battery State</string>
+    <string name="battery_health">Battery Health</string>
+    <string name="battery_charging">Charging</string>
+    <string name="battery_discharging">Discharging</string>
+    <string name="battery_full">Full</string>
+    <string name="battery_low">Low</string>
+    <string name="battery_unknown">Unknown</string>
+    <string name="battery_health_good">Good</string>
+    <string name="battery_health_cold">Cold</string>
+    <string name="battery_health_overheat">Overheating</string>
+    <string name="battery_health_dead">Dead</string>
+    <string name="battery_health_over_voltage">Over Voltage</string>
+    <string name="battery_health_failure">Failure</string>
+    <string name="security_biometric">Biometric</string>
+    <string name="security_face_id">Face ID</string>
+    <string name="security_encryption">Data Protection</string>
+    <string name="display_brightness_label">Brightness</string>
+    <string name="display_auto_brightness_label">Auto-Brightness</string>
+    <string name="display_true_tone">True Tone</string>
+
+    <!-- Security: reports real capability instead of forwarding to stock. -->
+    <string name="data_protection_on">On</string>
+    <string name="data_protection_off">Off</string>
+    <string name="security_face_id_unavailable">Not set up</string>
+    <string name="biometric_enroll_unavailable">No biometric enrolment on this device</string>
+    <string name="write_settings_required">Allow “Modify system settings” to change display settings</string>
 </resources>

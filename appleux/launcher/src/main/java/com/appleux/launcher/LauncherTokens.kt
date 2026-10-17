@@ -11,11 +11,13 @@ package com.appleux.launcher
  *
  * ============================ THE 5 x 7 GRID =============================
  *
- * The grid is 5 columns x 7 rows. Every number below is DERIVED for OUR ROM's
- * frame — 440 dpi physical, no override (HyperOS's 430 override dies at
- * unlock and never applies here) — from the MEASURED panel geometry
- * (2026-10-15, physical unit — deliverables/m20/rock-display-measurement.md),
- * not copied from the prototype or from an iPhone:
+ * The grid is 4 columns x 6 rows, like iOS (reference home screen +
+ * spec home.json: gridColumns 4, gridRows 6, iconSize 60). Every number below
+ * is DERIVED for OUR ROM's frame — 440 dpi physical, no override (HyperOS's
+ * 430 override dies at unlock and never applies here) — from the MEASURED
+ * panel geometry (2026-10-15, physical unit —
+ * deliverables/m20/rock-display-measurement.md), not copied from the
+ * prototype or from an iPhone:
  *
  *   panel            1080 x 2408 px @ 440 dpi (this ROM; HyperOS reported 430)
  *   density          440 / 160 = 2.75
@@ -23,23 +25,13 @@ package com.appleux.launcher
  *
  * Horizontal — this is the binding axis:
  *   usable width     392.73 - 2 x GRID_SIDE_MARGIN_DP(20)     = 352.73 dp
- *   cell pitch       352.73 / 5                               = 70.55 dp
- *   icon edge        56 dp (kept; 56 / 70.55 = 0.794, still under the
- *                    0.81 merge limit below, so no shrink was needed)
- *
- *   The merge limit is the icon-to-cell ratio that leaves a visible gutter
- *   between neighbouring icons at 5 columns. It is also the constraint that
- *   forced the icon DOWN from the 60 dp a 4-column grid affords: at 5 columns
- *   60 dp icons would sit 0.81 of the pitch apart and visually merge. This is
- *   the real cost of a 5-wide grid and it is not hidden here. At 0.794 the
- *   gutter is 14.5 dp per cell — tighter than the HyperOS-frame derivation,
- *   but it passes.
+ *   cell pitch       352.73 / 4                               = 88.18 dp
+ *   icon edge        60 dp (like iOS; 60 / 88.18 = 0.68, so a 28 dp
+ *                    gutter separates neighbouring icons — no merge).
  *
  *   Label check: the longest common label ("Calculator") sets at ~66 dp in
- *   the 12sp label style, inside the 70.55 dp cell — 4.5 dp of slack. Tight,
- *   fits, and visibly tighter than before; if labels ever truncate on-device,
- *   this slack is the first suspect. That is why the label stayed at 12sp
- *   rather than the 10sp it shipped with.
+ *   the 12sp label style, inside the 88.18 dp cell — comfortable slack. That
+ *   is why the label stayed at 12sp rather than the 10sp it shipped with.
  *
  * Vertical — has slack, and is sized to consume it without crowding:
  *   top inset (notch)     MEASURED 76 px = 27.6 dp
@@ -71,26 +63,26 @@ object LauncherTokens {
 
     // ---- Grid -------------------------------------------------------------
 
-    /** Columns on the home screen. 5, not 4: the panel is 393 dp wide, not 375. */
-    const val GRID_COLUMNS: Int = 5
+    /** Columns on the home screen: 4, like iOS (reference Launcher-IOS-27). */
+    const val GRID_COLUMNS: Int = 4
 
-    /** Rows that must fit above the dock. */
-    const val GRID_ROWS: Int = 7
+    /** Rows that must fit above the dock: 6, like iOS (24 icons/page). */
+    const val GRID_ROWS: Int = 6
 
     /** Side margin, so the first column is not flush with the screen edge. */
     const val GRID_SIDE_MARGIN_DP: Float = 20f
 
-    /** One cell's pitch: (392.73 - 2 x 20) / 5. */
-    const val GRID_CELL_PITCH_DP: Float = 70.55f
+    /** One cell's pitch: (392.73 - 2 x 20) / 4. */
+    const val GRID_CELL_PITCH_DP: Float = 88.18f
 
-    /** Home-screen app-icon edge. See the derivation above. */
-    const val HOME_ICON_SIZE_DP: Float = 56f
+    /** Home-screen app-icon edge: 60, like iOS (28 dp gutter, no merge). */
+    const val HOME_ICON_SIZE_DP: Float = 60f
 
     /** Gap between an icon and its label. */
     const val ICON_LABEL_GAP_DP: Float = 4f
 
-    /** Row pitch: icon + gap + label + breathing space, 7 of which fit. */
-    const val GRID_ROW_PITCH_DP: Float = 100f
+    /** Row pitch: icon(60) + gap(4) + label(15) + breathing space; 6 fit in 702. */
+    const val GRID_ROW_PITCH_DP: Float = 117f
 
     /**
      * Bottom padding on the homescreen grid: the last row must stop above the
@@ -107,10 +99,10 @@ object LauncherTokens {
      * widget is 2x2 cells and a medium one is 4x2 — same height, twice the
      * width.
      */
-    const val WIDGET_CELL_HEIGHT_DP: Float = 141f
+    const val WIDGET_CELL_HEIGHT_DP: Float = 176f
 
-    /** Widget spans, expressed in the 5-column grid. Each row sums to 5. */
-    const val WIDGET_SPAN_MEDIUM: Int = 3
+    /** Widget spans, expressed in the 4-column grid (medium = full width). */
+    const val WIDGET_SPAN_MEDIUM: Int = 4
     const val WIDGET_SPAN_SMALL: Int = 2
 
     /** iOS shows the App Library as a 3-column grid, never a single-column list. */
@@ -146,8 +138,8 @@ object LauncherTokens {
         com.appleux.design.tokens.LiquidGlassTokens.REGULAR_CORNER_RADIUS_DP
 
     /** Dock bar fill alpha at glass level 0, and the extra alpha added at level 1. */
-    const val DOCK_GLASS_ALPHA_BASE: Int = 64
-    const val DOCK_GLASS_ALPHA_RANGE: Int = 64
+    const val DOCK_GLASS_ALPHA_BASE: Int = 88
+    const val DOCK_GLASS_ALPHA_RANGE: Int = 48
 
     // ---- Home-screen legibility ------------------------------------------
 
@@ -196,7 +188,7 @@ object LauncherTokens {
      * number is adopted because its spring is a plausible iOS "quick, slightly
      * bouncy" curve, not because it is an Apple measurement.
      */
-    const val PRESS_SCALE: Float = 0.94f
+    const val PRESS_SCALE: Float = 0.88f
 
     /** Spring damping ratio for the press scale. Prototype-derived, as above. */
     const val PRESS_SPRING_DAMPING: Float = 0.6f

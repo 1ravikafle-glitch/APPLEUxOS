@@ -271,6 +271,10 @@ object SettingsCatalog {
 
     private fun act(action: String) = NavTarget.Action(action)
 
+    /** A page we own. Preferred over [act] so no row lands in stock Settings. */
+    private fun internal(activity: Class<out androidx.appcompat.app.AppCompatActivity>) =
+        NavTarget.Internal(activity)
+
     fun build(context: android.content.Context): List<SettingsItem> {
         return listOf(
             header("section_appleux", R.string.appleux),
@@ -351,7 +355,7 @@ object SettingsCatalog {
             nav(
                 key = "wifi", titleRes = R.string.wifi,
                 iconKey = "system_wifi", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_WIFI_SETTINGS)
+                target = internal(com.appleux.settings.detail.WifiDetailActivity::class.java)
             ),
             nav(
                 key = "bluetooth", titleRes = R.string.bluetooth,
@@ -380,7 +384,7 @@ object SettingsCatalog {
             nav(
                 key = "battery", titleRes = R.string.battery,
                 iconKey = "system_battery", badgeColor = ColorTokens.systemGreen,
-                target = act(android.provider.Settings.ACTION_BATTERY_SAVER_SETTINGS)
+                target = internal(com.appleux.settings.detail.BatteryDetailActivity::class.java)
             ),
             header("section_general", R.string.section_general),
             nav(

@@ -1,9 +1,11 @@
-// AppleUX Design System - AOSP build module
-// Android library providing iOS-27-inspired design tokens, motion constants,
-// and reusable UI components for low-end hardware optimization.
+// AppleUX Design System — shared component library.
+//
+// Built from the canonical sources in OsProject/appleux/design-system, linked
+// into the AOSP tree at frameworks/appleux. Do NOT re-copy the sources into
+// the tree: see deliverables/m22/single-source-tree.md.
 
 package {
-    default_applicable_licenses: ["Android-src-setup"],
+    default_applicable_licenses: ["Android-Apache-2.0"],
 }
 
 android_library {
@@ -18,16 +20,14 @@ android_library {
     min_sdk_version: "36",
     resource_dirs: ["src/main/res"],
     static_libs: [
-        "androidx.appcompat_appcompat",
-        "androidx.recyclerview_recyclerview",
-        "androidx.core_core-ktx",
-        "androidx.dynamicanimation_dynamicanimation",
-        // Runtime display profile + refresh-rate-derived frame budget.
-        // Lives outside the tree so device adapters are not build-mixed into
-        // the design system; sources are symlinked in at
-        // src/main/java/com/appleux/device so the Gradle-free kotlinc path
-        // picks them up too (both paths must compile the same code).
+        // This manifest carries no external/androidx, so the named AndroidX
+        // modules do not exist. androidx_runtime is the aggregate built from
+        // external/androidx-prebuilts (the same AARs the SDK route uses).
+        "androidx_runtime",
+        // Runtime display profile + refresh-rate-derived frame budget. Defined
+        // by device-support/rock, linked into the tree at
+        // hardware/xiaomi-appleux/rock.
         "appleux-device-support-rock",
     ],
-    libs: ["android.framework"],
+    product_specific: true,
 }

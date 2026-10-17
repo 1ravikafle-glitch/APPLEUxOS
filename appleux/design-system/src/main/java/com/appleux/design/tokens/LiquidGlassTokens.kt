@@ -55,6 +55,17 @@ object LiquidGlassTokens {
     const val CLEAR_SHADOW_BLUR_DP = 15f
     const val CLEAR_SHADOW_ALPHA = 0.02f
 
+    // ---- Liquid Glass - Regular Small (pill controls) --------------------
+    // Figma kit transcription: pill radius 100, system-gray fill #767680 at
+    // 0.08 (light) / 0.12 (dark), zero-blur rim spread 0.5. Scoped variant —
+    // existing Regular/Clear values unchanged (skill rule: no global retune
+    // to align one screen).
+    const val SMALL_CORNER_RADIUS_DP = 100f
+    const val SMALL_BG_LIGHT = 0x14767680
+    const val SMALL_BG_DARK = 0x1F767680.toInt()
+    const val SMALL_RIM_LIGHT = 0xFFEBEBEB.toInt()
+    const val SMALL_RIM_DARK = 0xFFE6E6E6.toInt()
+
     // ---- Rim (the outline around a glass surface) ------------------------
     // This is what separates glass from the content beneath. Modelled as
     // zero-blur drop shadows with positive spread.

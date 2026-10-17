@@ -6,15 +6,18 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.view.LayoutInflater
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import android.widget.EditText
 import android.widget.FrameLayout
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.appleux.design.components.AppleuxDisplayInsets
-import com.appleux.design.tokens.SpacingTokens
-import com.appleux.launcher.LauncherTokens
+import com.appleux.design.components.AppleuxText
+import com.appleux.design.tokens.ColorTokens
 import com.appleux.launcher.R
 import com.appleux.performance.quality.AppleuxQualityLevel
 
@@ -28,6 +31,10 @@ data class AppIconItem(
 
 fun AppleuxQualityLevel.shouldSimplifyIcons(): Boolean = this.level <= 3
 
+/**
+ * iOS App Library: search pill on top, 2-column category folders
+ * (1 large + 3 small minis + label), tap opens the full category grid.
+ */
 class AppLibraryView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -35,21 +42,70 @@ class AppLibraryView @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyle) {
 
     private val recyclerView: RecyclerView
-    private val adapter: AppLibraryAdapter
+    private val adapter = FolderAdapter()
     private var cached: List<AppIconItem> = emptyList()
+    private var onAppClick: ((AppIconItem) -> Unit)? = null
+    private var query = ""
 
     init {
-        LayoutInflater.from(context).inflate(R.layout.app_library_view, this, true)
-        recyclerView = findViewById(R.id.recyclerView)
-        // iOS App Library is a 3-column grid of icons, not a vertical list.
-        recyclerView.layoutManager =
-            GridLayoutManager(context, LauncherTokens.APP_LIBRARY_COLUMNS)
-        adapter = AppLibraryAdapter()
+        val col = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+        }
+        addView(col)
+        AppleuxDisplayInsets.applyTopInset(context, col)
+        // iOS 27: same wallpaper background as home, with blur
+        val wallpaperView = android.widget.ImageView(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            scaleType = android.widget.ImageView.ScaleType.CENTER_CROP
+            setImageResource(
+                if (com.appleux.design.theme.AppleuxTheme.isDarkMode) com.appleux.launcher.R.drawable.appleux_wallpaper_dark
+                else com.appleux.launcher.R.drawable.appleux_wallpaper_light
+            )
+        }
+        addView(wallpaperView, 0)
+        // Blur overlay for the wallpaper
+        val blurOverlay = View(context).apply {
+            layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
+            setBackgroundColor(0x40000000)
+        }
+        addView(blurOverlay, 1)
+        val search = EditText(context).apply {
+            hint = "Q  App Library"
+            isSingleLine = true
+            gravity = Gravity.CENTER
+            background = android.graphics.drawable.GradientDrawable().apply {
+                shape = android.graphics.drawable.GradientDrawable.RECTANGLE
+                cornerRadius = 48f * resources.displayMetrics.density
+                setColor((0x59 shl 24) or 0x000000)
+            }
+            val d = resources.displayMetrics.density
+            setPadding((24 * d).toInt(), (10 * d).toInt(), (24 * d).toInt(), (10 * d).toInt())
+            setTextColor(ColorTokens.label)
+            setHintTextColor(ColorTokens.secondaryLabel)
+        }
+        val d = resources.displayMetrics.density
+        col.addView(search, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ).apply {
+            setMargins((20 * d).toInt(), (8 * d).toInt(), (20 * d).toInt(), (8 * d).toInt())
+        })
+        search.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
+            override fun afterTextChanged(s: android.text.Editable?) {
+                query = s?.toString().orEmpty()
+                refresh()
+            }
+        })
+        recyclerView = RecyclerView(context).apply {
+            layoutManager = GridLayoutManager(context, 2)
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f)
+        }
         recyclerView.adapter = adapter
-        // The library is a full-bleed overlay stacked over the launcher root,
-        // which no longer applies a top inset of its own (the wallpaper runs
-        // under the notch). So the overlay reserves the cutout directly.
-        AppleuxDisplayInsets.applyTopInset(context, recyclerView)
+        col.addView(recyclerView)
     }
 
     fun loadApps(): List<AppIconItem> {
@@ -61,6 +117,9 @@ class AppLibraryView @JvmOverloads constructor(
             val appInfo = pm.getApplicationInfo(ai.packageName, 0)
             AppIconItem(
                 label = pm.getApplicationLabel(appInfo).toString(),
+                // Raw artwork here; AppIconView.bind resolves the iOS pack
+                // (AppleuxIconPack) per package and rasterizes everything to
+                // the squircle, so there is exactly one icon pipeline.
                 icon = pm.getApplicationIcon(appInfo.packageName),
                 intent = Intent(Intent.ACTION_MAIN).apply {
                     setClassName(ai.packageName, ai.name)
@@ -70,84 +129,115 @@ class AppLibraryView @JvmOverloads constructor(
                 isSystemApp = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
             )
         }.sortedBy { it.label.lowercase() }
-
         cached = apps
-        adapter.updateApps(apps)
+        refresh()
         return apps
     }
 
-    /** Last result of [loadApps]; avoids re-querying PackageManager per tap. */
     fun cachedApps(): List<AppIconItem> = cached
 
     fun setOnAppClickListener(listener: (AppIconItem) -> Unit) {
-        adapter.onItemClick = listener
+        onAppClick = listener
     }
 
-    fun setRenderScale(scale: Float) {
-        adapter.setRenderScale(scale)
+    fun setRenderScale(scale: Float) = Unit
+    fun setQualityLevel(level: AppleuxQualityLevel) = Unit
+
+    private fun categoryOf(pkg: String): String = when {
+        pkg.contains("camera") || pkg.contains("gallery") || pkg.contains("photo") -> "Creativity"
+        pkg.contains("message") || pkg.contains("sms") || pkg.contains("mail") ||
+            pkg.contains("dialer") || pkg.contains("phone") -> "Social"
+        pkg.contains("clock") || pkg.contains("calendar") || pkg.contains("calc") ||
+            pkg.contains("note") -> "Productivity"
+        pkg.contains("music") || pkg.contains("video") || pkg.contains("game") -> "Entertainment"
+        else -> "Utilities"
     }
 
-    fun setQualityLevel(level: AppleuxQualityLevel) {
-        adapter.setQualityLevel(level)
-    }
-}
+    /** iOS 27 App Library categories in order. */
+    private val ios27Categories = listOf(
+        "Suggestions", "Recently Added", "Social", "Utilities", "Creativity", "Productivity"
+    )
 
-class AppLibraryAdapter : RecyclerView.Adapter<AppLibraryViewHolder>() {
-    private val apps = mutableListOf<AppIconItem>()
-    var onItemClick: ((AppIconItem) -> Unit)? = null
-    private var renderScale: Float = 1f
-    private var qualityLevel: AppleuxQualityLevel = AppleuxQualityLevel.QUALITY_100
+    fun categories(): Map<String, List<AppIconItem>> = cached.groupBy { categoryOf(it.packageName) }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AppLibraryViewHolder {
-        val view = AppIconView(parent.context)
-        val density = parent.context.resources.displayMetrics.density
-        // GridLayoutManager hands each item one column, so the cell must fill
-        // it; a default wrap-content cell would shrink to the icon and pull the
-        // whole column off-centre.
-        val lp = RecyclerView.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT
-        )
-        val verticalMargin = (SpacingTokens.INSETS_SM * density).toInt()
-        lp.topMargin = verticalMargin
-        lp.bottomMargin = verticalMargin
-        view.layoutParams = lp
-        return AppLibraryViewHolder(view)
+    fun filter(q: String) {
+        query = q
+        refresh()
     }
 
-    override fun onBindViewHolder(holder: AppLibraryViewHolder, position: Int) {
-        val item = apps[position]
-        holder.bind(item, renderScale, qualityLevel, onItemClick)
+    private fun refresh() {
+        val q = query.trim().lowercase()
+        val groups = categories()
+        val folders = if (q.isEmpty()) {
+            // iOS 27: Suggestions (first 4 apps), Recently Added (last 4),
+            // then category folders in fixed order
+            val suggestions = cached.take(4)
+            val recentlyAdded = cached.takeLast(4)
+            val categoryFolders = ios27Categories.mapNotNull { cat ->
+                groups[cat]?.let { Folder(cat, it) }
+            }
+            buildList {
+                if (suggestions.isNotEmpty()) add(Folder("Suggestions", suggestions))
+                if (recentlyAdded.isNotEmpty()) add(Folder("Recently Added", recentlyAdded))
+                addAll(categoryFolders)
+            }
+        } else {
+            val hits = cached.filter { it.label.lowercase().contains(q) }
+            if (hits.isEmpty()) emptyList()
+            else listOf(Folder("Results", hits))
+        }
+        adapter.submit(folders,
+            { folder -> openFolder(folder) },
+            { app -> onAppClick?.invoke(app) })
     }
 
-    override fun getItemCount(): Int = apps.size
-
-    fun updateApps(newApps: List<AppIconItem>) {
-        apps.clear()
-        apps.addAll(newApps)
-        notifyDataSetChanged()
+    private fun openFolder(folder: Folder) {
+        val dlg = android.app.AlertDialog.Builder(context)
+            .setTitle(folder.name)
+            .setNegativeButton(android.R.string.cancel, null)
+            .create()
+        dlg.setView(wrapFolderGrid(folder))
+        dlg.show()
     }
 
-    fun setRenderScale(scale: Float) {
-        renderScale = scale
-        notifyDataSetChanged()
+    private fun wrapFolderGrid(folder: Folder): View {
+        val gl = GridLayout(context).apply { columnCount = 4 }
+        val d = resources.displayMetrics.density
+        for (app in folder.apps) {
+            val v = AppIconView(context)
+            v.bind(app, 1f, AppleuxQualityLevel.QUALITY_100,
+                com.appleux.launcher.LauncherTokens.HOME_ICON_SIZE_DP, true)
+            v.onItemClick = onAppClick
+            gl.addView(v, ViewGroup.LayoutParams((80 * d).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT))
+        }
+        val scroll = android.widget.ScrollView(context)
+        scroll.addView(gl)
+        return scroll
     }
 
-    fun setQualityLevel(level: AppleuxQualityLevel) {
-        qualityLevel = level
-        notifyDataSetChanged()
-    }
-}
+    data class Folder(val name: String, val apps: List<AppIconItem>)
 
-class AppLibraryViewHolder(view: AppIconView) : RecyclerView.ViewHolder(view) {
-    fun bind(
-        item: AppIconItem,
-        scale: Float,
-        quality: AppleuxQualityLevel,
-        onClick: ((AppIconItem) -> Unit)?
-    ) {
-        val v = itemView as AppIconView
-        v.onItemClick = onClick
-        v.bind(item, scale, quality)
+    private inner class FolderAdapter : RecyclerView.Adapter<FolderHolder>() {
+        private var folders: List<Folder> = emptyList()
+        private var onFolder: ((Folder) -> Unit)? = null
+        private var onApp: ((AppIconItem) -> Unit)? = null
+        fun submit(f: List<Folder>, of: (Folder) -> Unit, oa: (AppIconItem) -> Unit) {
+            folders = f; onFolder = of; onApp = oa
+            notifyDataSetChanged()
+        }
+        override fun onCreateViewHolder(p: ViewGroup, t: Int): FolderHolder {
+            val v = AppleuxLibraryFolder(p.context)
+            v.layoutParams = RecyclerView.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            return FolderHolder(v)
+        }
+        override fun onBindViewHolder(h: FolderHolder, pos: Int) {
+            val f = folders[pos]
+            (h.itemView as AppleuxLibraryFolder).bind(f.name, f.apps) { app -> onApp?.invoke(app) }
+            (h.itemView as AppleuxLibraryFolder).onOpen = { onFolder?.invoke(f) }
+        }
+        override fun getItemCount(): Int = folders.size
     }
+
+    private class FolderHolder(v: View) : RecyclerView.ViewHolder(v)
 }

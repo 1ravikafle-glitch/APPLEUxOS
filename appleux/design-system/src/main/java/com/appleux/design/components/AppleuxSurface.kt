@@ -130,6 +130,10 @@ open class AppleuxSurface @JvmOverloads constructor(
     private val rectF = RectF()
 
     init {
+        // FrameLayout defaults willNotDraw=true, which SILENTLY SKIPS onDraw:
+        // every surface fill, tile disc, toggle track and card vanished while
+        // children kept drawing (the "floating glyphs" bug). Must stay false.
+        setWillNotDraw(false)
         outlineProvider = ViewOutlineProvider.BACKGROUND
         isClickable = true
         isFocusable = true
