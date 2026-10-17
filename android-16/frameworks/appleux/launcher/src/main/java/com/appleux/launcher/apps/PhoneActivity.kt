@@ -30,6 +30,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.appleux.design.components.AppleuxDialogs
+import com.appleux.design.components.AppleuxSlider
 import com.appleux.sounds.AppleuxSoundPlayer
 import com.appleux.design.components.AppleuxButton
 import com.appleux.design.components.AppleuxCard
@@ -634,7 +635,7 @@ class PhoneActivity : AppCompatActivity() {
         row.addView(topRow)
 
         // Playback progress bar
-        vmSeek = SeekBar(this).apply {
+        vmSeek = AppleuxSlider(this).apply {
             max = 100
             progress = 0
             layoutParams = LinearLayout.LayoutParams(

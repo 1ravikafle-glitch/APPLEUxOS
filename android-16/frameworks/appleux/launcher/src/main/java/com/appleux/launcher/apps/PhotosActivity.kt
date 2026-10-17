@@ -47,6 +47,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.appleux.design.components.AppleuxDialogs
+import com.appleux.design.components.AppleuxSlider
 import com.appleux.design.components.AppleuxDisplayInsets
 import com.appleux.design.components.AppleuxNavigationBar
 import com.appleux.design.components.AppleuxSurface
@@ -2536,7 +2537,7 @@ class PhotosActivity : AppCompatActivity() {
         }
         container.addView(label)
 
-        val seekBar = SeekBar(this).apply {
+        val seekBar = AppleuxSlider(this).apply {
             max = 100
             progress = 50
             setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {

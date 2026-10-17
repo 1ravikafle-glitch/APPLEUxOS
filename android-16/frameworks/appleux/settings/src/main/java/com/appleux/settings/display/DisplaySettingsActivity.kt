@@ -6,6 +6,7 @@ import android.widget.ScrollView
 import android.widget.SeekBar
 import android.widget.TextView
 import com.appleux.design.components.AppleuxCard
+import com.appleux.design.components.AppleuxSlider
 import com.appleux.design.components.AppleuxListItem
 import com.appleux.design.components.AppleuxToggle
 import com.appleux.settings.R
@@ -94,7 +95,7 @@ class DisplaySettingsActivity : SettingsDetailActivity() {
                 0
             )
         }
-        val seek = SeekBar(this).apply {
+        val seek = AppleuxSlider(this).apply {
             max = MAX_LEVEL
             progress = level
             isEnabled = !auto

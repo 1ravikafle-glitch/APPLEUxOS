@@ -82,7 +82,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
-        <SeekBar
+        <com.appleux.design.components.AppleuxSlider
             android:id="@+id/settingSeek"
             android:layout_width="120dp"
             android:layout_height="wrap_content"

@@ -18,6 +18,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.appleux.sounds.AppleuxSoundPlayer
 import com.appleux.design.components.AppleuxGlass
+import com.appleux.design.components.AppleuxSlider
 import com.appleux.design.components.AppleuxHaptics
 import com.appleux.design.components.AppleuxIconRegistry
 import com.appleux.design.runtime.AppleuxRuntimeConfig
@@ -585,7 +586,7 @@ class CameraActivity : AppCompatActivity() {
         cell.addView(headerRow)
 
         // Slider
-        val slider = SeekBar(this).apply {
+        val slider = AppleuxSlider(this).apply {
             layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
