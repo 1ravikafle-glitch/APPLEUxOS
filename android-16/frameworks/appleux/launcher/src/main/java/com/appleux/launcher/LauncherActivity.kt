@@ -565,23 +565,63 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         root.addView(homescreenGrid)
         root.addView(libraryScrim)
         root.addView(appLibraryView)
-        val searchPill = com.appleux.design.components.AppleuxText(this).apply {
-            text = "Search"; textSize = 13f
-            setTextColor(com.appleux.design.tokens.ColorTokens.secondaryLabel)
-            gravity = android.view.Gravity.CENTER
-            isClickable = true; isFocusable = true
+        // The iOS 27 search pill: a translucent capsule carrying a magnifier and a
+        // "Search" placeholder. This used to be a bare AppleuxText label, which
+        // read as a caption rather than an affordance — the giveaway being that a
+        // search field shows a magnifier and this did not.
+        //
+        // The fill now comes from the Liquid Glass kit rather than a hardcoded
+        // 0x59000000, so the pill follows light/dark and the transparency slider
+        // like every other glass surface instead of being a fixed grey.
+        val d = resources.displayMetrics.density
+        val searchPill = android.widget.LinearLayout(this).apply {
+            orientation = android.widget.LinearLayout.HORIZONTAL
+            gravity = android.view.Gravity.CENTER_VERTICAL
+            isClickable = true
+            isFocusable = true
+            contentDescription = "Search"
             setOnClickListener { openSpotlight() }
             background = android.graphics.drawable.GradientDrawable().apply {
                 shape = android.graphics.drawable.GradientDrawable.RECTANGLE
-                cornerRadius = 48f * resources.displayMetrics.density
-                setColor((0x59 shl 24) or 0x000000)
+                cornerRadius = 48f * d
+                setColor(androidx.core.graphics.ColorUtils.setAlphaComponent(
+                    com.appleux.design.tokens.ColorTokens.systemBackground,
+                    com.appleux.design.components.AppleuxGlass
+                        .scrimAlphaForLevel(
+                            com.appleux.design.components.AppleuxGlass.MAX_LEVEL
+                        ),
+                ))
             }
             setPadding(
-                // 13dp vertical pads to a ~44dp touch target (a11y minimum).
-                (28 * resources.displayMetrics.density).toInt(),
-                (13 * resources.displayMetrics.density).toInt(),
-                (28 * resources.displayMetrics.density).toInt(),
-                (13 * resources.displayMetrics.density).toInt())
+                (14 * d).toInt(), (13 * d).toInt(), (22 * d).toInt(), (13 * d).toInt()
+            )
+            addView(
+                android.widget.ImageView(this@LauncherActivity).apply {
+                    setImageResource(com.appleux.design.R.drawable.il_ic_search)
+                    // Tint rather than recolour: the vendored vectors are black
+                    // and the pill sits on a wallpaper of unknown lightness.
+                    setColorFilter(
+                        com.appleux.design.tokens.ColorTokens.secondaryLabel,
+                        android.graphics.PorterDuff.Mode.SRC_IN,
+                    )
+                    layoutParams = android.widget.LinearLayout.LayoutParams(
+                        (15 * d).toInt(), (15 * d).toInt()
+                    )
+                }
+            )
+            addView(
+                com.appleux.design.components.AppleuxText(this@LauncherActivity).apply {
+                    text = "Search"
+                    textSize = 13f
+                    setTextColor(com.appleux.design.tokens.ColorTokens.secondaryLabel)
+                    // 8dp between glyph and label, per the pill's own metrics.
+                    setPadding((8 * d).toInt(), 0, 0, 0)
+                },
+                android.widget.LinearLayout.LayoutParams(
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                    android.widget.LinearLayout.LayoutParams.WRAP_CONTENT,
+                )
+            )
         }
         root.addView(
             searchPill,

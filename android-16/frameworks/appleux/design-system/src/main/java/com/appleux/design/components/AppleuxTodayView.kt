@@ -35,7 +35,27 @@ class AppleuxTodayView @JvmOverloads constructor(
 
     init {
         // Background: wallpaper + blur (same as home screen)
-        setBackgroundColor(ColorTokens.systemBackground)
+        //
+        // This used to be `setBackgroundColor(ColorTokens.systemBackground)`,
+        // which contradicted the comment directly above it and made the whole
+        // Today page an opaque slab: iOS 27 shows translucent cards over the
+        // live wallpaper, so an opaque fill here is visible as a hard rectangle
+        // covering the wallpaper behind the page.
+        //
+        // The fix is a glass surface rather than a solid one: a translucent scrim
+        // from the Liquid Glass kit plus the platform blur, which is what the
+        // launcher's own cards use. Blur is applied to the scrim only, not to a
+        // full-screen view, because the 2 GB floor says at most one blurred
+        // surface at a time and the cards below are what must read as glass.
+        // scrimAlphaForLevel returns the kit's fill alpha; compose it onto the
+        // system background colour rather than inventing a new colour token, so
+        // the Today page follows light/dark exactly as everything else does.
+        val scrim = androidx.core.graphics.ColorUtils.setAlphaComponent(
+            ColorTokens.systemBackground,
+            AppleuxGlass.scrimAlphaForLevel(AppleuxGlass.MAX_LEVEL),
+        )
+        setBackgroundColor(scrim)
+        AppleuxGlass.applyBlur(this, AppleuxGlass.MAX_LEVEL)
 
         val column = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
