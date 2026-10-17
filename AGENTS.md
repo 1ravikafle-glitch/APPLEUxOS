@@ -92,22 +92,29 @@ that had already been written into code.
 | | value |
 |---|---|
 | Panel | **1080 × 2408 px** (not 2400) |
-| Density | 440 physical, **HyperOS override 430 — 430 is the effective value** |
-| Logical frame | **401.9 × 896.0 dp** (at 440 with no override: 392.7 × 875.6) |
-| Top inset | **76 px = 28.3 dp** — status bar and waterdrop cutout are the same 76 px |
-| Bottom inset | **127 px = 47.3 dp** |
+| Density | **440, no override — OUR ROM sets physical** (HyperOS reported an override of 430; that override dies at unlock and never applies here) |
+| Logical frame | **392.73 × 875.64 dp** |
+| Top inset | **76 px = 27.6 dp** — status bar and waterdrop cutout are the same 76 px |
+| Bottom inset | **127 px = 46.2 dp** |
 | Cutout | **100 × 76 px, top-centre**, centre x = 540 = exactly 1080/2 |
-| Corners | **106 px radius, all four** (39.4 dp — reserve in fullscreen surfaces) |
+| Corners | **106 px radius, all four** (38.5 dp — reserve in fullscreen surfaces) |
 | Refresh | **30 / 50 / 60 / 90 Hz** (`dumpsys display` supportedModes, 90 active at capture) |
 
 Full capture and the corrections it forced:
-`deliverables/m20/rock-display-measurement.md`. The refresh-rate list is from
-the published panel spec, not from that capture — confirm with
-`adb shell dumpsys display | grep -iE 'fps|refresh|mode'`.
+`deliverables/m20/rock-display-measurement.md`.
 
-Consequence: the `device-support/rock` fallbacks are now measured, and the
-home-grid derivation (which assumed 411.43 x 914.29 dp) **needs re-deriving**
-at 401.9 x 896.0 dp.
+Consequence: the `device-support/rock` fallbacks are measured at OUR ROM's
+frame, and the home-grid derivation is done at 392.73 x 875.64 dp
+(LauncherTokens: pitch 70.55, row 100, clearance 146, widget 141).
+
+## Ground-truth screenshots — read first for Settings
+
+`design-reference/iphone11-ios27/` holds the operator's REAL iPhone 11 iOS 27
+photos (Settings root + General, 2026-10-16). They outrank every other design
+source for Settings chrome: account card, value text, bottom search pill,
+sub-screen hero cards, Shut Down row. See its README for the file manifest
+and the extracted facts (47-file Drive set in `drive/` is binding). If the folder is empty of PNGs, ask the operator to
+drop the originals in — do not substitute guide PNGs silently.
 
 ## Design sources — which one wins
 
@@ -126,14 +133,42 @@ cited corrections; its token file disagreed with the measured Apple kit on 5 of
 
 ## Key Constraints
 
-1. **Disk**: 39 GB free on the project drive. Full AOSP sync + build (~200 GB)
-   does not fit. Use selective sync (`repo sync -c` on specific projects), and
-   build only what is needed. Never build on `/`.
-2. **RAM**: 8 GB total, ~3.8 GB available. Use `-j2` or lower for builds.
+1. **Disk**: ~296 GB free on the project drive (`/dev/nvme0n1p4`, 738 GB total).
+   A full AOSP sync + build fits. Disk stopped being the constraint on
+   2026-10-17 — **RAM is the constraint**, see item 2.
+2. **RAM**: 15 GB total. Whole-tree Soong analysis needs ~11 GB available —
+   check `free -h` and stop the emulator before building, or the build gets
+   OOM-killed and looks like a Soong bug. Use `scripts/soong-capped.sh`, which
+   sets `GOMEMLIMIT=8GiB`. soong_build is Go 1.24, so the soft heap limit is
+   honoured and it trades CPU for memory instead of dying. `-j1` alone is NOT
+   enough: the 9.8 GB peak is live heap, not parallelism. Swap is 49 GB.
 3. **No sudo**: Packages must be self-contained; JDK downloaded locally
 4. **No Docker**: Cloud builds must be external
 5. **No physical device yet**: UI verification goes through the Android SDK
    emulator first; real 4 GB POCO M5 hardware testing comes later
+
+## `repo sync` is fragile here — read before running it
+
+Four faults were fixed on 2026-10-17. All of them made `repo sync` abort
+before syncing anything, so re-introducing any of them breaks the sync
+silently.
+
+1. `.repo/local_manifests/rock.xml` was not well-formed XML — a `<-` sequence
+   and a `--flag` inside a comment. Neither is legal inside an XML comment.
+2. `.repo/local_manifests/appleux.xml` declared five `<project>` entries against
+   a `github.com/appleux` remote that does not exist, for directories that were
+   never git repos. One unreachable project fails the ENTIRE sync.
+3. `.repo/manifests` had `remote.origin.url` pointing at its own path and was
+   pinned to `refs/heads/android-16.0.0_r4`, which did not exist. Now created
+   locally at the same commit.
+4. `vendor/xiaomi/rock` was still listed in `.repo/project.list` while
+   `rock.xml` deliberately excludes it, so repo tried to delete it and refused
+   because of uncommitted bring-up work. Removed from `project.list` —
+   bookkeeping only, working tree untouched.
+
+The AppleUX sources and the rock/hardware trees are **manually placed, not
+repo-managed**. Never add `<project>` entries for them, and never run
+`repo sync --force-sync` or `--prune` here.
 
 ## Development Workflow
 
@@ -168,20 +203,47 @@ Current phases:
 launcher, settings, systemui) — `scripts/build-emulator-apks.sh` → 
 `out/emulator/apks/*.apk`, verified on the API 36 emulator.**
 
-AOSP/Soong route (2026-10-14): unblocked through analysis.
-`lunch aosp_rock-bp4a-eng && m -j2 nothing` now completes Soong analysis and
-enters the ninja build phase. Fixes so far: `export_cflags`→`cflags`,
-`generated_kernel_headers` dedup, bp4a release wiring, lineage-interfaces
-namespace, kotlin-plugin/vibrator-service/IMS-blob disables, overlay-path
-panic, AppleUX `libs` cleanup. Full trail in
-`deliverables/m7/soong-unblock-log.md`. No device images built yet — no
-Cuttlefish/physical-device verification. Cuttlefish prebuilt guest+host
-(build 16373615) staged at `cuttlefish/dl/` as the interim CF path.
-STANDING BLOCKER (2026-10-14, kernel-proof): whole-tree Soong analysis needs
-~11-12GB anon RSS and is OOM-killed twice on this 15GB box (desktop+qemu+
-opencode hold ~5GB). `-j1`/`GOGC=20` don't help — it is live state, not
-parallelism. Full `m` needs a serialized run (qemu+browser stopped) or an
-external builder; see `deliverables/m7/soong-unblock-log.md` §10.
+`kotlinc` needs `-J-Xmx6g` for the launcher module (the script sets it).
+Without it the build reports `Backend Internal error: Exception during IR
+lowering`, which is an **OutOfMemoryError while rendering the diagnostic** —
+the heap runs out building the error message, so the real error is never
+printed. Do not read that line as a code bug.
+
+`scripts/fix-context-receivers.py` repairs the dominant class of shell
+breakage: `SomeView(this).apply { … }` makes `this` the View, so a nested
+`SomeView(this)` or `LayoutUtils.dpToPx(t, this)` binds to the wrong receiver
+(49 sites). It drives off kotlinc's own `file:line:col` and only rewrites bare
+`this`, so it cannot clobber a correct one.
+
+**Design system is consolidated — one palette, one theme hierarchy.**
+`design-system/src/main/res/values{,-night}/colors.xml` is the single source
+for every colour the XML layer can reach; `ColorTokens.kt` is the authority for
+Kotlin drawing code. `tools/check-token-drift.py` compares them and fails on
+drift — run it after any token change. All five per-app `colors.xml` files are
+deleted. `Theme.Appleux.Base` in design-system is the only parent; launcher /
+settings / systemui themes are three lines each. `Theme.Appleux.SystemUI` is
+**forced dark** — an iOS 27 Control Center reads as dark glass over a light
+wallpaper and does not invert with the system theme.
+
+AOSP/Soong route: **whole-tree analysis passes.** The 2026-10-14 "~11-12GB anon
+RSS" OOM blocker was a loaded host, not Soong — `qemu-system` was holding
+3.6GB. Kill the emulator first; `m -j1 nothing` then completed in 48:21.
+Do not cite the OOM as a standing blocker without checking `free -h` first.
+
+`m nothing` proves config only. It never compiles the AppleUX modules, so it
+passes while `appleux.mk` can still be wrong. The AppleUX modules are built
+through `m -j1 AppleUXLauncher AppleUXSettings AppleUXSystemUI`.
+
+AppleUX system-core packaging lives in `device/xiaomi/rock/appleux.mk`
+(inherited from `device.mk`), with priv-app allowlists in
+`device/xiaomi/rock/permissions/privapp-permissions-appleux.xml`, copied to
+`/system/etc/permissions` by `PRODUCT_COPY_FILES` — without that copy every
+signature|privileged grant is denied at runtime. Trail:
+`deliverables/m7/soong-appleux-core-build-2026-10-17.md`.
+
+No device images built yet — no Cuttlefish/physical-device verification.
+Cuttlefish prebuilt guest+host (build 16373615) staged at `cuttlefish/dl/`
+as the interim CF path.
 
 The emulator route works. `scripts/build-emulator-apks.sh` drives `aapt2`,
 `kotlinc`, `d8` and `apksigner` directly against `android-sdk/` — no Gradle —
@@ -276,14 +338,66 @@ launcher process: `adaptive_performance` and `low_power_mode` both start and
 stop `AppleuxPerformanceController` (16 vs 0 pressure polls over 8s), and
 `dark_mode` repaints the launcher (sampled `(0,0,0)` vs `(245,245,247)`).
 
+## SystemUI Takeover — in progress (2026-10-17, m23)
+
+The iOS chrome is now compiled **into `com.android.systemui`** rather than
+floated over it in a separate app.
+
+- `appleux/systemui/chrome/Android.bp` → module `appleux-systemui-chrome`
+  (`android_library`, `platform_apis: true`, `-Xjvm-default=all`), linked into
+  `SystemUI-application`'s `static_libs` at
+  `frameworks/base/packages/SystemUI/Android.bp:638`.
+- Tree symlinks: `frameworks/appleux` → design-system,
+  `frameworks/appleux-systemui-chrome` → `appleux/systemui/chrome`.
+- **Stock nav-bar UI is deleted.** `res/layout/navigation_bar.xml` now has a
+  transparent background and an `AppleuxHomeIndicatorView` instead of three
+  Material buttons over an opaque `#ff000000` strip.
+  `config_navBarInteractionMode = 2` and `config_navBarOpacityMode = 2` in
+  `FrameworkOverlayRock` remove the buttons and the forced-opaque draw.
+- **Stock status-bar type is deleted.** `TextAppearance.StatusBar.Default` was
+  `config_headlineFontFamilyMedium` / `variable-label-large-emphasized` (both
+  Android system font names = Roboto); now `sans-serif-medium` + HIG tracking.
+  **Size is still AOSP's 14sp and is NOT iOS-measured** — do not call it a match
+  until it is measured off `design-reference/iphone11-ios27/`.
+
+**Rule being followed: delete the chrome, keep the behaviour.** `SystemUIService`
+binds to `SystemUIApplication`, `Dependency` and a Dagger graph over ~4,900
+files; deleting the controllers leaves the device with no status bar, no
+keyguard and no QS. Every replacement keeps the AOSP root class so gestures,
+IME, rotation, recents and keyguard mediation keep working.
+
+**`m SystemUI` has NOT been run** — no warm Soong state, 48 min analysis alone.
+The graph edit and runtime result are unverified.
+
+`com.appleux.systemui` is **not** deleted yet: its 3 tiles/receiver launch
+`AppleuxSystemUIService` by name to toggle the panels, so removing the service
+first would strand the Control Center and Notification Center. Repoint them at
+SystemUI's `CommandQueue` first, then delete. Full detail and the remaining
+surface order: `deliverables/m23/systemui-takeover-2026-10-17.md`.
+
 ## Other Known Gaps
+
+- **P0, unstarted: the real system chrome is still stock.** `AppleuxSystemUIService`
+  draws `TYPE_APPLICATION_OVERLAY` windows and floats above SystemUI; it does
+  not replace it. Stock `frameworks/base/packages/SystemUI` still owns the
+  status bar, quick settings, nav bar, volume/power HUD and keyguard, and
+  Recents is still QuickStep. Making AppleUX *be* SystemUI is a Soong
+  `Android.bp` module inside `frameworks/base/packages/SystemUI`, not an app
+  change, and it is the prerequisite for the items below. Not started.
+- `android.R.drawable` is still referenced in ~43 places across the shells
+  (Photos 34, Messages 6) while the 92 vendored `sf_*` / `il_ic_*` drawables
+  are nearly unused in-app. Needs an icon-by-icon mapping.
+- The 366 extracted sounds exist and nothing plays one.
+- 26 `AlertDialog.Builder` call sites are now **themed** to the iOS card by
+  `Theme.Appleux.Base` (no code change needed), but they are still
+  `AlertDialog`. 36 `Toast` call sites are stock — iOS has no toast surface,
+  so the answer is a replacement, not a restyle.
 
 - Dock contents **are** now persisted (`DockPreferences`, shared prefs
   `appleux_launcher_dock`, delimiter-encoded so empty slots are representable).
   Resolved once by explicit package allowlist → exact label → platform role
-  intent, never positional. Open: the home-grid metrics behind it were derived
-  on a superseded frame (411.43 x 914.29 dp) and need re-deriving at
-  401.9 x 896.0 dp.
+  intent, never positional. Done: the home-grid metrics are derived at our
+  ROM's frame (392.73 x 875.64 dp).
 - The Notification Center still does not reserve the cutout;
   `AppleuxDisplayInsets.applyTopInset(context, column)` in
   `AppleuxNotificationShade.init` is a one-liner that has not been applied.

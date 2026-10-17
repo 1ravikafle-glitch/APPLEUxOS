@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Filled iOS button: solid tint, 12dp corner radius, press state = the
+    pressed variant of the same tint.
+
+    Selector, not a RippleDrawable, for the same reason as appleux_pressed.xml:
+    iOS dims a filled control's own fill on press-down, it does not emit a
+    ripple, and a two-stop StateListDrawable is cheaper to draw than a
+    RippleDrawable's per-frame shader.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/tertiary_label" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/system_blue_pressed" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/system_blue" />
+            <corners android:radius="12dp" />
+        </shape>
+    </item>
+</selector>

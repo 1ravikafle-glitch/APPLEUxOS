@@ -1,0 +1,24 @@
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+// Device-specific adapters. device-support/rock holds the runtime display
+// profile (cutout inset, live refresh rate, density) and the frame-budget
+// derivation. It is a plain android_library so one APK adapts at runtime
+// instead of forking per device — see device-support/rock/README.md.
+//
+// Linked into the AOSP tree at hardware/xiaomi-appleux/rock, because
+// appleux/design-system depends on it by module name and Soong can only
+// resolve modules inside the tree.
+android_library {
+    name: "appleux-device-support-rock",
+    owner: "appleux",
+    srcs: ["src/main/java/**/*.kt"],
+    manifest: "src/main/AndroidManifest.xml",
+    sdk_version: "current",
+    min_sdk_version: "36",
+    kotlin: {
+        enabled: true,
+    },
+    product_specific: true,
+}

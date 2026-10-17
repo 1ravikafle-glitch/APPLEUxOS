@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    iOS press feedback.
+
+    Android's stock `?android:attr/selectableItemBackground` is a ripple: an
+    expanding circle that scales with the finger. iOS has no ripple at all —
+    on iOS a control that is tappable dims to its "highlighted" fill the
+    instant the touch goes down, and returns on release or cancel. Anything
+    that keeps a ripple looks like Material the instant it is on screen, which
+    is exactly what the replace-from-source strategy forbids.
+
+    HIG → Color → Fill / systemFillTertiary is the fill iOS uses for a
+    highlighted (pressed) row, so that is what this selector paints.
+
+    Note this is a *selector*, not a ripple drawable, so it also costs nothing
+    to draw: a StateListDrawable over two ColorDrawables is two fillRect calls
+    on the GPU path, versus a RippleDrawable allocating a mask and running a
+    shader per frame. That matters on the Helio G99 at 90 Hz.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <color android:color="@color/fill_tertiary" />
+    </item>
+    <item android:state_focused="true">
+        <color android:color="@color/fill_quaternary" />
+    </item>
+    <item android:state_activated="true">
+        <color android:color="@color/fill_quaternary" />
+    </item>
+    <item>
+        <color android:color="@android:color/transparent" />
+    </item>
+</selector>

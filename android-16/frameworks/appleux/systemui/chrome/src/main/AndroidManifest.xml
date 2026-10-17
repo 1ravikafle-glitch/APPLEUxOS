@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Empty on purpose. This library contributes code and resources only; it has
+     no components of its own. It must still ship a manifest because the
+     android_library requires one, and it must NOT declare permissions: this
+     code runs inside com.android.systemui, which already holds STATUS_BAR,
+     WRITE_SECURE_SETTINGS and the rest via
+     frameworks/base/packages/SystemUI/AndroidManifest.xml. A second
+     declaration here would be a duplicate that the manifest merger rejects. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.appleux.systemui.chrome">
+    <uses-sdk android:minSdkVersion="36" android:targetSdkVersion="36" />
+</manifest>

@@ -214,8 +214,16 @@ build_app() {
   esac
 
   rm -rf "$GEN/$module-classes"; mkdir -p "$GEN/$module-classes"
+  # kotlinc's default heap is small enough that compiling every app shell in
+  # one invocation dies with OutOfMemoryError. Worse, it dies WHILE RENDERING a
+  # diagnostic (RenderIrElementKt.renderTypeInner), so the heap is exhausted
+  # building the error message and the actual error is never printed - the
+  # build only reports "Backend Internal error". Host has 15 GB and ~10 GB
+  # available; -nowarn also matters because a missing module suppresses the
+  # type information that makes those renderings so expensive.
   # shellcheck disable=SC2086
-  "$KOTLINC" -classpath "$CP:$GEN/$module-r-classes" -jvm-target 17 -nowarn \
+  "$KOTLINC" -J-Xmx6g -J-XX:MaxMetaspaceSize=1g \
+    -classpath "$CP:$GEN/$module-r-classes" -jvm-target 17 -nowarn \
     -d "$GEN/$module-classes" $srcdirs 2> "$GEN/$module-kotlinc.log" || true
   grep "error:" "$GEN/$module-kotlinc.log" | sed "s|appleux/||" \
     | sed "s|^|    kt: |" | head -40 || true
@@ -269,11 +277,20 @@ compile_lib_res
 build_androidx_dex
 detect_r_packages
 
+# The com.appleux.systemui APK was DELETED on 2026-10-17 (deliverables/m23).
+# It was a separate app whose foreground service floated two full-screen
+# TYPE_APPLICATION_OVERLAY windows over SystemUI. The iOS chrome is now a
+# library (appleux/systemui/chrome -> module appleux-systemui-chrome) compiled
+# INTO com.android.systemui by Soong, so there is no fifth APK to build here.
+# Building it here is not merely unnecessary: its TYPE_APPLICATION_OVERLAY
+# windows are exactly the per-frame cost the takeover removes.
+#
+# NOTE: this SDK route cannot verify the SystemUI takeover. It compiles apps
+# only; the integration is proved by `m SystemUI`, which has not been run.
 build_app design-system appleux-design-system.apk
 build_app performance   appleux-performance.apk
 build_app launcher      appleux-launcher.apk
 build_app settings      appleux-settings.apk
-build_app systemui      appleux-systemui.apk
 
 echo
 echo "APKs in $OUT/apks:"

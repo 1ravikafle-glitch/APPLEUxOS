@@ -1,0 +1,33 @@
+// AppleUX sounds — the 366 ringtones / notifications / system / UI sounds
+// extracted from the iOS 27 IPSW and wired as real platform resources.
+//
+// FOUND BY SOONG 2026-10-17. This file had a Blueprint syntax error at line 5
+// (`default_applicable_licenses":` — a stray quote after the property name) and
+// had therefore NEVER been parsed. It only existed to be un-buildable; nothing
+// referenced the module, so nothing failed until the whole tree was analysed.
+//
+// SoundRegistry.kt resolves a sound id to a raw resource id and the APK's
+// resource table carries the media itself, so this must be an android_library
+// (code + res) rather than an android_app — an app here would need an
+// <application> tag and PackageManager would refuse it as a priv-app.
+//
+// Not in PRODUCT_PACKAGES: it ships inside the APKs that play the sounds, via
+// static_libs. The 2026-10-16 note in scripts/prep-emulator-grants.sh records
+// the same trap for appleux-performance-lib.
+
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_library {
+    name: "AppleUXSounds",
+    owner: "appleux",
+    srcs: ["src/main/java/com/appleux/sounds/SoundRegistry.kt"],
+    resource_dirs: ["src/main/res"],
+    manifest: "src/main/AndroidManifest.xml",
+    sdk_version: "current",
+    min_sdk_version: "36",
+    kotlin: {
+        enabled: true,
+    },
+}

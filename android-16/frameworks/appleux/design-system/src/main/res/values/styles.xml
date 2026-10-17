@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AppleUX shared widget styles.
+
+    These are what android:textViewStyle and android:buttonStyle resolve to
+    inside Theme.Appleux, so an XML layout that writes a bare <TextView> or
+    <Button> gets iOS metrics and iOS colours with no per-view attributes.
+    That is the "change one file, ten applications follow" property: these
+    styles plus @color/* and @dimen/* are the whole surface.
+
+    Code that wants a specific HIG style should use AppleuxText /
+    TypographyTokens directly, because only code can set an exact
+    lineHeight: android:lineSpacingMultiplier scales the font's own natural
+    leading, not the point size, so the HIG ratio (e.g. 22/17) is not what
+    that attribute means.
+-->
+<resources>
+
+    <!-- ============================================================
+         Bare <TextView> in an XML layout.
+         Defaults to HIG Body: 17pt, label colour, regular weight.
+         ============================================================ -->
+    <style name="AppleuxTextView" parent="android:Widget.TextView">
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing">0.0004</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/label</item>
+        <item name="android:textColorHint">@color/secondary_label</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <!-- ============================================================
+         Bare <Button> in an XML layout.
+
+         The stock one arrives all-caps, Material-indigo, with a 36dp
+         minimum height, an elevation shadow and a ripple. iOS replaces all
+         of it: HIG Callout 17, iOS blue, flat, and HIG's 44x44dp
+         tappable-area floor.
+         ============================================================ -->
+    <style name="AppleuxButton" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing">0.0004</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/system_blue</item>
+        <item name="android:background">@drawable/appleux_pressed</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:minWidth">44dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="elevation">0dp</item>
+        <item name="android:shadowRadius">0.0</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">0.0</item>
+    </style>
+
+    <!-- Filled iOS button (prominent actions). radius 12dp is the HIG
+         control-corner value AppleuxButton also uses in Kotlin. -->
+    <style name="AppleuxButton.Filled">
+        <item name="android:background">@drawable/appleux_button_filled</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- Destructive variant: HIG systemRed. Delete / purge / erase only. -->
+    <style name="AppleuxButton.Destructive">
+        <item name="android:textColor">@color/system_red</item>
+    </style>
+
+    <!-- ============================================================
+         iOS text field.
+
+         Android's stock EditText paints a 2dp Material underline across
+         the full width and floats the hint in Material indigo. iOS draws
+         neither: a text field is a row in a grouped list, its caret is
+         the only affordance, and it carries a hairline separator beneath
+         it like any other list row.
+
+         So: no underline, no floating label, no background drawable, and
+         the selection handles take the tint. textCursorDrawable is left
+         alone on purpose, the platform cursor is already a thin caret and
+         tinting it would need an API-29+ inset drawable for no gain.
+         ============================================================ -->
+    <style name="AppleuxEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:background">@null</item>
+        <!-- iOS fields sit flush in the list row; the row owns the padding. -->
+        <item name="android:paddingStart">0dp</item>
+        <item name="android:paddingEnd">0dp</item>
+        <item name="android:paddingTop">0dp</item>
+        <item name="android:paddingBottom">0dp</item>
+
+        <!-- HIG Body 17, tracking 0.40pt. Line height is deliberately not
+             set here; see the file header. -->
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing">0.0004</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/label</item>
+        <item name="android:textColorHint">@color/secondary_label</item>
+
+        <item name="colorControlActivated">@color/system_blue</item>
+        <item name="colorAccent">@color/system_blue</item>
+        <item name="colorControlHighlight">@color/fill_tertiary</item>
+        <!-- iOS has no Material ripple on a text field. -->
+        <item name="android:selectableItemBackground">@null</item>
+    </style>
+
+</resources>
