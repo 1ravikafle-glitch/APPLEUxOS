@@ -22,7 +22,16 @@ package {
 android_library {
     name: "AppleUXSounds",
     owner: "appleux",
-    srcs: ["src/main/java/com/appleux/sounds/SoundRegistry.kt"],
+    // BOTH files, not just the registry. AppleuxSoundPlayer.kt was added on
+    // 2026-10-18 and this list still named only SoundRegistry.kt, so the SDK
+    // route compiled the player (it compiles the whole directory) while the
+    // Soong route silently would not — which would have shipped a launcher
+    // calling a class that does not exist in the ROM, and the error would
+    // only have appeared at runtime on a device.
+    srcs: [
+        "src/main/java/com/appleux/sounds/SoundRegistry.kt",
+        "src/main/java/com/appleux/sounds/AppleuxSoundPlayer.kt",
+    ],
     resource_dirs: ["src/main/res"],
     manifest: "src/main/AndroidManifest.xml",
     sdk_version: "current",

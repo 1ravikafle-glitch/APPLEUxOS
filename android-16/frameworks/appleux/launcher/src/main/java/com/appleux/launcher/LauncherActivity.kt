@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.appleux.design.components.AppleuxDialogs
+import com.appleux.design.components.AppleuxHaptics
 import com.appleux.design.components.AppleuxSuperellipse
 import com.appleux.design.components.AppleuxComponentsWiring
 import com.appleux.design.runtime.AppleuxRuntimeConfig
@@ -755,7 +756,11 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         }
         homescreenGrid.submitWidgets(rebuildWidgetCells())
         homescreenGrid.setOnWidgetLongClickListener { openWidgetGallery() }
-        homescreenGrid.setOnAppLongClickListener { showAppContextMenu(it) }
+        // iOS: long-press enters EDIT MODE — the icons jiggle and can be
+        // rearranged or removed. It does not open a context menu; that is
+        // Android behaviour and it is what this replaced. The per-app context
+        // menu is still reachable, from inside edit mode.
+        homescreenGrid.setOnAppLongClickListener { enterEditMode() }
         dockView.submitApps(dock.filterNotNull())
     }
 
@@ -997,6 +1002,58 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             }
         }
         com.appleux.design.components.AppleuxComponentsWiring.detailSheet(this, view).present()
+    }
+
+    /**
+     * iOS 27 home-screen edit mode.
+     *
+     * Long-pressing any icon enters this: every icon and dock item starts a
+     * small spring rotation, and a tap outside leaves. This is the behaviour
+     * `AppleuxJiggle` was written for and never received — it had zero
+     * references, alongside a duplicate in the launcher claiming provenance
+     * that could not exist.
+     *
+     * Only VISIBLE children are animated. Both the grid and the dock are
+     * RecyclerViews, so iterating all children would animate rows the user
+     * cannot see, which is wasted work per frame on a 2 GB device and is exactly
+     * the mistake the launcher icon cache fix already made once.
+     */
+    private var inEditMode = false
+
+    private fun enterEditMode() {
+        if (inEditMode) return
+        inEditMode = true
+        AppleuxHaptics.getInstance(this).mediumImpact()
+        jiggleVisibleChildren(homescreenGrid)
+        jiggleVisibleChildren(dockView)
+        // Tapping the wallpaper leaves edit mode, as in iOS.
+        wallpaperView.setOnClickListener { exitEditMode() }
+    }
+
+    private fun exitEditMode() {
+        if (!inEditMode) return
+        inEditMode = false
+        stopJiggling(homescreenGrid)
+        stopJiggling(dockView)
+        wallpaperView.setOnClickListener(null)
+    }
+
+    private fun jiggleVisibleChildren(group: android.view.ViewGroup) {
+        val container = group as? androidx.recyclerview.widget.RecyclerView
+            ?: group.getChildAt(0) as? androidx.recyclerview.widget.RecyclerView
+            ?: return
+        for (i in 0 until container.childCount) {
+            com.appleux.design.components.AppleuxJiggle.start(container.getChildAt(i), i)
+        }
+    }
+
+    private fun stopJiggling(group: android.view.ViewGroup) {
+        val container = group as? androidx.recyclerview.widget.RecyclerView
+            ?: group.getChildAt(0) as? androidx.recyclerview.widget.RecyclerView
+            ?: return
+        for (i in 0 until container.childCount) {
+            com.appleux.design.components.AppleuxJiggle.stop(container.getChildAt(i))
+        }
     }
 
     private fun launchApp(item: AppIconItem) {

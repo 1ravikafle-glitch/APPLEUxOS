@@ -32,6 +32,14 @@ android_library {
         // by device-support/rock, linked into the tree at
         // hardware/xiaomi-appleux/rock.
         "appleux-device-support-rock",
+        // AppleUXSounds. design-system is the one module every consumer links —
+        // launcher, settings and SystemUI — so depending on it here is what
+        // spreads the IPSW-extracted sounds system-wide instead of duplicating
+        // the dependency in each app. It was previously static_lib'd into
+        // launcher only, which is why Settings had no sound at all.
+        //
+        // AppleUXSounds depends on nothing of ours, so this cannot cycle.
+        "AppleUXSounds",
     ],
     // NOT product_specific. It was, and that broke the tree:
     //

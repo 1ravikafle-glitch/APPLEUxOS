@@ -31,11 +31,14 @@ android_app {
         "androidx_runtime",
         "appleux-design-system",
         "appleux-performance-lib",
-        // AppleUXSounds is deliberately NOT here, though it was here until
-        // 2026-10-17. Settings has no playback call site, and static_libs
-        // packages the library's entire res/raw tree into the APK — 7.7 MB of
-        // audio in an app that never plays a sound. Launcher is the only module
-        // that links it, for the camera shutter and the toggle confirm.
+        // AppleUXSounds is here again, deliberately, and the earlier removal was
+        // wrong. It was dropped on 2026-10-17 because Settings had no playback
+        // call site and was paying 7.7 MB for nothing — a fair reading of the
+        // evidence at the time. The fix was never to remove the dependency but
+        // to GIVE IT A CALL SITE: every Settings toggle now plays the IPSW
+        // confirm tick through AppleuxComponentsWiring.settingsCard, so the 366
+        // extracted sounds are used in Settings instead of sitting silent.
+        "AppleUXSounds",
     ],
     privileged: true,
     required: ["appleux-design-system", "appleux-performance-lib"],

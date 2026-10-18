@@ -130,8 +130,23 @@ class AppleuxNotificationBus private constructor() {
             if (listener === l) listener = null
         }
 
-        fun subscribe(fn: (List<AppleuxNotificationShade.NotificationData>) -> Unit) {
+        /**
+         * Nullable so a host can detach. A non-nullable parameter made the bus
+         * un-unsubscribable, which is why the only conceivable caller had never
+         * been written: nothing could ever clean up, so a configuration change
+         * would leak the host view and keep it receiving.
+         */
+        fun subscribe(fn: ((List<AppleuxNotificationShade.NotificationData>) -> Unit)?) {
             subscriber = fn
+            // A host subscribing late should still get the current snapshot, or
+            // notifications that arrived before it attached would stay invisible
+            // until the next one changed.
+            fn?.let { runCatching { refresh() } }
+        }
+
+        /** Explicit detach, for callers that prefer this to passing null. */
+        fun unsubscribe() {
+            subscriber = null
         }
 
         fun publish(data: List<AppleuxNotificationShade.NotificationData>) {

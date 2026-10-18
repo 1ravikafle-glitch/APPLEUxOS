@@ -36,8 +36,16 @@ object AppleuxComponentsWiring {
         row.setSubtitle(subtitle)
         row.setDividerVisible(false)
         val toggle = AppleuxToggle(context)
+        // animate = false is the initial bind, so the confirm tick must not fire
+        // here or every Settings screen would click on entry.
         toggle.setChecked(checked, animate = false)
-        toggle.setOnCheckedChangeListener { onToggle(it) }
+        toggle.setOnCheckedChangeListener { value ->
+            // iOS plays a light tick when a Settings switch is thrown. This is the
+            // single shared settings-toggle factory, so one call reaches every
+            // switch in Settings rather than needing a per-screen hook.
+            com.appleux.sounds.AppleuxSoundPlayer.confirm(context, 0.35f)
+            onToggle(value)
+        }
         row.setAccessoryView(toggle)
         val col = LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL

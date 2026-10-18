@@ -176,10 +176,13 @@ build_app() {
     [ -f "$z" ] || continue
     # design-system supplies its own res when it is the module being built
     [ "$module" = "design-system" ] && [ "$z" = "$GEN/lib-res-design-system.zip" ] && continue
-    # Sounds go to the launcher ONLY. The loop above collects every
-    # lib-res-*.zip as a positional aapt2 input, so without this the 7.7 MB audio
-    # tree also lands in design-system and performance.
-    [ "$module" != "launcher" ] && [ "$z" = "$GEN/lib-res-sounds.zip" ] && continue
+    # NOTE: lib-res-sounds.zip is no longer excluded from any module. It used to
+    # be launcher-only, which was correct while only the launcher had a playback
+    # call site. design-system now consumes AppleUXSounds (the Settings confirm
+    # tick goes through AppleuxComponentsWiring.settingsCard), so every module
+    # compiles design-system's sources and needs the sounds on its classpath and
+    # in its res, or com.appleux.sounds.R has no raw ids at all.
+
     res_inputs="$res_inputs $z"
   done
   [ -f "$GEN/$module-res.zip" ] && res_inputs="$GEN/$module-res.zip $res_inputs"
@@ -240,11 +243,13 @@ build_app() {
   #    library code resolves against THIS app's resource ids.
   local srcdirs="$srcdir"
   case "$module" in
-    design-system) srcdirs="$srcdir $ROCK_SRC" ;;
-    performance)   srcdirs="$srcdir $DS_SRC $ROCK_SRC" ;;
+    # design-system consumes AppleUXSounds (AppleuxComponentsWiring plays the
+    # Settings confirm tick), so the sources have to be on its compile line too.
+    design-system) srcdirs="$srcdir $SOUNDS_SRC $ROCK_SRC" ;;
+    performance)   srcdirs="$srcdir $SOUNDS_SRC $DS_SRC $ROCK_SRC" ;;
     # Only the launcher plays a sound (camera shutter, toggle confirm).
     launcher)      srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC" ;;
-    *)             srcdirs="$srcdir $PERF_SRC $DS_SRC $ROCK_SRC" ;;
+    *)             srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC" ;;
   esac
 
   rm -rf "$GEN/$module-classes"; mkdir -p "$GEN/$module-classes"
