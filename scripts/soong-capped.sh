@@ -157,8 +157,6 @@ systemd-run --user --wait --quiet --pipe \
     -p "MemoryMax=${RAM_CAP_MB}M" \
     -p "MemorySwapMax=${SWAP_CAP_MB}M" \
     -p "MemoryHigh=${MEMHIGH_MB}M" \
-    -p "ManagedOOMMemoryPressure=none" \
-    -p "ManagedOOMSwap=none" \
     "$WRAPPER" 2>&1 | tee "$LOG"
 RC=${PIPESTATUS[0]}
 rm -f "$WRAPPER"
