@@ -70,7 +70,9 @@ systemctl --user reset-failed appleux-build.service 2>/dev/null
 WRAPPER="$LOGDIR/.soong-build-wrapper.sh"
 cat > "$WRAPPER" <<WRAPEOF
 #!/usr/bin/env bash
-set -u
+# NOTE: deliberately NO set -u/-e here. envsetup.sh references unset
+# variables; under nounset the sourcing dies silently and lunch never
+# gets defined — the exact failure the first manual launch hit.
 # Everything soong_build needs must be set inside this file.
 # systemd-run starts it with systemd's environment, not ours.
 export GOMEMLIMIT="${GOMEMLIMIT}"
