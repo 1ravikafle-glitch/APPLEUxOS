@@ -24,6 +24,14 @@ android_library {
     min_sdk_version: "36",
     static_libs: [
         "androidx_runtime",
+        // The controller reads the MEASURED panel geometry (refresh rate,
+        // frame budgets, cutout) from the rock device-support module. This
+        // dependency was missing, so Soong compiled this module against
+        // nothing and every RockDisplayProfile/FrameBudget reference failed
+        // (19 errors at 81% of the first real build). The SDK build script
+        // masked it by compiling all source dirs together; Soong compiles
+        // per-module against DECLARED deps only.
+        "appleux-device-support-rock",
     ],
     // NOT product_specific. It was, and that broke the tree:
     //
