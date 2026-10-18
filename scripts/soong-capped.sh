@@ -147,12 +147,18 @@ chmod +x "$WRAPPER"
 # the build generates (485MB build.ninja + tens of GB of sources) is charged to
 # the cgroup, blows MemoryMax, and soong_build dies silently at ~8GB RSS — the
 # exact signature both 2026-10-18 runs hit.
-MEMHIGH_MB="${MEMHIGH_MB:-8192}"
+# MemoryHigh ALIGNED with MemoryMax: a low MemoryHigh held the cgroup at the
+# reclaim ceiling for 45+ min, spiking PSI until systemd-oomd killed the unit
+# (run 7) while the machine still had 12 GiB free. Reclaim pressure on an
+# anonymous-heap workload = refaults = oomd's exact trigger.
+MEMHIGH_MB="${MEMHIGH_MB:-$RAM_CAP_MB}"
 systemd-run --user --wait --quiet --pipe \
     --unit="appleux-build-$$" \
     -p "MemoryMax=${RAM_CAP_MB}M" \
     -p "MemorySwapMax=${SWAP_CAP_MB}M" \
     -p "MemoryHigh=${MEMHIGH_MB}M" \
+    -p "ManagedOOMMemoryPressure=none" \
+    -p "ManagedOOMSwap=none" \
     "$WRAPPER" 2>&1 | tee "$LOG"
 RC=${PIPESTATUS[0]}
 rm -f "$WRAPPER"
