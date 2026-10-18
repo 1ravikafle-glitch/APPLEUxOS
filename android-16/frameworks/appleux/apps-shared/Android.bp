@@ -18,6 +18,11 @@ android_library {
     name: "appleux-apps-shared",
     owner: "appleux",
     srcs: ["src/main/java/**/*.kt"],
+    // android_library defaults manifest to <module-dir>/AndroidManifest.xml;
+    // ours lives at src/main/ like every app module. Without this property
+    // soong looks at the module root, fails path validation AFTER the whole
+    // 45-minute tree analysis, and bootstrap dies at the very last step.
+    manifest: "src/main/AndroidManifest.xml",
     // res/ holds AppleuxAppTheme, referenced by every app's manifest.
     // Without resource_dirs this is silently ignored and aapt2 link fails
     // with "resource style/AppleuxAppTheme not found".
