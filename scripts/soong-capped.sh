@@ -153,7 +153,7 @@ chmod +x "$WRAPPER"
 # anonymous-heap workload = refaults = oomd's exact trigger.
 MEMHIGH_MB="${MEMHIGH_MB:-$RAM_CAP_MB}"
 systemd-run --user --wait --quiet --pipe \
-    --unit="appleux-build-$$" \
+    --unit="appleux-build" \
     -p "MemoryMax=${RAM_CAP_MB}M" \
     -p "MemorySwapMax=${SWAP_CAP_MB}M" \
     -p "MemoryHigh=${MEMHIGH_MB}M" \
