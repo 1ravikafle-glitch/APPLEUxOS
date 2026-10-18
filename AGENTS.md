@@ -498,11 +498,40 @@ for c in AppleuxCCTileOrder AppleuxJiggle ...; do
 done
 ```
 
-`AppleuxNotificationBus` is in the same state: the listener publishes, nothing
-subscribes, so notifications are collected and dropped.
+`AppleuxNotificationBus` and `AppleuxPanelDismissHandler` are **no longer** in
+this list. `AppleuxShadeHost` (in `appleux-systemui-chrome`, already linked into
+`SystemUI-application`) hosts the Control Center and is the bus's first
+subscriber. It compiles; what remains is one call from a SystemUI class that
+already holds a valid container — see below.
 
-`AppleuxDialogs` is **no longer** in this list — it was dead until 2026-10-17 and
-is now the host for every converted alert.
+### The other 11 — blocked, not forgotten
+
+`deliverables/m27/dead-components-2026-10-18.md` gives each one the specific
+thing it needs. Summary: 4 want the SystemUI shade container, 2 want a keyguard
+host, 4 want hosts that do not exist yet (recents, screenshot flow, HUD, SOS),
+and 1 (`AppleuxPowerSlider`) needs a `REBOOT` grant Settings does not hold —
+deliberately not faked, because `SettingsCatalog` already holds the rule that a
+row needing a privileged write is a navigation row, not a toggle that pretends to
+work.
+
+**One component must stay unreferenced: `AppleuxTouchFeedbackOverlay`.** See
+"Touch Handling" below — a touch overlay in the launcher swallows every tap, and
+that is the regression it was written to avoid.
+
+## The one line that unblocks the Control Center
+
+`AppleuxShadeHost` exists, compiles, and is already inside SystemUI. It is not
+instantiated. From a SystemUI class that already holds the expanded status bar's
+container:
+
+```kotlin
+AppleuxShadeHost.attach(shadeContainer)
+```
+
+Deliberately **not** done here: `AppleuxShadeHost` does not touch `ShadeController`
+or Dagger. A wrong Dagger binding in SystemUI fails at boot, and there is no
+device in this environment to catch it on, so the accessor stays with the caller
+that already holds a valid reference.
 
 ### Device tiering — the 2 GB floor
 
