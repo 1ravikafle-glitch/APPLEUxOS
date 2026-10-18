@@ -142,11 +142,17 @@ chmod +x "$WRAPPER"
 # --wait so the script blocks and propagates the exit status. Without it
 # systemd-run returns immediately and the build appears to vanish, which is a
 # second way to get the silent-death symptom this script exists to fix.
-systemd-run --user --wait --quiet \
+# MemoryHigh sits BELOW MemoryMax so the kernel reclaims page cache under
+# pressure instead of OOM-killing the scope. Without the split, the file cache
+# the build generates (485MB build.ninja + tens of GB of sources) is charged to
+# the cgroup, blows MemoryMax, and soong_build dies silently at ~8GB RSS — the
+# exact signature both 2026-10-18 runs hit.
+MEMHIGH_MB="${MEMHIGH_MB:-8192}"
+systemd-run --user --wait --quiet --pipe \
     --unit="appleux-build-$$" \
     -p "MemoryMax=${RAM_CAP_MB}M" \
     -p "MemorySwapMax=${SWAP_CAP_MB}M" \
-    -p "MemoryHigh=${RAM_CAP_MB}M" \
+    -p "MemoryHigh=${MEMHIGH_MB}M" \
     "$WRAPPER" 2>&1 | tee "$LOG"
 RC=${PIPESTATUS[0]}
 rm -f "$WRAPPER"
@@ -165,7 +171,7 @@ if [[ $RC -ne 0 ]]; then
     # does not exist.
     empty_log=no
     [[ ! -s "$LOG" ]] && empty_log=yes
-    if [[ $RC -eq 1 ]] && { [[ "$empty_log" == yes ]] || grep -qiE "memory|max|oom|killed" "$LOG" 2>/dev/null; }; then
+    if [[ $RC -eq 1 ]] && grep -qiE "oom|killed process|out of memory" "$LOG" 2>/dev/null; then
         echo ""
         echo "=========================================================="
         echo " THE CAP KILLED THE BUILD, not a code error."

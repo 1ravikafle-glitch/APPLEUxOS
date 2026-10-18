@@ -342,6 +342,25 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
                 setOnClickListener { sp.visibility = android.view.View.GONE; fn() }
             })
         }
+        // iOS Spotlight always ends with a web-search row for the query.
+        if (q.isNotEmpty()) {
+            rows.add(com.appleux.design.components.AppleuxListItem(this).apply {
+                setTitle("Search Web for \"$query\"")
+                setSubtitle("Safari"); setDividerVisible(false)
+                setOnClickListener {
+                    sp.visibility = android.view.View.GONE
+                    runCatching {
+                        startActivity(
+                            android.content.Intent(
+                                android.content.Intent.ACTION_VIEW,
+                                android.net.Uri.parse("https://duckduckgo.com/?q=" +
+                                    java.net.URLEncoder.encode(query, "UTF-8"))
+                            )
+                        )
+                    }
+                }
+            })
+        }
         // HIG search pattern: an empty result is a helpful state, not blank.
         if (rows.isEmpty()) {
             rows.add(com.appleux.design.components.AppleuxListItem(this).apply {
