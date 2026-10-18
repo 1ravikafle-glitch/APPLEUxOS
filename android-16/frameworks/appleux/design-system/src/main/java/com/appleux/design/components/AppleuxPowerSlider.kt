@@ -16,12 +16,18 @@ class AppleuxPowerSlider @JvmOverloads constructor(
     init {
         orientation = VERTICAL
         setPadding(24, 24, 24, 24)
+        // Power OFF is wired to null by default and is expected to stay that
+        // way: PowerManager.shutdown() is @SystemApi and absent from the public
+        // SDK, so there is no honest action to bind here. Leaving the row out
+        // entirely would be better; it is kept so the component matches the iOS
+        // control it was modelled on, and so a future ROM that exposes a public
+        // shutdown path has somewhere to connect.
         addView(row("slide to power off") { onPowerOff?.invoke() })
         addView(row("slide to restart") { onRestart?.invoke() })
     }
     private fun row(label: String, done: () -> Unit): LinearLayout {
         val r = LinearLayout(context).apply { orientation = LinearLayout.HORIZONTAL; gravity = Gravity.CENTER_VERTICAL }
-        val sb = SeekBar(context).apply { max = 100 }
+        val sb = AppleuxSlider(context).apply { max = 100 }
         sb.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(s: SeekBar?, p: Int, u: Boolean) {
                 if (u && p >= 100) { done(); s?.progress = 0 }

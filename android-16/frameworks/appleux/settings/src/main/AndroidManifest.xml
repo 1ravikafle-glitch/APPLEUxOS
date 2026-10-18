@@ -3,6 +3,19 @@
     package="com.appleux.settings">
 
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- Slide to restart (AppleuxPowerSlider).
+
+         PowerManager.reboot(String) is PUBLIC API on API 36 (verified with
+         javap against android.jar), so no reflection or hidden API is needed.
+         It is gated by android.permission.REBOOT, which is
+         signature|privileged — a level that exists specifically so a
+         privileged system app can be granted it in privapp-permissions.xml.
+
+         Power OFF is deliberately NOT requested: PowerManager.shutdown() is
+         @SystemApi and absent from the public SDK, so there is no honest way to
+         offer "slide to power off" from an app. AppleuxPowerSlider therefore
+         wires only its restart half. -->
+    <uses-permission android:name="android.permission.REBOOT" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <permission
