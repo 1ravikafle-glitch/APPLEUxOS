@@ -62,23 +62,6 @@
         <!-- AppleUX built-in app shells (launcher-owned, no CATEGORY_LAUNCHER). -->
         <!-- System takeover: VIEW/EDIT/INSERT contact intents resolve here,
              so stock Contacts never opens from any app entry point. -->
-        <activity android:name=".apps.ContactsActivity" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="vnd.android.cursor.dir/contact" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.EDIT" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="vnd.android.cursor.item/contact" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.INSERT" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="vnd.android.cursor.dir/raw_contact" />
-            </intent-filter>
-        </activity>
         <!-- System takeover: DIAL goes here; the default-dialer role (asked
              in-app, one tap) makes CALL go here too. -->
         <service
@@ -92,41 +75,8 @@
                 <action android:name="android.telecom.InCallService" />
             </intent-filter>
         </service>
-        <activity android:name=".apps.PhoneActivity" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.DIAL" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.CALL_BUTTON" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
         <!-- System takeover: smsto:/sms:/mms: links open here; the default-SMS
              role (asked in-app) completes the replacement for sending. -->
-        <activity android:name=".apps.MessagesActivity" android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="smsto" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="sms" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.SENDTO" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="mms" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".apps.PhotosActivity" android:exported="true" />
-        <activity android:name=".apps.CameraActivity" android:exported="true" />
-        <activity android:name=".apps.ClockActivity" android:exported="true" />
-        <activity android:name=".apps.CalendarActivity" android:exported="true" />
-        <activity android:name=".apps.FilesActivity" android:exported="true" />
-        <activity android:name=".apps.BrowserActivity" android:exported="true" />
 
         <!-- AppleUX widget pack (iOS S/M/L proportions, zero polling). -->
         <receiver

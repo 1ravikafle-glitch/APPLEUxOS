@@ -45,7 +45,7 @@ OsProject/
 
 ## Target Android Integration Methods
 
-1. **Icon Pack APK** — launcher-level, no root
+1. **Icon Pack APK** — root-level, system root level
 2. **Substratum Theme** — system-wide, root
 3. **RRO Overlay** — ROM-level, baked in
 4. **Custom Launcher** — full iOS-like experience

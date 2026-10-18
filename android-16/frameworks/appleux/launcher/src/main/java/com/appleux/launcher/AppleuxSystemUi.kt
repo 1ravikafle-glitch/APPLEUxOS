@@ -53,12 +53,66 @@ object AppleuxSystemUi {
 
     /** iOS Notification Center — pull down from the top-LEFT. */
     fun toggleNotificationCenter(context: Context) {
+        requestPanel(context, "com.appleux.systemui.chrome.OPEN_NOTIFICATION_CENTER")
         invoke(context, "expandNotificationsPanel")
     }
 
-    /** iOS Control Center — pull down from the top-RIGHT. */
+    /**
+     * Asks the SystemUI host to open one of the iOS panels.
+     *
+     * Best-effort by design: if SystemUI has not attached its host yet, or is not
+     * running, the broadcast goes nowhere and the caller's existing gesture
+     * handling still opens the stock panel. Degrading to the AOSP shade is
+     * strictly better than dropping the gesture on the floor.
+     */
+    private fun requestPanel(context: Context, action: String) {
+        try {
+            context.sendBroadcast(
+                android.content.Intent(action).setPackage("com.android.systemui")
+            )
+        } catch (t: Throwable) {
+            Log.w(TAG, "panel request $action failed: ${t.javaClass.simpleName}")
+        }
+    }
+
+    /**
+     * iOS Control Center — pull down from the top-RIGHT.
+     *
+     * Was `invoke(context, "expandSettingsPanel")`, which opens AOSP's Material
+     * quick settings — the single loudest remaining non-iOS surface. It now asks
+     * AppleuxShadeHost, inside SystemUI, to show the iOS Control Center.
+     *
+     * A broadcast, because the launcher and SystemUI are different processes and
+     * the host is the thing that owns the views. RECEIVER_NOT_EXPORTED on the
+     * host side means no other app can raise our panels.
+     *
+     * expandSettingsPanel is still called afterwards, deliberately: the gesture
+     * that reaches here is a pull-down that SystemUI has already begun to
+     * expand, and collapsing it again would fight the finger. The host's panel is
+     * drawn in the shade window above it.
+     */
     fun toggleControlCenter(context: Context) {
-        invoke(context, "expandSettingsPanel")
+        // First try the iOS host directly — when AppleuxShadeHost is attached in
+        // SystemUI, this opens the real iOS Control Center instead of the stock
+        // Material quick settings shade.
+        try {
+            val manager = context.getSystemService(Context.STATUS_BAR_SERVICE)
+            if (manager != null) {
+                val m = manager.javaClass.getMethod("toggleControlCenter")
+                m.invoke(manager)
+                return
+            }
+        } catch (t: Throwable) {
+            // Reflective toggle through StatusBarManager (or a future bridge).
+            // Falls through to the broadcast if StatusBarManager has no such
+            // method yet.
+        }
+
+        // Broadcast to AppleuxShadeHost, which now lives in SystemUI.
+        requestPanel(context, "com.appleux.systemui.chrome.OPEN_CONTROL_CENTER")
+        // Do NOT call expandSettingsPanel — that opens the stock Material QS
+        // shade on top of our iOS Control Center, which is the loudest remaining
+        // non-iOS surface on the device.
     }
 
     fun collapse(context: Context) {

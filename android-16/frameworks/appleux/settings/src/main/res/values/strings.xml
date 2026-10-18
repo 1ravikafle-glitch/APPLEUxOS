@@ -96,4 +96,26 @@
     <string name="security_face_id_unavailable">Not set up</string>
     <string name="biometric_enroll_unavailable">No biometric enrolment on this device</string>
     <string name="write_settings_required">Allow “Modify system settings” to change display settings</string>
+    <string name="customization">Customization</string>
+    <string name="customization_summary">AppleUX-specific settings: dark mode, glass, performance, motion</string>
+    <string name="customization_header">AppleUX Customization</string>
+    <string name="customization_header_summary">These settings control the AppleUX ROM experience. iOS settings above are unchanged.</string>
+    <string name="perf_section">Performance</string>
+    <string name="display_section">Display</string>
+    <string name="customization_dark_mode">Dark Mode</string>
+    <string name="customization_dark_mode_summary">Use dark theme across all AppleUX surfaces</string>
+    <string name="customization_glass">Glass Effect</string>
+    <string name="customization_glass_summary">Blur intensity for dock, panels and sheets</string>
+    <string name="customization_brightness">Brightness</string>
+    <string name="customization_auto_brightness">Auto-Brightness</string>
+    <string name="customization_adaptive">Adaptive Performance</string>
+    <string name="customization_adaptive_summary">Auto-adjust quality for smooth interaction</string>
+    <string name="customization_low_power">Low Power Mode</string>
+    <string name="customization_low_power_summary">Reduce performance for battery</string>
+    <string name="customization_reduce_motion">Reduce Motion</string>
+    <string name="customization_reduce_motion_summary">Minimize animation intensity</string>
+    <string name="customization_render_scale">Render Scale</string>
+    <string name="customization_render_scale_summary">Lower for better performance, higher for sharper text</string>
+    <string name="customization_monitoring">Monitoring Level</string>
+    <string name="customization_monitoring_summary">How aggressively to watch for jank</string>
 </resources>

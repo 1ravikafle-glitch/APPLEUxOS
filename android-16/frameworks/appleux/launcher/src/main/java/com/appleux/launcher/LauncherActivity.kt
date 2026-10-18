@@ -563,7 +563,20 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             )
         )
         pushIslandBattery()
-        root.addView(homescreenGrid)
+        // The grid must reserve the dock's clearance band, otherwise the last
+        // icon row slides under the translucent dock glass and reads as a
+        // double row. DOCK_CLEARANCE_DP is derived in LauncherTokens from the
+        // measured panel (gesture bar 46.2 + gap 16 + dock bar 84 = 146 dp).
+        root.addView(
+            homescreenGrid,
+            android.widget.FrameLayout.LayoutParams(
+                android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            ).apply {
+                bottomMargin = (com.appleux.launcher.LauncherTokens
+                    .HOMESCREEN_DOCK_CLEARANCE_DP * resources.displayMetrics.density).toInt()
+            }
+        )
         root.addView(libraryScrim)
         root.addView(appLibraryView)
         // The iOS 27 search pill: a translucent capsule carrying a magnifier and a

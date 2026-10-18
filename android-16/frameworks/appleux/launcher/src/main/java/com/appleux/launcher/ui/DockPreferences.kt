@@ -175,6 +175,7 @@ class DockPreferences(context: Context) {
             SlotSpec(
                 ROLE_DIAL, "Phone",
                 listOf(
+                    "com.appleux.phone",
                     "com.android.dialer",
                     "com.google.android.dialer",
                     "com.android.server.telecom",
@@ -187,6 +188,7 @@ class DockPreferences(context: Context) {
                 // browser and the one the brief names explicitly.
                 ROLE_BROWSER, "Chrome",
                 listOf(
+                    "com.appleux.browser",
                     "com.android.chrome",
                     "com.chrome.beta",
                     "com.chrome.dev",
@@ -198,6 +200,7 @@ class DockPreferences(context: Context) {
             SlotSpec(
                 ROLE_MESSAGE, "Messages",
                 listOf(
+                    "com.appleux.messages",
                     "com.google.android.apps.messaging",
                     "com.android.mms",
                     "com.android.mms.service",

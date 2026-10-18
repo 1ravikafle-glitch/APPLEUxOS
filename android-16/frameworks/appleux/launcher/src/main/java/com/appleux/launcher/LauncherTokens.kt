@@ -99,7 +99,7 @@ object LauncherTokens {
      * widget is 2x2 cells and a medium one is 4x2 — same height, twice the
      * width.
      */
-    const val WIDGET_CELL_HEIGHT_DP: Float = 176f
+    const val WIDGET_CELL_HEIGHT_DP: Float = 150f
 
     /** Widget spans, expressed in the 4-column grid (medium = full width). */
     const val WIDGET_SPAN_MEDIUM: Int = 4

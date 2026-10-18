@@ -269,8 +269,156 @@ object SettingsCatalog {
         NavTarget.Internal(activity)
 
     fun build(context: android.content.Context): List<SettingsItem> {
+        // iOS 27 Settings menu structure, verified against ground-truth
+        // screenshots (design-reference/iphone11-ios27/Settings-root.png).
+        // AppleUX-specific customizations are in a SEPARATE section at the
+        // bottom, clearly labelled, so the iOS menu order is preserved.
         return listOf(
-            header("section_appleux", R.string.appleux),
+            // ---- iOS 27 top-level rows (in order) ----
+            nav(
+                key = "airplane", titleRes = R.string.airplane_mode,
+                iconKey = "system_airplane", badgeColor = ColorTokens.systemOrange,
+                target = act(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
+            ),
+            nav(
+                key = "wifi", titleRes = R.string.wifi,
+                iconKey = "system_wifi", badgeColor = ColorTokens.systemBlue,
+                target = internal(com.appleux.settings.detail.WifiDetailActivity::class.java)
+            ),
+            nav(
+                key = "bluetooth", titleRes = R.string.bluetooth,
+                iconKey = "system_bluetooth", badgeColor = ColorTokens.systemBlue,
+                target = act(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS)
+            ),
+            nav(
+                key = "cellular", titleRes = R.string.cellular,
+                iconKey = "system_cellular", badgeColor = ColorTokens.systemGreen,
+                target = act(android.provider.Settings.ACTION_NETWORK_OPERATOR_SETTINGS)
+            ),
+            header("section_notifications", R.string.notifications),
+            nav(
+                key = "notifications", titleRes = R.string.notifications,
+                summaryRes = R.string.notifications_summary,
+                iconKey = "system_bell", badgeColor = ColorTokens.systemRed,
+                target = NavTarget.OwnAppNotifications
+            ),
+            nav(
+                key = "sounds", titleRes = R.string.sounds,
+                iconKey = "system_volume", badgeColor = ColorTokens.systemPink,
+                target = act(android.provider.Settings.ACTION_SOUND_SETTINGS)
+            ),
+            nav(
+                key = "focus", titleRes = R.string.focus,
+                iconKey = "system_dnd", badgeColor = ColorTokens.systemIndigo,
+                target = act("android.settings.ZEN_MODE_SETTINGS")
+            ),
+            nav(
+                key = "screentime", titleRes = R.string.screen_time,
+                summaryRes = R.string.screen_time_summary,
+                iconKey = "system_hourglass", badgeColor = ColorTokens.systemIndigo,
+                target = act(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            ),
+            header("section_general", R.string.section_general),
+            nav(
+                key = "general", titleRes = R.string.general,
+                iconKey = "system_settings", badgeColor = ColorTokens.systemGray,
+                target = NavTarget.StockRoot
+            ),
+            nav(
+                key = "display_nav", titleRes = R.string.display_brightness,
+                iconKey = "system_display", badgeColor = ColorTokens.systemBlue,
+                target = NavTarget.Internal(
+                    com.appleux.settings.display.DisplaySettingsActivity::class.java
+                )
+            ),
+            nav(
+                key = "wallpaper", titleRes = R.string.wallpaper,
+                iconKey = "system_photos", badgeColor = ColorTokens.systemTeal,
+                target = NavTarget.StockRoot
+            ),
+            nav(
+                key = "home", titleRes = R.string.home_screen,
+                iconKey = "system_grid", badgeColor = ColorTokens.systemBlue,
+                target = act(android.provider.Settings.ACTION_HOME_SETTINGS)
+            ),
+            header("section_security", R.string.security),
+            nav(
+                key = "lock_screen", titleRes = R.string.lock_screen,
+                iconKey = "system_lock", badgeColor = ColorTokens.systemGray,
+                target = NavTarget.Internal(
+                    com.appleux.settings.security.SecuritySettingsActivity::class.java
+                )
+            ),
+            nav(
+                key = "faceid", titleRes = R.string.faceid,
+                iconKey = "system_faceid", badgeColor = ColorTokens.systemGreen,
+                target = act(android.provider.Settings.ACTION_BIOMETRIC_ENROLL)
+            ),
+            nav(
+                key = "emergency", titleRes = R.string.emergency_sos,
+                iconKey = "system_sos", badgeColor = ColorTokens.systemRed,
+                target = NavTarget.StockRoot
+            ),
+            nav(
+                key = "privacy", titleRes = R.string.privacy,
+                iconKey = "system_shield", badgeColor = ColorTokens.systemBlue,
+                target = act(android.provider.Settings.ACTION_PRIVACY_SETTINGS)
+            ),
+            nav(
+                key = "accessibility", titleRes = R.string.accessibility,
+                iconKey = "system_accessibility", badgeColor = ColorTokens.systemBlue,
+                target = act(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)
+            ),
+            header("section_apps", R.string.section_apps),
+            nav(
+                key = "apps", titleRes = R.string.apps,
+                iconKey = "system_app_library", badgeColor = ColorTokens.systemBlue,
+                target = act(android.provider.Settings.ACTION_APPLICATION_SETTINGS)
+            ),
+
+            // ---- AppleUX Customization (separate, clearly labelled) ----
+            header("section_customization", R.string.customization),
+            nav(
+                key = "customization", titleRes = R.string.customization,
+                summaryRes = R.string.customization_summary,
+                iconKey = "system_settings", badgeColor = ColorTokens.systemGray,
+                target = internal(com.appleux.settings.ui.CustomizationActivity::class.java)
+            ),
+            header("section_appleux_display", R.string.appleux),
+            SettingsItem(
+                key = "dark_mode",
+                titleRes = R.string.dark_mode,
+                summaryRes = R.string.dark_mode_summary,
+                type = SettingsItemType.SWITCH,
+                preferenceKey = AppleuxRuntimeConfig.KEY_DARK_MODE,
+                defaultValue = false
+            ),
+            SettingsItem(
+                key = "glass_intensity",
+                titleRes = R.string.glass_intensity,
+                summaryRes = R.string.glass_intensity_summary,
+                type = SettingsItemType.SEEK_BAR,
+                preferenceKey = AppleuxRuntimeConfig.KEY_GLASS_INTENSITY,
+                defaultIntValue = AppleuxRuntimeConfig.DEFAULT_GLASS_INTENSITY
+            ),
+            SettingsItem(
+                key = "brightness",
+                titleRes = R.string.brightness,
+                summaryRes = R.string.brightness,
+                type = SettingsItemType.SEEK_BAR,
+                preferenceKey = AppleuxPreferences.KEY_BRIGHTNESS,
+                defaultIntValue = AppleuxRuntimeConfig.DEFAULT_BRIGHTNESS,
+                valueScaleMax = BRIGHTNESS_SCALE_MAX
+            ),
+            SettingsItem(
+                key = "auto_brightness",
+                titleRes = R.string.auto_brightness,
+                summaryRes = R.string.auto_brightness,
+                type = SettingsItemType.SWITCH,
+                preferenceKey = AppleuxPreferences.KEY_AUTO_BRIGHTNESS,
+                defaultValue = true
+            ),
+            header("section_appleux_performance", R.string.adaptive_performance),
             SettingsItem(
                 key = "adaptive_performance",
                 titleRes = R.string.adaptive_performance,
@@ -294,221 +442,6 @@ object SettingsCatalog {
                 type = SettingsItemType.SWITCH,
                 preferenceKey = AppleuxRuntimeConfig.KEY_REDUCE_MOTION,
                 defaultValue = false
-            ),
-            SettingsItem(
-                key = "glass_intensity",
-                titleRes = R.string.glass_intensity,
-                summaryRes = R.string.glass_intensity_summary,
-                type = SettingsItemType.SEEK_BAR,
-                preferenceKey = AppleuxRuntimeConfig.KEY_GLASS_INTENSITY,
-                defaultIntValue = AppleuxRuntimeConfig.DEFAULT_GLASS_INTENSITY
-            ),
-            header("section_display", R.string.display),
-            SettingsItem(
-                key = "brightness",
-                titleRes = R.string.brightness,
-                summaryRes = R.string.brightness,
-                type = SettingsItemType.SEEK_BAR,
-                preferenceKey = AppleuxPreferences.KEY_BRIGHTNESS,
-                defaultIntValue = AppleuxRuntimeConfig.DEFAULT_BRIGHTNESS,
-                // Settings.System.SCREEN_BRIGHTNESS is 0-255; the row shows 0-100.
-                valueScaleMax = BRIGHTNESS_SCALE_MAX
-            ),
-            SettingsItem(
-                key = "auto_brightness",
-                titleRes = R.string.auto_brightness,
-                summaryRes = R.string.auto_brightness,
-                type = SettingsItemType.SWITCH,
-                preferenceKey = AppleuxPreferences.KEY_AUTO_BRIGHTNESS,
-                defaultValue = true
-            ),
-            SettingsItem(
-                key = "dark_mode",
-                titleRes = R.string.dark_mode,
-                summaryRes = R.string.dark_mode_summary,
-                type = SettingsItemType.SWITCH,
-                preferenceKey = AppleuxRuntimeConfig.KEY_DARK_MODE,
-                defaultValue = false
-            ),
-            header("section_account", R.string.section_account),
-            // No demo identity: the board shows a person's name; we show the
-            // account page instead.
-            nav(
-                key = "account", titleRes = R.string.account,
-                summaryRes = R.string.account_summary,
-                iconKey = "system_person", badgeColor = ColorTokens.systemGray,
-                target = act(android.provider.Settings.ACTION_SYNC_SETTINGS)
-            ),
-            header("section_connectivity", R.string.section_connectivity),
-            nav(
-                key = "airplane", titleRes = R.string.airplane_mode,
-                iconKey = "system_airplane", badgeColor = ColorTokens.systemOrange,
-                target = act(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
-            ),
-            nav(
-                key = "wifi", titleRes = R.string.wifi,
-                iconKey = "system_wifi", badgeColor = ColorTokens.systemBlue,
-                target = internal(com.appleux.settings.detail.WifiDetailActivity::class.java)
-            ),
-            nav(
-                key = "bluetooth", titleRes = R.string.bluetooth,
-                iconKey = "system_bluetooth", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS)
-            ),
-            nav(
-                key = "cellular", titleRes = R.string.cellular,
-                iconKey = "system_cellular", badgeColor = ColorTokens.systemGreen,
-                target = act(android.provider.Settings.ACTION_NETWORK_OPERATOR_SETTINGS)
-            ),
-            nav(
-                key = "hotspot", titleRes = R.string.hotspot,
-                iconKey = "system_personal_hotspot", badgeColor = ColorTokens.systemGreen,
-                // Literal: ACTION_TETHER_SETTINGS is @hide/@SystemApi in this
-                // tree (Settings.java), so it is absent from android.jar even
-                // though the string is the public contract.
-                target = act("android.settings.TETHER_SETTINGS")
-            ),
-            nav(
-                key = "quickshare", titleRes = R.string.quick_share,
-                summaryRes = R.string.quick_share_summary,
-                iconKey = "system_share", badgeColor = ColorTokens.systemBlue,
-                target = NavTarget.ShareSheet
-            ),
-            nav(
-                key = "battery", titleRes = R.string.battery,
-                iconKey = "system_battery", badgeColor = ColorTokens.systemGreen,
-                target = internal(com.appleux.settings.detail.BatteryDetailActivity::class.java)
-            ),
-            header("section_general", R.string.section_general),
-            nav(
-                key = "general", titleRes = R.string.general,
-                iconKey = "system_settings", badgeColor = ColorTokens.systemGray,
-                target = NavTarget.StockRoot
-            ),
-            nav(
-                key = "accessibility", titleRes = R.string.accessibility,
-                iconKey = "system_accessibility", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)
-            ),
-            nav(
-                key = "appearance", titleRes = R.string.appearance,
-                iconKey = "system_appearance", badgeColor = ColorTokens.systemIndigo,
-                target = NavTarget.Internal(
-                    com.appleux.settings.display.DisplaySettingsActivity::class.java
-                )
-            ),
-            nav(
-                key = "camera", titleRes = R.string.camera,
-                iconKey = "system_camera", badgeColor = ColorTokens.systemGray,
-                target = NavTarget.StockRoot
-            ),
-            nav(
-                key = "controlcenter", titleRes = R.string.control_center,
-                summaryRes = R.string.control_center_summary,
-                iconKey = "system_control_center", badgeColor = ColorTokens.systemGray,
-                target = NavTarget.OverlayPermission
-            ),
-            nav(
-                key = "display_nav", titleRes = R.string.display_brightness,
-                iconKey = "system_display", badgeColor = ColorTokens.systemBlue,
-                target = NavTarget.Internal(
-                    com.appleux.settings.display.DisplaySettingsActivity::class.java
-                )
-            ),
-            nav(
-                key = "home", titleRes = R.string.home_screen,
-                iconKey = "system_grid", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_HOME_SETTINGS)
-            ),
-            // Renamed from Siri: the assistant itself is GMS, but the voice
-            // input settings page is AOSP.
-            nav(
-                key = "voice", titleRes = R.string.voice_input,
-                iconKey = "system_mic", badgeColor = ColorTokens.systemIndigo,
-                target = act(android.provider.Settings.ACTION_VOICE_INPUT_SETTINGS)
-            ),
-            // Renamed from StandBy: DreamService is the AOSP equivalent.
-            nav(
-                key = "standby", titleRes = R.string.screen_saver,
-                iconKey = "system_clock", badgeColor = ColorTokens.systemOrange,
-                target = act(android.provider.Settings.ACTION_DREAM_SETTINGS)
-            ),
-            nav(
-                key = "wallpaper", titleRes = R.string.wallpaper,
-                iconKey = "system_photos", badgeColor = ColorTokens.systemTeal,
-                target = NavTarget.StockRoot
-            ),
-            header("section_notifications", R.string.notifications),
-            nav(
-                key = "notifications", titleRes = R.string.notifications,
-                summaryRes = R.string.notifications_summary,
-                iconKey = "system_bell", badgeColor = ColorTokens.systemRed,
-                target = NavTarget.OwnAppNotifications
-            ),
-            nav(
-                key = "notification_access", titleRes = R.string.notification_access,
-                summaryRes = R.string.notification_access_summary,
-                iconKey = "system_settings", badgeColor = ColorTokens.systemGray,
-                target = act(android.provider.Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
-            ),
-            nav(
-                key = "sounds", titleRes = R.string.sounds,
-                iconKey = "system_volume", badgeColor = ColorTokens.systemPink,
-                target = act(android.provider.Settings.ACTION_SOUND_SETTINGS)
-            ),
-            nav(
-                key = "focus", titleRes = R.string.focus,
-                iconKey = "system_dnd", badgeColor = ColorTokens.systemIndigo,
-                // Literal: ACTION_ZEN_MODE_SETTINGS is @hide in this tree
-                // (Settings.java), absent from android.jar.
-                target = act("android.settings.ZEN_MODE_SETTINGS")
-            ),
-            nav(
-                key = "screentime", titleRes = R.string.screen_time,
-                summaryRes = R.string.screen_time_summary,
-                iconKey = "system_hourglass", badgeColor = ColorTokens.systemIndigo,
-                target = act(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS)
-            ),
-            header("section_security", R.string.security),
-            nav(
-                key = "lock_screen", titleRes = R.string.lock_screen,
-                summaryRes = R.string.lock_screen,
-                iconKey = "system_lock", badgeColor = ColorTokens.systemGray,
-                target = NavTarget.Internal(
-                    com.appleux.settings.security.SecuritySettingsActivity::class.java
-                )
-            ),
-            // Face unlock is real on this unit: com.miui.face is installed,
-            // miui.face.FaceService runs, and a face is enrolled
-            // (settings_face_id_prefix_1="Face 1", lockscreen enable_facelock).
-            // It is software 2D, so `pm list features` shows no
-            // android.hardware.face — the feature flag only covers HAL
-            // biometrics. The side fingerprint sensor is ALSO present, and the
-            // system enroll flow offers whichever modalities exist.
-            nav(
-                key = "faceid", titleRes = R.string.faceid,
-                iconKey = "system_faceid", badgeColor = ColorTokens.systemGreen,
-                target = act(android.provider.Settings.ACTION_BIOMETRIC_ENROLL)
-            ),
-            nav(
-                key = "emergency", titleRes = R.string.emergency_sos,
-                iconKey = "system_sos", badgeColor = ColorTokens.systemRed,
-                target = NavTarget.StockRoot
-            ),
-            nav(
-                key = "privacy", titleRes = R.string.privacy,
-                iconKey = "system_shield", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_PRIVACY_SETTINGS)
-            ),
-            // No "NFC & payments" row: `pm list features` on the physical rock
-            // unit (2026-10-15, 95 features) contains NO android.hardware.nfc,
-            // so ACTION_NFC_SETTINGS would open a page for absent hardware.
-            // The glyph stays registered; the row stays out.
-            header("section_apps", R.string.section_apps),
-            nav(
-                key = "apps", titleRes = R.string.apps,
-                iconKey = "system_app_library", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_APPLICATION_SETTINGS)
             )
         )
     }

@@ -77,6 +77,30 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
     private val line1: AppleuxText
     private val line2: AppleuxText
 
+    /**
+     * Live content drawn INSIDE the notch, in its right shoulder.
+     *
+     * ## Why the shoulder and not the middle
+     *
+     * The POCO M5's waterdrop is a hole in the panel: the centre 100 px have no
+     * display pixels at all, which is the whole reason the stock cutout exists.
+     * Drawing there would be drawing on nothing. The mask around it, however, is
+     * real pixels — 0.502 x frame wide, so roughly 221 px of usable shoulder on
+     * each side of the hole, inside the notch's rounded end.
+     *
+     * That shoulder is what makes the notch behave like an island: a charging
+     * percentage, a timer or a track name can live in the black area and read as
+     * an iOS live activity, without changing the notch's iPhone 11 outline by a
+     * single pixel. Content never crosses into the hole.
+     */
+    private val shoulderBox: LinearLayout
+    private val shoulderIcon: AppleuxIcon
+    private val shoulderText: AppleuxText
+
+    /** Last text handed to [bindNotchContent], so an expand/collapse round trip
+     *  does not silently drop the live activity. */
+    private var notchContentText: String? = null
+
     private var slots = LiveSlots()
 
     /**
@@ -89,6 +113,7 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
         val dotOn = (slots.hasLiveActivity() || slots.charging) &&
             islandState == IslandState.IDLE
         chargeDot.visibility = if (dotOn) VISIBLE else GONE
+        refreshShoulder()
         if (islandState == IslandState.EXPANDED) renderExpanded()
         contentDescription = when (slots.topKind()) {
             LiveSlots.Kind.CALL -> "Dynamic Island: ${slots.callText}"
@@ -144,10 +169,47 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
             setColor(ColorTokens.systemGreen)
         }
         chargeDot.visibility = GONE
-        addView(chargeDot, LayoutParams(dotPx, dotPx, Gravity.CENTER).apply {
-            // Right of centre, clear of the camera beneath: the real waterdrop
-            // lens sits at exact centre, so nothing is drawn over it.
-            marginStart = (24f * density).toInt()
+
+        // ---- In-notch live content (the "island" half of the notch) -------
+        //
+        // Anchored to the notch's RIGHT end, marginEnd clear of the rounded
+        // corner. It used to be added at Gravity.CENTER with a 24 dp margin,
+        // which put it in the middle of the notch — and the middle of this
+        // notch is the physical waterdrop, where the panel has no pixels at
+        // all, so the dot could not be seen on this device no matter what it
+        // was bound to. The shoulder is the part of the mask that is real
+        // pixels.
+        shoulderIcon = AppleuxIcon(context).apply {
+            iconSize = 12f
+            iconTint = ColorTokens.systemGreen
+            visibility = GONE
+        }
+        shoulderText = AppleuxText(context).apply {
+            textSize = 12f
+            setTextStyle(AppleuxText.TextStyle.SEMIBOLD)
+            setTextColor(ColorTokens.label)
+            gravity = Gravity.CENTER_VERTICAL
+        }
+        shoulderBox = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
+            visibility = GONE
+            addView(chargeDot, LayoutParams(dotPx, dotPx).apply {
+                marginEnd = (4f * density).toInt()
+            })
+            addView(shoulderIcon, LayoutParams(
+                (12f * density).toInt(), (12f * density).toInt()
+            ).apply {
+                marginEnd = (3f * density).toInt()
+            })
+            addView(shoulderText, LayoutParams(
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT
+            ))
+        }
+        addView(shoulderBox, LayoutParams(
+            LayoutParams.WRAP_CONTENT, notchH, Gravity.TOP or Gravity.END
+        ).apply {
+            marginEnd = (14f * density).toInt()
         })
 
         expandedBox = LinearLayout(context).apply {
@@ -227,7 +289,59 @@ class AppleuxDynamicIsland @JvmOverloads constructor(
         expandedBox.visibility = if (expanded) VISIBLE else GONE
         val dotOn = (slots.hasLiveActivity() || slots.charging) && !expanded
         chargeDot.visibility = if (dotOn) VISIBLE else GONE
+        // The shoulder is the notch's own content area, so it exists only
+        // while the notch is the thing on screen: an expanded pill covers the
+        // same pixels and would show the live text twice.
+        refreshShoulder()
         if (expanded) renderExpanded()
+    }
+
+    /**
+     * Binds content to the notch's own black area — the "island" behaviour.
+     *
+     * This is additive and off by default: a null [text] hides the row
+     * entirely, so every existing caller (the launcher home surface, the shade)
+     * keeps drawing a plain iPhone 11 notch, unchanged.
+     *
+     * @param text short string shown in the right shoulder, e.g. "82%" or
+     *   "4:32". Keep it under ~6 characters: the shoulder is about 221 px on
+     *   this panel and it must never reach the waterdrop hole.
+     * @param iconName an [AppleuxIconRegistry] key, or null for text only. An
+     *   unknown key draws nothing rather than throwing — the registry returns
+     *   null and the icon view no-ops.
+     * @param tint icon colour; null keeps the charging-green default.
+     */
+    fun bindNotchContent(
+        text: String?,
+        iconName: String? = null,
+        tint: Int? = null,
+    ) {
+        notchContentText = text
+        if (text.isNullOrEmpty()) {
+            shoulderBox.visibility = GONE
+            return
+        }
+        shoulderText.text = text
+        shoulderIcon.iconName = iconName ?: ""
+        if (tint != null) shoulderIcon.iconTint = tint
+        shoulderIcon.visibility = if (iconName != null) VISIBLE else GONE
+        refreshShoulder()
+    }
+
+    /**
+     * One place that decides whether the notch shows content.
+     *
+     * The dot lives inside the shoulder rather than beside it — a dot outside
+     * would have to sit left of the notch's centre, which is the waterdrop
+     * again — so the shoulder's visibility depends on the dot's state too, and
+     * two separate call sites setting it independently would disagree. This is
+     * that decision, in one function, called from all three mutators.
+     */
+    private fun refreshShoulder() {
+        val hasContent =
+            !notchContentText.isNullOrEmpty() || chargeDot.visibility == VISIBLE
+        shoulderBox.visibility =
+            if (hasContent && islandState == IslandState.IDLE) VISIBLE else GONE
     }
 
     private fun renderExpanded() {

@@ -55,6 +55,7 @@ ROCK_SRC="$ROOT/device-support/rock/src/main/java"
 # has no playback call site, and shipping 7.7 MB of audio in an app that
 # never plays it is exactly the dead-weight problem.
 SOUNDS_SRC="$ROOT/appleux/sounds/src/main/java"
+APPS_SRC="$ROOT/appleux/apps-shared/src/main/java"
 SOUNDS_RES="$ROOT/appleux/sounds/src/main/res"
 
 CP="$PLATFORM"
@@ -249,6 +250,8 @@ build_app() {
     performance)   srcdirs="$srcdir $SOUNDS_SRC $DS_SRC $ROCK_SRC" ;;
     # Only the launcher plays a sound (camera shutter, toggle confirm).
     launcher)      srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC" ;;
+    phone|messages|contacts|photos|files|camera|clock|calendar|browser|video|apps-shared)
+                   srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC $APPS_SRC" ;;
     *)             srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC" ;;
   esac
 
@@ -330,6 +333,16 @@ build_app design-system appleux-design-system.apk
 build_app performance   appleux-performance.apk
 build_app launcher      appleux-launcher.apk
 build_app settings      appleux-settings.apk
+build_app phone         appleux-phone.apk
+build_app messages      appleux-messages.apk
+build_app contacts      appleux-contacts.apk
+build_app photos        appleux-photos.apk
+build_app files         appleux-files.apk
+build_app camera        appleux-camera.apk
+build_app clock         appleux-clock.apk
+build_app calendar      appleux-calendar.apk
+build_app browser       appleux-browser.apk
+build_app video         appleux-video.apk
 
 echo
 echo "APKs in $OUT/apks:"
