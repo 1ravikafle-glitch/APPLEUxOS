@@ -62,6 +62,9 @@ ManagedOOMMemoryPressure=
 ManagedOOMSwap=
 CONF
 systemctl --user daemon-reload 2>/dev/null
+# A previous run leaves the transient unit in "failed" state, and systemd
+# refuses to reuse a loaded unit name. Reset it so relaunches always work.
+systemctl --user reset-failed appleux-build.service 2>/dev/null
 
 # ---- wrapper: env vars live HERE so soong_build actually sees them ---------
 WRAPPER="$LOGDIR/.soong-build-wrapper.sh"
