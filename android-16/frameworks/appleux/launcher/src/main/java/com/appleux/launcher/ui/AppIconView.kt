@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import com.appleux.design.components.AppleuxHaptics
+import com.appleux.design.tokens.ColorTokens
 import com.appleux.launcher.LauncherTokens
 import com.appleux.launcher.R
 import com.appleux.performance.quality.AppleuxQualityLevel
@@ -152,6 +153,69 @@ class AppIconView @JvmOverloads constructor(
      *   its icon agree and the gap comes only from the cell margin.
      * @param showLabel false for the dock, which carries icons only.
      */
+    // ------------------------------------------------------------------
+    // iOS 27 notification badge
+    //
+    // The red count bubble on the icon's top-right corner. Every iOS home
+    // screenshot in design-reference/iphone11-ios27/drive/ has these; the
+    // audit found ZERO badge code before this.
+    //
+    // PROVENANCE: badge fill is ColorTokens.systemRed (#FF3B30, Apple's own
+    // red from the Figma kit), white numerals, ~20dp circle for 1-2 digits
+    // growing slightly for 3+, sitting on the icon's top-right corner and
+    // overlapping it — the iOS placement, not an in-app Android badge.
+    //
+    // Drawn as an overlay in dispatchDraw rather than a child view: no extra
+    // view, no layout pass, and it renders ABOVE the squircle mask.
+    //
+    // The count comes from AppleuxBadgeStore. The notification listener that
+    // owns the real counts lives in SystemUI (another process), so the store
+    // is the seam: SystemUI publishes, the launcher reads on rebind — the
+    // same cross-process pattern as AppleuxConfigProvider.
+    // ------------------------------------------------------------------
+    private val badgePaint = android.graphics.Paint(
+        android.graphics.Paint.ANTI_ALIAS_FLAG
+    ).apply { color = ColorTokens.systemRed }
+
+    private val badgeTextPaint = android.graphics.Paint(
+        android.graphics.Paint.ANTI_ALIAS_FLAG
+    ).apply {
+        color = android.graphics.Color.WHITE
+        textAlign = android.graphics.Paint.Align.CENTER
+        isFakeBoldText = true
+    }
+
+    /** Unread count for the bound app; 0 renders nothing. */
+    private var badgeCount: Int = 0
+
+    /** Public so the adapter can push counts as they change. */
+    fun setBadgeCount(count: Int) {
+        if (count == badgeCount) return
+        badgeCount = count.coerceAtLeast(0)
+        // The badge is drawn in dispatchDraw, so a count change only needs
+        // an invalidate — cheap, and stays correct across the press scale.
+        invalidate()
+    }
+
+    override fun dispatchDraw(canvas: android.graphics.Canvas) {
+        super.dispatchDraw(canvas)
+        if (badgeCount <= 0) return
+        // The badge sits on the ICON's top-right, so it follows the icon
+        // wherever the current size placed it.
+        val iconRight = iconView.left + iconView.width
+        val iconTop = iconView.top
+        val d = resources.displayMetrics.density
+        // 20dp base; +4dp when the count needs three characters.
+        val diameter = (if (badgeCount > 99) 24 else 20) * d
+        val cx = iconRight - diameter / 2 + 2 * d
+        val cy = iconTop + diameter / 2 - 2 * d
+        canvas.drawCircle(cx, cy, diameter / 2, badgePaint)
+        badgeTextPaint.textSize = 11 * d
+        val text = if (badgeCount > 99) "99+" else badgeCount.toString()
+        val ty = cy - (badgeTextPaint.ascent() + badgeTextPaint.descent()) / 2
+        canvas.drawText(text, cx, ty, badgeTextPaint)
+    }
+
     fun bind(
         item: AppIconItem,
         scale: Float,

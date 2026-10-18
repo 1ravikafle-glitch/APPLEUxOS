@@ -693,7 +693,8 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             // there); with the library open it comes back home. The library
             // opens by swiping left past the last page, exactly like iOS.
             onSwipeUp = { if (isLibraryOpen()) closeLibrary() },
-            onSwipeDown = { xFraction -> onSwipeDownAt(xFraction) },
+            onSwipeDown = { xFraction, downYFraction ->
+                onSwipeDownAt(xFraction, downYFraction) },
             onLongPress = { x, y -> onLongPressAt(x, y) },
             onSwipeLeft = { yFrac ->
                 // Bottom edge: iOS recent-app switching. Anywhere else:
@@ -1168,8 +1169,14 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
      * stand-in for the iOS 27 Search-or-Ask panel, which needs Apple
      * Intelligence hardware we do not have).
      */
-    private fun onSwipeDownAt(xFraction: Float) {
-        if (xFraction > 0.6f) {
+    /**
+     * The top-edge strip: swipes that start here are CC/NC, exactly like iOS.
+     * Below it, a swipe-down is Spotlight. 0.06 is the status-bar band on our
+     * measured frame (76px cutout on 2408px panel).
+     */
+    private fun onSwipeDownAt(xFraction: Float, downYFraction: Float) {
+        val fromTopEdge = downYFraction < 0.06f
+        if (fromTopEdge && xFraction > 0.6f) {
             // Toggle, not mirrored SHOW/HIDE: the service owns panel state and
             // launcher-side flags desync across process restarts.
             sendSystemUi("com.appleux.systemui.TOGGLE_CONTROL_CENTER")

@@ -51,10 +51,19 @@ object AppleuxSystemUi {
 
     private const val TAG = "AppleuxSystemUi"
 
-    /** iOS Notification Center — pull down from the top-LEFT. */
+    /**
+     * iOS Notification Center — pull down from the top-LEFT.
+     *
+     * Was `requestPanel(...)` + `invoke(context, "expandNotificationsPanel")`:
+     * the broadcast opened our iOS panel AND the stock AOSP shade underneath
+     * it, so every pull-down showed Material QS behind our glass. The stock
+     * call is gone for the same reason it is gone from
+     * [toggleControlCenter]: the AOSP shade is the loudest remaining
+     * non-iOS surface, and double-opening it is worse than a gesture that
+     * does nothing until the SystemUI host is built.
+     */
     fun toggleNotificationCenter(context: Context) {
         requestPanel(context, "com.appleux.systemui.chrome.OPEN_NOTIFICATION_CENTER")
-        invoke(context, "expandNotificationsPanel")
     }
 
     /**

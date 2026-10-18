@@ -239,6 +239,9 @@ class HomescreenViewHolder(view: AppIconView) : RecyclerView.ViewHolder(view) {
         val v = itemView as AppIconView
         v.onItemClick = onClick
         v.bind(item, scale, quality)
+        // Push the unread count so the iOS badge renders when non-zero.
+        // Zero renders nothing — the honest state until SystemUI publishes.
+        v.setBadgeCount(AppleuxBadgeStore.countFor(v.context, item.packageName))
     }
 }
 

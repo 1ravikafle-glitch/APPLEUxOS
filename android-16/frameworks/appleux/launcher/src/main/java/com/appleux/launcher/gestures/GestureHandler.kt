@@ -19,7 +19,16 @@ import com.appleux.launcher.LauncherTokens
 class GestureHandler(
     private val context: Context,
     private val onSwipeUp: () -> Unit,
-    private val onSwipeDown: (xFraction: Float) -> Unit = {},
+    /**
+     * Fires with (xFraction, downYFraction) of the swipe ORIGIN.
+     *
+     * iOS 27 only treats swipes that START in the top edge strip as
+     * Control Center / Notification Center; a swipe-down from the middle of
+     * the screen is Spotlight. The old signature passed only the x fraction,
+     * so CC opened from a swipe-down anywhere on the screen — the single
+     * loudest gesture bug in the audit.
+     */
+    private val onSwipeDown: (xFraction: Float, downYFraction: Float) -> Unit = { _, _ -> },
     private val onLongPress: (x: Float, y: Float) -> Unit = { _, _ -> },
     /**
      * Horizontal swipes carry the DOWN position as a height fraction so the
@@ -112,7 +121,8 @@ class GestureHandler(
             }
         } else {
             val width = context.resources.displayMetrics.widthPixels.coerceAtLeast(1)
-            onSwipeDown(x / width)
+            val height = context.resources.displayMetrics.heightPixels.coerceAtLeast(1)
+            onSwipeDown(downX / width, downY / height)
         }
         return true
     }
