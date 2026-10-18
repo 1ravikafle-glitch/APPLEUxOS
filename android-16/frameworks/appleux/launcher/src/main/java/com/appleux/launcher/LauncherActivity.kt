@@ -1056,6 +1056,25 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         }
     }
 
+    /**
+     * Hardware volume keys -> the iOS HUD.
+     *
+     * Returning true consumes the key so the activity does not also run its
+     * default handling. The stream change and the HUD both happen in the
+     * dispatcher; see it for why the AOSP panel cannot be suppressed from here.
+     */
+    override fun onKeyDown(keyCode: Int, event: android.view.KeyEvent): Boolean {
+        if (com.appleux.design.components.AppleuxVolumeKeys.handle(this, keyCode)) {
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onPause() {
+        com.appleux.design.components.AppleuxVolumeKeys.dismiss(this)
+        super.onPause()
+    }
+
     private fun launchApp(item: AppIconItem) {
         try {
             rememberLaunch(item.packageName)
