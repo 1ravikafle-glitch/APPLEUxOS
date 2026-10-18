@@ -1,0 +1,34 @@
+// AppleUX Apps Shared Library — all 10 system-app activity sources.
+//
+// Each app module (phone, messages, contacts, photos, files, camera, clock,
+// calendar, browser, video) is a thin APK shell: its own package, manifest
+// with CATEGORY_LAUNCHER, and icons. The actual code lives HERE, in package
+// com.appleux.apps, and is compiled into each shell via static_libs.
+//
+// This file was lost in a directory shuffle on 2026-10-18 (the sources were
+// restored from git; this was not), which broke soong bootstrap with
+// "depends on undefined module appleux-apps-shared" on EVERY target —
+// including m SystemUI, which needs none of these apps but still has to
+// resolve the whole tree.
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_library {
+    name: "appleux-apps-shared",
+    owner: "appleux",
+    srcs: ["src/main/java/**/*.kt"],
+    // res/ holds AppleuxAppTheme, referenced by every app's manifest.
+    // Without resource_dirs this is silently ignored and aapt2 link fails
+    // with "resource style/AppleuxAppTheme not found".
+    resource_dirs: ["src/main/res"],
+    sdk_version: "current",
+    min_sdk_version: "36",
+    static_libs: [
+        "androidx_runtime",
+        "appleux-design-system",
+    ],
+    // NOT product_specific, for the same reason design-system is not:
+    // generic modules must not be product-gated. The APK shells carry
+    // product_specific; the code they compile in must not.
+}

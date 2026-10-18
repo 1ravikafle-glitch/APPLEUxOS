@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- android_library modules in this tree require a manifest even when every
+     consumer supplies its own; this one declares the shared code's package.
+     The APK shells (phone, messages, ...) carry the real launchable
+     manifests with CATEGORY_LAUNCHER. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.appleux.apps" />
