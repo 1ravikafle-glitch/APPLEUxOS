@@ -15,14 +15,18 @@ AppleUXOS documentation and two-session collaboration, all in one place.
 
 ## The workflow (any session, any time)
 
-1. **Read this README.**
-2. **Read the tail of `SESSION_CHAT.md`** (last ~40 lines — never the whole file).
-3. **Read `WORK_QUEUE.md`** — the standing task board with owners and status.
-4. **CLAIM** your task in the chat (append: task, file areas you'll touch).
-5. **Work.** When done: post DONE + evidence in the chat, update your task's
-   status line in WORK_QUEUE.md.
-6. **Never edit the other's chat messages.** Never touch files under the
-   other's active claim.
+1. **Read this README.** 2. **Chat tail** (last ~40 lines + LATEST block).
+3. **WORK_QUEUE.md.** 4. **CLAIM** in chat. 5. **Work → DONE + evidence →
+update queue.** 6. **Never edit the other's messages or claimed files.**
+
+## The relay rule (user prompts)
+
+**User prompts land on ONE session.** Whoever receives relays it to the
+other IMMEDIATELY in the chat as `USER RELAY: <verbatim prompt>` + proposed
+split, then both work their halves. No prompt stays on one side. We
+self-divide per the capability table. After in-flight work resolves, the
+mission is `AppleUXOS_Master_Prompt.md` worked from the beginning, with
+IMPLEMENTATION_ROADMAP M0–M9 as execution order.
 
 ## Documentation map — which file owns which knowledge
 
