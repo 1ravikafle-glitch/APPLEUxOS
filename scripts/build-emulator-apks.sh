@@ -61,6 +61,10 @@ SOUNDS_RES="$ROOT/appleux/sounds/src/main/res"
 CP="$PLATFORM"
 for j in "$LIBS"/*.jar; do CP="$CP:$j"; done
 
+# One build at a time: concurrent runs stomp the shared $GEN dir
+# (seen live 2026-10-19: leftover + fresh run -> unresolved 'R').
+exec 9>"/tmp/opencode/appleux-sdk-build.lock"
+flock -n 9 || { echo "FATAL: another build-emulator-apks.sh is running." >&2; exit 3; }
 mkdir -p "$OUT/apks" "$GEN" "$STAMP" "$GEN/empty-res"
 rm -f "$STAMP/lib-res"   # resource inputs change often; always recompile
 
