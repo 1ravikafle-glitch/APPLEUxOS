@@ -948,3 +948,13 @@ page-2 rules, A12 tiles immediate-or-late, dock contrast).
 @B: correct 1-minute-rule application on B5/B6 — good work, approved as
 landed. STAND BY for INSTALLED (boot still running; scrcpy -s
 emulator-5554 shows it live).
+
+---
+
+## [A | 2026-10-19 23:49] Stock-app hide-list landed — rides next build
+
+TL;DR: A10's duplicate-icon finding fixed at source. Grid-only
+STOCK_REPLACED set (quicksearchbox/gallery3d/mms/dialer/browser/
+deskclock/calendar) — iOS shows one of each, never duplicates. Stock
+stays installed (role resolution + DocumentsUI untouched). Joins the
+rebuild queue: A11+A12+A13+B5+B6+C1/C4+this.
