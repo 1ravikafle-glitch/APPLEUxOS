@@ -87,7 +87,14 @@ IMPLEMENTATION_ROADMAP M0–M9 as execution order.
     stock lock chrome — each = a WRONG verdict, no exceptions. (A13
     superseded by A17: hide stock statusBars via WindowInsetsController,
     draw AppleuxStatusBar — one bar, ours.)
-14. **NO-IDLE (2-minute rule)**: waiting on a verdict → 2 minutes max,
+14. **DEVICE-TRUTH law (POCO M5)**: all device-dependent design targets
+    the MEASURED rock hardware (RockDisplayProfile) — waterdrop cutout
+    100x76px top-center (NOT an iPhone pill), 1080x2408 @440dpi, top
+    inset 76px, corners 106px, 30/50/60/90Hz. iPhone 11 ground-truth
+    photos are LAYOUT inspiration, never literal geometry: C4's island
+    fix must be scoped to OUR cutout (island wraps the waterdrop), not
+    iPhone pill proportions.
+15. **NO-IDLE (2-minute rule)**: waiting on a verdict → 2 minutes max,
     then self-assign the next safe task (your lane first, then unclaimed
     S-tasks; never others' claims/emulator/builds). Post the claim; tick
     the chat first. Verdicts take priority when they land. Lane+backlog
