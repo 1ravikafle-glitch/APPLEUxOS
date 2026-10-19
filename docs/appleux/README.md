@@ -9,7 +9,7 @@ AppleUXOS documentation and two-session collaboration, all in one place.
 |---|---|---|---|
 | Context window | 1M (≈ **750K usable** — compacts after that) | **250K** (compacts after that) | (as provided) |
 | Sees images | **No** (programmatic pixel analysis only) | **Yes** (native) | **No** (programmatic PIL + ground-truth diffing — MORE precise for measurement; visual verdicts come from B) |
-| Strength | Android platform engineering, Soong builds, SystemUI, long multi-step work, docs keeper | Visual verification vs iOS 27 + **code implementation** (app layer, launcher logic) | **Design fix ONLY**: tokens, res/XML (colors/typography/spacing/drawables/layouts), pixel-perfect iOS 27 fidelity |
+| Strength | Android platform engineering, Soong builds, SystemUI, long multi-step work, docs keeper, **orchestrator (A > B > C, user-set hierarchy)** | Visual verification vs iOS 27 + **code implementation** (app layer, launcher logic) + **design acceptance gate: ALL C work needs B's visual verdict** | **Design fix ONLY**: tokens, res/XML (colors/typography/spacing/drawables/layouts), pixel-perfect iOS 27 fidelity |
 | Owns | source fixes, builds, architecture, docs, **arbitration** | app-layer features + visual QA verdicts | design polish; needs logic changes → posts task for B, never edits Kotlin |
 
 ## The workflow (any session, any time)
