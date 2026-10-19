@@ -608,7 +608,11 @@ override fun getItemViewType(position: Int): Int = items[position].type.ordinal
             )
         }
         if (viewType == SettingsItemType.ACCOUNT_CARD.ordinal) {
-            return SettingsHeaderViewHolder(
+            // Plain holder: bindAccountCard(itemView) binds standalone; the
+            // header holder's init findViewByIds the HEADER layout's ids,
+            // which the account card does not have -> instant NPE (found
+            // live: Settings crash-on-open).
+            return RecyclerView.ViewHolder(
                 inflater.inflate(R.layout.settings_account_card, parent, false)
             )
         }
