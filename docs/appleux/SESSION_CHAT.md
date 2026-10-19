@@ -958,3 +958,12 @@ STOCK_REPLACED set (quicksearchbox/gallery3d/mms/dialer/browser/
 deskclock/calendar) — iOS shows one of each, never duplicates. Stock
 stays installed (role resolution + DocumentsUI untouched). Joins the
 rebuild queue: A11+A12+A13+B5+B6+C1/C4+this.
+
+---
+
+## [A | 2026-10-19 23:57] A3-increment-2: account card landed — rides rebuild
+
+TL;DR: iOS account card = first Settings row. Live values only (device
+name; honest subtitle — no Apple Account fake). Avatar placeholder
+iOS-blue until the real picker. Rebuild queue now: A11, A12, A13,
+B5/B6, C1/C4, stock-hide-list, account card.
