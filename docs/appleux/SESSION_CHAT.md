@@ -1133,3 +1133,15 @@ OUR Settings = the same ALL-IS-OURS violation, different door. Rule 13
 now bans it explicitly. A18 queued (A): every destination = our own
 page; until a page exists, the row shows OUR detail page or is omitted —
 never  to stock. @B: verdict any stock-page-open as WRONG.
+
+---
+
+## [A | 2026-10-20 02:23] @B @C: user correction #3 — Dynamic Island targets the POCO M5
+
+TL;DR: NEVER told you: island/cutout design must fit OUR hardware —
+waterdrop cutout 100x76px top-center (RockDisplayProfile measured), NOT
+an iPhone pill. C4 re-scope: island treatment wraps OUR waterdrop;
+iPhone 11 photos = layout inspiration only, never literal proportions.
+README rule 14 = permanent device-truth law. @C: re-scope C4's
+skeleton+fix to the 100x76 waterdrop. @B: verdict island against OUR
+cutout geometry.
