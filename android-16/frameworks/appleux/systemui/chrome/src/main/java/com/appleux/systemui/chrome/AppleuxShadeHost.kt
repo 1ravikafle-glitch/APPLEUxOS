@@ -111,6 +111,7 @@ object AppleuxShadeHost {
         }
 
         controlCenter = cc
+        populateControlTiles(cc, host.context)
         notificationShade = ns
         host.addView(cc)
         host.addView(ns)
@@ -186,6 +187,70 @@ object AppleuxShadeHost {
         val r = receiver ?: return
         receiver = null
         container?.context?.let { runCatching { it.unregisterReceiver(r) } }
+    }
+
+    /**
+     * Control Center tiles (Master Prompt §6.A: "Control Center and quick
+     * controls"). The layout existed but the registry was EMPTY — this
+     * populates the real toggles. We run inside platform-signed SystemUI,
+     * so privileged switches (Wi-Fi/BT/DND) are permitted; every call is
+     * still best-effort — a missing grant must never crash the shade.
+     */
+    private fun populateControlTiles(cc: com.appleux.design.components.AppleuxControlCenter, ctx: android.content.Context) {
+        runCatching {
+            val wifi = ctx.applicationContext.getSystemService(android.content.Context.WIFI_SERVICE)
+                    as? android.net.wifi.WifiManager
+            cc.addTile(com.appleux.design.components.AppleuxControlCenter.ControlTile(
+                id = "wifi", name = "Wi-Fi", iconName = "il_ic_wifi",
+                isToggle = true
+            ) {
+                runCatching { wifi?.setWifiEnabled(wifi?.isWifiEnabled != true) }
+            })
+            if (wifi?.isWifiEnabled == true) cc.setTileActive("wifi", true)
+
+            val bt = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            cc.addTile(com.appleux.design.components.AppleuxControlCenter.ControlTile(
+                id = "bluetooth", name = "Bluetooth", iconName = "il_ic_bluetooth",
+                isToggle = true
+            ) {
+                runCatching {
+                    if (bt?.isEnabled == true) bt.disable() else bt?.enable()
+                }
+            })
+            if (bt?.isEnabled == true) cc.setTileActive("bluetooth", true)
+
+            cc.addTile(com.appleux.design.components.AppleuxControlCenter.ControlTile(
+                id = "flashlight", name = "Flashlight", iconName = "sf_flashlight",
+                isToggle = true
+            ) {
+                runCatching {
+                    val cm = ctx.getSystemService(android.content.Context.CAMERA_SERVICE)
+                            as? android.hardware.camera2.CameraManager
+                    val id = cm?.cameraIdList?.firstOrNull {
+                        cm.getCameraCharacteristics(it).get(
+                            android.hardware.camera2.CameraCharacteristics.FLASH_INFO_AVAILABLE) == true }
+                    if (id != null) cm.setTorchMode(id, true)
+                }
+            })
+
+            val nm = ctx.getSystemService(android.content.Context.NOTIFICATION_SERVICE)
+                    as? android.app.NotificationManager
+            cc.addTile(com.appleux.design.components.AppleuxControlCenter.ControlTile(
+                id = "dnd", name = "Do Not Disturb", iconName = "sf_moon",
+                isToggle = true
+            ) {
+                runCatching {
+                    if (nm?.isNotificationPolicyAccessGranted == true) {
+                        nm.setInterruptionFilter(
+                            if (nm.currentInterruptionFilter == android.app.NotificationManager.INTERRUPTION_FILTER_NONE)
+                                android.app.NotificationManager.INTERRUPTION_FILTER_ALL
+                            else android.app.NotificationManager.INTERRUPTION_FILTER_NONE)
+                    }
+                }
+            })
+            if (nm?.currentInterruptionFilter ==
+                android.app.NotificationManager.INTERRUPTION_FILTER_NONE) cc.setTileActive("dnd", true)
+        }
     }
 
     /** Removes the panels and releases the subscription. */
