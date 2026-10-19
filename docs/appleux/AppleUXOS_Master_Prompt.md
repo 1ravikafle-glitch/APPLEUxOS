@@ -104,7 +104,7 @@ Engineering handling of those assets:
 AppleUXOS must feel like one coherent operating system from first boot to the deepest system settings. We redesign every user-visible component that we control to match iOS 27 layout, motion and behavior.
 
 ### A. Overall system experience
-- Boot animation and setup wizard
+- Boot animation and setup wizard(design already made, just adjust the animation speed and motion with actual time taken to boot, so that it matches)
 - Lock screen and always-on display where hardware permits
 - Home screen, dock, app library, widgets, multitasking/app switcher
 - Status bar and navigation gestures
