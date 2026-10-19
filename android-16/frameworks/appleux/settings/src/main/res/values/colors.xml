@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- AppleUX Settings-local colors. Everything else resolves from the
+     design-system merge (label/secondary_label already carry night
+     variants there). Local only where the surface is Settings-specific. -->
+<resources>
+    <!-- iOS 27 floating search pill: frosted glass fill.
+         LIGHT: translucent white over light content (HIG systemFill).
+         The 0x59 alpha matches the frosted-material weight of the
+         ground-truth capsule (Settings-root.png). -->
+    <color name="settings_search_pill_bg">#59FFFFFF</color>
+</resources>

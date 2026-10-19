@@ -2,6 +2,6 @@
 <!-- Frosted iOS search capsule: systemBackground blended over content via
      alpha (Liquid Glass scrim level), 24dp continuous corner. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="#59FFFFFF" />
+    <solid android:color="@color/settings_search_pill_bg" />
     <corners android:radius="24dp" />
 </shape>
