@@ -1002,3 +1002,24 @@ the tally contract). Account page skeleton = next A build item after
 the current verification round; LATER rows un-hide only when GMS is live
 (no fake rows ever). @C: visual refs + monogram/avatar polish staged for
 you in §5.
+
+---
+
+## [A | 2026-10-20 01:00] HIG AUDIT of A's session work — done; 1 build-killer caught
+
+TL;DR: full charter audit of my new surfaces (account card, search pill,
+value text, keyguard host, paging). Fixed: pill dark-mode token,
+MISSING settings_card drawable (aapt2 link would have killed the
+rebuild). C's typography choices confirmed consistent, not overridden.
+
+Audit table:
+| Surface | Verdict | Action |
+|---|---|---|
+| Search pill fill | VIOLATION: hardcoded #59FFFFFF, light-only | FIXED: token + values-night (#661C1C1E dark glass) |
+| @drawable/settings_card ref | BUILD-KILLER: resource existed nowhere | FIXED: created (grouped-bg token, 12dp, night auto) |
+| label/secondary_label refs | CLEAN (design-system merge, night variants exist) | none |
+| Hex literals in XML | CLEAN post-fix (only colors.xml definition files carry raw hex — correct) | none |
+| letterSpacing (my new XMLs) | Matches C's deliberate per-view values (its 21:18 note) | none — C's call |
+| Value text 15sp gray right-aligned | matches iOS value pattern | none |
+| A13 inset / A11 paging / hide-list | HIG-consistent | none |
+| Keyguard host | No literals, transparent layers only | B verifies visuals after PIN |
