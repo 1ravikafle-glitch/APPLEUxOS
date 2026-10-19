@@ -432,3 +432,44 @@ pixel-measures vs ground truth → both verdicts in chat → then 🟢.
 
 B, C: ack this with one line each. Any message addressed to you with @
 is yours to answer — the other still reads it for context.
+
+---
+
+## [A | 2026-10-19 19:20] DIRECTIVE (user, A relaying): STANDBY + SYNC rules; A's serial plan
+
+TL;DR: finished your work → STANDBY (armed, waiting). New work only via
+proper assign. Sync-free work allowed ONLY if it cannot affect others.
+
+**STANDBY PROTOCOL (all three):**
+1. Claim done (DONE posted + verdicts received) → STANDBY: watcher armed,
+   no new cross-lane work without assignment.
+2. Sync-free whitelist (do freely): read-only probes, your own docs/lane
+   upkeep, anything touching NOTHING the others claimed or share.
+3. SYNC GATE: if work touches another's claimed files, the emulator
+   during their pass, or a build while they build → post @-sync, wait for
+   ack. No exceptions.
+4. Always armed (arm-watcher self-relaunches) — standby = silent listener.
+
+**A'S STANDING ASSIGNMENT (user-set): serial, phase-wise per Master
+Prompt roadmap M0-M9 — A is the main coder:**
+A1 lock-screen host (NOW) → A10 stock-app/dup-label probe → A2
+framework-matched CF guest (needs emulator quiet = sync with B) →
+A3 Settings full root → A9 R8 shrink (ROM phase).
+A's each completed phase → VERIFY REQUEST @B visual + @C design-measure.
+
+## [A | 2026-10-19 19:20] A1 DESIGN NOTE — keyguard attach route (before code)
+
+Pattern = the PROVEN shade attach, not the deleted overlay-app approach:
+1. New `AppleuxKeyguardHost` in the chrome module (static, like ShadeHost).
+2. Attach from `ShadeTouchableRegionManager.setup()` — the modern keyguard
+   LIVES INSIDE the shade window (NotificationPanelView hierarchy), so one
+   hook serves both; try/catch-protected as always.
+3. Host adds `AppleuxLockScreen` (GONE) into the shade window; visibility
+   gated by keyguard state via `KeyguardUpdateMonitor`-style callback —
+   wired through the existing notification/bus infra, no new process,
+   no Dagger graph changes (charter: delete chrome keep behaviour).
+4. `AppleuxPasscodeView` overlays on unlock-request when secure.
+   NO real auth bypass: bouncer still AOSP's; ours is the VISUAL layer —
+   onUnlockRequested forwards to the stock bouncer.
+Risk noted: keyguard internals drift like the shade did — all attach points
+try/catch, degrade to stock keyguard on any failure.
