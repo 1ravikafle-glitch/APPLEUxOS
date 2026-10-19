@@ -201,7 +201,7 @@ object AppleuxShadeHost {
             val wifi = ctx.applicationContext.getSystemService(android.content.Context.WIFI_SERVICE)
                     as? android.net.wifi.WifiManager
             cc.addTile(com.appleux.design.components.AppleuxControlCenter.ControlTile(
-                id = "wifi", name = "Wi-Fi", iconName = "il_ic_wifi",
+                id = "wifi", name = "Wi-Fi", iconName = "sf_wifi",
                 isToggle = true
             ) {
                 runCatching { wifi?.setWifiEnabled(wifi?.isWifiEnabled != true) }
@@ -236,7 +236,7 @@ object AppleuxShadeHost {
             val nm = ctx.getSystemService(android.content.Context.NOTIFICATION_SERVICE)
                     as? android.app.NotificationManager
             cc.addTile(com.appleux.design.components.AppleuxControlCenter.ControlTile(
-                id = "dnd", name = "Do Not Disturb", iconName = "sf_moon",
+                id = "dnd", name = "Do Not Disturb", iconName = "il_ic_moon",
                 isToggle = true
             ) {
                 runCatching {
