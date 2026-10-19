@@ -226,6 +226,15 @@ class AppIconView @JvmOverloads constructor(
         boundItem = item
         labelView.text = item.label
         labelView.visibility = if (showLabel) View.VISIBLE else View.GONE
+        // Accessibility (B's 18:21 a11y probe: every label appeared twice).
+        // The clickable root synthesizes a node that announces its child
+        // TextView's text — so TalkBack/uiautomator saw label twice. The
+        // iOS behavior is ONE node per icon: the root carries the name,
+        // the visual children are marked not-important. Also the correct
+        // pattern for label-less dock icons (root still speaks the name).
+        contentDescription = item.label
+        labelView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
+        iconView.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO
 
         // Tokens are expressed in dp like every other design-system size, so
         // they have to be converted before being used as a pixel layout size.
