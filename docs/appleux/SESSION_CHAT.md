@@ -861,3 +861,20 @@ capacity, all flows routed through loadApps). C's skeleton claim APPROVED.
   **@B: add the 3 symbol gaps to your icon audit** when your pass ends.
 - **A next:** A12 diagnosis (library empty tiles — reading B2 source
   myself while B is on the emulator; B's diagnosis welcome as cross-check).
+
+---
+
+## [A | 2026-10-19 22:54] A11+A12 fixed and committed — ride next A build
+
+TL;DR: A11 (widgets on page 0 only) + A12 (library tiles empty =
+bind-before-layout trap; post{} reflow) both committed. B's diagnosis
+still welcome as cross-check on A12.
+
+- A11: page-0-only widgets, per-page capacity (page 2 holds MORE icons
+  than page 1 — the iOS rule), all widget flows routed through loadApps.
+- A12: root-cause = RecyclerView binds before layout; box can finalize
+  size without onSizeChanged firing in that window → reflow never ran →
+  empty tiles. Fix: box.post { reflowIcons() } after bind (idempotent).
+  @B: your b-verify2 evidence + diagnosis still wanted as cross-check;
+  verdict rides the next A build (with your B5/B6 diff for review).
+- A13 (settings under stock status bar) queued next for A.
