@@ -93,6 +93,25 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             .apply()
     }
 
+    /**
+     * Pixel height the widget block will occupy at the top of a home page and
+     * therefore must be subtracted from the fit band before sizing a page.
+     *
+     * Mirrors HomescreenAdapter's WidgetViewHolder exactly: one row per
+     * ceil(summedSpans / GRID_COLUMNS) of LauncherTokens.WIDGET_CELL_HEIGHT_DP
+     * plus each cell's SpacingTokens.INSETS_MD top+bottom margin. Rounded UP so
+     * the block can only over-reserve — an under-reserve reintroduces the
+     * vertical scroll iOS must never show.
+     */
+    private fun widgetBlockPx(cells: List<com.appleux.launcher.ui.WidgetCell>): Int {
+        if (cells.isEmpty()) return 0
+        val columns = com.appleux.launcher.LauncherTokens.GRID_COLUMNS
+        val rows = (cells.sumOf { it.span } + columns - 1) / columns
+        val rowDp = com.appleux.launcher.LauncherTokens.WIDGET_CELL_HEIGHT_DP +
+            2 * com.appleux.design.tokens.SpacingTokens.INSETS_MD
+        return kotlin.math.ceil(rows * rowDp * resources.displayMetrics.density).toInt()
+    }
+
     private fun rebuildWidgetCells(): List<com.appleux.launcher.ui.WidgetCell> {
         val cells = mutableListOf<com.appleux.launcher.ui.WidgetCell>()
         val kept = mutableListOf<Pair<String, Int>>()
@@ -213,7 +232,10 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         val specs = loadWidgetSpecs()
         specs.add(packageName + def.providerClass to id)
         saveWidgetSpecs(specs)
-        homescreenGrid.submitWidgets(rebuildWidgetCells())
+        // Route through loadApps: the page-0-only widget rule (A11) lives
+        // there; submitting directly here would bypass it if the user is
+        // on a later page when a widget lands.
+        loadApps()
         pushBatteryToWidgets()
     }
 
@@ -221,7 +243,8 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         val specs = loadWidgetSpecs().filterNot { it.second == appWidgetId }
         saveWidgetSpecs(specs)
         try { appWidgetHost.deleteAppWidgetId(appWidgetId) } catch (e: Exception) {}
-        homescreenGrid.submitWidgets(rebuildWidgetCells())
+        // Same routing as onWidgetBound — never bypass the page-0 rule.
+        loadApps()
     }
 
     private fun pushBatteryToWidgets() {
@@ -582,20 +605,25 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             )
         )
         pushIslandBattery()
-        // The grid must reserve the dock's clearance band, otherwise the last
-        // icon row slides under the translucent dock glass and reads as a
-        // double row. DOCK_CLEARANCE_DP is derived in LauncherTokens from the
-        // measured panel (gesture bar 46.2 + gap 16 + dock bar 84 = 146 dp).
+        // The grid fills the window and reserves the bottom band itself, by padding
+        // HOMESCREEN_BOTTOM_RESERVE_DP (the search pill + the dock clearance).
+        // It used to ALSO carry a bottomMargin of HOMESCREEN_DOCK_CLEARANCE_DP,
+        // so the band was reserved twice - 292 dp of a 640 dp screen - which is
+        // what left the grid two rows with a dead gap above the pill.
         root.addView(
             homescreenGrid,
             android.widget.FrameLayout.LayoutParams(
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
                 android.widget.FrameLayout.LayoutParams.MATCH_PARENT
-            ).apply {
-                bottomMargin = (com.appleux.launcher.LauncherTokens
-                    .HOMESCREEN_DOCK_CLEARANCE_DP * resources.displayMetrics.density).toInt()
-            }
+            )
         )
+        // rowsThatFit() needs the grid's measured height, which is 0 while the
+        // first page is being submitted from onCreate. Re-page once the first
+        // layout lands, otherwise a short device would keep the designed row
+        // count from the pre-layout fallback and overflow the dock band again.
+        homescreenGrid.addOnLayoutChangeListener { v, _, top, _, bottom, _, oldTop, _, oldBottom ->
+            if (v.height > 0 && (v.height != oldBottom - oldTop || top != oldTop)) loadApps()
+        }
         root.addView(libraryScrim)
         root.addView(appLibraryView)
         // The iOS 27 search pill: a translucent capsule carrying a magnifier and a
@@ -662,14 +690,29 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 android.view.Gravity.BOTTOM or android.view.Gravity.CENTER_HORIZONTAL
-            ).apply { bottomMargin = (196 * resources.displayMetrics.density).toInt() }
+            ).apply {
+                // Was a frozen 196 dp. That number only clears the dock on the
+                // rock panel; on a shorter frame the pill was landing inside the
+                // grid band and the translucent capsule showed through the icons
+                // behind it. SearchPillBottomDp is the dock clearance plus the
+                // gap iOS keeps between the pill and the dock, so the pill sits in
+                // the same reserved band on every frame.
+                bottomMargin = (com.appleux.launcher.LauncherTokens.SEARCH_PILL_BOTTOM_DP *
+                    resources.displayMetrics.density).toInt()
+            }
         )
         homeSearchPill = searchPill
         pageDots = com.appleux.design.components.AppleuxPageDots(this).apply { setPages(2, 0) }
         root.addView(
             pageDots,
-            FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT, android.view.Gravity.BOTTOM or android.view.Gravity.CENTER_HORIZONTAL)
-                .apply { bottomMargin = (100 * resources.displayMetrics.density).toInt() }
+            FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                android.view.Gravity.BOTTOM or android.view.Gravity.CENTER_HORIZONTAL
+            ).apply {
+                bottomMargin = (com.appleux.launcher.LauncherTokens.PAGE_DOTS_BOTTOM_DP *
+                    resources.displayMetrics.density).toInt()
+            }
         )
         // Dock pins bottom-center. The LayoutParams inflated without a parent
         // are base ViewGroup.LayoutParams (no gravity field), so they must be
@@ -774,11 +817,28 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         if (order.isNotEmpty()) {
             grid = grid.sortedBy { order.indexOf(it.packageName).let { i -> if (i < 0) Int.MAX_VALUE else i } }
         }
-        val perPage = com.appleux.launcher.LauncherTokens.GRID_COLUMNS *
-            com.appleux.launcher.LauncherTokens.GRID_ROWS
-        pageCount = maxOf(1, (grid.size + perPage - 1) / perPage)
+        // Widgets are laid out INSIDE this same grid, above the app rows, so
+        // the page budget is sized after them: a page = rowsThatFit minus the
+        // widget block, never a blind rowsThatFit. That is what keeps the home
+        // screen from ever scrolling vertically (iOS rule: pages only).
+        val widgetCells = rebuildWidgetCells()
+        // iOS: the widget block lives on the FIRST home page only, so the
+        // pages have different capacities — page 0 pays for the widget
+        // block, every later page gets the full icon band (which is why an
+        // iOS page 2 holds MORE icons than page 1). B's verdict (21:59):
+        // the widget block repeated on the last page because perPage was
+        // uniform AND submitWidgets ran on every rebuild.
+        val perPageFirst = com.appleux.launcher.LauncherTokens.GRID_COLUMNS *
+            homescreenGrid.rowsThatFit(widgetBlockPx(widgetCells))
+        val perPageRest = com.appleux.launcher.LauncherTokens.GRID_COLUMNS *
+            homescreenGrid.rowsThatFit(0)
+        val remaining = grid.size - perPageFirst
+        pageCount = maxOf(1,
+            if (remaining <= 0) 1
+            else 1 + (remaining + perPageRest - 1) / perPageRest)
         homePage = homePage.coerceIn(0, pageCount - 1)
-        val page = grid.drop(homePage * perPage).take(perPage)
+        val page = if (homePage == 0) grid.take(perPageFirst)
+            else grid.drop(perPageFirst + (homePage - 1) * perPageRest).take(perPageRest)
         homescreenGrid.submitApps(page)
         pageDots?.setPages(maxOf(1, pageCount), homePage)
         pageDots?.visibility = if (pageCount > 1) View.VISIBLE else View.GONE
@@ -787,7 +847,10 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
             homescreenGrid.animate().translationX(0f).setDuration(com.appleux.design.tokens.MotionTokens.DURATION_SLIDE)
                 .setInterpolator(com.appleux.design.tokens.MotionTokens.easingIOSDefault).start()
         }
-        homescreenGrid.submitWidgets(rebuildWidgetCells())
+        // First page carries the widget block; every other page is icons
+        // only (A11). Empty submit CLEARS the block when leaving page 0 —
+        // submitWidgets replaces, so this also fixes the repeat-on-last-page.
+        homescreenGrid.submitWidgets(if (homePage == 0) widgetCells else emptyList())
         homescreenGrid.setOnWidgetLongClickListener { openWidgetGallery() }
         // iOS: long-press enters EDIT MODE — the icons jiggle and can be
         // rearranged or removed. It does not open a context menu; that is
