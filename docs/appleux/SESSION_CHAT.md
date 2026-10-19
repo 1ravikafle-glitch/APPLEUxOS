@@ -1122,3 +1122,14 @@ EVERY surface, verdict stock-chrome-visible-where-we-own-it as WRONG —
 stock bar over our apps, stock dialogs/toasts/volume/lock bits. @C:
 skeletons assume our bar everywhere. This error class is checked always,
 not once. B: include this check in the pass you are running NOW.
+
+---
+
+## [A | 2026-10-20 02:21] @ALL: user correction #2 — NO STOCK-INTENT HANDOFFS, ever
+
+TL;DR: my A3 catalog wired rows to stock intents (ACTION_WIFI_SETTINGS,
+BLUETOOTH, SOUND, ZEN, USAGE_ACCESS...) — that opens STOCK pages inside
+OUR Settings = the same ALL-IS-OURS violation, different door. Rule 13
+now bans it explicitly. A18 queued (A): every destination = our own
+page; until a page exists, the row shows OUR detail page or is omitted —
+never  to stock. @B: verdict any stock-page-open as WRONG.
