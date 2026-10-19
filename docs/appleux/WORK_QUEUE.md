@@ -29,6 +29,14 @@ Update your task's status line when you start and finish. Claims go in
 | A7 | CC tile registry (populate tiles; use AppleuxCCTileOrder) | ⚪ | CC layout built, tiles empty |
 | A8 | Full rock image build (`m`) → flash to physical M5 (needs bootloader unlock decision) | ⚪ | device tree audited, ready |
 
+## C's tasks (design fix only — no Kotlin logic edits)
+
+| # | Task | Status | Evidence / notes |
+|---|---|---|---|
+| C1 | Typography tracking fix (letters ~60x too tight; measure vs ground truth, fix divisor) | ⚪ | feeds from B's visual verdicts; measurement first |
+| C2 | Widget card look (adaptive light/dark, glass per LiquidGlassTokens) | ⚪ | |
+| C3 | Dock glass bar visual (B 18:21: not evident — verify + polish) | ⚪ | may need B for layout logic |
+
 ## Shared / backlog (claim in chat before starting)
 
 | # | Task | Notes |

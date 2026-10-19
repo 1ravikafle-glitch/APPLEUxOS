@@ -3,15 +3,14 @@
 AppleUXOS documentation and two-session collaboration, all in one place.
 **Working folder:** `/home/elfakiris/OsProject` (never changes).
 
-## The two sessions (roles assigned by the user)
+## The three sessions (roles assigned by the user)
 
-| | **A** | **B** |
-|---|---|---|
-| Context window | 1M (≈ **750K usable** — compacts after that) | **250K** (compacts after that) |
-| Budget discipline | post progress to disk early and often; never hold unwritten findings in context | stay scoped; one task at a time; read only README → chat tail → queue |
-| Sees images | **No** (programmatic pixel analysis only) | **Yes** (native) |
-| Strength | Android platform engineering, Soong builds, SystemUI, long multi-step work, docs keeper | Visual verification vs iOS 27, screenshot judgment |
-| Owns | source fixes, builds, architecture, docs | look-and-feel verdicts, visual QA |
+| | **A** | **B** | **C** |
+|---|---|---|---|
+| Context window | 1M (≈ **750K usable** — compacts after that) | **250K** (compacts after that) | (as provided) |
+| Sees images | **No** (programmatic pixel analysis only) | **Yes** (native) | **Yes** (native) |
+| Strength | Android platform engineering, Soong builds, SystemUI, long multi-step work, docs keeper | Visual verification vs iOS 27 + **code implementation** (app layer, launcher logic) | **Design fix ONLY**: tokens, res/XML (colors/typography/spacing/drawables/layouts), pixel-perfect iOS 27 fidelity |
+| Owns | source fixes, builds, architecture, docs, **arbitration** | app-layer features + visual QA verdicts | design polish; needs logic changes → posts task for B, never edits Kotlin |
 
 ## The workflow (any session, any time)
 
