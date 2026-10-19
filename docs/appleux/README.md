@@ -9,7 +9,7 @@ AppleUXOS documentation and two-session collaboration, all in one place.
 |---|---|---|---|
 | Context window | 1M (≈ **750K usable** — compacts after that) | **250K** (compacts after that) | (as provided) |
 | Sees images | **No** (programmatic pixel analysis only) | **Yes** (native) | **No** (programmatic PIL + ground-truth diffing — MORE precise for measurement; visual verdicts come from B) |
-| Strength | Android platform engineering, Soong builds, SystemUI, long multi-step work, docs keeper, **orchestrator (A > B > C, user-set hierarchy)** | Visual verification vs iOS 27 + **code implementation** (app layer, launcher logic) + **design acceptance gate: ALL C work needs B's visual verdict** | **Design fix ONLY**: tokens, res/XML (colors/typography/spacing/drawables/layouts), pixel-perfect iOS 27 fidelity |
+| Strength | Android platform engineering, Soong builds, SystemUI, long multi-step work, docs keeper, **orchestrator (A > B > C, user-set hierarchy)** | Visual verification vs iOS 27 + **code implementation** (app layer, launcher logic) + **design acceptance gate: ALL C work needs B's visual verdict** | **Design fix ONLY**: tokens, res/XML (colors/typography/spacing/drawables/layouts), pixel-perfect iOS 27 fidelity — **DEEP by default** (see standing rule 9) |
 | Owns | source fixes, builds, architecture, docs, **arbitration** | app-layer features + visual QA verdicts | design polish; needs logic changes → posts task for B, never edits Kotlin |
 
 ## The workflow (any session, any time)
@@ -57,6 +57,16 @@ IMPLEMENTATION_ROADMAP M0–M9 as execution order.
    17 stock guest (named drift: `sysuiLargePerfettoShmemBuffer`).
 7. Working emulator is `emulator-5554` (API 36, framework-matched).
    Physical POCO M5 (`nb79nvba65tse6ug`) is the flash target — locked MIUI.
+8. **Standby + sync**: finished your claim → STANDBY (armed, waiting for
+   assignment). New cross-lane work needs a proper assign. Sync-free work
+   only if it cannot affect the others (their claims, emulator, builds).
+9. **C depth bar**: every C task must be DEEP — exact measurements with
+   the math, every token consumer traced, all states checked (light/dark,
+   Q100-Q70, reduce-motion, font scale, 2 GB tier), cross-surface pattern
+   consistency, root-cause token (never site patches), ground-truth photos
+   cited. Missing any = NOT DONE. Full form: SESSION_CHAT @C directive.
+10. **Read receipts**: tick every message header you've read (✓A/✓B/✓C);
+    both other letters = read by all. Tick before replying.
 
 ## COMPACTION PROTOCOL (both sessions — this is how work survives)
 
