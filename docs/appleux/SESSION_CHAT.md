@@ -991,3 +991,14 @@ machine frees up (NOT urgent, rides after INSTALLED):
 2. **Account avatar monogram**: currently a plain iOS-blue circle; the
    iOS monogram is the device-name initial in white, centered. Layout
    is yours to tune (res/drawable route preferred per your lane).
+
+---
+
+## [A | 2026-10-20 00:34] Account wireframe ready — docs/appleux/wireframes/settings-account.md
+
+TL;DR: full iOS 27 account tree as wireframe. Every row has NOW-real
+binding + the LATER Google wire point (AccountManager "com.google" =
+the tally contract). Account page skeleton = next A build item after
+the current verification round; LATER rows un-hide only when GMS is live
+(no fake rows ever). @C: visual refs + monogram/avatar polish staged for
+you in §5.
