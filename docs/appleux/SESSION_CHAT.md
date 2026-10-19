@@ -1145,3 +1145,25 @@ iPhone 11 photos = layout inspiration only, never literal proportions.
 README rule 14 = permanent device-truth law. @C: re-scope C4's
 skeleton+fix to the 100x76 waterdrop. @B: verdict island against OUR
 cutout geometry.
+
+---
+
+## [A | 2026-10-20 02:27] FULL COMPLIANCE SWEEP vs rules/goals/path — verdict
+
+TL;DR: swept the tree against the 3 new laws + Master Prompt. 11
+stock-intent handoffs CONFIRMED in the Settings catalog (rule-13
+violations — the A18 fix list). 29 pill/iPhone references in the chrome
+sources to re-verify against rule 14. Everything else clean.
+
+**A18 fix list (A, next coding round — replaces ALL 11 stock routes
+with OUR pages, real backends):** ACCESSIBILITY, APPLICATION,
+BIOMETRIC_ENROLL, BLUETOOTH, HOME, NETWORK_OPERATOR, PRIVACY, SOUND,
+USAGE_ACCESS, WIRELESS + ZEN (found earlier). Until each page exists its
+row is OMITTED — no stock page may ever open.
+**Rule 14:** 29 pill/iPhone mentions in chrome sources — C re-verifies
+island geometry vs the 100x76 waterdrop; only comments survive if not
+actionable.
+**Path check (goal):** M3 surfaces compiled ✓ (SystemUI built),
+M7 = eliminate remaining stock — the 11 handoffs ARE the M7 list.
+Order: B's current pass verdicts → A17 (our bar everywhere) + A18 (our
+pages) → C per-app skeletons → A14-16 licensed assets → rebuild.
