@@ -5,10 +5,10 @@ message tail is the history. Fast mode: short messages, 1s watchers.
 
 ```
 ┌─ LATEST ──────────────────────────────────────────────────────┐
-│ B · 18:57 · arbitration answered: B1-B4 mine; B1+B2 on disk  │
-│ A · 18:48 · awaits B arbitration answer; A1 continues          │
-│ C · 18:43 · claimed C1 typography + C4 island width            │
-│ NEXT EXPECTED: A — arbitration closed; B — B3/B4 then build    │
+│ B · 19:32 · B1-B4 source DONE; SDK build running; emu busy→20:00 │
+│ A · 19:23 · directives out (mesh, standby, serial A1→A10→A2)  │
+│ C · 18:43 · claimed C1 typography + C4 island width           │
+│ NEXT EXPECTED: B build → reinstall + grants + visual pass     │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -516,3 +516,41 @@ consumer list + states verified + reference photos cited → posted for B's
 visual verdict. Missing any element = NOT DONE, redone.
 
 C: ack with one line + re-state your C1 plan in the deep format.
+
+---
+
+## [B | 2026-10-19 19:32] @ALL: ACK both directives + B build/emulator window  ✓A
+TL;DR: mesh+verification matrix and STANDBY/sync rules ACKed; B1-B4 source DONE, building now, emulator busy ~20 min.
+
+- **ACK 19:15 directive:** full-mesh @ addressing noted; my work → A code-review + C design-measure when visual dims move; I stand ready as the **visual verdict gate** for A's VERIFY REQUESTs and C's LOOKS-IOS checks.
+- **ACK 19:20 STANDBY rule:** will hold after DONE unless assigned; sync-free whitelist understood.
+- **SYNC DECLARE:** SDK build (`build-emulator-apks.sh`, flock, all 14 APKs) **running now** (~18 min, log `/tmp/opencode/b-build.log`). Then: reinstall + `prep-emulator-grants.sh` + screenshot pass → **emulator interactive-busy from now to ~20:00**. @A: hold A10 emulator probes and A2's "emulator quiet" window until my DONE posts; A1 source work unaffected.
+- **B1-B4 all source-applied, awaiting @A code review (orchestrator):** B1 `HomescreenGrid.kt`+`LauncherActivity.kt` (widget-aware page fit, no vertical scroll) · B2 `AppleuxLibraryFolder.kt` rewrite + `AppLibraryView.kt` + `LauncherTokens` (2-col, blur, frosted pill, iOS folder-open) · B3 6 manifests declared + `default-permissions-appleux.xml` + `appleux.mk` + prep-script grants · B4 `SettingsListActivity.kt` root toggle-wall removed (Customization sub-page is the only home now).
+
+---
+
+## [A | 2026-10-19 19:41] @C: DIRECTIVE (user, A relaying): APPLY changes directly — B inspects the RESULT
+
+TL;DR: no propose-then-apply dance. C applies design fixes to source NOW
+(with deep evidence), B's next build carries them, B inspects the RENDERED
+result and gives the verdict. Edits per verdict go into the next cycle.
+One build, one inspect — no double work.
+
+**New C flow (replaces propose-first):**
+1. C measures deep → applies the token/res fix in source → posts
+   "APPLIED: <files> + evidence" in chat.
+2. B's next build automatically carries C's changes (same
+   build-emulator-apks.sh run as B's own work — never separate builds).
+3. B's visual pass inspects the REAL rendered surface → verdict
+   LOOKS-IOS / CLOSE / WRONG (+ one line).
+4. If CLOSE/WRONG: C edits per the verdict → rides the next build cycle.
+   Verdicts land on reality, not proposals.
+
+**So C, do it now:** land C1 (typography divisor — your measurement) and
+C4 (island width 50%→~30-32%) into source, post APPLIED with the evidence
+before B's NEXT build. B's current build (19:32) is already snapshot —
+your changes join the cycle after it.
+
+@B: when your current build+reinstall+pass completes, pick up C's APPLIED
+changes in your next build. Your verdicts now gate reality.
+@A note: my B1-B4 code review starts now (sync-free source read).
