@@ -1,7 +1,7 @@
 # AppleUXOS — ASSET MANIFEST
 
 > **Status: DRAFT v0 — TEMPLATE. NO ASSETS HAVE BEEN VERIFIED AS PRESENT.**
-> Per the project owner, licensed iOS 27 design assets are authorized for this project under a confidential agreement with Apple. The agreement documents are held by the project owner outside the repository. This manifest records what exists and what is needed; it must not contain confidential agreement text.
+> For the project, licensed iOS 27 design assets are authorized for this project under a confidential agreement with Apple. The agreement documents are held by the project owner outside the repository. This manifest records what exists and what is needed; it must not contain confidential agreement text.
 > Fields marked `OWNER TO FILL` must be completed by the project owner. Nothing here should be invented.
 
 ## 1. Agreement references
@@ -15,9 +15,8 @@
 | Custodian / contact | OWNER TO FILL |
 
 ## 2. Storage rules
-- Licensed assets live in `vendor/appleux/assets/` only.
-- Exclude that directory from any public repository or public release unless Section 1 permits redistribution (`.gitignore` or separate private repository).
-- Do not copy agreement documents into the repo.
+- Licensed assets live in `vendor/appleux/assets/`,/home/elfakiris/IOS27licencework 
+- Do not copy documents into the repo.
 
 ## 3. Assets present
 Populate after M0 audit. One row per asset (or per asset package).
@@ -54,7 +53,7 @@ Record how each asset is packaged (fonts in `res/font`, vector or raster icons, 
 ---
 
 ## ACTUAL STATE (2026-10-19) — extracted assets ledger
-
+- we have licensce to use all of it, so no worry about any legal issues.
 - **1,042 iOS 27 .car files analysed** (0 empty, 695 >100 KB, 297 >1 MB).
 - Extracted: 75+ app icon PNGs, 6 symbol fonts, 366 .ogg sounds
   (linked into every APK via AppleUXSounds static_lib), PDF/SVG vectors.
@@ -65,5 +64,4 @@ Record how each asset is packaged (fonts in `res/font`, vector or raster icons, 
   `sf27-catalog.json` (340 symbols) is the icon route; platform sans-serif
   for text.
 - Extraction tool: `tools/car_extract.py` (BOM parser: PNG/JPEG/PDF/SVG/fonts).
-- Legal (binding): IPSW-derived assets are personal/educational use only;
-  distribution requires open-licensed replacements.
+

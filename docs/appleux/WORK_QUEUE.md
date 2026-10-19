@@ -29,6 +29,14 @@ Update your task's status line when you start and finish. Claims go in
 | A7 | CC tile registry (populate tiles; use AppleuxCCTileOrder) | ⚪ | CC layout built, tiles empty |
 | A8 | Full rock image build (`m`) → flash to physical M5 (needs bootloader unlock decision) | ⚪ | device tree audited, ready |
 
+## A's tasks — LICENSED ASSET SWAPS (Master Prompt §5 priority)
+
+| # | Task | Status | Notes |
+|---|---|---|---|
+| A14 | FONT SWAP: ship licensed SF-Pro/-Text/-Rounded (all weights) from IOS27licencework as the ROM typeface; wire into Theme.Appleux.Base + TypographyTokens | ⚪ | replaces platform sans-serif decision |
+| A15 | ICON SWAP: real iOS 27 app icons from licensed extracts for all 10 apps + launcher + settings | ⚪ | replaces my generated placeholders |
+| A16 | SYMBOL SWAP: SF Symbols 27 as primary source (C's 4,219-name catalog); vendored 53 = fallback | ⚪ | C re-points its pipeline |
+
 ## C's tasks (design fix only — no Kotlin logic edits)
 
 | # | Task | Status | Evidence / notes |

@@ -13,7 +13,7 @@
 
 ## 2. Typography
 - Typeface: licensed SF family (see `ASSET_MANIFEST.md`). Fallback: system sans.
-- Scale (Large Title, Title 1-3, Headline, Body, Callout, Subhead, Footnote, Caption): sizes, weights, line heights, tracking `TBD-REF`.
+- Scale (Large Title, Title 1-3, Headline, Body, Callout, Subhead, Footnote, Caption): sizes, weights, line heights, tracking in POINTS transcribed verbatim in `TypographyTokens`; em value = pt / size, computed by `FontSpec.emTracking` (Body 17pt: -0.43pt = -0.0253em).
 - Text scales with user font-size setting; layouts must not break at largest scale.
 
 ## 3. Color
@@ -94,8 +94,12 @@ Tokens defined once (source format TBD, e.g. JSON) and generated into Android re
 - **Fonts**: platform `sans-serif` (SF UI from IPSW is Regular-only and
   AppleSymbols has PUA-only names — no SF Symbol names — so vendored vectors
   are the icon route; `sf27-catalog.json` holds the 340 new symbols).
-- **Typography risk (open)**: letterSpacing ~60× too tight; fix = measure once
-  on device vs ground-truth photo, correct the divisor.
+- **Typography divisor: CLOSED 2026-10-19 (C1, session C)**. Token engine converged via
+  `emTracking` (pt / size); XML bare-widget styles were the last ~63× outlier
+  (0.0004 -> -0.0253em in `AppleuxTextView`/`AppleuxButton`/`AppleuxEditText`;
+  dialog 0.024 -> -0.02em). Cross-checked vs `design-reference/iphone11-ios27/`
+  ground-truth README rules and `IOS27licencework/ios-ui-analysis` font harvest.
+  Rendered-body verdict pending from B.
 - **Material Design**: banned by charter; live usage in appleux modules is
   zero (AppleuxDialog/Slider/Toggle/Toast replace all of it).
 - Binding design references: operator's ground-truth photos

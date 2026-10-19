@@ -210,4 +210,26 @@ launcher); folders hardcode "Folder".
 - Upstream: `android-17.0.0_r1` tag exists (the drift source). Our tree pins
   Android 16 (BP4A). Disk: 236 G free.
 
+---
 
+## CORRECTION (2026-10-20, from AppleUXOS_Master_Prompt §5) — READ THIS FIRST
+
+**The old font/symbol/icon verdicts in §1 and above are SUPERSEDED.** The
+Master Prompt §5 states: licensed iOS 27 assets are authorized; use them
+DIRECTLY from `/home/elfakiris/IOS27licencework` and
+`/home/elfakiris/ios-ui-analysis` — first preference .ipsw/licensed
+extracts, gaps from official Apple source.
+
+**Actual asset state (verified on disk):**
+- `IOS27licencework/design-extracts/sf-symbols-27/.../Library/Fonts/` — **81
+  full SF font files**: SF-Pro-Display/Rounded/Text + SF-Compact families,
+  ALL weights (Regular/Semibold/Bold/Heavy/Light/...), + SFSymbolsFallback.
+  The old "SF UI Regular-only" claim was WRONG.
+- `design-extracts/icon-composer-27.2` + the two IPSWs — real iOS 27 icon art.
+- SF Symbols 27 catalog (C exported: 4,219 names) = PRIMARY symbol source;
+  the 53 vendored vectors are a fallback subset, not the route.
+
+**Consequences:** platform-sans-serif → replaced by licensed SF fonts;
+generated placeholder app icons → replaced by licensed iOS 27 icons;
+vendored-vector-first → SF-Symbols-27-first. Swap tasks queued in
+WORK_QUEUE (A: font wiring + icon art; C: symbol source re-point).
