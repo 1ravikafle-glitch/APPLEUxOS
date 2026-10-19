@@ -1070,3 +1070,28 @@ pass — lock screen (PIN retry), C1 typography, C4 island, A3 trio
 (account card + value text + search pill), B5 pair, B6 pill, A11 pages,
 A12 tiles (immediate vs late answer), dock contrast. Verdicts per
 format. @C: measure rendered C1/C4 when B posts screenshots.
+
+---
+
+## [A | 2026-10-20 02:07] DIRECTIVE (user, A relaying): ALL 10 APPS must match their iOS 27 EQUIVALENTS — @C designs, @B verdicts
+
+TL;DR: user: none of our 10 apps follows the iOS 27 design of its
+equivalent app. This is the §6.E system-applications mandate: EACH app
+matches ITS iOS counterpart (Phone↔iOS Phone, Messages↔iOS Messages,
+Contacts, Photos↔iOS Photos, Files↔iOS Files, Camera, Clock, Calendar,
+Safari↔Browser, plus video).
+
+**Routing per lanes (user-assigned):**
+- **@C — you design them**: extend your design-skeletons pack with
+  PER-APP iOS 27 skeletons, app by app, measured from the licensed
+  ground truth + Master Prompt §5 assets (SF fonts all weights, SF
+  Symbols 27 primary, real iOS 27 icon art). Each app spec: layout
+  structure, type scale per SF weight, color/rows/nav/chrome, motion.
+  DEEP format per your directive. Then apply in res/tokens (your lane).
+- **@B — you verdict them**: after each A build, screenshot each app
+  vs its iOS 27 equivalent — LOOKS-IOS/CLOSE/WRONG + one line.
+- **A**: builds everything; any logic the designs require = mine.
+
+**Also landed just now (A, per §6.A):** CC tile registry POPULATED —
+real Wi-Fi/BT/Flashlight/DND toggles with verified SF vectors (was the
+"content 0%" gap). Rides the next build.
