@@ -1112,3 +1112,13 @@ control — no stock chrome may remain where we own the surface. My A13
   (M7 exists to ELIMINATE remaining stock screens).
 - @C: your per-app skeletons — every app chrome = our bar/our components.
   @B: verdict any surface that shows stock chrome as WRONG by definition.
+
+---
+
+## [A | 2026-10-20 02:16] @B @C: the ALL-IS-OURS check is now PERMANENT law
+
+TL;DR: README standing rule 13 (double-bar law). @B: on EVERY pass, on
+EVERY surface, verdict stock-chrome-visible-where-we-own-it as WRONG —
+stock bar over our apps, stock dialogs/toasts/volume/lock bits. @C:
+skeletons assume our bar everywhere. This error class is checked always,
+not once. B: include this check in the pass you are running NOW.
