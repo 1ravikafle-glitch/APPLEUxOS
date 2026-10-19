@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Frosted iOS search capsule: systemBackground blended over content via
+     alpha (Liquid Glass scrim level), 24dp continuous corner. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="#59FFFFFF" />
+    <corners android:radius="24dp" />
+</shape>

@@ -29,6 +29,7 @@ class SettingsListActivity : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: SettingsAdapter
+    private var allItems: List<SettingsItem> = emptyList()
     private lateinit var store: AppleuxSettingsStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,53 @@ class SettingsListActivity : AppCompatActivity() {
             onDarkModeChanged = { enabled -> applyDarkMode(enabled) }
         )
         recyclerView.adapter = adapter
-        adapter.submitItems(SettingsCatalog.build(this))
+        allItems = SettingsCatalog.build(this)
+        adapter.submitItems(allItems)
+        setupSearchPill()
+    }
+
+    /**
+     * iOS 27 floating search pill. Tap expands to a field; typing LIVE-FILTERS
+     * the real catalog (title + summary text) — no fabricated results, the
+     * no-fake-rows law. Collapse on empty query. The hint swaps for the field
+     * exactly like iOS (one control, two states).
+     */
+    private fun setupSearchPill() {
+        val pill = findViewById<android.view.View>(R.id.settingsSearchPill)
+        val field = findViewById<android.widget.EditText>(R.id.settingsSearchField)
+        val hint = findViewById<android.widget.TextView>(R.id.settingsSearchHint)
+        val icon = findViewById<android.widget.ImageView>(R.id.settingsSearchIcon)
+        AppleuxIconRegistry.getDrawableRes("il_ic_search")?.let(icon::setImageResource)
+        pill.setOnClickListener {
+            field.visibility = android.view.View.VISIBLE
+            hint.visibility = android.view.View.GONE
+            field.requestFocus()
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as android.view.inputmethod.InputMethodManager
+            imm.showSoftInput(field, 0)
+        }
+        field.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
+            override fun onTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
+            override fun afterTextChanged(s: android.text.Editable?) {
+                val q = s?.toString()?.trim().orEmpty().lowercase()
+                if (q.isEmpty()) {
+                    adapter.submitItems(allItems)
+                    return
+                }
+                // Filter on live row text — resolved titles and summaries
+                // only; headers and the account card always stay so the
+                // screen never empties to a blank list.
+                adapter.submitItems(allItems.filter { item ->
+                    item.type == SettingsItemType.SECTION_HEADER ||
+                        item.type == SettingsItemType.ACCOUNT_CARD ||
+                        runCatching {
+                            val title = if (item.titleRes != 0) getString(item.titleRes) else ""
+                            val summary = if (item.summaryRes != 0) getString(item.summaryRes) else ""
+                            title.lowercase().contains(q) || summary.lowercase().contains(q)
+                        }.getOrDefault(false)
+                })
+            }
+        })
     }
 
     override fun onResume() {
