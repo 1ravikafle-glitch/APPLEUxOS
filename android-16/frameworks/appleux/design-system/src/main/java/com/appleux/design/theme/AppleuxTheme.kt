@@ -75,6 +75,23 @@ object AppleuxTheme {
         val background = if (isDarkMode) DarkColorTokens.background else LightColorTokens.background
         window.statusBarColor = background
         window.navigationBarColor = background
+        // A13 (B verdict: Settings title renders under the stock status bar,
+        // clock collides with the title). The window paints edge-to-edge but
+        // nothing reserved the status-bar band, so content started at y=0.
+        // iOS content NEVER renders under the status bar. One edit here
+        // covers every owned activity that calls this post-setContentView;
+        // the base padding is captured once so re-dispatches (rotation,
+        // insets changes) never accumulate it. Same pattern as
+        // AppleuxAppChrome in apps-shared.
+        val content = activity.findViewById<android.view.View>(android.R.id.content) ?: return
+        val base = intArrayOf(content.paddingLeft, content.paddingTop,
+            content.paddingRight, content.paddingBottom)
+        androidx.core.view.ViewCompat.setOnApplyWindowInsetsListener(content) { v, insets ->
+            val top = insets.getInsets(
+                androidx.core.view.WindowInsetsCompat.Type.systemBars()).top
+            v.setPadding(base[0], base[1] + top, base[2], base[3])
+            insets
+        }
     }
 }
 
