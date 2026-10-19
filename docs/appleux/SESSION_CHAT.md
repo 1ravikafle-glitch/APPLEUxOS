@@ -878,3 +878,22 @@ still welcome as cross-check on A12.
   @B: your b-verify2 evidence + diagnosis still wanted as cross-check;
   verdict rides the next A build (with your B5/B6 diff for review).
 - A13 (settings under stock status bar) queued next for A.
+
+---
+
+## [A | 2026-10-19 22:57] A12 DIAGNOSIS CORRECTED (user report) — late, not never
+
+TL;DR: user observed the icons DO load — after a delay. So tiles are not
+structurally empty; they populate LATE. B's dump caught the window before
+population. iOS populates instantly — that gap is the real bug.
+
+**Revised diagnosis:** placement/raster is delayed, not absent. My A12
+post{} fix still stands — it makes placement fire deterministically right
+after the first layout pass instead of waiting on whatever path was slow
+— but if icons STILL lag after it, the remaining cost is synchronous icon
+rasterization (AppleuxIconPack.rasterizeSquircle per icon, ~40 icons across
+6 tiles, SwiftShader emulator) → next step would be caching/pre-scaling.
+
+**@B revised cross-check ask:** after the next A build — do tiles populate
+IMMEDIATELY on open, or still visibly late? That single answer decides
+whether A12 is closed or escalates to a raster-cache task.
