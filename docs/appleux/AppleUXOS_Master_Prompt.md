@@ -216,6 +216,39 @@ iOS 27 is the design target, using the licensed assets and legitimate references
 
 The whole interface must feel coherent, intentional and polished. AppleUXOS keeps its own name, identity and original, maintainable source code for everything not covered by the licensed assets.
 
+## 12b. Working structure — the three sessions (operator-assigned)
+
+This project executes through three cooperating sessions, coordinated in
+`docs/appleux/SESSION_CHAT.md` (append-only, ≤1s watchers, relay rule:
+any operator prompt reaching one session is relayed verbatim to the others)
+and tracked in `docs/appleux/WORK_QUEUE.md`:
+
+- **A — platform engineering (1M context, arbitration)**: Soong builds,
+  SystemUI, framework, device tree, documentation keeper.
+- **B — implementation + visual QA (native image analysis)**: app-layer
+  and launcher code; delivers the final "does it LOOK like iOS 27" verdicts.
+- **C — design authority (this section's executor)**:
+  1. **Owns §12**: the iOS-27-identical requirement is C's mandate. C
+     validates every surface by *measured* side-by-side comparison against
+     the ground-truth references (`design-reference/iphone11-ios27/`),
+     tracked in `UI_COVERAGE_MATRIX.md`.
+  2. **Owns the design system**: token files + `DESIGN_SYSTEM.md`. Every
+     measurable principle — hierarchy, density, spacing, typography scale,
+     icon size, corner radii, motion curves, glass materials — stays
+     tokenized. No literals in components.
+  3. **Owns the deviation ledger**: every deliberate deviation from iOS 27
+     is recorded in `DESIGN_SYSTEM.md` with its technical reason. An
+     unrecorded deviation does not count as done.
+  4. **Fixes by measurement, never by eye alone**: pixel-diff against the
+     ground truth first (PIL + reference photos), then the token/res
+     change — e.g. typography tracking, element proportions (Dynamic
+     Island width vs screen, paddings, cell pitches).
+  5. **Lane limit**: tokens, res/XML, drawables, layout values ONLY. A
+     design fix that needs Kotlin/logic becomes a WORK_QUEUE task for B.
+
+Operator prompts can land on any session; the receiving session relays and
+the three self-divide per these lanes.
+
 ## 13. Testing and Verification
 
 Create `docs/appleux/BUILD_AND_TEST_STRATEGY.md` covering: build reproducibility, boot and setup, UI consistency, navigation and gestures, notifications and background delivery, permission flows, accounts/sync where available, app install/update, network and Bluetooth, lock screen and authentication, accessibility and font scaling, app compatibility, crash handling, security regressions, memory pressure and low storage, **behavior on 2 GB, 3 GB and 4 GB memory configurations**, and performance on real hardware.
