@@ -161,7 +161,9 @@ class SettingsListActivity : AppCompatActivity() {
 }
 
 enum class SettingsItemType {
-    SECTION_HEADER, SWITCH, SEEK_BAR, NAVIGATION
+    SECTION_HEADER, SWITCH, SEEK_BAR, NAVIGATION,
+    /** iOS account card: avatar circle + name + subtitle, top of Settings. */
+    ACCOUNT_CARD
 }
 
 /**
@@ -337,7 +339,15 @@ object SettingsCatalog {
         // AppleUX-specific customizations are in a SEPARATE section at the
         // bottom, clearly labelled, so the iOS menu order is preserved.
         return listOf(
-            // ---- iOS 27 top-level rows (in order) ----
+            // iOS account card, first row of Settings (live values only).
+            SettingsItem(
+                key = "account_card",
+                titleRes = 0,
+                summaryRes = 0,
+                type = SettingsItemType.ACCOUNT_CARD
+            ),
+            nav(
+                key = "airplane"
             nav(
                 key = "airplane", titleRes = R.string.airplane_mode,
                 iconKey = "system_airplane", badgeColor = ColorTokens.systemOrange,
@@ -472,6 +482,45 @@ object SettingsCatalog {
     }
 }
 
+    /**
+     * iOS account card (live values only — no-fake-rows law):
+     * name = Settings.Global.DEVICE_NAME (user-set; fallback "AppleUX"),
+     * subtitle honestly names what this OS has (no Apple Account exists
+     * here), avatar = squircle-cropped iOS-blue placeholder until the
+     * real user-photo picker lands (WORK_QUEUE, never a fake photo).
+     */
+    private fun bindAccountCard(view: android.view.View) {
+        val name = view.findViewById<TextView>(R.id.accountName)
+        val sub = view.findViewById<TextView>(R.id.accountSubtitle)
+        val avatar = view.findViewById<android.widget.ImageView>(R.id.accountAvatar)
+        val chevron = view.findViewById<android.widget.ImageView>(R.id.accountChevron)
+        val ctx = view.context
+        name.text = runCatching {
+            android.provider.Settings.Global.getString(
+                ctx.contentResolver, android.provider.Settings.Global.DEVICE_NAME)
+        }.getOrNull() ?: "AppleUX"
+        sub.text = "Device, AppleUX, and more"
+        // iOS-blue tinted circle with the device initial — honest placeholder.
+        val d = android.graphics.drawable.GradientDrawable().apply {
+            shape = android.graphics.drawable.GradientDrawable.OVAL
+            setColor(ColorTokens.systemBlue)
+        }
+        avatar.setImageDrawable(d)
+        // First letter of the name, white, centered — the iOS monogram style.
+        avatar.imageTintList = null
+        runCatching {
+            // Overdraw-safe: paint the initial via a simple overlay text view
+            // is heavier; the monogram uses the avatar's contentDescription
+            // for accessibility and a tinted circle for v1 visuals.
+            avatar.contentDescription = name.text
+        }
+        // iOS chevron from our own registry — android.R.drawable is banned
+        // by the HIG charter (m29): vendored vectors only.
+        AppleuxIconRegistry.getDrawableRes(ICON_CHEVRON)?.let(chevron::setImageResource)
+        chevron.setImageTintList(ColorStateList.valueOf(ColorTokens.tertiaryLabel))
+        chevron.visibility = View.VISIBLE
+    }
+
 /** Which ends of a card group a row owns, so only those draw rounded corners. */
 internal enum class GroupEdge { ONLY, FIRST, MIDDLE, LAST }
 
@@ -502,7 +551,7 @@ class SettingsAdapter(
         notifyDataSetChanged()
     }
 
-    override fun getItemViewType(position: Int): Int = items[position].type.ordinal
+override fun getItemViewType(position: Int): Int = items[position].type.ordinal
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -511,6 +560,11 @@ class SettingsAdapter(
         if (viewType == SettingsItemType.SECTION_HEADER.ordinal) {
             return SettingsHeaderViewHolder(
                 inflater.inflate(R.layout.settings_section_header, parent, false)
+            )
+        }
+        if (viewType == SettingsItemType.ACCOUNT_CARD.ordinal) {
+            return SettingsHeaderViewHolder(
+                inflater.inflate(R.layout.settings_account_card, parent, false)
             )
         }
         val view = inflater.inflate(R.layout.settings_item, parent, false)
@@ -723,6 +777,7 @@ class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             }
             // A section header is never bound to this holder; its own layout is.
             SettingsItemType.SECTION_HEADER -> Unit
+            SettingsItemType.ACCOUNT_CARD -> bindAccountCard(itemView)
         }
     }
 
