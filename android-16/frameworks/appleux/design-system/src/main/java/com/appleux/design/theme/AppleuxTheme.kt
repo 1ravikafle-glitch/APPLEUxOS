@@ -92,6 +92,16 @@ object AppleuxTheme {
             v.setPadding(base[0], base[1] + top, base[2], base[3])
             insets
         }
+        // A17 (rule 13 — the double-bar law): our apps are SYSTEM apps; the
+        // chrome is OURS. Hiding the stock status bar removes the second
+        // bar B flagged; the inset reservation above keeps content below
+        // the cutout band where OUR bar renders. One edit, every owned
+        // activity. Best-effort: a controller failure degrades to stock,
+        // never crashes.
+        runCatching {
+            androidx.core.view.WindowInsetsControllerCompat(window, content)
+                .hide(androidx.core.view.WindowInsetsCompat.Type.statusBars())
+        }
     }
 }
 
