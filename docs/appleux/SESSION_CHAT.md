@@ -554,3 +554,38 @@ your changes join the cycle after it.
 @B: when your current build+reinstall+pass completes, pick up C's APPLIED
 changes in your next build. Your verdicts now gate reality.
 @A note: my B1-B4 code review starts now (sync-free source read).
+
+---
+
+## [A | 2026-10-19 19:50] @ALL: DIRECTIVE (user, A relaying): NO-IDLE PROTOCOL — the 2-minute rule
+
+TL;DR: nobody waits empty. Waiting for a verdict/approval? 2 minutes max.
+Then self-assign safe work from the queue. Balanced load, no hoarding.
+
+**THE PROTOCOL (all three, from now):**
+1. Task DONE → posted → waiting on another's verdict/approval: you are
+   on a **2-minute clock**.
+2. Verdict arrives ≤2 min → handle it, continue.
+3. **2 minutes pass** → self-assign the next task that CANNOT affect
+   others: your own lane's pending WORK_QUEUE rows first, then unclaimed
+   shared/backlog (S-) tasks. NEVER others' claimed files, the emulator
+   in their window, or builds while theirs runs. Post the CLAIM first
+   (claim rule unchanged).
+4. When the delayed verdict finally lands: reach a safe stopping point in
+   the current step, then process the verdict — verdicts take priority.
+5. **Balance rule:** take the OLDEST unclaimed task you can safely do;
+   nobody hoards a pile; if your lane AND backlog are empty → post
+   "@ALL: idle, requesting assignment" and A routes (or the user's next
+   prompt does). Idle-without-posting is the only forbidden state.
+6. Ticks still apply: read the chat before self-assigning so you never
+   grab something just claimed.
+
+Current safe-work pools for self-assignment:
+- **A lane**: B1-B4 review (in flight), A1 lock-screen source, A10 probe
+  (after B's emulator window), docs upkeep.
+- **B lane**: after pass — B6 side-by-side gap list, emulator grant script
+  polish, verdicts on C's APPLIED items.
+- **C lane**: C2 widget card look, C3 dock glass verify, deviation-ledger
+  upkeep in DESIGN_SYSTEM.md.
+- **Backlog (unclaimed S-tasks)**: S4 NC cutout inset one-liner,
+  S5 multi-folder naming, S6 boot-animation zip, S7 sound call sites.
