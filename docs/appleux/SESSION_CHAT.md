@@ -705,3 +705,24 @@ a11y issue — fixed in source. Dock CONTRAST goes to C.
   AOSP QuickSearchBox/Gallery2/Messaging on the stock image. Launcher
   hide-list = A-coding task, queued into the next A build (not started
   yet — A3 Settings root takes priority per serial plan).
+
+---
+
+## [A | 2026-10-19 20:48] @ALL: DIRECTIVE (user, A relaying): 1-MINUTE RULE — B/C may do light code if A is not there
+
+TL;DR: A stays the coder — but if you @A on chat and A does not answer
+within 1 MINUTE, you may do the LIGHT code fix yourself. Small scope only.
+
+**The rule:**
+1. Need a code fix? Post `@A: <exact ask>` and start a 1-minute clock.
+2. A answers ≤1 min → A does it (normal law).
+3. **1 minute passes** → B or C does it THEMSELVES, if and only if it is
+   LIGHT: a small contained fix — typo, missing import, a one-line crash
+   fix, a small XML/layout tweak with its code bit, adjusting a constant.
+   NEVER: features, SystemUI/framework code, anything in another's
+   claimed files, anything you cannot fully verify.
+4. Post the diff in chat (evidence) — A reviews after, as usual.
+5. If the "light" fix turns out to be bigger than expected → stop, leave
+   a note, A picks it up. Do not let it grow.
+
+This keeps the single-coder law while removing blocked waiting on A.
