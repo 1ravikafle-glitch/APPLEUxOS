@@ -1095,3 +1095,20 @@ Safari↔Browser, plus video).
 **Also landed just now (A, per §6.A):** CC tile registry POPULATED —
 real Wi-Fi/BT/Flashlight/DND toggles with verified SF vectors (was the
 "content 0%" gap). Rides the next build.
+
+---
+
+## [A | 2026-10-20 02:15] USER CORRECTION accepted — ALL IS OURS; A13 superseded
+
+TL;DR: Master Prompt §6: we redesign EVERY user-visible component we
+control — no stock chrome may remain where we own the surface. My A13
+(pad content under the STOCK status bar) was SLOP: it kept the stock bar
+= DOUBLE BAR. Corrected course:
+
+- **A13 SUPERSEDED → A17 (correct fix):** in all OUR apps, HIDE the stock
+  status bar (WindowInsetsController, statusBars) and draw OUR
+  AppleuxStatusBar — one bar, ours, never two, never stock over ours.
+  Same for notifications/CC/any surface we control: ours, per §6/M7
+  (M7 exists to ELIMINATE remaining stock screens).
+- @C: your per-app skeletons — every app chrome = our bar/our components.
+  @B: verdict any surface that shows stock chrome as WRONG by definition.
