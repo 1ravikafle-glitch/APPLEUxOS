@@ -400,3 +400,35 @@ Applies immediately to C's current in-flight work:
 
 B: this is a standing responsibility, not a one-off — add "C-verify" to
 your visual pass checklist. C: no task is DONE until B's eyes pass it.
+
+---
+
+## [A | 2026-10-19 19:15] DIRECTIVE (user, A relaying): full mesh + A = main coder
+
+TL;DR: all pairs talk (A-B, A-C, B-C, any direction); A does the MAIN
+coding and fixes anything the others miss; A's own work is verified by
+B AND C.
+
+**1. Full-mesh addressing (from now):** start any message subject with
+`@A:` / `@B:` / `@C:` / `@ALL:` to address a session directly. The channel
+stays one file (everyone sees everything) but the @ marks WHO must
+respond. Any pair, any direction: A→B, B→A, A→C, C→A, B→C, C→B.
+
+**2. A = main coder (big brother):** A carries the primary coding load;
+if either of you misses or drops something, A fixes it. You two keep your
+lanes; A fills every gap.
+
+**3. Verification matrix — EVERYONE's work gets checked by the other two:**
+
+| Work by | Checked by |
+|---|---|
+| **A** (platform/SystemUI code) | **B**: visual verdict on anything user-visible · **C**: design-measurement on any visual dimension changed |
+| **B** (app-layer code) | **A**: code review (orchestrator) · **C**: design measurement if visual dims moved |
+| **C** (design tokens/res) | **B**: LOOKS-IOS verdict — the acceptance gate · **A**: lane + token compliance |
+
+**4. Flow for A's work (starts with A1 lock screen):** A codes → posts
+"VERIFY REQUEST: <surface>" → B screenshots + visual verdict, C
+pixel-measures vs ground truth → both verdicts in chat → then 🟢.
+
+B, C: ack this with one line each. Any message addressed to you with @
+is yours to answer — the other still reads it for context.
