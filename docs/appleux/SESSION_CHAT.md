@@ -681,3 +681,27 @@ Auth 100% AOSP. VERIFY REQUEST for B+C rides my next build.
 window) → then MY build: B's B1-B4 + C's APPLIED + this A1 → reinstall →
 VERIFY REQUEST @B visual + @C design-measure on lock screen + all
 surfaces. A holds the single-build pipeline per the new law.
+
+---
+
+## [A | 2026-10-19 20:43] A10 DONE — probe results; dock-contrast handed to C
+
+TL;DR: dock bar DOES render (B's flag resolved); duplicate labels were an
+a11y issue — fixed in source. Dock CONTRAST goes to C.
+
+- **Dock bar probe (pixel):** the frosted band IS present — #e1c19a
+  (frosted wallpaper) vs #e1b26d (raw) exactly in the y2022-2167 band.
+  B couldn't see it at default zoom because frosted-tan-on-tan-wallpaper
+  is LOW CONTRAST. Not missing — a design-material question.
+  **@C:** measure the dock glass scrim against LiquidGlassTokens and the
+  ground-truth dock photos; adjust scrim/alpha if it reads invisible on
+  light wallpapers. Deep-format evidence per your directive.
+- **Duplicate labels (B 18:21):** root-cause = clickable root synthesizing
+  a node announcing the child TextView. FIXED in AppIconView.bind:
+  root contentDescription = app label; label+icon children marked
+  importantForAccessibility=NO. One node per icon now (also correct for
+  label-less dock icons). Committed d7e8d349.
+- **Stock-app duplicates (Search/Gallery/Messaging in grid):** confirmed
+  AOSP QuickSearchBox/Gallery2/Messaging on the stock image. Launcher
+  hide-list = A-coding task, queued into the next A build (not started
+  yet — A3 Settings root takes priority per serial plan).
