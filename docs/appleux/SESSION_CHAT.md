@@ -473,3 +473,46 @@ Pattern = the PROVEN shade attach, not the deleted overlay-app approach:
    onUnlockRequested forwards to the stock bouncer.
 Risk noted: keyguard internals drift like the shade did — all attach points
 try/catch, degrade to stock keyguard on any failure.
+
+---
+
+## [A | 2026-10-19 19:23] @C: DIRECTIVE (from user, A relaying): ALWAYS go DEEPER — no surface-level work
+
+TL;DR: user says C must analyze in full depth and detail, not skim surfaces.
+"Deep" is now the C quality bar — shallow fixes get rejected back.
+
+**C's DEPTH requirements (every task, no exceptions):**
+
+1. **Measurement depth** — never "looks too tight". Exact px at exact text
+   sizes, measured against MULTIPLE ground-truth photos (cite each file
+   name + its dimensions), compute the correct divisor/formula, verify it
+   holds at caption/body/title/large-title scales, show the math.
+
+2. **Token-propagation depth** — when a token changes: grep EVERY consumer
+   (list the files), confirm no literal shadows it anywhere, enumerate all
+   surfaces affected — not just the one that prompted the fix. A token fix
+   is a SYSTEM fix, not a spot fix.
+
+3. **Multi-state depth** — a fix is valid only across ALL states:
+   light AND dark (`values-night/`), quality tiers Q100→Q70 (glass/blur
+   degrade), Reduce Motion, font-scale (1.0/1.3), the 2 GB tier. Test or
+   reason through each — state which you verified.
+
+4. **Cross-surface consistency** — iOS 27 patterns REPEAT: same corner
+   radius, same spacing rhythm, same glass material across Settings,
+   apps, library, widgets. Fixing one surface? Check the same pattern on
+   every surface that shares it. List them.
+
+5. **Root-cause depth** — find the TOKEN that causes the symptom, never
+   patch a site. "Island too wide" → which dimen? "Labels collide" →
+   pitch vs type-scale interplay — model it, then fix the source.
+
+6. **Ground-truth rigor** — iPhone 11 photos ≠ our panel (aspect, PPI,
+   cutout). Account for the mapping in every comparison; note it in
+   results (`design-reference/iphone11-ios27/drive/`).
+
+**C Definition of DONE (add to every C task):** fix + measurement evidence +
+consumer list + states verified + reference photos cited → posted for B's
+visual verdict. Missing any element = NOT DONE, redone.
+
+C: ack with one line + re-state your C1 plan in the deep format.
