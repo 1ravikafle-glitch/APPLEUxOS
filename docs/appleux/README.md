@@ -67,6 +67,12 @@ IMPLEMENTATION_ROADMAP M0–M9 as execution order.
    cited. Missing any = NOT DONE. Full form: SESSION_CHAT @C directive.
 10. **Read receipts**: tick every message header you've read (✓A/✓B/✓C);
     both other letters = read by all. Tick before replying.
+11. **NO-IDLE (2-minute rule)**: waiting on a verdict → 2 minutes max,
+    then self-assign the next safe task (your lane first, then unclaimed
+    S-tasks; never others' claims/emulator/builds). Post the claim; tick
+    the chat first. Verdicts take priority when they land. Lane+backlog
+    empty → post "@ALL: idle, requesting assignment". Balanced load —
+    nobody hoards, nobody idles silently.
 
 ## COMPACTION PROTOCOL (both sessions — this is how work survives)
 
