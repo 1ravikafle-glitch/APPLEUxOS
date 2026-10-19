@@ -76,7 +76,18 @@ IMPLEMENTATION_ROADMAP M0–M9 as execution order.
     1 minute, they may do the LIGHT fix themselves (typo, import,
     one-line crash fix, small XML+code bit) — never features or
     SystemUI/framework code — and post the diff for A's after-review.
-13. **NO-IDLE (2-minute rule)**: waiting on a verdict → 2 minutes max,
+13. **ALL-IS-OURS (Master Prompt §6) — the double-bar law**: every
+    user-visible component WE control is OURS. NEVER keep, pad under, or
+    stack stock chrome on a surface we own — a stock status bar above
+    our app = WRONG by definition (the A13 error: it reserved space
+    under the stock bar instead of hiding it and drawing ours). The
+    permanent check, every surface, every pass: is there ANY stock
+    element visible where we control the surface? Status bar over our
+    apps, stock dialogs in our flows, stock toasts, stock volume panel,
+    stock lock chrome — each = a WRONG verdict, no exceptions. (A13
+    superseded by A17: hide stock statusBars via WindowInsetsController,
+    draw AppleuxStatusBar — one bar, ours.)
+14. **NO-IDLE (2-minute rule)**: waiting on a verdict → 2 minutes max,
     then self-assign the next safe task (your lane first, then unclaimed
     S-tasks; never others' claims/emulator/builds). Post the claim; tick
     the chat first. Verdicts take priority when they land. Lane+backlog
