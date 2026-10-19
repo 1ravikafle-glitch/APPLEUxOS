@@ -67,7 +67,11 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
     )
 
     private val widgetDefs = listOf(
-        WidgetDef(R.string.widget_clock, ".widgets.AppleuxClockWidgetProvider", LauncherTokens.WIDGET_SPAN_MEDIUM),
+        // iOS 27 (drive/home-light-widgets.png): home opens with TWO small
+        // widgets side by side, each 40.2% of screen width (measured 333/828px
+        // on the ground truth). Clock + Battery is our pair; MEDIUM (span 4)
+        // made the clock a full-width slab instead of the iOS half-half row.
+        WidgetDef(R.string.widget_clock, ".widgets.AppleuxClockWidgetProvider", LauncherTokens.WIDGET_SPAN_SMALL),
         WidgetDef(R.string.widget_battery, ".widgets.AppleuxBatteryWidgetProvider", LauncherTokens.WIDGET_SPAN_SMALL),
         WidgetDef(R.string.widget_calendar, ".widgets.AppleuxCalendarWidgetProvider", LauncherTokens.WIDGET_SPAN_MEDIUM)
     )
@@ -449,7 +453,12 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         // Host + provider share this UID, so bindAppWidgetIdIfAllowed
         // succeeds silently; otherwise the system consent dialog appears once.
         if (loadWidgetSpecs().isEmpty()) {
-            widgetDefs.firstOrNull()?.let { requestBindWidget(it) }
+            // iOS 27 opens home with the small-widget PAIR (Clock + Weather in
+            // the GT photo; our pair is Clock + Battery — both span 2, one
+            // half-half row). With no widgets at all widgetBlockPx()==0 and the
+            // icons fill the whole page — the iOS rule the user asked for.
+            // Both binds are silent: host + provider share this UID.
+            widgetDefs.take(2).forEach { requestBindWidget(it) }
         }
 
         renderPolicy.registerObserver(libraryObserver)
@@ -842,6 +851,10 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         homescreenGrid.submitApps(page)
         pageDots?.setPages(maxOf(1, pageCount), homePage)
         pageDots?.visibility = if (pageCount > 1) View.VISIBLE else View.GONE
+        // iOS 27 (user directive): the Search pill sits on the FIRST home page
+        // only — swiping to a later page hides it. Single gating site: every
+        // page recount flows through here.
+        homeSearchPill?.visibility = if (homePage == 0) View.VISIBLE else View.GONE
         enableGridDrag(grid)
         if (animate && !AppleuxRuntimeConfig.isReduceMotionEnabled) {
             homescreenGrid.animate().translationX(0f).setDuration(com.appleux.design.tokens.MotionTokens.DURATION_SLIDE)
@@ -1351,7 +1364,9 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         appLibraryView.visibility = View.GONE
         homescreenGrid.visibility = View.VISIBLE
         dockView.visibility = View.VISIBLE
-        homeSearchPill?.visibility = View.VISIBLE
+        // Back to the page under the library: the pill obeys the same
+        // page-0-only rule — closing from a later page must not resurface it.
+        homeSearchPill?.visibility = if (homePage == 0) View.VISIBLE else View.GONE
         pageDots?.visibility = if (pageCount > 1) View.VISIBLE else View.GONE
         wallpaperDim.alpha = LauncherTokens.HOMESCREEN_WALLPAPER_DIM
         // Absolute HIDE_ALL is state-safe (no mirrored flags).
