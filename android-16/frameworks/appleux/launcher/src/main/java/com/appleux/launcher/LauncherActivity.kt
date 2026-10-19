@@ -418,7 +418,32 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         return m
     }
     private fun hiddenPkgs(): Set<String> =
-        getSharedPreferences("appleux_launcher_hidden", MODE_PRIVATE).getStringSet("hidden", emptySet()) ?: emptySet()
+        (getSharedPreferences("appleux_launcher_hidden", MODE_PRIVATE)
+            .getStringSet("hidden", emptySet()) ?: emptySet()) + STOCK_REPLACED
+
+    /**
+     * Replace-from-source (locked strategy): the stock AOSP counterparts of
+     * apps AppleUX ships its own versions of never appear in OUR grid —
+     * iOS shows one Phone, one Photos, one Search entry (the pill, not an
+     * app), never duplicates. Found live on the API-36 image (A10 probe):
+     * QuickSearchBox showed as a "Search" app icon next to our launcher's
+     * pill, Gallery2 duplicated our Photos, Messaging duplicated ours.
+     *
+     * Grid-only: these stay INSTALLED (default-app resolution, documents
+     * picker, emergencies keep working); they are hidden from the home
+     * grid exactly like the launcher's own user-hidden set. DocumentsUI is
+     * deliberately NOT here — it is the system file picker, not a
+     * duplicate of our Files app.
+     */
+    private val STOCK_REPLACED: Set<String> = setOf(
+        "com.android.quicksearchbox",   // Search — iOS has the pill only
+        "com.android.gallery3d",        // Gallery — ours is Photos
+        "com.android.mms",              // Messaging — ours is Messages
+        "com.android.dialer",           // Phone — ours is Phone
+        "com.android.browser",          // Browser — ours is Safari-equivalent
+        "com.android.deskclock",        // Clock — ours is Clock
+        "com.android.calendar"          // Calendar — ours is Calendar
+    )
     private fun setHidden(pkg: String, hidden: Boolean) {
         val cur = hiddenPkgs().toMutableSet()
         if (hidden) cur.add(pkg) else cur.remove(pkg)
