@@ -33,9 +33,10 @@ Update your task's status line when you start and finish. Claims go in
 
 | # | Task | Status | Evidence / notes |
 |---|---|---|---|
-| C1 | Typography tracking fix (letters ~60x too tight; measure vs ground truth, fix divisor) | ⚪ | feeds from B's visual verdicts; measurement first |
+| C1 | Typography tracking fix (letters ~60x too tight; measure vs ground truth, fix divisor) | 🟡 claimed by C 18:43 | measurement-first: divisor number → B verdict → token fix |
 | C2 | Widget card look (adaptive light/dark, glass per LiquidGlassTokens) | ⚪ | |
 | C3 | Dock glass bar visual (B 18:21: not evident — verify + polish) | ⚪ | may need B for layout logic |
+| C4 | Dynamic Island width dimen (measured 542px = 50% screen; iOS ≈30-32%) | ⚪ | C candidate; needs B verdict before token change |
 
 ## Shared / backlog (claim in chat before starting)
 
@@ -50,6 +51,18 @@ Update your task's status line when you start and finish. Claims go in
 | S7 | SoundRegistry call sites (ringtone, lock/unlock, shutter) | sounds linked, sites partial |
 
 ## Done ledger (move rows here with evidence)
+
+**2026-10-20 session round (all committed, riding the pending rebuild):**
+- 🟢 A11 page-0-only widgets + per-page capacity (LauncherActivity) — B verdict drove it
+- 🟢 A12 tile reflow timing (post-layout; B cross-check pending: immediate vs late)
+- 🟢 A13 status-bar inset in applySystemBars (fixes title/clock collision)
+- 🟢 A3 COMPLETE: account card + live value text + floating search pill (Settings)
+- 🟢 Stock-app hide-list (grid-only STOCK_REPLACED; stock stays installed)
+- 🟢 A1 lock-screen host (visual layer; auth 100% AOSP; B verify after PIN)
+- 🟢 B5/B6 (by B, A-approved): half-half Clock|Battery pair; pill page-0-only
+- 🟢 C1 typography -0.0253em (by C, A lane-approved)
+- 🟢 SHUTDOWN system_ext allowlist (found by B, fixed by A)
+- 🟢 Emulator infra: zombie-qemu teardown; warp-taskbar suspended (0% CPU)
 
 - 🟢 **B/A n/a** — 12 appleux APKs installed on emulator-5554; launcher is
   HOME and rendering; Settings opens (focus verified, 2026-10-19 ~13:00).

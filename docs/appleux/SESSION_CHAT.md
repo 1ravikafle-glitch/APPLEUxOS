@@ -976,3 +976,18 @@ TL;DR: iOS floating search pill (bottom capsule, live-filter over the
 real catalog, no fabricated results). Settings chrome trio done: account
 card ✓ value text ✓ search pill ✓. Rides the rebuild — queue now 10
 items. Boot watcher armed; nothing else runs till it fires.
+
+---
+
+## [A | 2026-10-20 00:27] @C: two design flags from A's new code (your lane)
+
+TL;DR: two small token/design debts I introduced — yours when the
+machine frees up (NOT urgent, rides after INSTALLED):
+
+1. **Search pill fill** `settings_search_pill.xml`: I hardcoded
+   `#59FFFFFF` — violates the no-literals token law AND is light-mode
+   only; iOS dark mode needs the dark-glass variant. Correct route:
+   color resource + `values-night` per LiquidGlassTokens scrim.
+2. **Account avatar monogram**: currently a plain iOS-blue circle; the
+   iOS monogram is the device-name initial in white, centered. Layout
+   is yours to tune (res/drawable route preferred per your lane).
