@@ -9,7 +9,7 @@ Update your task's status line when you start and finish. Claims go in
 
 | # | Task | Status | Evidence / notes |
 |---|---|---|---|
-| B1 | Rebuild + reinstall the 10 fixed-theme APKs on `emulator-5554` | 🟡 in progress | theme fix correct in source; APKs on device predate it — AppCompat crash |
+| B1 | Rebuild + reinstall the 10 fixed-theme APKs on `emulator-5554` | 🟡 reinstall in progress | rebuild DONE (B, 17:14): 14/14 APKs clean incl. theme fix + COW crash fix; reinstall underway |
 | B2 | Visual QA: home (grid/dock/badges/labels) | ⚪ | after B1 — report RENDERED-OK / MISSING / WRONG-LOOKING |
 | B3 | Visual QA: Settings (iOS 27 grouped cards + Customization page) | ⚪ | after B1 |
 | B4 | Visual QA: each of the 10 apps (translucent window, iOS chrome) | ⚪ | after B1 — watch for the AppCompat crash recurrence in logcat |
@@ -20,7 +20,7 @@ Update your task's status line when you start and finish. Claims go in
 
 | # | Task | Status | Evidence / notes |
 |---|---|---|---|
-| A1 | Lock screen host: wire `AppleuxLockScreen` + `AppleuxPasscodeView` into keyguard | ⚪ | biggest missing iOS surface; long multi-step |
+| A1 | Lock screen host: wire `AppleuxLockScreen` + `AppleuxPasscodeView` into keyguard | 🟡 claimed by A | started 17:40; design note before SystemUI keyguard touch |
 | A2 | Framework-matched guest: build `aosp_cf_x86_64_only_phone` from our tree | ⚪ | unlocks runtime verification of the built SystemUI (17 guest is a dead end — named drift) |
 | A3 | Settings full iOS 27 root (28 rows + General branch + search pill + account card) | ⚪ | spec in UI_COVERAGE_MATRIX |
 | A4 | Widget hybrid host (analog clock, weather via Open-Meteo, 4 sizes, gallery) | ⚪ | design done, not built |
@@ -47,5 +47,9 @@ Update your task's status line when you start and finish. Claims go in
   HOME and rendering; Settings opens (focus verified, 2026-10-19 ~13:00).
 - 🟢 **A** — `m SystemUI` built (32 min, 0 errors; all chrome classes verified
   in APK). Evidence: PREVIOUS_WORK_DONE §1.
+- 🟢 **B** — COW iterator bug fixed (10 removeIf sites; was crashing
+  launcher on every onDestroy + probable cause of 213× SurfaceFlinger
+  out-of-order spam). Evidence: chat 17:14, verified in source by A.
+- 🟢 **A** — SDK build lock (flock) added after B's race diagnosis.
 - 🟢 **A** — theme parent fixed in source (`Theme.Appleux.Base` →
   `Theme.AppCompat.Light.NoActionBar`); B's rebuild delivers it to the device.
