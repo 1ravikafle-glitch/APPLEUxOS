@@ -1195,3 +1195,57 @@ dim. List EVERY delta, however small — LOOKS-IOS means replica.
 @C: measured diff of the same list vs tokens/ground truth; fix in
 res/tokens per your lane, deep format.
 @A: takes every code-side delta B/C report; rebuilds after the batch.
+
+## [C | 2026-10-20 02:40] SKELETON PACK DONE — 12 files, 944 lines; C3 dock contrast measured
+
+TL;DR: skeleton pack complete (12 files, all measured from GT or tokens); C3 dock contrast bug confirmed (direction inverted vs GT); C4 island width deferred (GT excludes notch region).
+
+**Skeleton pack** (`docs/appleux/design-skeletons/`):
+- README.md — method, source of truth, known limitations
+- home-layout.md — dock band measured from GT (y1562-1772, 210px=105pt); dock band DARKER than wallpaper in GT
+- settings-menu.md — cards measured (56pt account, 54pt rows, 20pt margins, #F2F2F7 bg)
+- lock-screen.md — clock/date/notifications/controls layout
+- control-center.md — connectivity block, media card, tile grid
+- per-app-skeletons.md — all 10 apps (Phone/Messages/Contacts/Photos/Files/Camera/Clock/Calendar/Safari/Video)
+- app-library.md — 2-col tiles, 3-big+2×2 pattern, A12 empty-tiles bug documented
+- passcode.md — 3×4 circular glass buttons, 0x3DFFFFFF fill
+- motion-spec.md — spring params, durations, interruptibility, quality tiers
+- placeholder-system.md — loading/empty/error/disabled patterns
+- icon-catalog.md — SF Symbols 27 primary (A16), 53 vectors fallback, 3 gaps
+- framework-map.md — component→token→file map, no-literals rule
+
+**C3 dock contrast (MEASURED):**
+- GT dock band (home-light-alt.png x=100 y1562-1772): (222,179,106) — DARKER than wallpaper (240,194,117)
+- Our render (A 20:43 probe): (225,193,154) — LIGHTER than wallpaper (225,178,109)
+- **Direction inverted.** Root cause: `LauncherActivity.applyGlass()` uses `Color.WHITE` base in light mode; iOS uses dark scrim.
+- **Fix owner: A** (Kotlin) — change base color or token. Not my lane (res/XML only).
+
+**C4 island width (DEFERRED):**
+- Token `NOTCH_WIDTH_FRACTION = 0.502f` matches iPhone 11 geometry (208/414pt)
+- GT screenshots EXCLUDE notch region (all wallpaper color at top) — cannot validate from photos
+- The 30-32% figure was Dynamic Island (iPhone 14 Pro+), not iPhone 11 notch
+- **Needs B's rendered-emulator verdict** to decide if 0.502 is correct on our panel
+
+@A: C3 dock contrast needs your Kotlin fix (base color). @B: skeleton pack ready for your visual verdicts; C4 island width verdict rides your next pass.
+
+---
+
+## [A | 2026-10-20 02:42] USER FAULT LIST (live emulator) — logged + routed
+
+1. NO animation/motion (home paging feels dead) — @A code: verify
+   page-transition animation paths (loadApps animate flag, SwiftShader
+   may skip) + @C motion tokens applied.
+2. Swipe-right from page 1 ERROR (Today View gesture) — @A code.
+3. "..." missing inside the search pill; pill must act as search too —
+   @A code (pill expand->search behavior) + @C visuals.
+4. Swipe right FROM 2ND PAGE → error — @A code: prime suspect = my A11
+   perPageFirst/perPageRest slicing; reproduce + fix.
+5. NO CC on swipe-down top-right + 6. same middle — KNOWN ROOT CAUSE:
+   our CC lives INSIDE SystemUI (built, compiled) but the SDK emulator
+   runs STOCK SystemUI — A2 (framework-matched CF guest with our
+   SystemUI) is the unblock; launcher-broadcast alone can't render it
+   here. A2 moves to NEXT after A18.
+7. Icon art mismatch — A15 (licensed real iOS 27 icons) queued, next
+   build.
+@B: add all 7 to the minute-detail pass evidence. A fixes 1-4 next,
+A2+ A15 right behind.
