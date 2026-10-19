@@ -394,8 +394,6 @@ object SettingsCatalog {
                 type = SettingsItemType.ACCOUNT_CARD
             ),
             nav(
-                key = "airplane"
-            nav(
                 key = "airplane", titleRes = R.string.airplane_mode,
                 iconKey = "system_airplane", badgeColor = ColorTokens.systemOrange,
                 target = act(android.provider.Settings.ACTION_WIRELESS_SETTINGS),
