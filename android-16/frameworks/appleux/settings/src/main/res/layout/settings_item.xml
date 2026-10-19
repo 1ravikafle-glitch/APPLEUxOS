@@ -64,6 +64,23 @@
                 android:textColor="@color/secondary_label" />
         </LinearLayout>
 
+        <!-- iOS value text: right-aligned gray on navigation rows ("81%",
+             "Not Connected"). Shown INSTEAD of the summary — iOS never shows
+             both. Populated by SettingsItem.valueProvider (live values only;
+             the no-fake-rows law forbids placeholder text here). -->
+        <TextView
+            android:id="@+id/settingValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="15sp"
+            android:letterSpacing="-0.01"
+            android:textColor="@color/secondary_label"
+            android:visibility="gone" />
+
         <!--
             iOS UISwitch, not android.widget.Switch.
 

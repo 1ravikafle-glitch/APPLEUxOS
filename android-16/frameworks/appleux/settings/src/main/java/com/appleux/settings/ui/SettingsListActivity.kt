@@ -211,7 +211,15 @@ data class SettingsItem(
     val iconKey: String? = null,
     val badgeColor: Int = 0,
     /** Where a NAVIGATION row goes. Null for controls, which stay put. */
-    val navTarget: NavTarget? = null
+    val navTarget: NavTarget? = null,
+    /**
+     * LIVE value text for NAVIGATION rows (iOS right-aligned gray: "81%",
+     * "Not Connected"). Evaluated at bind time by the holder, so it is
+     * always current. Null = no value (summary shows instead). The
+     * no-fake-rows law applies: only real, readable state — never
+     * placeholder strings.
+     */
+    val valueProvider: ((android.content.Context) -> String?)? = null
 )
 
 /**
@@ -251,7 +259,8 @@ object SettingsCatalog {
         summaryRes: Int = 0,
         iconKey: String,
         badgeColor: Int,
-        target: NavTarget
+        target: NavTarget,
+        valueProvider: ((android.content.Context) -> String?)? = null
     ) = SettingsItem(
         key = key,
         titleRes = titleRes,
@@ -259,10 +268,64 @@ object SettingsCatalog {
         type = SettingsItemType.NAVIGATION,
         iconKey = iconKey,
         badgeColor = badgeColor,
-        navTarget = target
+        navTarget = target,
+        valueProvider = valueProvider
     )
 
     private fun act(action: String) = NavTarget.Action(action)
+
+    // ---- LIVE value providers (iOS right-aligned gray; real state only) ----
+
+    /** Battery percentage from the sticky broadcast — real on every device. */
+    private val batteryValue: (android.content.Context) -> String? = { c ->
+        runCatching {
+            val i = c.registerReceiver(null, android.content.IntentFilter(
+                android.content.Intent.ACTION_BATTERY_CHANGED))
+            val level = i?.getIntExtra(android.os.BatteryManager.EXTRA_LEVEL, -1) ?: -1
+            val scale = i?.getIntExtra(android.os.BatteryManager.EXTRA_SCALE, -1) ?: -1
+            if (level >= 0 && scale > 0) "${level * 100 / scale}%" else null
+        }.getOrNull()
+    }
+
+    /** Airplane mode is readable from Settings.Global by any app. */
+    private val airplaneValue: (android.content.Context) -> String? = { c ->
+        runCatching {
+            if (android.provider.Settings.Global.getInt(
+                    c.contentResolver,
+                    android.provider.Settings.Global.AIRPLANE_MODE_ON, 0) == 1)
+                "On" else "Off"
+        }.getOrNull()
+    }
+
+    /**
+     * Wi-Fi connection STATE only. The SSID needs ACCESS_FINE_LOCATION on
+     * modern Android, which we do not hold — so the value stays honest:
+     * "Connected"/"Not Connected", never a made-up network name.
+     */
+    private val wifiValue: (android.content.Context) -> String? = { c ->
+        runCatching {
+            val wm = c.getSystemService(android.content.Context.WIFI_SERVICE)
+                as? android.net.wifi.WifiManager
+            val info = wm?.connectionInfo
+            val state = info?.supplicantState
+            if (info != null && info.ipAddress != 0 &&
+                android.net.wifi.WifiInfo.getDetailedStateOf(state) ==
+                android.net.NetworkInfo.DetailedState.CONNECTED)
+                "Connected" else "Not Connected"
+        }.getOrNull()
+    }
+
+    /** Bluetooth radio state via the public adapter. */
+    private val bluetoothValue: (android.content.Context) -> String? = { c ->
+        runCatching {
+            val ba = android.bluetooth.BluetoothAdapter.getDefaultAdapter()
+            when (ba?.state) {
+                android.bluetooth.BluetoothAdapter.STATE_ON -> "On"
+                android.bluetooth.BluetoothAdapter.STATE_OFF -> "Off"
+                else -> null
+            }
+        }.getOrNull()
+    }
 
     /** A page we own. Preferred over [act] so no row lands in stock Settings. */
     private fun internal(activity: Class<out androidx.appcompat.app.AppCompatActivity>) =
@@ -278,22 +341,31 @@ object SettingsCatalog {
             nav(
                 key = "airplane", titleRes = R.string.airplane_mode,
                 iconKey = "system_airplane", badgeColor = ColorTokens.systemOrange,
-                target = act(android.provider.Settings.ACTION_WIRELESS_SETTINGS)
+                target = act(android.provider.Settings.ACTION_WIRELESS_SETTINGS),
+                valueProvider = airplaneValue
             ),
             nav(
                 key = "wifi", titleRes = R.string.wifi,
                 iconKey = "system_wifi", badgeColor = ColorTokens.systemBlue,
-                target = internal(com.appleux.settings.detail.WifiDetailActivity::class.java)
+                target = internal(com.appleux.settings.detail.WifiDetailActivity::class.java),
+                valueProvider = wifiValue
             ),
             nav(
                 key = "bluetooth", titleRes = R.string.bluetooth,
                 iconKey = "system_bluetooth", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS)
+                target = act(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS),
+                valueProvider = bluetoothValue
             ),
             nav(
                 key = "cellular", titleRes = R.string.cellular,
                 iconKey = "system_cellular", badgeColor = ColorTokens.systemGreen,
                 target = act(android.provider.Settings.ACTION_NETWORK_OPERATOR_SETTINGS)
+            ),
+            nav(
+                key = "battery", titleRes = R.string.battery,
+                iconKey = "system_battery", badgeColor = ColorTokens.systemGreen,
+                target = internal(com.appleux.settings.detail.BatteryDetailActivity::class.java),
+                valueProvider = batteryValue
             ),
             header("section_notifications", R.string.notifications),
             nav(
@@ -323,6 +395,13 @@ object SettingsCatalog {
                 key = "general", titleRes = R.string.general,
                 iconKey = "system_settings", badgeColor = ColorTokens.systemGray,
                 target = NavTarget.StockRoot
+            ),
+            nav(
+                key = "appearance", titleRes = R.string.appearance,
+                iconKey = "system_appearance", badgeColor = ColorTokens.systemIndigo,
+                target = NavTarget.Internal(
+                    com.appleux.settings.display.DisplaySettingsActivity::class.java
+                )
             ),
             nav(
                 key = "display_nav", titleRes = R.string.display_brightness,
@@ -384,65 +463,11 @@ object SettingsCatalog {
                 iconKey = "system_settings", badgeColor = ColorTokens.systemGray,
                 target = internal(com.appleux.settings.ui.CustomizationActivity::class.java)
             ),
-            header("section_appleux_display", R.string.appleux),
-            SettingsItem(
-                key = "dark_mode",
-                titleRes = R.string.dark_mode,
-                summaryRes = R.string.dark_mode_summary,
-                type = SettingsItemType.SWITCH,
-                preferenceKey = AppleuxRuntimeConfig.KEY_DARK_MODE,
-                defaultValue = false
-            ),
-            SettingsItem(
-                key = "glass_intensity",
-                titleRes = R.string.glass_intensity,
-                summaryRes = R.string.glass_intensity_summary,
-                type = SettingsItemType.SEEK_BAR,
-                preferenceKey = AppleuxRuntimeConfig.KEY_GLASS_INTENSITY,
-                defaultIntValue = AppleuxRuntimeConfig.DEFAULT_GLASS_INTENSITY
-            ),
-            SettingsItem(
-                key = "brightness",
-                titleRes = R.string.brightness,
-                summaryRes = R.string.brightness,
-                type = SettingsItemType.SEEK_BAR,
-                preferenceKey = AppleuxPreferences.KEY_BRIGHTNESS,
-                defaultIntValue = AppleuxRuntimeConfig.DEFAULT_BRIGHTNESS,
-                valueScaleMax = BRIGHTNESS_SCALE_MAX
-            ),
-            SettingsItem(
-                key = "auto_brightness",
-                titleRes = R.string.auto_brightness,
-                summaryRes = R.string.auto_brightness,
-                type = SettingsItemType.SWITCH,
-                preferenceKey = AppleuxPreferences.KEY_AUTO_BRIGHTNESS,
-                defaultValue = true
-            ),
-            header("section_appleux_performance", R.string.adaptive_performance),
-            SettingsItem(
-                key = "adaptive_performance",
-                titleRes = R.string.adaptive_performance,
-                summaryRes = R.string.adaptive_performance_summary,
-                type = SettingsItemType.SWITCH,
-                preferenceKey = AppleuxRuntimeConfig.KEY_ADAPTIVE_PERFORMANCE,
-                defaultValue = true
-            ),
-            SettingsItem(
-                key = "low_power_mode",
-                titleRes = R.string.low_power_mode,
-                summaryRes = R.string.low_power_summary,
-                type = SettingsItemType.SWITCH,
-                preferenceKey = AppleuxRuntimeConfig.KEY_LOW_POWER_MODE,
-                defaultValue = false
-            ),
-            SettingsItem(
-                key = "reduce_motion",
-                titleRes = R.string.reduce_motion,
-                summaryRes = R.string.reduce_motion_summary,
-                type = SettingsItemType.SWITCH,
-                preferenceKey = AppleuxRuntimeConfig.KEY_REDUCE_MOTION,
-                defaultValue = false
-            )
+            // AppleUX toggles live ONLY inside the Customization sub-page
+            // (CustomizationActivity) - the user's rule: 'customization under
+            // subsettings in Settings ONLY'. The root used to repeat all seven
+            // switches here as two extra AppleUX sections, burying the iOS 27
+            // menu order under a wall of toggles the sub-page already owns.
         )
     }
 }
@@ -542,6 +567,7 @@ class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val toggle: AppleuxToggle = itemView.findViewById(R.id.settingToggle)
     private val seek: SeekBar = itemView.findViewById(R.id.settingSeek)
     private val chevron: ImageView = itemView.findViewById(R.id.settingChevron)
+    private val valueText: TextView = itemView.findViewById(R.id.settingValue)
     private val divider: View = itemView.findViewById(R.id.settingDivider)
 
     internal fun bind(
@@ -606,6 +632,7 @@ class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         // Rows are recycled across types, so every accessory and listener is
         // reset before the type-specific branch claims them.
+        valueText.visibility = View.GONE
         toggle.visibility = View.GONE
         seek.visibility = View.GONE
         chevron.visibility = View.GONE
@@ -682,6 +709,17 @@ class SettingsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 AppleuxIconRegistry.getDrawableRes(ICON_CHEVRON)?.let(chevron::setImageResource)
                 chevron.setImageTintList(ColorStateList.valueOf(ColorTokens.tertiaryLabel))
                 chevron.visibility = View.VISIBLE
+                // iOS value text: live provider wins, summary hides when it
+                // shows (iOS never renders both). Wrap in runCatching — a
+                // provider touching a system service must never kill the UI.
+                val v = runCatching { item.valueProvider?.invoke(itemView.context) }.getOrNull()
+                if (v != null) {
+                    valueText.text = v
+                    valueText.visibility = View.VISIBLE
+                    summary.visibility = View.GONE
+                } else {
+                    valueText.visibility = View.GONE
+                }
             }
             // A section header is never bound to this holder; its own layout is.
             SettingsItemType.SECTION_HEADER -> Unit
