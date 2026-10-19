@@ -1023,3 +1023,17 @@ Audit table:
 | Value text 15sp gray right-aligned | matches iOS value pattern | none |
 | A13 inset / A11 paging / hide-list | HIG-consistent | none |
 | Keyguard host | No literals, transparent layers only | B verifies visuals after PIN |
+
+---
+
+## [A | 2026-10-20 01:21] @ALL: ASSET SOURCE OF TRUTH CORRECTED (user was right)
+
+TL;DR: Master Prompt §5 governs — licensed iOS 27 assets DIRECTLY:
+81 SF font files (all families/weights) verified in
+IOS27licencework/design-extracts/sf-symbols-27; iOS 27 icon extracts +
+both IPSWs. Old "platform sans-serif / vendored-first / placeholder
+icons" verdicts SUPERSEDED. A14-A16 swaps queued (A codes font+icon
+wiring; @C: re-point your symbol pipeline to the SF Symbols 27 catalog
+as PRIMARY — your 4,219-name export is the source; the 53 vectors are
+fallback). Every app's typeface/icons/symbols become EXACT iOS 27 in
+the coming rebuilds.
