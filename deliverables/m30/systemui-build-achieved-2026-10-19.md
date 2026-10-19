@@ -103,3 +103,54 @@ This is the first time ANY of it has been compiled by Soong. Everything before t
 5. Run through test checklist; fix any chrome surface that doesn't render (framework drift candidates first)
 6. Re-run `bash /tmp/opencode/verify.sh` gap audit
 7. Lock screen host (AppleuxLockScreen/AppleuxPasscodeView) — next dead surface after chrome verified
+
+---
+
+## 6. RUNTIME VERDICT (2026-10-19, ~10:30) — framework drift confirmed, named
+
+The Android 17 Cuttlefish guest **cannot run our Android 16 SystemUI**. The
+push succeeded (dumpsys: `versionCode=36 minSdk=36 versionName=16`, codePath
+`/system_ext/priv-app/SystemUI` — OUR build), and fresh launcher/settings APKs
+were installed at 10:28 — but SystemUI **crash-loops at Application
+construction**, before any AppleUX chrome runs:
+
+```
+FATAL: Unable to instantiate application SystemUIApplicationImpl
+Caused by: NoSuchMethodError: No static method
+  sysuiLargePerfettoShmemBuffer()Z in class
+  com.android.internal.hidden_from_bootclasspath.android.tracing.Flags
+  (framework.jar!classes5.dex)
+  at SystemUIApplicationImpl.<init>(SystemUIApplicationImpl.java:91)
+```
+
+`android.tracing.Flags.sysuiLargePerfettoShmemBuffer()` is a hidden aconfig
+flag that exists in the Android 16 framework and **not** in 17. One named
+missing method kills the whole app; SystemUI is the most framework-coupled
+app in the system — patching individual calls is whack-a-mole, not a path.
+
+**Consequence:** the 17 guest is a dead end for the 16-built ROM. The
+chrome's own try/catch protection is irrelevant — the crash is upstream of
+the chrome, in AOSP's own base class from our tree.
+
+**Screenshot analysis** (pixel + MD5): home renders (wallpaper #e1b26d 40.8%);
+CC/NC/shade/volume captures were byte-identical to home (nothing could open —
+no SystemUI to open them); Settings rendered 100% black with focus=null
+(side effect of the crash-looping system state; no Java exception of its own).
+
+## 7. The framework-matched path (decision)
+
+Our tree contains `device/google/cuttlefish` with the SAME product as the
+stock prebuilt: `aosp_cf_x86_64_only_phone`. Building it from our tree gives
+a guest with OUR Android 16 framework + OUR SystemUI + OUR apps — matched by
+construction, no overlay push needed. The direct-run build script pattern is
+proven; the Soong graph/analysis is cached.
+
+Ranked options:
+1. **BUILD `aosp_cf_x86_64_only_phone` from our tree** (recommended) —
+   the first true AppleUX ROM image; all surfaces native; booted with the
+   existing cvd host staging (/manager.sock + cvd-home layout already done).
+2. Download an android-16 aosp_cf prebuilt (ci.android.com, ~BP4A build) and
+   repeat the overlay push — faster to start only IF the artifact is findable;
+   still not our image.
+3. Skip to the physical M5 (full rock image + bootloader unlock) — biggest
+   step, user decision required.
