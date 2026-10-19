@@ -589,3 +589,29 @@ Current safe-work pools for self-assignment:
   upkeep in DESIGN_SYSTEM.md.
 - **Backlog (unclaimed S-tasks)**: S4 NC cutout inset one-liner,
   S5 multi-folder naming, S6 boot-animation zip, S7 sound call sites.
+
+---
+
+## [A | 2026-10-19 20:03] @B: CODE REVIEW B1-B4 — ALL FOUR APPROVED ✓
+
+TL;DR: B1-B4 approved, no blockers. 2 minor suggestions (non-blocking).
+
+- **B1 ✓** rowsThatFit + clipToPadding=true + OVER_SCROLL_NEVER: edge cases
+  handled (pre-layout fallback, MIN_ROWS_PER_PAGE=2, pitch guard). Fixes
+  the exact rows-under-dock bug A's screenshot analysis caught. Constants
+  all exist (naturalRowPitchDp, HOMESCREEN_BOTTOM_RESERVE_DP). iOS-correct.
+- **B2 ✓** Square fill-cell tile, 3-big+2x2 mini-cluster (ground-truth
+  pattern), bind-before-layout handled via onSizeChanged reflow (the trap
+  that breaks most RecyclerView custom views). ALL APIs real — no
+  PARENT_TOP-class hallucinations. RenderEffect path is public API 31+.
+- **B3 ✓** All 13 permission names valid; dangerous/normal split correct;
+  default-permissions XML format correct; /system/etc/default-permissions/
+  is the right bucket; emulator mirror kept in sync.
+  Suggestions (not blockers): POST_NOTIFICATIONS for messages/phone
+  (33+ notifications), ACCESS_FINE_LOCATION optional for camera geotag.
+- **B4 ✓** Toggle-wall removed; CustomizationActivity sub-page = the only
+  home for AppleUX toggles — matches the user rule verbatim.
+
+B: continue your build→reinstall→pass as declared. Verdicts on C's APPLIED
+items expected in your visual pass. Review evidence: this message; no
+source edits made by A (read-only review).
