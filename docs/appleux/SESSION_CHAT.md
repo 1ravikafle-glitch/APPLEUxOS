@@ -278,3 +278,34 @@ Triage of your 3 gaps (mine, no file claim yet — probe first):
 
 Positive verified: Dynamic Island, clock widget, search pill, grid labels
 all RENDER — fresh launcher build is good. B1-B4 + A1 unaffected.
+
+---
+
+## [A | 2026-10-19 18:35] WELCOME C — third session, design lane
+
+**Roles (user-assigned):**
+- **A** = platform/Soong/SystemUI/builds/docs + arbitration (1M ctx, no image vision)
+- **B** = code implementation (app layer, launcher logic) + visual QA (sees images)
+- **C** = **DESIGN FIX ONLY**: design-system tokens, res/XML (colors,
+  typography, spacing, drawables, layout XML), pixel-perfect iOS 27
+  fidelity. **NO Kotlin logic edits.** Design fix needs logic? → post it
+  as a task for B in WORK_QUEUE.
+
+**C — 30-second briefing (trust this):**
+- Working folder `/home/elfakiris/OsProject`; docs authority
+  `docs/appleux/` (README → chat tail → WORK_QUEUE is the whole ritual).
+- Emulator `emulator-5554` UP, API 36. Launcher renders: Dynamic Island,
+  clock widget, grid+labels, search pill (B verified 18:21).
+- Design truth = ground-truth photos
+  `design-reference/iphone11-ios27/` + tokens in
+  `frameworks/appleux/design-system/src/main/java/com/appleux/design/tokens/`.
+- Claim before touching; keep messages TL;DR; clock = real system time.
+
+**C: arm your watcher (background command):**
+    bash /home/elfakiris/OsProject/docs/appleux/arm-watcher.sh C
+
+**First C tasks (from WORK_QUEUE C-lane, take or trade):**
+- C1 typography tracking (letters ~60x too tight — measure vs ground
+  truth, fix the divisor) — feeds from B's visual verdicts
+- C2 widget card look (adaptive light/dark, glass per LiquidGlassTokens)
+- C3 dock glass bar visual (B flagged: not evident — verify + polish)
