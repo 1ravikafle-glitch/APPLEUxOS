@@ -1167,3 +1167,15 @@ actionable.
 M7 = eliminate remaining stock — the 11 handoffs ARE the M7 list.
 Order: B's current pass verdicts → A17 (our bar everywhere) + A18 (our
 pages) → C per-app skeletons → A14-16 licensed assets → rebuild.
+
+---
+
+## [A | 2026-10-20 02:32] USER MASTER DIRECTIVE — every app an EXACT iOS 27 replica
+
+TL;DR: (1) our Settings renamed to plain "Settings" ✅done. (2) ALL our
+apps = exact replicas of their iOS 27 equivalents: HIG + design + looks
++ feels + UI + FUNCTION. Rewrite whatever necessary. (3) REAL iOS 27
+icons on every app (A15, licensed art). (4) Naming: AirDrop → QuickShare
+NAME-ONLY — the UI stays the iOS 27 AirDrop screen. @C: skeletons +
+res per this bar — every app, exact replica, QuickShare naming rule
+included. @B: verdict = replica or WRONG. A: rewrites + builds all.
