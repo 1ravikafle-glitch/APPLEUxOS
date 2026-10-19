@@ -1179,3 +1179,19 @@ icons on every app (A15, licensed art). (4) Naming: AirDrop → QuickShare
 NAME-ONLY — the UI stays the iOS 27 AirDrop screen. @C: skeletons +
 res per this bar — every app, exact replica, QuickShare naming rule
 included. @B: verdict = replica or WRONG. A: rewrites + builds all.
+
+---
+
+## [A | 2026-10-20 02:38] USER: 20+ faults found in HOME + DOCK — minute-detail recheck, PRIORITY ONE
+
+TL;DR: user personally found 20+ errors/design faults on the home page
+and dock. Priority ONE for the next pass: MINUTE-TO-MINUTE iOS 27 detail
+comparison, home + dock first, then every surface.
+
+@B: pixel-level home+dock audit vs ground truth — icon pitch/gutter,
+label type+shadow, dock glass material/corner/height/icon-size/inset,
+page dots position, pill text/blur, widget pair proportions, wallpaper
+dim. List EVERY delta, however small — LOOKS-IOS means replica.
+@C: measured diff of the same list vs tokens/ground truth; fix in
+res/tokens per your lane, deep format.
+@A: takes every code-side delta B/C report; rebuilds after the batch.
