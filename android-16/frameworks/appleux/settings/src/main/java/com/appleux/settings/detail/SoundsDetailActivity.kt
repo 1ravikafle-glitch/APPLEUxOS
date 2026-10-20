@@ -48,9 +48,13 @@ class SoundsDetailActivity : SettingsDetailActivity() {
         val (tCard, tList) = DetailKit.listCard(this)
         val title = runCatching {
             val uri = RingtoneManager.getActualDefaultRingtoneUri(
-                this, RingtoneManager.TYPE_RINGTONE
+                this@SoundsDetailActivity, RingtoneManager.TYPE_RINGTONE
             )
-            uri?.let { u -> Ringtone.getTitle(this@SoundsDetailActivity, u) }
+            uri?.let { u ->
+                // getTitle is an INSTANCE method: get the player, ask it.
+                RingtoneManager.getRingtone(this@SoundsDetailActivity, u)
+                    ?.getTitle(this@SoundsDetailActivity)
+            }
         }.getOrNull() ?: getString(R.string.ringtone_none)
         tList.addView(DetailKit.valueRow(this, getString(R.string.ringtone), title, false))
         col.addView(tCard)

@@ -6,6 +6,7 @@ import android.text.format.Formatter
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.appleux.design.components.AppleuxListItem
 import com.appleux.settings.R
 
