@@ -133,7 +133,11 @@ enum iOS27Primitive {
     // MARK: Shadow Primitives
     enum Shadow {
         struct ShadowStyle {
-            let color: Color
+            // Qualified: the nested `iOS27Primitive.Color` namespace shadows
+            // `SwiftUI.Color` for the whole `iOS27Primitive` scope, so an
+            // unqualified `Color` here resolves to the token enum and the
+            // `.black` literals below stop compiling.
+            let color: SwiftUI.Color
             let radius: CGFloat
             let x: CGFloat
             let y: CGFloat
