@@ -8,6 +8,18 @@ logs/
 tools/
 workbench/
 
+# Toolchains, emulator images and build outputs. These are downloaded or
+# generated, not source. They were committed by accident before
+# 2026-10-20 and carried 20.7 GiB of blobs — an Android system image, three
+# AVD qcow2 disk images, the emulator's shared libraries, and the built
+# product images. GitHub rejects a push that contains them (100 MB per file,
+# 2 GB per push), which is why the local branch could not be pushed at all
+# until the history was rewritten. Keep them out.
+android-sdk/
+android-avd/
+osbuild/
+icons/.venv/
+
 # device-support/ IS tracked: appleux/design-system/.../com/appleux/device is a
 # relative symlink into it, so the Kotlin compiles in both the kotlinc and the
 # Soong path. Ignoring it would leave the symlink dangling on a fresh clone.

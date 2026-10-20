@@ -127,3 +127,96 @@ Instruments profiler — the options, in order of preference:
   same token architecture, which *is* buildable on this host.
 - `design-reference/rPlayHub/BUILD.md` — the two-product build of rPlayHub
   (`cdhost` daemon plus `rPlayHub.app`).
+
+## 8. Verified outcome — 2026-10-20
+
+The workflow was run against `main` and every step passed:
+
+```
+Run 39396706560 — macOS / Xcode — in 6m54s — ✓ success
+
+  ✓ Set up job
+  ✓ Checkout AppleUXOS
+  ✓ Checkout rPlayHub
+  ✓ Apply rPlayHub patches
+  ✓ Toolchain report
+  ✓ Build iOS 27 design system (iOS Simulator)
+  ✓ Build GlassProbe (Liquid Glass .glassEffect)
+  ✓ Run GlassProbe on the iOS 27 Simulator
+  ✓ Build rPlayHub.app (macOS)
+  ✓ Upload artifacts
+```
+
+The runner reported:
+
+| | |
+|---|---|
+| macOS | 27.0.1 (26A434) |
+| Xcode | 27.0 (27A266a) |
+| Swift | 6.4 |
+| Architecture | arm64 |
+| iOS SDK | 27.0 (`iphoneos27.0`) |
+| iOS Simulator SDK | 27.0 (`iphonesimulator27.0`) |
+| Simulator runtime | iOS 27.0 (24A434) |
+
+Artifacts: `rPlayHub.app` (Mach-O 64-bit arm64) and `glass-probe.png` — the
+Liquid Glass probe rendered on the booted iOS 27 Simulator, showing
+`.glassEffect(.regular)` above and `.glassEffect(.clear)` below across known
+colour bands. That is the veil measurement the probe was written to take,
+against the real iOS 27 runtime.
+
+### Three real bugs the first run found
+
+No local tool had ever compiled these files, so the first Xcode 27 build
+surfaced three genuine defects that had been sitting in the tree:
+
+1. **`iOS27DesignTokens.swift` — `ShadowStyle.color` typed as `Color`.** The
+   nested `iOS27Primitive.Color` namespace shadows `SwiftUI.Color` for the
+   whole `iOS27Primitive` scope, so the property resolved to the token enum
+   and the `.black` literals in the shadow primitives failed to compile.
+   Fixed by qualifying the property type as `SwiftUI.Color`.
+2. **`glass-probe.swift` — `@main` plus top-level code.** Swift rejects a
+   module that has both. The probe is now compiled with `-parse-as-library`.
+3. **`rPlayHub` `host-c/compat.h` — missing `#include <errno.h>`.** The POSIX
+   branch uses `errno`, `EAGAIN`, `EWOULDBLOCK` and `EINTR` without including
+   the header. Linux pulled it in transitively; the macOS SDK does not.
+   Kept as a patch under `design-reference/rPlayHub-patches/` because rPlayHub
+   is a third-party submodule — the fix belongs upstream in
+   `rPlayAI/rPlayHub`.
+
+### The local branch could not be pushed, and why
+
+While setting this up, `git push` from the working clone failed with HTTP 500
+and then timed out. The cause was not the workflow: the 119 unpushed commits
+carried **20.7 GiB of blobs** — a 4.2 GiB Android system image, three AVD
+qcow2 disk images totalling 8.4 GiB, the emulator's shared libraries, and
+4.2 GiB of built product images. GitHub rejects a push containing a file over
+100 MB, so the branch was unpushable in principle, not just in practice.
+
+The history was rewritten with `git filter-repo --partial`, dropping
+`android-sdk/`, `android-avd/`, `osbuild/`, `icons/.venv/` and one 129.6 MiB
+Apple font, while keeping every real change:
+
+| | before | after |
+|---|---|---|
+| Commits ahead of the old base | 120 | 120 |
+| Push size | 20.7 GiB | 423 MiB |
+| Largest blob | 4.2 GiB | under 50 MiB |
+| Files in the tree | — | 13,050 (AppleUX framework sources, `design-reference`, deliverables all intact) |
+
+The rewritten branch was merged with the remote branch and pushed as a
+fast-forward. The working tree was not touched: `git reset --mixed` only
+re-pointed the index, so all in-progress local modifications survived
+unmodified. The artifact paths are now in `.gitignore` so they cannot come
+back.
+
+The pre-rewrite commits are still reachable at `refs/backup/pre-filter-rewrite`
+and `refs/backup/pre-filter-rewrite-localmain` if they are ever needed. Delete
+those refs to reclaim the ~20 GiB they hold:
+
+```sh
+git update-ref -d refs/backup/pre-filter-rewrite
+git update-ref -d refs/backup/pre-filter-rewrite-localmain
+git reflog expire --expire=now --all && git gc --prune=now --aggressive
+```
+
