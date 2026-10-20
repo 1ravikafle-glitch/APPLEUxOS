@@ -394,27 +394,10 @@ object SettingsCatalog {
                 type = SettingsItemType.ACCOUNT_CARD
             ),
             nav(
-                key = "airplane", titleRes = R.string.airplane_mode,
-                iconKey = "system_airplane", badgeColor = ColorTokens.systemOrange,
-                target = act(android.provider.Settings.ACTION_WIRELESS_SETTINGS),
-                valueProvider = airplaneValue
-            ),
-            nav(
                 key = "wifi", titleRes = R.string.wifi,
                 iconKey = "system_wifi", badgeColor = ColorTokens.systemBlue,
                 target = internal(com.appleux.settings.detail.WifiDetailActivity::class.java),
                 valueProvider = wifiValue
-            ),
-            nav(
-                key = "bluetooth", titleRes = R.string.bluetooth,
-                iconKey = "system_bluetooth", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS),
-                valueProvider = bluetoothValue
-            ),
-            nav(
-                key = "cellular", titleRes = R.string.cellular,
-                iconKey = "system_cellular", badgeColor = ColorTokens.systemGreen,
-                target = act(android.provider.Settings.ACTION_NETWORK_OPERATOR_SETTINGS)
             ),
             nav(
                 key = "battery", titleRes = R.string.battery,
@@ -423,34 +406,7 @@ object SettingsCatalog {
                 valueProvider = batteryValue
             ),
             header("section_notifications", R.string.notifications),
-            nav(
-                key = "notifications", titleRes = R.string.notifications,
-                summaryRes = R.string.notifications_summary,
-                iconKey = "system_bell", badgeColor = ColorTokens.systemRed,
-                target = NavTarget.OwnAppNotifications
-            ),
-            nav(
-                key = "sounds", titleRes = R.string.sounds,
-                iconKey = "system_volume", badgeColor = ColorTokens.systemPink,
-                target = act(android.provider.Settings.ACTION_SOUND_SETTINGS)
-            ),
-            nav(
-                key = "focus", titleRes = R.string.focus,
-                iconKey = "system_dnd", badgeColor = ColorTokens.systemIndigo,
-                target = act("android.settings.ZEN_MODE_SETTINGS")
-            ),
-            nav(
-                key = "screentime", titleRes = R.string.screen_time,
-                summaryRes = R.string.screen_time_summary,
-                iconKey = "system_hourglass", badgeColor = ColorTokens.systemIndigo,
-                target = act(android.provider.Settings.ACTION_USAGE_ACCESS_SETTINGS)
-            ),
             header("section_general", R.string.section_general),
-            nav(
-                key = "general", titleRes = R.string.general,
-                iconKey = "system_settings", badgeColor = ColorTokens.systemGray,
-                target = NavTarget.StockRoot
-            ),
             nav(
                 key = "appearance", titleRes = R.string.appearance,
                 iconKey = "system_appearance", badgeColor = ColorTokens.systemIndigo,
@@ -465,16 +421,6 @@ object SettingsCatalog {
                     com.appleux.settings.display.DisplaySettingsActivity::class.java
                 )
             ),
-            nav(
-                key = "wallpaper", titleRes = R.string.wallpaper,
-                iconKey = "system_photos", badgeColor = ColorTokens.systemTeal,
-                target = NavTarget.StockRoot
-            ),
-            nav(
-                key = "home", titleRes = R.string.home_screen,
-                iconKey = "system_grid", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_HOME_SETTINGS)
-            ),
             header("section_security", R.string.security),
             nav(
                 key = "lock_screen", titleRes = R.string.lock_screen,
@@ -483,32 +429,7 @@ object SettingsCatalog {
                     com.appleux.settings.security.SecuritySettingsActivity::class.java
                 )
             ),
-            nav(
-                key = "faceid", titleRes = R.string.faceid,
-                iconKey = "system_faceid", badgeColor = ColorTokens.systemGreen,
-                target = act(android.provider.Settings.ACTION_BIOMETRIC_ENROLL)
-            ),
-            nav(
-                key = "emergency", titleRes = R.string.emergency_sos,
-                iconKey = "system_sos", badgeColor = ColorTokens.systemRed,
-                target = NavTarget.StockRoot
-            ),
-            nav(
-                key = "privacy", titleRes = R.string.privacy,
-                iconKey = "system_shield", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_PRIVACY_SETTINGS)
-            ),
-            nav(
-                key = "accessibility", titleRes = R.string.accessibility,
-                iconKey = "system_accessibility", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_ACCESSIBILITY_SETTINGS)
-            ),
             header("section_apps", R.string.section_apps),
-            nav(
-                key = "apps", titleRes = R.string.apps,
-                iconKey = "system_app_library", badgeColor = ColorTokens.systemBlue,
-                target = act(android.provider.Settings.ACTION_APPLICATION_SETTINGS)
-            ),
 
             // ---- AppleUX Customization (separate, clearly labelled) ----
             header("section_customization", R.string.customization),
@@ -608,12 +529,13 @@ override fun getItemViewType(position: Int): Int = items[position].type.ordinal
             )
         }
         if (viewType == SettingsItemType.ACCOUNT_CARD.ordinal) {
-            // Plain holder: bindAccountCard(itemView) binds standalone; the
-            // header holder's init findViewByIds the HEADER layout's ids,
-            // which the account card does not have -> instant NPE (found
-            // live: Settings crash-on-open).
-            return object : RecyclerView.ViewHolder(
-                inflater.inflate(R.layout.settings_account_card, parent, false)) {}
+            // Account card: NAMED holder (an anonymous ViewHolder matched
+            // neither bind-dispatch branch -> the card never rendered).
+            // Never SettingsHeaderViewHolder: its init findViewByIds the
+            // header layout's ids and NPEs on this layout.
+            return AccountCardHolder(
+                inflater.inflate(R.layout.settings_account_card, parent, false)
+            )
         }
         val view = inflater.inflate(R.layout.settings_item, parent, false)
         // Capsule-board sections sit 12dp from the screen edges; the header
@@ -630,6 +552,7 @@ override fun getItemViewType(position: Int): Int = items[position].type.ordinal
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = items[position]
         when (holder) {
+            is AccountCardHolder -> bindAccountCard(holder.itemView)
             is SettingsHeaderViewHolder -> holder.bind(item)
             is SettingsViewHolder -> holder.bind(
                 item,
@@ -645,6 +568,8 @@ override fun getItemViewType(position: Int): Int = items[position].type.ordinal
 }
 
 /** Section title only: small, grey, outside the card group, no accessory. */
+class AccountCardHolder(v: View) : RecyclerView.ViewHolder(v)
+
 class SettingsHeaderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val title: TextView = itemView.findViewById(R.id.settingSectionTitle)
