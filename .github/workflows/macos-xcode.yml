@@ -1,0 +1,120 @@
+name: macOS / Xcode
+
+# Xcode is macOS-only, and Xcode 27 is Apple-silicon-only ("Xcode 27 will only
+# install and run on Apple silicon Macs" — Xcode 27 release notes, Intel
+# Deprecation). The Linux build host for this project is an Intel i5-1145G7, so
+# it can never run Xcode 27 and cannot run the iOS 27 SDK at all.
+#
+# This workflow is the answer for CI: a GitHub-hosted Apple silicon runner
+# provides Xcode 27, the iOS 27 SDK and the iOS Simulator, free for public
+# repositories. The reasoning, and the interactive-Mac options, are written up
+# in docs/appleux/XCODE_HOSTING.md.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ios27-design-system/**"
+      - ".github/workflows/macos-xcode.yml"
+      - "docs/appleux/XCODE_HOSTING.md"
+  pull_request:
+    paths:
+      - "ios27-design-system/**"
+      - ".github/workflows/macos-xcode.yml"
+  workflow_dispatch:
+
+concurrency:
+  group: macos-xcode-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  xcode27:
+    name: Xcode 27 (Apple silicon)
+    # xcode-27 = macOS 26 arm64 image with Xcode 27 (arm64). See
+    # actions/runner-images for the label scheme. macos-26-intel would cap the
+    # toolchain at Xcode 26.x; macos-26 arm64 carries only Xcode 26.x.
+    runs-on: xcode-27
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout AppleUXOS
+        uses: actions/checkout@v4
+        with:
+          # The other 21 submodules are AOSP kernel/vendor trees and reference
+          # material — cloning them would cost tens of minutes for nothing.
+          submodules: false
+          fetch-depth: 1
+
+      - name: Checkout rPlayHub
+        uses: actions/checkout@v4
+        with:
+          repository: rPlayAI/rPlayHub
+          # Pinned to the gitlink recorded in the index of this repository.
+          ref: fe6a7a9f1cff431acfda142cd3564fc8e0e849a3
+          path: design-reference/rPlayHub
+
+      - name: Toolchain report
+        run: |
+          set -euo pipefail
+          echo "### macOS"
+          sw_vers
+          echo
+          echo "### Xcode"
+          xcodebuild -version
+          echo
+          echo "### Swift"
+          swift --version
+          echo
+          echo "### Architectures"
+          uname -m
+          echo
+          echo "### SDKs"
+          xcodebuild -showsdks
+          echo
+          echo "### Simulator runtimes"
+          xcrun simctl list runtimes 2>/dev/null || true
+
+      - name: Build iOS 27 design system (iOS Simulator)
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -scheme iOS27DesignSystem \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/dd" \
+            build
+
+      - name: Build GlassProbe (Liquid Glass .glassEffect)
+        run: |
+          set -euo pipefail
+          SDK="$(xcrun --sdk iphonesimulator --show-sdk-path)"
+          xcrun --sdk iphonesimulator swiftc \
+            -target arm64-apple-ios26.0-simulator \
+            -sdk "$SDK" \
+            -o "$RUNNER_TEMP/GlassProbe" \
+            ios27-design-system/Sources/GlassProbe/main.swift
+          file "$RUNNER_TEMP/GlassProbe"
+
+      - name: Build rPlayHub.app (macOS)
+        run: |
+          set -euo pipefail
+          xcodebuild \
+            -project design-reference/rPlayHub/app/rPlayHub.xcodeproj \
+            -scheme rPlayHub \
+            -configuration Debug \
+            -destination 'platform=macOS' \
+            -derivedDataPath "$RUNNER_TEMP/dd-rplay" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            build
+
+      - name: Upload rPlayHub.app
+        uses: actions/upload-artifact@v4
+        with:
+          name: rPlayHub-app
+          path: ${{ env.RUNNER_TEMP }}/dd-rplay/Build/Products/Debug/rPlayHub.app
+          if-no-files-found: warn
+          retention-days: 14
