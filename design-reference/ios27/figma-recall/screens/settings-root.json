@@ -1,0 +1,84 @@
+{
+  "screen": "settings-root",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "sr-large-title",
+      "type": "navTitle",
+      "frame": {
+        "x": 0.04,
+        "y": 0.075,
+        "w": 0.5,
+        "h": 0.05
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sr-search",
+      "type": "searchField",
+      "frame": {
+        "x": 0.04,
+        "y": 0.13,
+        "w": 0.92,
+        "h": 0.05
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sr-account-banner",
+      "type": "groupedRow",
+      "frame": {
+        "x": 0.04,
+        "y": 0.2,
+        "w": 0.92,
+        "h": 0.085
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sr-group-network",
+      "type": "groupedList",
+      "frame": {
+        "x": 0.04,
+        "y": 0.31,
+        "w": 0.92,
+        "h": 0.25
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sr-group-system",
+      "type": "groupedList",
+      "frame": {
+        "x": 0.04,
+        "y": 0.58,
+        "w": 0.92,
+        "h": 0.17
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "row",
+      "action": "tap",
+      "opens": "settings-detail"
+    }
+  ],
+  "notes": "Inset-grouped list: rows >=44pt, 16pt side inset assumed. See settings-menu.json for rows."
+}

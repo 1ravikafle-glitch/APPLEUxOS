@@ -1,0 +1,15 @@
+{
+  "name": "glass-card",
+  "viewportWidth": 340,
+  "viewportHeight": 160,
+  "android": {
+    "pathData": "M34,0 H306 a34,34 0 0 1 34,34 V126 a34,34 0 0 1 -34,34 H34 a34,34 0 0 1 -34,-34 V34 a34,34 0 0 1 34,-34 Z",
+    "fillColor": "#FF000000",
+    "strokeColor": null,
+    "strokeWidth": null
+  },
+  "provenance": "34pt radius from user-supplied value; no glass fill/blur encoded",
+  "basis": "generated-geometry",
+  "appleVector": false,
+  "inferred": true
+}

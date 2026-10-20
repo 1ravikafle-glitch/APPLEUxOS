@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/settingsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- iOS 27 floating search pill (ground truth: Settings-root.png, the
+         capsule pinned at the bottom). Tap expands it; typing LIVE-FILTERS
+         the real catalog rows (title + summary) — no fabricated results.
+         Frosted glass fill + our registry magnifier. -->
+    <LinearLayout
+        android:id="@+id/settingsSearchPill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
+        android:background="@drawable/settings_search_pill"
+        android:elevation="8dp">
+
+        <ImageView
+            android:id="@+id/settingsSearchIcon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:contentDescription="@null"
+            android:tint="@color/secondary_label" />
+
+        <TextView
+            android:id="@+id/settingsSearchHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="15sp"
+            android:letterSpacing="@dimen/appleux_tracking_subheadline"
+            android:textColor="@color/secondary_label"
+            android:text="Search" />
+
+        <EditText
+            android:id="@+id/settingsSearchField"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:background="@null"
+            android:textSize="15sp"
+            android:inputType="text"
+            android:maxLines="1"
+            android:imeOptions="actionSearch"
+            android:hint="Search"
+            android:textColorHint="@color/secondary_label"
+            android:textColor="@color/label"
+            android:visibility="gone" />
+    </LinearLayout>
+</FrameLayout>

@@ -1,0 +1,22 @@
+{
+    "applinks": {
+        "details": [{
+            "appIDs": ["com.apple.Health", "0000000000.com.apple.Health"],
+            "components": [
+                {
+                    "/": "/sharingInviteFlow",
+                    "comment": "Matches any URL whose path starts with /sharingInviteFlow"
+                },
+                {
+                    "/": "/sharingProfile",
+                    "comment": "Matches any URL whose path starts with /sharingProfile"
+                },
+                {
+                    "/": "/add-vrx?*",
+                    "comment": "Matches VRX ingestion URLs"
+                }
+            ],
+            "alwaysEnabled": true
+        }]
+    }
+}

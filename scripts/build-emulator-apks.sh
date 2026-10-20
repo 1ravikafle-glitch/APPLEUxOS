@@ -43,10 +43,28 @@ STAMP="$OUT/.timestamps"
 DS_SRC="$ROOT/appleux/design-system/src/main/java"
 PERF_SRC="$ROOT/appleux/performance/src/main/java"
 DS_RES="$ROOT/appleux/design-system/src/main/res"
+# appleux-design-system declares `static_libs: ["appleux-device-support-rock"]`
+# in its Android.bp, so this source tree is a hard dependency of the Kotlin
+# compile, not an optional extra. It was MISSING from this list, which only
+# appeared to work because a stale RockDisplayProfile.class was lying around
+# in out/gen from an earlier layout; design-system/.../AppleuxDisplayInsets.kt
+# imports com.appleux.device.rock.RockDisplayProfile and cannot compile
+# without it. Every module that compiles DS_SRC needs ROCK_SRC too.
+ROCK_SRC="$ROOT/device-support/rock/src/main/java"
+# AppleUXSounds: the 366 IPSW-extracted sounds. Launcher only — settings
+# has no playback call site, and shipping 7.7 MB of audio in an app that
+# never plays it is exactly the dead-weight problem.
+SOUNDS_SRC="$ROOT/appleux/sounds/src/main/java"
+APPS_SRC="$ROOT/appleux/apps-shared/src/main/java"
+SOUNDS_RES="$ROOT/appleux/sounds/src/main/res"
 
 CP="$PLATFORM"
 for j in "$LIBS"/*.jar; do CP="$CP:$j"; done
 
+# One build at a time: concurrent runs stomp the shared $GEN dir
+# (seen live 2026-10-19: leftover + fresh run -> unresolved 'R').
+exec 9>"/tmp/opencode/appleux-sdk-build.lock"
+flock -n 9 || { echo "FATAL: another build-emulator-apks.sh is running." >&2; exit 3; }
 mkdir -p "$OUT/apks" "$GEN" "$STAMP" "$GEN/empty-res"
 rm -f "$STAMP/lib-res"   # resource inputs change often; always recompile
 
@@ -56,7 +74,14 @@ rm -f "$STAMP/lib-res"   # resource inputs change often; always recompile
 # must generate those too. Which libraries actually need one is discovered from
 # the constant pools of the vendored classes, not guessed.
 detect_r_packages() {
-  if [ -f "$STAMP/r-packages" ]; then return; fi
+  # The stamp is keyed on a signature, not on a content hash, so adding a local
+  # package has to force a rescan. Without this the sounds R was never generated
+  # and the module failed to compile against a stale stamp.
+  local want="local:design-system,sounds jars:$(ls "$LIBS" 2>/dev/null | wc -l)"
+  if [ -f "$STAMP/r-packages" ] && [ "$(cat "$STAMP/r-packages.sig" 2>/dev/null)" = "$want" ]; then
+    return
+  fi
+  echo "$want" > "$STAMP/r-packages.sig"
   echo "  scanning    library R references"
   local scratch="$GEN/rscan"
   rm -rf "$scratch"; mkdir -p "$scratch"
@@ -78,6 +103,10 @@ detect_r_packages() {
   done
   # design-system is ours, and always needed
   echo "com.appleux.design" >> "$STAMP/r-packages"
+  # AppleUXSounds is ours too. SoundRegistry is a plain object of R.raw ids, so
+  # without a generated com.appleux.sounds.R the whole module fails to compile —
+  # which is exactly why these sounds shipped silent before.
+  echo "com.appleux.sounds" >> "$STAMP/r-packages"
   sort -u "$STAMP/r-packages" -o "$STAMP/r-packages"
   rm -rf "$scratch"
   echo "  r packages: $(tr '\n' ' ' < "$STAMP/r-packages")"
@@ -94,6 +123,10 @@ compile_lib_res() {
   done
   # design-system resources are consumed by every app, so they get their own zip
   "$AAPT2" compile --dir "$DS_RES" -o "$GEN/lib-res-design-system.zip"
+  # Sounds are consumed by the launcher alone. Every file is .ogg — the .caf
+  # twins live in sounds/extracted-reference/, because two files sharing a stem
+  # both become R.raw.<stem> and aapt2 rejects that as a duplicate.
+  "$AAPT2" compile --dir "$SOUNDS_RES" -o "$GEN/lib-res-sounds.zip"
 }
 
 build_androidx_dex() {
@@ -148,6 +181,13 @@ build_app() {
     [ -f "$z" ] || continue
     # design-system supplies its own res when it is the module being built
     [ "$module" = "design-system" ] && [ "$z" = "$GEN/lib-res-design-system.zip" ] && continue
+    # NOTE: lib-res-sounds.zip is no longer excluded from any module. It used to
+    # be launcher-only, which was correct while only the launcher had a playback
+    # call site. design-system now consumes AppleUXSounds (the Settings confirm
+    # tick goes through AppleuxComponentsWiring.settingsCard), so every module
+    # compiles design-system's sources and needs the sounds on its classpath and
+    # in its res, or com.appleux.sounds.R has no raw ids at all.
+
     res_inputs="$res_inputs $z"
   done
   [ -f "$GEN/$module-res.zip" ] && res_inputs="$GEN/$module-res.zip $res_inputs"
@@ -208,14 +248,28 @@ build_app() {
   #    library code resolves against THIS app's resource ids.
   local srcdirs="$srcdir"
   case "$module" in
-    design-system) ;;
-    performance)   srcdirs="$srcdir $DS_SRC" ;;
-    *)             srcdirs="$srcdir $PERF_SRC $DS_SRC" ;;
+    # design-system consumes AppleUXSounds (AppleuxComponentsWiring plays the
+    # Settings confirm tick), so the sources have to be on its compile line too.
+    design-system) srcdirs="$srcdir $SOUNDS_SRC $ROCK_SRC" ;;
+    performance)   srcdirs="$srcdir $SOUNDS_SRC $DS_SRC $ROCK_SRC" ;;
+    # Only the launcher plays a sound (camera shutter, toggle confirm).
+    launcher)      srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC" ;;
+    phone|messages|contacts|photos|files|camera|clock|calendar|browser|video|apps-shared)
+                   srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC $APPS_SRC" ;;
+    *)             srcdirs="$srcdir $SOUNDS_SRC $PERF_SRC $DS_SRC $ROCK_SRC" ;;
   esac
 
   rm -rf "$GEN/$module-classes"; mkdir -p "$GEN/$module-classes"
+  # kotlinc's default heap is small enough that compiling every app shell in
+  # one invocation dies with OutOfMemoryError. Worse, it dies WHILE RENDERING a
+  # diagnostic (RenderIrElementKt.renderTypeInner), so the heap is exhausted
+  # building the error message and the actual error is never printed - the
+  # build only reports "Backend Internal error". Host has 15 GB and ~10 GB
+  # available; -nowarn also matters because a missing module suppresses the
+  # type information that makes those renderings so expensive.
   # shellcheck disable=SC2086
-  "$KOTLINC" -classpath "$CP:$GEN/$module-r-classes" -jvm-target 17 -nowarn \
+  "$KOTLINC" -J-Xmx"${KOTLINC_HEAP:-6g}" -J-XX:MaxMetaspaceSize=1g \
+    -classpath "$CP:$GEN/$module-r-classes" -jvm-target 17 -nowarn \
     -d "$GEN/$module-classes" $srcdirs 2> "$GEN/$module-kotlinc.log" || true
   grep "error:" "$GEN/$module-kotlinc.log" | sed "s|appleux/||" \
     | sed "s|^|    kt: |" | head -40 || true
@@ -269,11 +323,30 @@ compile_lib_res
 build_androidx_dex
 detect_r_packages
 
+# The com.appleux.systemui APK was DELETED on 2026-10-17 (deliverables/m23).
+# It was a separate app whose foreground service floated two full-screen
+# TYPE_APPLICATION_OVERLAY windows over SystemUI. The iOS chrome is now a
+# library (appleux/systemui/chrome -> module appleux-systemui-chrome) compiled
+# INTO com.android.systemui by Soong, so there is no fifth APK to build here.
+# Building it here is not merely unnecessary: its TYPE_APPLICATION_OVERLAY
+# windows are exactly the per-frame cost the takeover removes.
+#
+# NOTE: this SDK route cannot verify the SystemUI takeover. It compiles apps
+# only; the integration is proved by `m SystemUI`, which has not been run.
 build_app design-system appleux-design-system.apk
 build_app performance   appleux-performance.apk
 build_app launcher      appleux-launcher.apk
 build_app settings      appleux-settings.apk
-build_app systemui      appleux-systemui.apk
+build_app phone         appleux-phone.apk
+build_app messages      appleux-messages.apk
+build_app contacts      appleux-contacts.apk
+build_app photos        appleux-photos.apk
+build_app files         appleux-files.apk
+build_app camera        appleux-camera.apk
+build_app clock         appleux-clock.apk
+build_app calendar      appleux-calendar.apk
+build_app browser       appleux-browser.apk
+build_app video         appleux-video.apk
 
 echo
 echo "APKs in $OUT/apks:"

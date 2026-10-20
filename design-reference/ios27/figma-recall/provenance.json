@@ -1,0 +1,41 @@
+{
+  "generated": "2026-10-15",
+  "headline": "NOTHING in this extraction was read from Apple's Figma kit or measured from Apple screenshots.",
+  "figma_kit_fallback_used": true,
+  "access": {
+    "figma_community_page": "landing page only (no design data)",
+    "figma_api": "api.figma.com blocked by this workspace's network policy (403 CONNECT); also the community ID is not an API file key",
+    "user_guide_pages": "article bodies truncated to navigation; 7 welcome-page images retrievable by alt text only"
+  },
+  "verified_from_apple": [
+    "iOS 27 UI Kit exists for Figma/Sketch; updated July 24, 2026 (Figma page metadata)",
+    "Guide screenshot URLs/alt text for 7 welcome-page images (see provenance verified_images in earlier file revision; now below)",
+    "iOS 27 guide TOC includes 'Siri AI' and 'Apple Intelligence' entries"
+  ],
+  "verified_images": [
+    {
+      "alt": "The iPhone Lock Screen with a personal photo set as the background image.",
+      "url": "https://ipcdn-web.apple.com/assets/v2/web/a8fb287e-075c-423a-a3a3-0ea04a1ea7f5"
+    },
+    {
+      "alt": "An iPhone screen showing battery usage, and the battery charged 90%.",
+      "url": "https://ipcdn-web.apple.com/assets/v2/web/4da64275-aeee-46f3-b6f7-17c30729330c"
+    },
+    {
+      "alt": "The Family Sharing screen in Settings. Five family members are listed.",
+      "url": "https://ipcdn-web.apple.com/assets/v2/web/00c45d85-655d-465a-baed-80da154bd403"
+    }
+  ],
+  "per_file": {
+    "design-tokens.json": "colors/typography/spacing = claude-recall of UIKit/HIG defaults, inferred, unverified, may differ in iOS 27. liquidGlassRegular.cornerRadius=34 and squircle n=4.4 are USER-SUPPLIED. Other material/radius fields null (no reliable basis).",
+    "screens/*.json": "all frames = claude-estimate fractions; only the control-center and battery-charging referenceScreenshot URLs are real Apple URLs (the former is the article URL, not an image). 'recents' interpretation is an assumption.",
+    "settings-menu.json": "recall of iOS 18-era Settings; iOS 27 order/names unverified; geometry mostly null.",
+    "components/*": "geometry generated programmatically (squircle from user's n, circles, capsules); not Apple vectors, so no kit licence concerns but also not pixel-exact."
+  },
+  "known_nulls": {
+    "radius.*": "no reliable recalled value for iOS 26/27",
+    "material.*": "Apple publishes no Liquid Glass numbers; none inferred",
+    "icon.appIconCornerRadius, controlDiameter": "no basis",
+    "settings geometry beyond row height/inset": "no basis"
+  }
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    iOS alert presentation.
+
+    iOS scales an alert up from ~0.92 with its corner radius growing with it,
+    so the card reads as growing toward the viewer rather than cross-fading in.
+    250 ms on the decelerate cubic Apple uses for anything presenting; the
+    alpha leg is 50 ms shorter so the scale is what the eye tracks.
+-->
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+    android:interpolator="@android:interpolator/decelerate_cubic">
+    <scale
+        android:fromXScale="0.92"
+        android:toXScale="1.0"
+        android:fromYScale="0.92"
+        android:toYScale="1.0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:duration="250" />
+    <alpha
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0"
+        android:duration="200" />
+</set>

@@ -1,0 +1,14 @@
+{
+  "ignorePatterns": [
+    "android-16/**",
+    "tools/oxlint/**",
+    "**/node_modules/**"
+  ],
+  "jsPlugins": [
+    {
+      "name": "anti-slop",
+      "specifier": "./tools/oxlint/anti-slop/index.ts"
+    }
+  ],
+  "rules": {}
+}

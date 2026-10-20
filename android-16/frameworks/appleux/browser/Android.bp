@@ -1,0 +1,23 @@
+// AppleUX Browser — system app replacing stock Safari.
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_app {
+    name: "AppleUXBrowser",
+    owner: "appleux",
+    srcs: ["src/main/java/**/*.kt"],
+    manifest: "src/main/AndroidManifest.xml",
+    resource_dirs: ["src/main/res"],
+    sdk_version: "current",
+    min_sdk_version: "36",
+    static_libs: [
+        "androidx_runtime",
+        "appleux-apps-shared",
+        "appleux-design-system",
+        "appleux-performance-lib",
+        "AppleUXSounds",
+    ],
+    privileged: true,
+    product_specific: true,
+}

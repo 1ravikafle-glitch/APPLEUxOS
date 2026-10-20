@@ -1,0 +1,16 @@
+{
+	"applinks": {
+		"details": [
+			{
+				"appIDs": [ "com.apple.freeform" ],
+                "components": [
+                    {
+                        "/" : "/freeform-copy/*",
+                        "comment": "Matches any URL with a path that starts with /freeform-copy/"
+                    }
+                ],
+				"alwaysEnabled": true
+			}
+		]
+	}
+}

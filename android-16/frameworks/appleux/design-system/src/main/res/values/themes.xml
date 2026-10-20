@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Theme.Appleux — the ONE parent every AppleUX surface inherits.
+
+    WHY THIS FILE EXISTS
+    ====================
+    launcher/, settings/ and systemui/ each declared their own theme with a
+    stock parent:
+        launcher  -> Theme.AppCompat.Light.NoActionBar, one windowBackground
+        settings  -> Theme.AppCompat.Light.NoActionBar, one windowBackground
+                    (values-night was a byte-for-byte COPY of the light one,
+                     so dark mode was a no-op)
+        systemui  -> android:Theme.Material, five items, plus its own
+                     hand-rolled colour file that disagreed with ColorTokens
+
+    Three parents, no shared layer. Changing the accent meant editing three
+    files. Changing corner radius meant editing none, because nothing read it.
+    And every framework view that consults the theme still saw AppCompat's
+    Material defaults: Material indigo accent, Material ripple, Material
+    outlined text field, Material alert dialog.
+
+    AppCompat stays the ancestor on purpose. All 16 activities extend
+    AppCompatActivity, which throws IllegalStateException if its theme is not
+    AppCompat-derived, so dropping it is a component migration, not a theme
+    edit. What matters is that everything the theme actually supplies is
+    overridden here, so the Material defaults never reach the screen.
+
+    THE .Base SPLIT
+    ===============
+    Every themed style below is split into a *Base that holds the real values
+    and a bare inheriting subclass. values-night/themes.xml overrides only the
+    bare subclass. Without the split, a night override would have to redeclare
+    the entire style or silently replace it rather than extend it.
+
+    TOKENS
+    ======
+    Colours come from @color/*, which is values/colors.xml (light) and
+    values-night/colors.xml (dark) — the XML mirror of ColorTokens.kt. Corner
+    radii, type ramp and spacing come from TypographyTokens/SpacingTokens via
+    Kotlin; the few radii an XML layout can name are declared here.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- ================================================================
+         BASE — every AppleUX window
+         ================================================================ -->
+    <style name="Theme.Appleux.Base" parent="Theme.AppCompat.Light.NoActionBar">
+
+        <!-- ==== No title/action bar anywhere. The status bar is SystemUI's
+             and the title bar is always a custom AppleuxLargeTitle view. ==== -->
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowActionBarOverlay">true</item>
+
+        <!-- ==== Tint. AppCompat's default is Material blue 500 (#2196F3)
+             and Theme.Material's accent is teal (#009688); both were visible
+             on stock. HIG systemBlue is the only accent AppleUX uses for an
+             interactive/selected state. ==== -->
+        <item name="colorPrimary">@color/system_blue</item>
+        <item name="colorPrimaryDark">@color/system_background</item>
+        <item name="colorAccent">@color/system_blue</item>
+        <item name="colorControlActivated">@color/system_blue</item>
+        <item name="colorControlHighlight">@color/fill_tertiary</item>
+        <item name="colorControlNormal">@color/secondary_label</item>
+        <item name="android:colorAccent">@color/system_blue</item>
+        <item name="android:textColorHighlight">@color/system_blue</item>
+
+        <!-- ==== Backgrounds. windowBackground is the grouped-list grey, not
+             white: a white window behind a #F2F2F7 list produces a visible
+             seam during cold launch, which is the exact flash iOS never shows.
+             Each app overrides this only if it needs a different root. ==== -->
+        <item name="android:windowBackground">@color/system_grouped_background</item>
+        <item name="android:colorBackground">@color/system_grouped_background</item>
+        <item name="android:colorBackgroundCacheHint">@color/system_background</item>
+        <item name="android:windowBackgroundFallback">@color/system_background</item>
+
+        <!-- ==== Text. Colour AND typeface both come from the shared tokens. ==== -->
+        <item name="android:textColorPrimary">@color/label</item>
+        <item name="android:textColorSecondary">@color/secondary_label</item>
+        <item name="android:textColorTertiary">@color/tertiary_label</item>
+        <item name="android:textColorPrimaryInverse">@color/system_background</item>
+        <item name="android:textColorSecondaryInverse">@color/secondary_label</item>
+        <item name="android:textColorHint">@color/secondary_label</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <!-- SF Pro is Apple-platform-licensed and cannot ship in an APK, so
+             the platform sans-serif stands in. Metrics come from the HIG
+             Dynamic Type table in TypographyTokens. See its header. -->
+        <item name="fontFamily">sans-serif</item>
+        <item name="android:textViewStyle">@style/AppleuxTextView</item>
+        <item name="android:buttonStyle">@style/AppleuxButton</item>
+        <item name="editTextStyle">@style/AppleuxEditText</item>
+        <item name="android:editTextStyle">@style/AppleuxEditText</item>
+
+        <!-- ==== Press feedback. Ripple off, iOS highlight fill on. See
+             drawable/appleux_pressed.xml for why this is also cheaper. ==== -->
+        <item name="android:selectableItemBackground">@drawable/appleux_pressed</item>
+        <item name="android:selectableItemBackgroundBorderless">@drawable/appleux_pressed</item>
+        <item name="selectableItemBackground">@drawable/appleux_pressed</item>
+        <item name="android:listSelector">@drawable/appleux_pressed</item>
+        <item name="android:popupBackground">@drawable/appleux_dialog_surface</item>
+
+        <!-- ==== Dialogs. AlertDialog and its siblings all went to
+             android.app.AlertDialog with the Material surface; 23 call sites
+             showed that. Point every dialog theme at the iOS card. ==== -->
+        <item name="android:alertDialogTheme">@style/Theme.Appleux.Dialog</item>
+        <item name="android:dialogTheme">@style/Theme.Appleux.Dialog</item>
+        <item name="android:datePickerDialogTheme">@style/Theme.Appleux.Dialog</item>
+        <item name="android:timePickerDialogTheme">@style/Theme.Appleux.Dialog</item>
+        <item name="alertDialogTheme">@style/Theme.Appleux.Dialog</item>
+        <item name="dialogTheme">@style/Theme.Appleux.Dialog</item>
+
+        <!-- ==== System bars. Transparent + drawing enabled so every surface
+             is edge-to-edge and each one owns its own inset, which is how the
+             launcher's dock and the shade's cutout reservation work. On
+             API 35+ these two colours are ignored (edge-to-edge is enforced)
+             and transparent is still the correct declaration. ==== -->
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="29">false</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+        <item name="android:windowLayoutInDisplayCutoutMode" tools:targetApi="27">shortEdges</item>
+
+        <!-- ==== Motion. Platform window animations are the stock
+             fade+scale; AppleUX draws its own sheet/spring transitions in
+             Kotlin and a platform window animation on top of them double-fades.
+             Material activity transitions off entirely. ==== -->
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowContentTransitions">false</item>
+        <item name="android:windowActivityTransitions">false</item>
+
+        <!-- ==== Misc ==== -->
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:scrollbarStyle">outsideOverlay</item>
+        <item name="android:scrollbarThumbVertical">@null</item>
+        <item name="android:fadingEdgeLength">0dp</item>
+        <item name="android:colorEdgeEffect">@color/separator_primary</item>
+    </style>
+
+    <style name="Theme.Appleux" parent="Theme.Appleux.Base" />
+
+    <!-- ================================================================
+         DIALOG — iOS alert card. Applied by alertDialogTheme above, so all
+         23 AlertDialog call sites get it without touching code.
+         ================================================================ -->
+    <style name="Theme.Appleux.Dialog.Base" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/appleux_dialog_surface</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowMinWidthMajor">72%</item>
+        <item name="android:windowMinWidthMinor">90%</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="buttonBarStyle">@style/AppleuxButtonBar</item>
+        <item name="buttonBarPositiveButtonStyle">@style/AppleuxDialogButton.Positive</item>
+        <item name="buttonBarNegativeButtonStyle">@style/AppleuxDialogButton.Negative</item>
+        <item name="buttonBarNeutralButtonStyle">@style/AppleuxDialogButton.Neutral</item>
+        <item name="android:textColorPrimary">@color/label</item>
+        <item name="android:textColorSecondary">@color/secondary_label</item>
+        <item name="colorAccent">@color/system_blue</item>
+        <item name="android:selectableItemBackground">@drawable/appleux_pressed</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Appleux.Dialog</item>
+    </style>
+
+    <style name="Theme.Appleux.Dialog" parent="Theme.Appleux.Dialog.Base" />
+
+    <!-- iOS dialog buttons: HIG Callout, semibold for the confirming action,
+         tinted, never all-caps (iOS does not upper-case a button label),
+         44dp minimum touch target, no Material elevation. -->
+    <style name="AppleuxDialogButton" parent="Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:letterSpacing">0.024</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/system_blue</item>
+        <item name="android:minWidth">64dp</item>
+        <item name="android:minHeight">44dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:background">@drawable/appleux_pressed</item>
+        <item name="android:stateListAnimator">@null</item>
+        <item name="elevation">0dp</item>
+        <item name="android:shadowRadius">0.0</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">0.0</item>
+    </style>
+
+    <style name="AppleuxDialogButton.Positive" parent="AppleuxDialogButton" />
+    <!-- Cancel is the neutral label colour, never tinted. -->
+    <style name="AppleuxDialogButton.Negative" parent="AppleuxDialogButton">
+        <item name="android:textColor">@color/label</item>
+    </style>
+    <!-- Destructive: HIG systemRed, delete/purge/erase only. -->
+    <style name="AppleuxDialogButton.Neutral" parent="AppleuxDialogButton">
+        <item name="android:textColor">@color/system_red</item>
+    </style>
+
+    <style name="AppleuxButtonBar" parent="Widget.AppCompat.ButtonBar">
+        <item name="android:background">@null</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+    </style>
+
+    <!-- iOS alert presentation: scale up from 0.92 with the corner radius
+         growing with it, on the decelerate cubic Apple uses for anything
+         presenting. 250 ms. -->
+    <style name="Animation.Appleux.Dialog" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/appleux_dialog_enter</item>
+        <item name="android:windowExitAnimation">@anim/appleux_dialog_exit</item>
+    </style>
+
+    <!-- ================================================================
+         LAUNCHER
+         ================================================================ -->
+    <style name="Theme.Appleux.Launcher" parent="Theme.Appleux">
+        <!-- The home screen's own surface is systemBackground, not the
+             grouped grey: iOS wallpaper fills the whole screen and the
+             grouped grey only appears on inset list surfaces. -->
+        <item name="android:windowBackground">@color/system_background</item>
+        <item name="android:colorBackground">@color/system_background</item>
+        <item name="android:windowShowWallpaper">true</item>
+    </style>
+
+    <!-- ================================================================
+         SETTINGS
+         ================================================================ -->
+    <style name="Theme.Appleux.Settings" parent="Theme.Appleux">
+        <item name="android:windowBackground">@color/system_grouped_background</item>
+        <item name="android:colorBackground">@color/system_grouped_background</item>
+    </style>
+
+    <!-- ================================================================
+         SYSTEM UI — status bar, shade, Control Center.
+
+         FORCED DARK, and that is not a shortcut. An iOS status bar and an
+         iOS 27 Control Center are dark materials in BOTH appearances: the
+         Control Center reads as dark glass over a light wallpaper, it does
+         not invert with the system theme. So this theme pins the dark tokens
+         by hand rather than inheriting values-night, which the system would
+         otherwise choose from the current uiMode.
+
+         Parent is android:Theme.Material.NoActionBar, not AppCompat: this is
+         the one place SystemUI's own widgets are themed, and it does not run
+         through AppCompat's delegation.
+         ================================================================ -->
+    <style name="Theme.Appleux.SystemUI" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/system_background</item>
+        <item name="android:colorBackground">@color/system_background</item>
+        <item name="android:colorBackgroundCacheHint">@color/system_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar" tools:targetApi="27">false</item>
+        <item name="android:textColorPrimary">@color/label</item>
+        <item name="android:textColorSecondary">@color/secondary_label</item>
+        <item name="android:textColorTertiary">@color/tertiary_label</item>
+        <item name="android:textColorHint">@color/secondary_label</item>
+        <item name="colorAccent">@color/system_blue</item>
+        <item name="android:colorAccent">@color/system_blue</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textViewStyle">@style/AppleuxTextView</item>
+        <item name="android:buttonStyle">@style/AppleuxButton</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:selectableItemBackground">@drawable/appleux_pressed</item>
+        <item name="android:listSelector">@drawable/appleux_pressed</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:enforceStatusBarContrast" tools:targetApi="29">false</item>
+        <item name="android:enforceNavigationBarContrast" tools:targetApi="29">false</item>
+    </style>
+
+</resources>

@@ -1,0 +1,15 @@
+{
+  "name": "pill-capsule",
+  "viewportWidth": 160,
+  "viewportHeight": 64,
+  "android": {
+    "pathData": "M32,0 H128 a32,32 0 0 1 32,32 V32 a32,32 0 0 1 -32,32 H32 a32,32 0 0 1 -32,-32 V32 a32,32 0 0 1 32,-32 Z",
+    "fillColor": "#FF000000",
+    "strokeColor": null,
+    "strokeWidth": null
+  },
+  "provenance": "capsule: radius = height/2",
+  "basis": "generated-geometry",
+  "appleVector": false,
+  "inferred": true
+}

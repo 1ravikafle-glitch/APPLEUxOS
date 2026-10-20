@@ -63,7 +63,11 @@ if [ "$state" != "device" ]; then
 fi
 
 # AppleUX module packages (see appleux/*/src/main/AndroidManifest.xml).
-APPLEUX_PKGS="com.appleux.launcher com.appleux.systemui com.appleux.settings com.appleux.performance com.appleux.design"
+# com.appleux.systemui removed 2026-10-17 (deliverables/m23). Its RAM cost is
+# now counted under com.android.systemui, which is the point: the overlay app
+# was a whole extra resident process whose only job was to draw chrome on top
+# of SystemUI.
+APPLEUX_PKGS="com.appleux.launcher com.android.systemui com.appleux.settings com.appleux.performance com.appleux.design"
 
 hr()  { printf '%s\n' "------------------------------------------------------------"; }
 kv()  { printf '  %-26s %s\n' "$1" "$2"; }

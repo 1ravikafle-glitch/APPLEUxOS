@@ -48,8 +48,17 @@ GROW_BLOCKS=$((MIN_BLOCKS + 4096))
 resize2fs "$PART" "$GROW_BLOCKS" 2>&1 | tail -n 1
 
 echo "==> hashtree + vbmeta"
+# Boot-loop fix (2026-10-16, kernel-proof): the previous vbmeta was UNSIGNED
+# (Algorithm NONE). init's AvbHandle::Open rejects ERROR_VERIFICATION on this
+# locked emulator build ("PUBLIC_KEY_REJECTED isn't allowed") and reboots at
+# ~2s forever, so adb never comes up. The stock image carries a SIGNED vbmeta
+# (SHA256_RSA4096, 6848 bytes); userspace validate_vbmeta_public_key is a
+# no-op, so ANY valid signature passes. Sign with the in-tree AOSP test key,
+# keep flags 0 (verity enforcing) — no source change needed.
 SALT=$(python3 -c "import secrets;print(secrets.token_hex(32))")
 echo "$SALT" > "$WORK/verity-salt.txt"
+SIGN_KEY="$ROOT/android-16/external/avb/test/data/testkey_rsa4096.pem"
+[ -f "$SIGN_KEY" ] || { echo "FATAL: missing avb sign key $SIGN_KEY"; exit 1; }
 python3 "$OSB/tools/avbtool.py" add_hashtree_footer \
   --image "$PART" --partition_name system \
   --partition_size "$ROOTFS_LEN" --do_not_generate_fec \
@@ -57,6 +66,7 @@ python3 "$OSB/tools/avbtool.py" add_hashtree_footer \
 [ "$(stat -c%s "$PART")" = "$ROOTFS_LEN" ] || { echo "FATAL: footer changed size"; exit 1; }
 python3 "$OSB/tools/avbtool.py" make_vbmeta_image \
   --output "$WORK/vbmeta-new.img" --flags 0 \
+  --key "$SIGN_KEY" --algorithm SHA256_RSA4096 \
   --include_descriptors_from_image "$PART" >/dev/null 2>&1
 DIGEST=$(python3 "$OSB/tools/avbtool.py" calculate_vbmeta_digest \
   --image "$WORK/vbmeta-new.img" 2>&1 | tr -d ' \n')

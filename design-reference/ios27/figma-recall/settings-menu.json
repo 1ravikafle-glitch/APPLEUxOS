@@ -1,0 +1,371 @@
+{
+  "_status": "BEST-EFFORT recall of iOS Settings layout; iOS 27 order/names may differ (e.g. Siri naming). Not verified.",
+  "basis": "claude-recall",
+  "inferred": true,
+  "verified": false,
+  "geometry": {
+    "style": "insetGrouped",
+    "rowMinHeightPt": 44,
+    "sideInsetPt": 16,
+    "interGroupSpacingPt": null,
+    "iconTilePt": null,
+    "_note": "numbers other than rowMin/sideInset are null; not recalled reliably"
+  },
+  "groups": [
+    {
+      "id": "account",
+      "rows": [
+        {
+          "title": "Apple Account",
+          "subtitle": "Apple Account, iCloud, Media & Purchases",
+          "icon": "profile-avatar",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "apple-account"
+        }
+      ]
+    },
+    {
+      "id": "connectivity",
+      "rows": [
+        {
+          "title": "Airplane Mode",
+          "subtitle": null,
+          "icon": "sf.airplane",
+          "valueType": "toggle",
+          "valueExample": null,
+          "destination": "airplane-mode"
+        },
+        {
+          "title": "Wi-Fi",
+          "subtitle": null,
+          "icon": "sf.wifi",
+          "valueType": "value+chevron",
+          "valueExample": "Network name",
+          "destination": "wi-fi"
+        },
+        {
+          "title": "Bluetooth",
+          "subtitle": null,
+          "icon": "sf.bluetooth",
+          "valueType": "value+chevron",
+          "valueExample": "On",
+          "destination": "bluetooth"
+        },
+        {
+          "title": "Cellular",
+          "subtitle": null,
+          "icon": "sf.antenna.radiowaves.left.and.right",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "cellular"
+        },
+        {
+          "title": "Personal Hotspot",
+          "subtitle": null,
+          "icon": "sf.personalhotspot",
+          "valueType": "value+chevron",
+          "valueExample": "Off",
+          "destination": "personal-hotspot"
+        },
+        {
+          "title": "Battery",
+          "subtitle": null,
+          "icon": "sf.battery.100",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "battery"
+        },
+        {
+          "title": "VPN",
+          "subtitle": null,
+          "icon": "sf.network",
+          "valueType": "toggle",
+          "valueExample": null,
+          "destination": "vpn"
+        }
+      ]
+    },
+    {
+      "id": "system",
+      "rows": [
+        {
+          "title": "General",
+          "subtitle": null,
+          "icon": "sf.gear",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "general"
+        },
+        {
+          "title": "Accessibility",
+          "subtitle": null,
+          "icon": "sf.accessibility",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "accessibility"
+        },
+        {
+          "title": "Action Button",
+          "subtitle": null,
+          "icon": "sf.button.horizontal",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "action-button"
+        },
+        {
+          "title": "Apple Intelligence & Siri",
+          "subtitle": null,
+          "icon": "sf.sparkles",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "apple-intelligence-siri"
+        },
+        {
+          "title": "Camera",
+          "subtitle": null,
+          "icon": "sf.camera.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "camera"
+        },
+        {
+          "title": "Control Center",
+          "subtitle": null,
+          "icon": "sf.switch.2",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "control-center"
+        },
+        {
+          "title": "Display & Brightness",
+          "subtitle": null,
+          "icon": "sf.sun.max.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "display-brightness"
+        },
+        {
+          "title": "Home Screen & App Library",
+          "subtitle": null,
+          "icon": "sf.apps.iphone",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "home-screen-app-library"
+        },
+        {
+          "title": "Search",
+          "subtitle": null,
+          "icon": "sf.magnifyingglass",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "search"
+        },
+        {
+          "title": "StandBy",
+          "subtitle": null,
+          "icon": "sf.platter.filled.top.iphone",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "standby"
+        },
+        {
+          "title": "Wallpaper",
+          "subtitle": null,
+          "icon": "sf.photo",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "wallpaper"
+        }
+      ]
+    },
+    {
+      "id": "attention",
+      "rows": [
+        {
+          "title": "Notifications",
+          "subtitle": null,
+          "icon": "sf.bell.badge.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "notifications"
+        },
+        {
+          "title": "Sounds & Haptics",
+          "subtitle": null,
+          "icon": "sf.speaker.wave.3.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "sounds-haptics"
+        },
+        {
+          "title": "Focus",
+          "subtitle": null,
+          "icon": "sf.moon.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "focus"
+        },
+        {
+          "title": "Screen Time",
+          "subtitle": null,
+          "icon": "sf.hourglass",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "screen-time"
+        }
+      ]
+    },
+    {
+      "id": "security",
+      "rows": [
+        {
+          "title": "Face ID & Passcode",
+          "subtitle": null,
+          "icon": "sf.faceid",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "face-id-passcode"
+        },
+        {
+          "title": "Emergency SOS",
+          "subtitle": null,
+          "icon": "sf.sos",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "emergency-sos"
+        },
+        {
+          "title": "Privacy & Security",
+          "subtitle": null,
+          "icon": "sf.hand.raised.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "privacy-security"
+        }
+      ]
+    },
+    {
+      "id": "services",
+      "rows": [
+        {
+          "title": "App Store",
+          "subtitle": null,
+          "icon": "appstore",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "app-store"
+        },
+        {
+          "title": "Game Center",
+          "subtitle": null,
+          "icon": "gamecenter",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "game-center"
+        },
+        {
+          "title": "iCloud",
+          "subtitle": null,
+          "icon": "sf.icloud.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "icloud"
+        },
+        {
+          "title": "Wallet & Apple Pay",
+          "subtitle": null,
+          "icon": "sf.wallet.bifold.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "wallet-apple-pay"
+        }
+      ]
+    },
+    {
+      "id": "apps",
+      "rows": [
+        {
+          "title": "Apps",
+          "subtitle": "Per-app settings (Phone, Messages, Safari, Photos, ...)",
+          "icon": "sf.square.grid.2x2.fill",
+          "valueType": "chevron",
+          "valueExample": null,
+          "destination": "apps"
+        }
+      ]
+    }
+  ],
+  "detailPages": {
+    "general": [
+      "About",
+      "Software Update",
+      "AirDrop",
+      "AirPlay & Continuity",
+      "Picture in Picture",
+      "CarPlay",
+      "iPhone Storage",
+      "Background App Refresh",
+      "Date & Time",
+      "Keyboard",
+      "Fonts",
+      "Language & Region",
+      "Dictionary",
+      "VPN & Device Management",
+      "Legal & Regulatory",
+      "Transfer or Reset iPhone",
+      "Shut Down"
+    ],
+    "display-brightness": [
+      "Appearance (Light/Dark/Auto)",
+      "Brightness",
+      "True Tone",
+      "Night Shift",
+      "Auto-Lock",
+      "Raise to Wake",
+      "Text Size",
+      "Bold Text",
+      "Display Zoom"
+    ],
+    "notifications": [
+      "Show Previews",
+      "Screen Sharing",
+      "Scheduled Summary",
+      "Lock Screen/Notification Center/Banners display style",
+      "Per-app notification settings"
+    ],
+    "sounds-haptics": [
+      "Ringtone",
+      "Text Tone",
+      "New Voicemail",
+      "Keyboard Feedback",
+      "Lock Sound",
+      "System Haptics",
+      "Ringer and Alerts volume slider"
+    ],
+    "wifi": [
+      "Wi-Fi toggle",
+      "My Networks",
+      "Other Networks",
+      "Ask to Join Networks",
+      "Auto-Join Hotspot"
+    ],
+    "battery": [
+      "Low Power Mode",
+      "Battery Health & Charging",
+      "Battery Percentage",
+      "Charge limit",
+      "Usage by app"
+    ],
+    "privacy-security": [
+      "Location Services",
+      "Tracking",
+      "Contacts",
+      "Photos",
+      "Microphone",
+      "Camera",
+      "Safety Check",
+      "Lockdown Mode"
+    ]
+  }
+}

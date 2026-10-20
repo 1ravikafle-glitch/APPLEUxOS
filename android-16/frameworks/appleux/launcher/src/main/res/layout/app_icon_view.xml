@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One home-screen / dock app cell.
+
+  ICON: 56dp is LauncherTokens.HOME_ICON_SIZE_DP, derived in that file from
+  our ROM's frame (1080x2408 @ 440dpi, 5 columns: 56dp icon in a 70.55dp
+  cell, 0.794 ratio — under the 0.81 merge limit). bind() sets it
+  programmatically, so this is only the preview value.
+
+  LABEL 12sp: the prototype used 12sp for its glass caption
+  (IOSLikeROM theme/GlassTheme.kt `Glass.caption`), which is also the HIG
+  Caption 1 size we already carry in TypographyTokens.caption1. It shipped at
+  10sp, which is too small to survive five columns: at 12sp the longest common
+  label ("Calculator") sets at ~66dp inside a 70.55dp cell — 4.5dp of slack,
+  tight but it truncates nothing. If labels ever truncate on-device, that
+  slack is the first suspect.
+
+  LABEL COLOUR #B3FFFFFF + shadow: prototype-derived. IOSLikeROM's
+  `Glass.labelDim` is #B3FFFFFF, used for exactly this reason — 70% white
+  over a dimmed backdrop instead of pure white, which is what iOS uses for
+  home-screen labels. The shadow is ours: iOS gets contrast from the backdrop
+  dim (LauncherTokens.HOMESCREEN_WALLPAPER_DIM) and a per-label shadow, and
+  the two together are what make a label legible on a bright wallpaper.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/icon_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.appleux.launcher.ui.SquircleImageView
+            android:id="@+id/icon"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="centerCrop" />
+
+
+        <TextView
+            android:id="@+id/label"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:shadowColor="#99000000"
+            android:shadowDx="0"
+            android:shadowDy="1"
+            android:shadowRadius="2"
+            android:textColor="#FFFFFFFF"
+            android:textSize="12sp" />
+    </LinearLayout>
+</FrameLayout>

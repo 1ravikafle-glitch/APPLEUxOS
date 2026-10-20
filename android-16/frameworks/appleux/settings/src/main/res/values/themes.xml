@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings windows. Inherits Theme.Appleux.Settings; no night copy — the
+     dark appearance is resolved from design-system values-night/themes.xml,
+     which only flips the system-bar icon flags. Previously this app shipped a
+     values-night/themes.xml that was a byte-for-byte copy of the light theme,
+     so dark mode was a no-op. -->
+<resources>
+    <style name="AppleuxSettingsTheme" parent="Theme.Appleux.Settings" />
+</resources>

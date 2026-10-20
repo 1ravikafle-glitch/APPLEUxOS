@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  AppleUX framework-res overlay: rock refresh-rate policy.
+  dumpsys display supportedModes (measured): 30 / 50 / 60 / 90 Hz,
+  90 active at capture, default peak 60. FrameBudget.forRefreshRate()
+  (device-support/rock) scales the 60 Hz policy numbers to the live mode;
+  these integers only set the platform defaults so the ROM boots into the
+  right mode before our controller reads the live rate.
+-->
+<resources>
+    <!-- Boot/default mode: 60 Hz (panel default peak per capture). -->
+    <integer name="config_defaultRefreshRate">60</integer>
+
+    <!-- Panel ceiling: 90 Hz (highest measured supportedMode). -->
+    <integer name="config_defaultPeakRefreshRate">90</integer>
+
+    <!-- ── Motion durations ────────────────────────────────────────────────
+         Stock AOSP is the Material 3 ramp (200 / 400 / 500 / 220 / 150 ms).
+         These retarget the platform defaults onto the AppleUX ramp so every
+         un-replaced stock surface moves on the same clock as AppleUX
+         components. Values are MotionTokens:
+           200 -> 167  DURATION_FAST         config_shortAnimTime
+           400 -> 333  DURATION_STANDARD     config_mediumAnimTime
+           500 -> 400  DURATION_COMFORTABLE  config_longAnimTime
+           150 -> 167  DURATION_FAST         config_activityShortDur
+           220 -> 333  DURATION_STANDARD     config_activityDefaultDur
+         MotionTokens does NOT claim these are iOS values; only internal
+         consistency is claimed. config_activityDefaultDur 220 -> 333 makes
+         the stock activity transition deliberately slower. Keep the device
+         overlay (FrameworkOverlayRock apple_hig.xml) in step. -->
+    <integer name="config_shortAnimTime">167</integer>
+    <integer name="config_mediumAnimTime">333</integer>
+    <integer name="config_longAnimTime">400</integer>
+    <integer name="config_activityShortDur">167</integer>
+    <integer name="config_activityDefaultDur">333</integer>
+</resources>

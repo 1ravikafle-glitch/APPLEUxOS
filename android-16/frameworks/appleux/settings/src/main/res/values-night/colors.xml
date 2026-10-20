@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- DARK: the pill becomes elevated DARK glass — a white capsule on a
+     dark screen would be the loudest possible non-iOS element. HIG dark
+     elevated material base #1C1C1E at frosted translucency. -->
+<resources>
+    <color name="settings_search_pill_bg">#1C1C1E66</color>
+</resources>

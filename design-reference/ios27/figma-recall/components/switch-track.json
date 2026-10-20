@@ -1,0 +1,15 @@
+{
+  "name": "switch-track",
+  "viewportWidth": 51,
+  "viewportHeight": 31,
+  "android": {
+    "pathData": "M15.5,0 H35.5 a15.5,15.5 0 0 1 15.5,15.5 V15.5 a15.5,15.5 0 0 1 -15.5,15.5 H15.5 a15.5,15.5 0 0 1 -15.5,-15.5 V15.5 a15.5,15.5 0 0 1 15.5,-15.5 Z",
+    "fillColor": "#FF000000",
+    "strokeColor": null,
+    "strokeWidth": null
+  },
+  "provenance": "classic iOS switch 51x31 (recalled)",
+  "basis": "generated-geometry",
+  "appleVector": false,
+  "inferred": true
+}

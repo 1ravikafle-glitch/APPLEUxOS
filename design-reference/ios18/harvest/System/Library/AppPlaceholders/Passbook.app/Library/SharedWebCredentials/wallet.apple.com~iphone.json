@@ -1,0 +1,45 @@
+{
+    "applinks": {
+        "substitutionVariables": {
+            "flag": [ "true", "false"]
+        },
+        "details": [{
+            "appID": "com.apple.Passbook",
+            "alwaysEnabled": true,
+            "relativeOrder": -1,
+            "components": [
+                { "/": "/setup/*" },
+                { "/": "/discovery/card/*" },
+                { "/": "/apple-card/setup/*" },
+                { "/": "/apple-card/discovery/card/*" },
+                { "/": "/apple-card/credit/*" },
+                { "/": "/apple-card/dailyCash" },
+                { "/": "/apple-cash" },
+                { "/": "/apple-cash/search" },
+                { "/": "/apple-cash/autoReload" },
+                { "/": "/apple-cash/recurringPayment" },
+                { "/": "/apple-cash/recurringPayment/*" },
+                { "/": "/apple-cash/tapToCash" },
+                { "/": "/apple-cash/tapToCash/*" },
+                { "/": "/fps" },
+                { "/": "/fps/details" },
+                { "/": "/fps/loan/*" },
+                { "/": "/apple-account/*" },
+                {
+                    "/": "/pass-verification",
+                    "?": {
+                        "deviceAccountIdentifier": "$(alnum)*",
+                        "success": "$(flag)"
+                    },
+                    "comment": "Matches pass verification URL opened by the card issuer upon successful verification"
+                },
+                { "/": "/invitations" },
+                { "/": "/v1/m/*" },
+                { "/": "/fbd/*" },
+                { "/": "/savings/*" },
+                { "/": "/application/* "},
+            ]
+        }]
+    }
+}
+

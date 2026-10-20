@@ -25,31 +25,33 @@ it is kept rather than discarded.
 
 ## The frame problem — read before using any dp number
 
-**MEASURED 2026-10-15 on the physical POCO M5 running stock HyperOS:**
+**MEASURED 2026-10-15 on the physical POCO M5 — panel geometry only. Density
+is OUR ROM's choice: 440 physical, no override.** The 430 figure in that
+capture is HyperOS's override, which dies at bootloader unlock and never
+applies to this ROM. So a dp value from *any* source is only correct for the
+frame it was derived on, and OUR frame is 392.73 × 875.64 dp:
 
 | | px | dpi | dp |
 |---|---|---|---|
-| panel | 1080 × **2408** | 440 physical | — |
-| **effective** (HyperOS override) | — | **430** | **401.9 × 896.0** |
-| no-override case | 1080 × 2408 | 440 | 392.7 × 875.6 |
+| panel | 1080 × **2408** | 440 physical (OUR ROM, no override) | **392.73 × 875.64** |
+| HyperOS session (dead) | — | 430 override | 401.9 × 896.0 — HyperOS-only, never ours |
 
-Insets, measured: top **76 px** (28.3 dp), bottom **127 px** (47.3 dp), cutout
-**100 × 76 px** top-centre, centre x = 540 = exactly half the width, corners
-**106 px radius** all four (39.4 dp). Refresh **30 / 50 / 60 / 90 Hz**
-(`dumpsys display` supportedModes, 90 active at capture).
+Insets, measured in px (density-independent): top **76 px** (27.6 dp on our
+ROM), bottom **127 px** (46.2 dp), cutout **100 × 76 px** top-centre, centre
+x = 540 = exactly half the width, corners **106 px radius** all four
+(38.5 dp). Refresh **30 / 50 / 60 / 90 Hz** (`dumpsys display`
+supportedModes, 90 active at capture).
 
-So a dp value from *any* source is only correct for the frame it was derived
-on. The home-grid numbers previously in this file were derived on the wrong
-frame and have been superseded; the derivation to redo when the grid is
-re-derived is:
+The home-grid numbers previously in this file were derived on the HyperOS
+frame and have been superseded; the live derivation is:
 
-| | our 5×7 grid at 401.9 dp wide | how it was derived |
+| | our 5×7 grid at 392.73 dp wide | how it was derived |
 |---|---|---|
-| usable width | 401.9 − 2×20 = 361.9 | screen margin |
-| cell pitch | **72.38** (361.9 / 5) | binding axis |
-| app icon | **56 kept** (56/72.38 = 0.774, under the 0.81 merge limit) | LauncherTokens |
-| row pitch | **102** (7 rows = 714, 6.7 dp slack) | 896.0 − 28.3 − 147 = 720.7 band |
-| widget height | **144** (3 × 72.38 / 1.5) | same formula, true pitch |
+| usable width | 392.73 − 2×20 = 352.73 | screen margin |
+| cell pitch | **70.55** (352.73 / 5) | binding axis |
+| app icon | **56 kept** (56/70.55 = 0.794, under the 0.81 merge limit) | LauncherTokens |
+| row pitch | **100** (7 rows = 700, 2.0 dp slack — thin, noted in LauncherTokens) | 875.64 − 27.6 − 146 = 702.0 band |
+| widget height | **141** (3 × 70.55 / 1.5) | same formula, true pitch |
 | dock radius | **34** | source 1 wins (`REGULAR_CORNER_RADIUS_DP`), not files5's 38 |
 | refresh rate | **30 / 50 / 60 / 90**, live read | `Display.getMode()` |
 

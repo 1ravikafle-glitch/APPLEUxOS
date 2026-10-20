@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.appleux.settings">
+
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!-- Slide to restart (AppleuxPowerSlider).
+
+         PowerManager.reboot(String) is PUBLIC API on API 36 (verified with
+         javap against android.jar), so no reflection or hidden API is needed.
+         It is gated by android.permission.REBOOT, which is
+         signature|privileged — a level that exists specifically so a
+         privileged system app can be granted it in privapp-permissions.xml.
+
+         Power OFF is deliberately NOT requested: PowerManager.shutdown() is
+         @SystemApi and absent from the public SDK, so there is no honest way to
+         offer "slide to power off" from an app. AppleuxPowerSlider therefore
+         wires only its restart half. -->
+    <uses-permission android:name="android.permission.REBOOT" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- A18 Bluetooth page: adapter state, on/off, bonded set. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
+
+    <permission
+        android:name="com.appleux.settings.permission.READ_APPLEUX_CONFIG"
+        android:protectionLevel="signature" />
+
+    <application
+        android:name=".SettingsApplication"
+        android:label="@string/app_name"
+        android:theme="@style/AppleuxSettingsTheme">
+
+        <provider
+            android:name=".config.AppleuxConfigProvider"
+            android:authorities="com.appleux.settings.config"
+            android:exported="true"
+            android:readPermission="com.appleux.settings.permission.READ_APPLEUX_CONFIG"
+            android:writePermission="com.appleux.settings.permission.READ_APPLEUX_CONFIG" />
+
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="true"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <!-- Source-level defaulting: AppleUX answers system settings
+                 intents; stock Settings remains as fallback until
+                 ACTION_SETTINGS coverage is fully audited. -->
+            <intent-filter>
+                <action android:name="android.settings.SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.CustomizationActivity"
+            android:exported="false"
+            android:label="@string/customization"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
+            android:name=".ui.SettingsListActivity"
+            android:exported="false"
+            android:label="@string/app_name"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
+            android:name=".display.DisplaySettingsActivity"
+            android:exported="false"
+            android:label="@string/display"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
+            android:name=".security.SecuritySettingsActivity"
+            android:exported="false"
+            android:label="@string/security"
+            android:parentActivityName=".SettingsActivity" />
+
+        <activity
+            android:name=".performance.PerformanceSettingsActivity"
+            android:exported="false"
+            android:label="@string/adaptive_performance"
+            android:parentActivityName=".SettingsActivity" />
+
+        <!-- Owned detail pages. These replace rows that used to fire
+             ACTION_WIFI_SETTINGS / ACTION_BATTERY_SAVER_SETTINGS and hand the
+             user to stock Settings. -->
+        <activity
+            android:name=".detail.WifiDetailActivity"
+            android:exported="false"
+            android:label="@string/wifi"
+            android:parentActivityName=".ui.SettingsListActivity" />
+
+        <activity
+            android:name=".detail.BatteryDetailActivity"
+            android:exported="false"
+            android:label="@string/battery"
+            android:parentActivityName=".ui.SettingsListActivity" />
+        <activity
+            android:name=".detail.GeneralDetailActivity"
+            android:exported="false"
+            android:label="@string/general"
+            android:parentActivityName=".ui.SettingsListActivity" />
+        <activity
+            android:name=".detail.AboutDetailActivity"
+            android:exported="false"
+            android:label="@string/about"
+            android:parentActivityName=".detail.GeneralDetailActivity" />
+        <activity
+            android:name=".detail.StorageDetailActivity"
+            android:exported="false"
+            android:label="@string/storage_title"
+            android:parentActivityName=".detail.GeneralDetailActivity" />
+        <activity
+            android:name=".detail.BluetoothDetailActivity"
+            android:exported="false"
+            android:label="@string/bluetooth"
+            android:parentActivityName=".ui.SettingsListActivity" />
+        <activity
+            android:name=".detail.SoundsDetailActivity"
+            android:exported="false"
+            android:label="@string/sounds"
+            android:parentActivityName=".ui.SettingsListActivity" />
+        <activity
+            android:name=".detail.FocusDetailActivity"
+            android:exported="false"
+            android:label="@string/focus"
+            android:parentActivityName=".ui.SettingsListActivity" />
+    </application>
+</manifest>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AppleUX — LIGHT appearance. THE single source of truth for every colour the
+    XML layer can reach (themes, layouts, drawables).
+
+    PROVENANCE / DRIFT RULE
+    ======================
+    Every value here is the *light* branch of
+    com.appleux.design.tokens.ColorTokens, transcribed from Apple HIG → Color
+    (developers.apple.com/design/human-interface-guidelines/color), which
+    publishes an explicit light hex for every semantic colour and every tint.
+
+    ColorTokens.kt is the authority for Kotlin drawing code; THIS FILE is the
+    authority for the XML layer. They MUST agree. When you change a value here,
+    change the matching entry in ColorTokens.kt in the same commit — the audit
+    in tools/check-token-drift.sh fails if they diverge.
+
+    This file previously held only the 11 raw tints plus appleux_sheet_handle.
+    Everything semantic lived in three per-app files (launcher, settings,
+    systemui) with four different naming schemes for the same concepts, and the
+    values disagreed with ColorTokens: e.g. systemui/values/colors.xml put
+    #000000 system_background in the DEFAULT (light) qualifier, label was
+    #FFFFFF there but #000000 in ColorTokens light, and secondaryLabel was an
+    opaque #A8A8A8 instead of HIG's rgba(60,60,67,0.60).
+-->
+<resources>
+
+    <!-- ==== System backgrounds (HIG systemBackground family) ====
+         Note the HIG naming vs the file naming:
+           HIG systemBackground              -> system_background
+           HIG secondarySystemBackground     -> system_background_elevated
+           HIG tertiarySystemBackground      -> system_background_secondary
+         ColorTokens.systemBackgroundQuaternary/Quinary have no framework-side
+         consumer yet, so they are not declared here. -->
+    <color name="system_background">#FFFFFF</color>
+    <color name="system_background_elevated">#F2F2F7</color>
+    <color name="system_background_secondary">#FFFFFF</color>
+    <color name="system_background_tertiary">#E5E5EA</color>
+    <color name="system_background_quaternary">#F2F2F7</color>
+
+    <!-- ==== Grouped backgrounds (HIG systemGroupedBackground family) ====
+         A grouped Settings/Contacts/Files list sits on #F2F2F7 and its inset
+         rows on #FFFFFF. That is why these are three distinct colours, not
+         two aliases. -->
+    <color name="system_grouped_background">#F2F2F7</color>
+    <color name="secondary_system_grouped_background">#FFFFFF</color>
+    <color name="tertiary_system_grouped_background">#F2F2F7</color>
+
+    <!-- ==== Label ramp (HIG label family) ====
+         Apple publishes these as rgba with an alpha, not as a solid grey.
+         Translucent is the point: the same label colour has to read correctly
+         over a plain surface and over Liquid Glass. -->
+    <color name="label">#000000</color>
+    <color name="secondary_label">#3C3C4399</color>
+    <color name="tertiary_label">#3C3C434D</color>
+    <color name="quaternary_label">#3C3C432E</color>
+
+    <!-- ==== Separator ramp (HIG separator / opaqueSeparator) ====
+         HIG light separator is rgba(60,60,67,0.36) = #3C3C435C. -->
+    <color name="separator">#545458A6</color>
+    <color name="separator_primary">#C6C6C8</color>
+    <color name="separator_secondary">#D6D6D8</color>
+
+    <!-- ==== Fill ramp (HIG systemFill family) ==== -->
+    <color name="fill_tertiary">#7676801F</color>
+    <color name="fill_quaternary">#76768014</color>
+
+    <!-- ==== System tints (HIG) — LIGHT ==== -->
+    <color name="system_blue">#007AFF</color>
+    <color name="system_blue_pressed">#0062CC</color>
+    <color name="system_green">#34C759</color>
+    <color name="system_red">#FF3B30</color>
+    <color name="system_orange">#FF9500</color>
+    <color name="system_yellow">#FFCC00</color>
+    <color name="system_purple">#AF52DE</color>
+    <color name="system_pink">#FF2D55</color>
+    <color name="system_teal">#30B0C7</color>
+    <color name="system_indigo">#5856D6</color>
+    <color name="system_mint">#00C7BE</color>
+    <color name="system_cyan">#32ADE6</color>
+
+    <!-- ==== Opacity overlays ====
+         AppleUX-chosen: HIG publishes these as named system materials
+         (fill, highlight, scrim) with context-specific values, not as a
+         reusable set of white/black alpha constants. -->
+    <color name="overlay_primary">#40000000</color>
+    <color name="appleux_sheet_handle">#338E8E93</color>
+
+</resources>

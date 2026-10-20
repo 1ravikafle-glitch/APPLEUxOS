@@ -1,0 +1,17 @@
+{
+    "applinks": {
+        "details": [{
+            "appIDs": ["com.apple.Health", "0000000000.com.apple.Health"],
+            "components": [
+                {
+                    "/": "/*",
+                    "comment" : "Matches any URL component"
+                }
+            ],
+            "alwaysEnabled": true
+        }]
+    },
+    "webcredentials": {
+       "apps": ["com.apple.Health", "0000000000.com.apple.Health"]
+    }
+}

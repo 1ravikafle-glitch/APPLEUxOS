@@ -1,0 +1,51 @@
+// AppleUX Launcher — replaces Launcher3 as HOME.
+//
+// Built from the canonical sources in OsProject/appleux/launcher, linked into
+// the AOSP tree at packages/apps/AppleUXLauncher. The HOME intent-filter with
+// priority 1000 lives in src/main/AndroidManifest.xml.
+//
+// Module name is AppleUXLauncher (capital X) to match device/xiaomi/rock/
+// appleux.mk. The APK package stays com.appleux.launcher — those are unrelated
+// identifiers and both appear in the priv-app allowlist.
+
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_app {
+    name: "AppleUXLauncher",
+    owner: "appleux",
+    srcs: ["src/main/java/**/*.kt"],
+    manifest: "src/main/AndroidManifest.xml",
+    resource_dirs: ["src/main/res"],
+    // NOTE: there is deliberately no `kotlin: { enabled: true }` block here.
+    // That property does not exist on android_library / android_app in this AOSP
+    // 16 tree — grep for "kotlin: {" across every Android.bp returns only these
+    // AppleUX files. Soong picks Kotlin up automatically from .kt entries in
+    // srcs; AOSP's own mixed Java/Kotlin modules (e.g. SystemUI-application)
+    // just list "src/**/*.kt" and set kotlincflags. Having written it anyway is
+    // how these files stayed unparseable: they had never been analysed.
+    sdk_version: "current",
+    min_sdk_version: "36",
+    static_libs: [
+        "androidx_runtime",
+        "appleux-design-system",
+        "appleux-performance-lib",
+        // AppleUXSounds: the 366 ringtones / notifications / system / UI sounds
+        // extracted from the iOS 27 IPSW.
+        //
+        // ROUTE DECISION (2026-10-17): static_lib, NOT a separate APK.
+        // A standalone sounds APK would be a whole extra resident process whose
+        // only job is to own a resource table, on a device with a 3 GB budget.
+        // As a static_lib the raw resources and SoundRegistry.kt are compiled
+        // into THIS apk, so playing a sound costs a resource lookup instead of
+        // an IPC hop into another process. This is the same reasoning that
+        // removed com.appleux.systemui.
+        "AppleUXSounds",
+    ],
+    // priv-app: BIND_APPWIDGET and CAPTURE_AUDIO_OUTPUT are signature|privileged
+    // and are denied for a /system/app APK regardless of the allowlist.
+    privileged: true,
+    required: ["appleux-design-system", "appleux-performance-lib", "AppleUXSounds"],
+    product_specific: true,
+}

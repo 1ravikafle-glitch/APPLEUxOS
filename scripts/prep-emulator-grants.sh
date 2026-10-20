@@ -24,18 +24,23 @@ done
 echo "    boot_completed=$("${ADB[@]}" shell getprop sys.boot_completed | tr -d '\r')"
 
 # 1. Overlay windows for Control Center / Notification Center.
-"${ADB[@]}" shell appops set com.appleux.systemui SYSTEM_ALERT_WINDOW allow
-echo "==> SYSTEM_ALERT_WINDOW = $("${ADB[@]}" shell appops get com.appleux.systemui SYSTEM_ALERT_WINDOW | tr -d '\r')"
+# com.appleux.systemui was DELETED 2026-10-17 (deliverables/m23). It needed
+# SYSTEM_ALERT_WINDOW because it floated TYPE_APPLICATION_OVERLAY windows over
+# SystemUI; inside SystemUI there are no overlay windows and no such grant.
+echo "==> (no SYSTEM_ALERT_WINDOW grant needed: the iOS chrome is inside com.android.systemui)"
 
 # 2. Real notification feed for the shade.
 "${ADB[@]}" shell cmd notification \
-  allow_listener com.appleux.systemui/.AppleuxNotificationListener >/dev/null 2>&1 || true
+  # The notification listener moved INTO com.android.systemui and is declared
+  # in its AndroidManifest.xml. BIND_NOTIFICATION_LISTENER_SERVICE is a
+  # signature permission SystemUI already holds, so the platform connects it
+  # and there is no consent to grant. See the <service> entry added there.
 echo "==> listeners:"
 "${ADB[@]}" shell settings get secure enabled_notification_listeners \
   | tr -d '\r' | tr ':' '\n' | sed 's/^/    /'
 
 # 3. Launcher needs the shared-config signature permission; that comes from
 #    the signature-level manifest entry, so nothing to do here. Verify only.
-"${ADB[@]}" shell dumpsys package com.appleux.systemui | grep -m1 codePath \
+"${ADB[@]}" shell dumpsys package com.android.systemui | grep -m1 codePath \
   | sed 's/^/    /'
 echo "==> prep complete"

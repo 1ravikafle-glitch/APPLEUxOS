@@ -1,0 +1,12 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "com.apple.shortcuts",
+                "paths": ["/workflows/*"],
+                "alwaysEnabled": true
+            }
+        ]
+    }
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Section header of the grouped settings list: small grey text, aligned with
+  the card inset and sitting OUTSIDE the group, exactly like an iOS grouped
+  list. Never used as a body row, so the title is the root and has no
+  accessory.
+
+  SENTENCE CASE, not caps. Measured 2026-10-20 from
+  drive/appearance-dark.png: the header above the Light|Dark picker card
+  reads "Appearance" - first letter capital, the rest lower case, grey,
+  ~13 pt. NOT "APPEARANCE". `android:textAllCaps="true"` was removed on
+  B's visual read (C14, SESSION_CHAT 2026-10-20 10:33).
+
+  NOTE: the iOS 27 Settings ROOT has NO group headers at all - its groups
+  are separated by CARD SPACING. This layout survives for the pages that
+  do carry a header (Appearance, and any detail page that needs one).
+  See docs/appleux/design-skeletons/settings-menu.md.
+-->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settingSectionTitle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="20dp"
+    android:paddingBottom="8dp"
+    android:textSize="13sp"
+    android:letterSpacing="@dimen/appleux_tracking_footnote"
+    android:textColor="@color/secondary_label" />

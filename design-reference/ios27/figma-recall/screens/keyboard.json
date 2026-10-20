@@ -1,0 +1,84 @@
+{
+  "screen": "keyboard",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "kb-suggestion-bar",
+      "type": "predictiveBar",
+      "frame": {
+        "x": 0,
+        "y": 0.585,
+        "w": 1,
+        "h": 0.045
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "kb-row-1",
+      "type": "keyRow",
+      "frame": {
+        "x": 0.01,
+        "y": 0.635,
+        "w": 0.98,
+        "h": 0.065
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "kb-row-2",
+      "type": "keyRow",
+      "frame": {
+        "x": 0.045,
+        "y": 0.71,
+        "w": 0.91,
+        "h": 0.065
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "kb-row-3",
+      "type": "keyRow",
+      "frame": {
+        "x": 0.01,
+        "y": 0.785,
+        "w": 0.98,
+        "h": 0.065
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "kb-row-4",
+      "type": "keyRow",
+      "frame": {
+        "x": 0.01,
+        "y": 0.86,
+        "w": 0.98,
+        "h": 0.065
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "key",
+      "action": "tap-hold",
+      "opens": "alternate characters"
+    }
+  ],
+  "notes": "Four-row QWERTY with suggestion bar; ~ lower 40% of screen. Key sizes not specified."
+}

@@ -1,0 +1,46 @@
+// AppleUX Settings — replaces packages/apps/Settings.
+//
+// Built from the canonical sources in OsProject/appleux/settings, linked into
+// the AOSP tree at packages/apps/AppleUXSettings. The android.settings.SETTINGS
+// intent-filter with priority 1000 lives in src/main/AndroidManifest.xml.
+//
+// Module name is AppleUXSettings to match device/xiaomi/rock/appleux.mk. The
+// APK package stays com.appleux.settings and it defines the signature-guarded
+// permission com.appleux.settings.permission.READ_APPLEUX_CONFIG.
+
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_app {
+    name: "AppleUXSettings",
+    owner: "appleux",
+    srcs: ["src/main/java/**/*.kt"],
+    manifest: "src/main/AndroidManifest.xml",
+    resource_dirs: ["src/main/res"],
+    // NOTE: there is deliberately no `kotlin: { enabled: true }` block here.
+    // That property does not exist on android_library / android_app in this AOSP
+    // 16 tree — grep for "kotlin: {" across every Android.bp returns only these
+    // AppleUX files. Soong picks Kotlin up automatically from .kt entries in
+    // srcs; AOSP's own mixed Java/Kotlin modules (e.g. SystemUI-application)
+    // just list "src/**/*.kt" and set kotlincflags. Having written it anyway is
+    // how these files stayed unparseable: they had never been analysed.
+    sdk_version: "current",
+    min_sdk_version: "36",
+    static_libs: [
+        "androidx_runtime",
+        "appleux-design-system",
+        "appleux-performance-lib",
+        // AppleUXSounds is here again, deliberately, and the earlier removal was
+        // wrong. It was dropped on 2026-10-17 because Settings had no playback
+        // call site and was paying 7.7 MB for nothing — a fair reading of the
+        // evidence at the time. The fix was never to remove the dependency but
+        // to GIVE IT A CALL SITE: every Settings toggle now plays the IPSW
+        // confirm tick through AppleuxComponentsWiring.settingsCard, so the 366
+        // extracted sounds are used in Settings instead of sitting silent.
+        "AppleUXSounds",
+    ],
+    privileged: true,
+    required: ["appleux-design-system", "appleux-performance-lib"],
+    product_specific: true,
+}

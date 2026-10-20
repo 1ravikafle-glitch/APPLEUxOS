@@ -1,0 +1,9 @@
+{
+    "applinks": {
+        "details": [{
+            "appID": "com.apple.tips",
+            "paths": ["/*"],
+            "alwaysEnabled": true
+        }]
+    }
+}

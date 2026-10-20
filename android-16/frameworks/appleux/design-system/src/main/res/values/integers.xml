@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- LENGTH_SHORT is 2000 ms. These are the theme-side equivalents so an
+         XML-declared toast matches the AppleUX Toast/InBanner component. -->
+    <integer name="appleux_toast_short">2000</integer>
+    <integer name="appleux_toast_long">3500</integer>
+</resources>

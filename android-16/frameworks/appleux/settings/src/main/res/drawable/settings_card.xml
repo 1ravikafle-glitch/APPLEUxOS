@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- iOS grouped-card background for the Settings account card (the one
+     standalone full-rounded surface; row groups set their own edges via
+     the adapter). Fill = design-system grouped-background token —
+     white in light, #1C1C1E elevated dark in night (auto-flips).
+     12dp continuous corner per the capsule-board spec. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/secondary_system_grouped_background" />
+    <corners android:radius="12dp" />
+</shape>

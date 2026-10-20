@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AppleUX Sound Configuration
+    Default sound assignments for the AppleUX ROM.
+    
+    All sounds extracted from iOS 27 IPSW for personal/educational use.
+-->
+<resources>
+    <!-- Default ringtone -->
+    <string name="default_ringtone">ringtone_fanfare</string>
+    
+    <!-- Default notification sound -->
+    <string name="default_notification">notification_nano_alert_5</string>
+    
+    <!-- Default system sound -->
+    <string name="default_system_sound">system_lock</string>
+    
+    <!-- UI feedback sounds -->
+    <string name="ui_key_click">ui_key_click</string>
+    <string name="ui_key_delete">ui_key_delete</string>
+    <string name="ui_keyboard_normal">ui_keyboard_normal</string>
+    
+    <!-- System event sounds -->
+    <string name="system_lock">system_lock</string>
+    <string name="system_unlock">system_auto_unlock</string>
+    <string name="system_charging">system_connected_to_power</string>
+    <string name="system_camera_shutter">system_camera_shutter</string>
+    <string name="system_screen_capture">system_screen_capture</string>
+    
+    <!-- Ringtones -->
+    <string name="ringtone_classic_anticipate">ringtone_anticipate</string>
+    <string name="ringtone_classic_bloom">ringtone_bloom</string>
+    <string name="ringtone_classic_calypso">ringtone_calypso</string>
+    <string name="ringtone_classic_choo_choo">ringtone_choo_choo</string>
+    <string name="ringtone_classic_descent">ringtone_descent</string>
+    <string name="ringtone_classic_fanfare">ringtone_fanfare</string>
+    <string name="ringtone_classic_ladder">ringtone_ladder</string>
+    <string name="ringtone_classic_minuet">ringtone_minuet</string>
+    <string name="ringtone_classic_noir">ringtone_noir</string>
+    <string name="ringtone_classic_sherwood_forest">ringtone_sherwood_forest</string>
+    <string name="ringtone_classic_spell">ringtone_spell</string>
+    <string name="ringtone_classic_suspense">ringtone_suspense</string>
+    <string name="ringtone_classic_telegraph">ringtone_telegraph</string>
+    <string name="ringtone_classic_tiptoes">ringtone_tiptoes</string>
+    <string name="ringtone_classic_typewriters">ringtone_typewriters</string>
+    <string name="ringtone_classic_update">ringtone_update</string>
+    <string name="ringtone_haptic_rising">ringtone_ringtone_rising</string>
+    <string name="ringtone_haptic_us">ringtone_ringtone_us</string>
+    <string name="ringtone_haptic_uk">ringtone_ringtone_uk</string>
+    <string name="ringtone_nano_3">ringtone_nano_ringtone_3</string>
+    <string name="ringtone_nano_4">ringtone_nano_ringtone_4</string>
+    <string name="ringtone_nano_6">ringtone_nano_ringtone_6</string>
+    
+    <!-- Notifications -->
+    <string name="notification_sms">notification_sms_received1</string>
+    <string name="notification_mail">notification_mail</string>
+    <string name="notification_message">notification_message</string>
+    <string name="notification_default">notification_nano_alert_5</string>
+    <string name="notification_calendar">notification_calendar</string>
+    <string name="notification_reminder">notification_reminder</string>
+    <string name="notification_alarm">notification_calendar</string>
+    
+    <!-- System sounds -->
+    <string name="system_notification">notification_system</string>
+    <string name="system_navigation_push">system_navigation_push</string>
+    <string name="system_navigation_pop">system_navigation_pop</string>
+    <string name="system_focus_change">system_focus_large</string>
+</resources>

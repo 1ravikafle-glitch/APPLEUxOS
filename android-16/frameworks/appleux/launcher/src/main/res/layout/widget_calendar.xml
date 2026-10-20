@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- iOS medium-widget proportions: calendar card, no permission needed (date only). -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_calendar_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_card_dark"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="20dp">
+
+    <TextClock
+        android:id="@+id/widget_calendar_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:format12Hour="d"
+        android:format24Hour="d"
+        android:letterSpacing="@dimen/appleux_tracking_widget_numeral"
+        android:textColor="#FFFF3B30"
+        android:textSize="52sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:orientation="vertical">
+
+        <!-- Bold primary line: PROTOTYPE-DERIVED (IOSLikeROM Glass.bodyBold is
+             FontWeight.SemiBold; Android's closest stock face is bold). The
+             -0.02 em tracking on the day numeral comes from the same source
+             as the clock widget: IOSLikeROM lockscreen/LockScreen.kt uses
+             letterSpacing = -2sp on its 96sp numerals. -->
+        <TextClock
+            android:id="@+id/widget_calendar_weekday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="EEEE"
+            android:format24Hour="EEEE"
+            android:textColor="#FFFFFFFF"
+            android:textSize="17sp"
+            android:textStyle="bold" />
+
+        <TextClock
+            android:id="@+id/widget_calendar_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:format12Hour="MMMM yyyy"
+            android:format24Hour="MMMM yyyy"
+            android:textColor="#99FFFFFF"
+            android:textSize="15sp" />
+    </LinearLayout>
+</LinearLayout>

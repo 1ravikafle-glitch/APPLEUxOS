@@ -1,20 +1,27 @@
 # Device facts: received, closed, and still open
 
-## Received 2026-10-15 — operator's own POCO M5, stock HyperOS
+## Received 2026-10-15 — operator's own POCO M5 (panel geometry, HyperOS session)
 
-`wm size` / `wm density` / `dumpsys window` pasted from the physical unit.
-This output is treated as absolute. Full capture and derivations:
+`wm size` / `wm density` / `dumpsys window` / `dumpsys display` from the
+physical unit, plus a full read-only sweep (`pm list features`, meminfo,
+battery, cameras, haptics, flash props — raw outputs in
+`device-support/rock/measured-2026-10-15/`). Panel geometry is treated as
+absolute. Full capture and derivations:
 `deliverables/m20/rock-display-measurement.md`.
+
+**Density rule — read twice:** the 430 figure below is HyperOS's override. It
+dies at bootloader unlock. This ROM installs as the main system, so HyperOS
+has no role: OUR ROM sets **440 physical, no override**, frame **392.73 ×
+875.64 dp**. The 401.9 × 896.0 dp frame belonged to the HyperOS session only.
 
 | fact | value |
 |---|---|
 | panel | 1080 × 2408 px |
-| density | 440 physical, **HyperOS override 430 (effective)** |
-| frame | **401.9 × 896.0 dp** |
-| top inset | **76 px** = 28.3 dp (status bar and waterdrop are the same 76 px) |
-| bottom inset | **127 px** = 47.3 dp |
+| density (OUR ROM) | **440, no override → 392.73 × 875.64 dp** (HyperOS session: 430 → 401.9 × 896.0) |
+| top inset | **76 px** = 27.6 dp on our ROM (status bar and waterdrop are the same 76 px) |
+| bottom inset | **127 px** = 46.2 dp on our ROM |
 | cutout | **100 × 76 px**, top-centre, centre x = 540 = exactly half the width |
-| corners | **106 px radius, all four** (39.4 dp) |
+| corners | **106 px radius, all four** (38.5 dp) |
 | refresh | **30 / 50 / 60 / 90 Hz** (`dumpsys display` supportedModes, 90 active) |
 
 `device-support/rock/` exists and its fallbacks are these measured values.

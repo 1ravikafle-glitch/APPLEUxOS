@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Launcher window. Everything else comes from Theme.Appleux.Base in
+     design-system — see that file's header for why the parent moved there.
+     Only the launcher-specific root surface is declared here. -->
+<resources>
+    <style name="AppleuxLauncherTheme" parent="Theme.Appleux.Launcher" />
+</resources>

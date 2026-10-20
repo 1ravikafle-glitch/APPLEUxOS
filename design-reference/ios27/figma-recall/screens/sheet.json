@@ -1,0 +1,71 @@
+{
+  "screen": "sheet",
+  "referenceScreenshot": null,
+  "referenceSizePt": {
+    "w": 393,
+    "h": 852
+  },
+  "frameBasis": "ESTIMATED fractions - not measured; verify against Apple screenshots",
+  "elements": [
+    {
+      "id": "sheet-scrim",
+      "type": "scrim",
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sheet-card",
+      "type": "glassSheet",
+      "frame": {
+        "x": 0,
+        "y": 0.1,
+        "w": 1,
+        "h": 0.9
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sheet-grabber",
+      "type": "grabber",
+      "frame": {
+        "x": 0.43,
+        "y": 0.108,
+        "w": 0.14,
+        "h": 0.006
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    },
+    {
+      "id": "sheet-content",
+      "type": "content",
+      "frame": {
+        "x": 0.04,
+        "y": 0.14,
+        "w": 0.92,
+        "h": 0.8
+      },
+      "cornerRadiusPt": null,
+      "basis": "claude-estimate",
+      "inferred": true
+    }
+  ],
+  "gestures": [
+    {
+      "from": "sheet",
+      "action": "swipe-down",
+      "opens": "dismiss"
+    }
+  ],
+  "notes": "Modal page sheet inset from top, scrim behind."
+}

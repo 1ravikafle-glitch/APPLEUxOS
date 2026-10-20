@@ -1,0 +1,47 @@
+// AppleUX Adaptive Performance Controller — shared library, not an APK.
+// It reaches the image through static_libs in each app that uses it, and must
+// never appear in PRODUCT_PACKAGES (there is no such module to install).
+//
+// Built from the canonical sources in OsProject/appleux/performance, linked
+// into the AOSP tree at packages/apps/AppleUXPerformance.
+
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_library {
+    name: "appleux-performance-lib",
+    manifest: "src/main/AndroidManifest.xml",
+    srcs: ["src/main/java/**/*.kt"],
+    // NOTE: there is deliberately no `kotlin: { enabled: true }` block here.
+    // That property does not exist on android_library / android_app in this AOSP
+    // 16 tree — grep for "kotlin: {" across every Android.bp returns only these
+    // AppleUX files. Soong picks Kotlin up automatically from .kt entries in
+    // srcs; AOSP's own mixed Java/Kotlin modules (e.g. SystemUI-application)
+    // just list "src/**/*.kt" and set kotlincflags. Having written it anyway is
+    // how these files stayed unparseable: they had never been analysed.
+    sdk_version: "current",
+    min_sdk_version: "36",
+    static_libs: [
+        "androidx_runtime",
+        // The controller reads the MEASURED panel geometry (refresh rate,
+        // frame budgets, cutout) from the rock device-support module. This
+        // dependency was missing, so Soong compiled this module against
+        // nothing and every RockDisplayProfile/FrameBudget reference failed
+        // (19 errors at 81% of the first real build). The SDK build script
+        // masked it by compiling all source dirs together; Soong compiles
+        // per-module against DECLARED deps only.
+        "appleux-device-support-rock",
+    ],
+    // NOT product_specific. It was, and that broke the tree:
+    //
+    //   error: module "aosp_shared_system_image" variant "android_common":
+    //   includes non-generic modules:
+    //           "appleux-systemui-chrome" from "SystemUI-application",
+    //
+    // product_specific: true makes a module build only for a named product, but
+    // SystemUI-application is a GENERIC module (it has no product_ variant), so
+    // a product-only library cannot be linked into it. These are pure code+res
+    // libraries with nothing product-conditional in them, so generic is both
+    // correct and cheaper: no product_-prefixed duplicate is emitted.
+}

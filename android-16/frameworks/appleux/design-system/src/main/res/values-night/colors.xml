@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    AppleUX — DARK appearance.
+
+    Every value is the *dark* branch of
+    com.appleux.design.tokens.ColorTokens, from Apple HIG → Color. See
+    values/colors.xml for the provenance and the drift rule.
+
+    The dark label ramp is RGB(235,235,245) at four HIG alphas — not white.
+    That is why secondary_label here is #EBEBF599 and not a grey.
+-->
+<resources>
+
+    <!-- ==== System backgrounds ==== -->
+    <color name="system_background">#000000</color>
+    <color name="system_background_elevated">#1C1C1E</color>
+    <color name="system_background_secondary">#2C2C2E</color>
+    <color name="system_background_tertiary">#3A3A3C</color>
+    <color name="system_background_quaternary">#48484A</color>
+
+    <!-- ==== Grouped backgrounds ====
+         Dark grouped lists invert the light relationship: the list background
+         goes to pure black and the inset rows go to #1C1C1E. -->
+    <color name="system_grouped_background">#000000</color>
+    <color name="secondary_system_grouped_background">#1C1C1E</color>
+    <color name="tertiary_system_grouped_background">#000000</color>
+
+    <!-- ==== Label ramp ==== -->
+    <color name="label">#FFFFFF</color>
+    <color name="secondary_label">#EBEBF599</color>
+    <color name="tertiary_label">#EBEBF54D</color>
+    <color name="quaternary_label">#EBEBF52E</color>
+
+    <!-- ==== Separator ramp ====
+         HIG dark separator is rgba(84,84,88,0.65) = #545458A6. -->
+    <color name="separator">#3C3C435C</color>
+    <color name="separator_primary">#38383A</color>
+    <color name="separator_secondary">#3B3B3E</color>
+
+    <!-- ==== Fill ramp ====
+         Values are taken verbatim from ColorTokens.systemFillTertiary /
+         systemFillQuaternary rather than re-derived. If those two files ever
+         disagree, the same surface renders in two different colours depending
+         on whether it was drawn in Kotlin or inflated from XML, and
+         tools/check-token-drift.py is what catches it. -->
+    <color name="fill_tertiary">#7676803D</color>
+    <color name="fill_quaternary">#76768029</color>
+
+    <!-- ==== System tints — DARK ==== -->
+    <color name="system_blue">#0A84FF</color>
+    <color name="system_blue_pressed">#0060DF</color>
+    <color name="system_green">#30D158</color>
+    <color name="system_red">#FF453A</color>
+    <color name="system_orange">#FF9F0A</color>
+    <color name="system_yellow">#FFD60A</color>
+    <color name="system_purple">#BF5AF2</color>
+    <color name="system_pink">#FF375F</color>
+    <color name="system_teal">#40C8E0</color>
+    <color name="system_indigo">#5E5CE6</color>
+    <color name="system_mint">#63E6E2</color>
+    <color name="system_cyan">#64D2FF</color>
+
+    <!-- ==== Opacity overlays ====
+         The dark-mode scrim is lighter: on a black background a 25%-black
+         overlay is invisible, so HIG's dark scrim is rgba(255,255,255,0.14). -->
+    <color name="overlay_primary">#24FFFFFF</color>
+    <color name="appleux_sheet_handle">#4DE8E8ED</color>
+
+</resources>

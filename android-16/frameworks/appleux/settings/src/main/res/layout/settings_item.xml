@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Body row of the grouped settings list.
+
+  The root is the card itself: the adapter paints the rounded group background
+  on it (rounded only where the group opens/closes) and shows the hairline
+  divider, which is inset to the text. Keep the horizontal padding here equal to
+  SizingTokens.INSET_XL so the divider margin in the adapter stays aligned with
+  the title.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settingRow"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/secondary_system_grouped_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:minHeight="44dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
+
+        <FrameLayout
+            android:id="@+id/settingBadge"
+            android:layout_width="29dp"
+            android:layout_height="29dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/settingGlyph"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_gravity="center"
+                android:importantForAccessibility="no" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/settingText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/settingTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:letterSpacing="@dimen/appleux_tracking_body"
+                android:textColor="@color/label" />
+
+            <TextView
+                android:id="@+id/settingSummary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:letterSpacing="@dimen/appleux_tracking_footnote"
+                android:textColor="@color/secondary_label" />
+        </LinearLayout>
+
+        <!-- iOS value text: right-aligned gray on navigation rows ("81%",
+             "Not Connected"). Shown INSTEAD of the summary — iOS never shows
+             both. Populated by SettingsItem.valueProvider (live values only;
+             the no-fake-rows law forbids placeholder text here). -->
+        <TextView
+            android:id="@+id/settingValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="12dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="15sp"
+            android:letterSpacing="@dimen/appleux_tracking_subheadline"
+            android:textColor="@color/secondary_label"
+            android:visibility="gone" />
+
+        <!--
+            iOS UISwitch, not android.widget.Switch.
+
+            The stock Switch draws a Material switch: a different track shape,
+            a different thumb, and a ripple on press. AppleUXToggle is the
+            project's own animated capsule with a spring, keyboard handling and
+            accessibility state, already used by the launcher, Phone, Clock and
+            Display screens. This row was the most visible place stock UI still
+            showed inside our own Settings app.
+
+            It is NOT a CompoundButton: setChecked(value, animate) and a
+            ((Boolean) -> Unit) listener, not isChecked / OnCheckedChangeListener.
+        -->
+        <com.appleux.design.components.AppleuxToggle
+            android:id="@+id/settingToggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.appleux.design.components.AppleuxSlider
+            android:id="@+id/settingSeek"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/settingChevron"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:visibility="gone"
+            android:importantForAccessibility="no" />
+    </LinearLayout>
+
+    <View
+        android:id="@+id/settingDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="32dp"
+        android:background="@color/secondary_label"
+        android:visibility="gone" />
+</LinearLayout>

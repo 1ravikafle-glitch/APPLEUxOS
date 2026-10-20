@@ -1,0 +1,12 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "com.apple.reminders",
+                "paths": ["/reminders/template/*"],
+                "alwaysEnabled": true
+            }
+        ]
+    }
+}

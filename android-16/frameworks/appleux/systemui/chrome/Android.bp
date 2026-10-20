@@ -1,0 +1,81 @@
+// AppleUX SystemUI chrome — the iOS 27 surfaces that live INSIDE the
+// com.android.systemui process.
+//
+// WHY THIS MODULE EXISTS
+// ----------------------
+// Until now AppleUX SystemUI shipped as its own APK (com.appleux.systemui,
+// appleux/systemui/Android.bp) running a foreground service that added two
+// full-screen TYPE_APPLICATION_OVERLAY windows on top of SystemUI.
+//
+// That arrangement is a permanent cost for zero benefit:
+//   * an extra resident process (~4 GB device, so process count is not free)
+//   * a foreground service and its ongoing notification
+//   * two MATCH_PARENT PixelFormat.TRANSLUCENT windows, which the compositor
+//     has to allocate and blend as extra full-screen layers on every frame at
+//     1080x2408
+//   * it FLOATS ABOVE SystemUI rather than replacing it, so the stock status
+//     bar, quick settings, keyguard and volume HUD were still underneath
+//
+// Once this module is linked into SystemUI-application, the iOS chrome is
+// drawn by SystemUI's own windows: no extra process, no extra layers, and the
+// stock chrome underneath is no longer there to fight with.
+//
+// PRIORITY ORDER (project charter): performance > stability > iOS 27 design.
+// The split this module embodies is exactly that order:
+//   * performance — one less process, two less composited full-screen layers
+//   * stability   — every behaviour controller (gestures, IME, rotation,
+//                  keyguard mediation, notification plumbing) stays AOSP's.
+//                  Only drawing is replaced. Rewriting that machinery would
+//                  be the single largest stability risk in the project and
+//                  buys nothing visually.
+//   * design      — iOS 27 geometry and colour, from design-system tokens
+//
+// See deliverables/m23/systemui-takeover-2026-10-17.md.
+
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
+android_library {
+    name: "appleux-systemui-chrome",
+    owner: "appleux",
+    manifest: "src/main/AndroidManifest.xml",
+    srcs: ["src/main/java/**/*.kt"],
+    // NOTE: there is deliberately no `kotlin: { enabled: true }` block here.
+    // That property does not exist on android_library / android_app in this AOSP
+    // 16 tree — grep for "kotlin: {" across every Android.bp returns only these
+    // AppleUX files. Soong picks Kotlin up automatically from .kt entries in
+    // srcs; AOSP's own mixed Java/Kotlin modules (e.g. SystemUI-application)
+    // just list "src/**/*.kt" and set kotlincflags. Having written it anyway is
+    // how these files stayed unparseable: they had never been analysed.
+
+    // platform_apis, not sdk_version: this code is linked into SystemUI, which
+    // is built with platform_apis: true. An sdk_version module here would be
+    // denied every @hide API SystemUI legitimately uses.
+    platform_apis: true,
+    // NOT product_specific. It was, and that broke the tree:
+    //
+    //   error: module "aosp_shared_system_image" variant "android_common":
+    //   includes non-generic modules:
+    //           "appleux-systemui-chrome" from "SystemUI-application",
+    //
+    // product_specific: true makes a module build only for a named product, but
+    // SystemUI-application is a GENERIC module (it has no product_ variant), so
+    // a product-only library cannot be linked into it. These are pure code+res
+    // libraries with nothing product-conditional in them, so generic is both
+    // correct and cheaper: no product_-prefixed duplicate is emitted.
+
+    static_libs: [
+        // Design tokens and shared components. Linked into the tree at
+        // frameworks/appleux (symlink) - do not copy the sources.
+        "appleux-design-system",
+        // Adaptive Performance Controller: quality level, reduced-motion,
+        // frame budget.
+        "appleux-performance-lib",
+    ],
+
+    // SystemUI is built with -Xjvm-default=all (see SystemUI-srcs-defaults).
+    // Kotlin interfaces with default methods behave differently without it,
+    // which silently breaks any interface we implement against AOSP's.
+    kotlincflags: ["-Xjvm-default=all"],
+}

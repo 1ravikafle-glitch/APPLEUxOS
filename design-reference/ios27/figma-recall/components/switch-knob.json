@@ -1,0 +1,15 @@
+{
+  "name": "switch-knob",
+  "viewportWidth": 27,
+  "viewportHeight": 27,
+  "android": {
+    "pathData": "M0.0,13.5 a13.5,13.5 0 1,0 27.0,0 a13.5,13.5 0 1,0 -27.0,0 Z",
+    "fillColor": "#FF000000",
+    "strokeColor": null,
+    "strokeWidth": null
+  },
+  "provenance": "classic knob 27pt (recalled)",
+  "basis": "generated-geometry",
+  "appleVector": false,
+  "inferred": true
+}

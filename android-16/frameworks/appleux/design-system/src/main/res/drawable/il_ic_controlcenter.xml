@@ -1,0 +1,16 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <!-- Control Center: two horizontal toggle sliders with their knobs filled
+         on opposite sides, which is what iOS actually shows. The previous
+         pathData drew a 4x4 square with four dots, i.e. a grid icon. -->
+    <path
+        android:pathData="M2.5 9H21.5M2.5 15.5H21.5"
+        android:strokeColor="#FFFFFFFF"
+        android:strokeWidth="1.9"
+        android:strokeLineCap="round"/>
+    <path
+        android:pathData="M8 9m-2.7 0a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0Z"
+        android:fillColor="#FFFFFFFF"/>
+    <path
+        android:pathData="M16 15.5m-2.7 0a2.7 2.7 0 1 0 5.4 0a2.7 2.7 0 1 0 -5.4 0Z"
+        android:fillColor="#FFFFFFFF"/>
+</vector>
