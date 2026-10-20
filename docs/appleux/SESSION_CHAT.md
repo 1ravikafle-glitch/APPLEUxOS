@@ -5,10 +5,11 @@ message tail is the history. Fast mode: short messages, 1s watchers.
 
 ```
 ┌─ LATEST ──────────────────────────────────────────────────────┐
-│ A · 02:38 · PRIORITY ONE: user 20+ home+dock faults; exact-replica │
-│ B · 02:47 · pass-0203 verdicts: B5 PASS · A3 CRASH NPE · C4 FAIL · │
-│ C · 02:40 · skeleton pack 12 files done; C3 dock contrast inverted │
-│ NEXT: A fixes A3 NPE (k:647) + island 542px + pill layer; B audits │
+│ A · 08:42 · A18 build fixes in progress (dp overload, DetailKit) │
+│ B · 08:55 · pass-0840: HOME DOCK 12 deltas · LAUNCHER ANR (5s)   │
+│ C · 02:55 · C2 done · C3=A · C4 ruled by user (0.502 stands)    │
+│ NEXT: A installs A18 → B re-verifies dock+band+detail pages;    │
+│       B files A-lane fixes (ANR, camera, clock-left, pill)      │
 └────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -1300,7 +1301,7 @@ Emulator left on home p1; settings force-stopped, crash dialog cleared.
 ---
 
 
-## [C | 2026-10-20 02:55] C2 DONE (design lane) + deviation ledger §14 filled + B7 filed
+## [C | 2026-10-20 02:55] C2 DONE (design lane) + deviation ledger §14 filled + B7 filed ✓B
 
 TL;DR: C2 widget card verified token-correct; all deliberate deviations now ledgered per Master Prompt §12b.3; found+filed Kotlin gap (B7: widgets don't refresh on dark-mode toggle).
 
@@ -1324,7 +1325,7 @@ My queue now: C1 ✅ C2 ✅ C3 🔴(A) C4 🔴(B verdict) C5 ✅. Nothing furthe
 
 ---
 
-## [A | 2026-10-20 06:04] @B @C WAKEUP — all three on EXACT iOS 27, next cycle GO
+## [A | 2026-10-20 06:04] @B @C WAKEUP — all three on EXACT iOS 27, next cycle GO ✓B
 
 TL;DR: user GO. A rebuild+reinstall NOW (Settings NPE fix + A17
 double-bar fix). B: minute-detail pass IMMEDIATELY after A's INSTALLED —
@@ -1335,7 +1336,7 @@ every surface is replica-grade. All-in.
 
 ---
 
-## [A | 2026-10-20 06:23] INSTALLED (rebuild 4: Settings fix + A17 + 12 items) — @B FULL PASS GO ✓C
+## [A | 2026-10-20 06:23] INSTALLED (rebuild 4: Settings fix + A17 + 12 items) — @B FULL PASS GO ✓C ✓B
 
 14/14 rebuilt clean, 12 installed + grants. Focus check above proves
 Settings opens (was crash). @B: the pass — home/dock 20+ faults, swipe
@@ -1344,7 +1345,7 @@ replica bar, rules 13+14, all 7 user fault items. GO.
 
 ---
 
-## [A | 2026-10-20 07:35] INSTALLED (rebuild-5: account card render fix + rule-13 sweep) — @B Settings pass GO
+## [A | 2026-10-20 07:35] INSTALLED (rebuild-5: account card render fix + rule-13 sweep) — @B Settings pass GO ✓B
 
 14/14 clean. Settings: account card NOW BINDS (named holder + dispatch),
 15 stock-destination rows lawfully omitted until A18 pages exist. Kept:
@@ -1355,7 +1356,7 @@ account card replica?, section cards, values, pill, sub-page entry, rules
 
 ---
 
-## [A | 2026-10-20 07:51] USER RULING — C4 unblocked: iPhone 11 cutout + Dynamic Island FUNCTION in it
+## [A | 2026-10-20 07:51] USER RULING — C4 unblocked: iPhone 11 cutout + Dynamic Island FUNCTION in it ✓B
 
 TL;DR: C was confused about the island part. RULING from the user:
 
@@ -1377,3 +1378,410 @@ TL;DR: C was confused about the island part. RULING from the user:
 @C: proceed with the band + island-function tokens on this basis; C4
 moves to ✅ (ruling applied) once tokens confirm. This ruling is added
 to the design authority notes.
+
+---
+
+## [B | 2026-10-20 08:55] pass-0840 VERDICTS — 12 measured home/dock deltas + LAUNCHER ANR + camera dead
+
+TL;DR: build tested = rebuild-5 (installed 07:34:52; A18 08:28 NOT yet on
+device). Measured vs GT `drive/home-light-alt.png` + `settings-root-light-top.png`.
+Home grid renders (no crash) but 12 measured deltas; **launcher cold-start
+ANRs (5.9s, InputDispatcher timeout)**; **Camera app closes instantly**;
+Settings root has no "Settings" title, no status bar, 2 empty section headers.
+
+**USER RELAY (verbatim):** "alwys read amster prompt" — Master Prompt re-read;
+B verdict duties per §12b (implementation + visual QA) unchanged.
+
+**HOME p1 — 12 deltas (device px, 1080x2400, 1dp=1pt≈0.383px→pt):**
+1. DOCK GLASS INVERTED (C3) — ours LIGHTENS wallpaper (224,193,154→216,165,106
+   at x150), GT DARKENS (240,193,118→224,178,106). Confirmed FAIL on rebuild-5.
+2. DOCK BAND TOO NARROW — ours `dockGlassBg` x127..953 = 317pt wide, 49pt side
+   margins; GT x22..804 = 391pt, 11pt margins. Delta -74pt.
+3. DOCK ICON PITCH — ours 188px = 72pt, first icon centre 105pt; GT pitch
+   ~96.5pt, first centre 65pt. Icons 157px=60.2pt vs GT 125px=62.5pt.
+4. SEARCH PILL WRONG MATERIAL — ours light/white frosted w/ DARK grey glyph
+   (233,236,236 bg / 142,142,143 glyph); GT dark scrim (159,123,94) w/ WHITE
+   glyph+text. Pill also 97x44pt vs GT 79.5x25pt. **"..." still missing** (user
+   fault 3 CONFIRMED) and no mic/ellipsis affordance.
+5. GRID ICON SMALLER — ours 157px = 60.2pt, first column x95 = 36.4pt margin;
+   GT 131px = 65.5pt, margin 32pt. Delta -5.3pt icon, +4.4pt margin.
+6. LABEL TYPE 8% BIG — ours cap height 24px = 9.2pt, Roboto; GT 17px = 8.5pt.
+7. STATUS-BAR CLOCK CENTERED — ours x512..568 (196..218pt); GT time at LEFT
+   (31..57pt, next to the notch). Ours is INSIDE the notch band.
+8. WIDGET PAIR — ours cards edge-to-edge (0pt gutter) x52..540 / x540..1028 =
+   187pt each, 150.7pt tall; GT gap 7.5pt, 174.5pt wide, 160pt tall.
+   Card = flat opaque near-white (240,235,234) vs GT dark glass card.
+   Battery level bar = full-width flat green, not a rounded capsule.
+9. PAGE DOTS ZERO-SIZE on home p1 (hierarchy has ○● at 519,2181 but
+   visible=false, 0x0). Dots render only in the Today View.
+10. NO WALLPAPER BLUR/DIM behind dock + pill (GT blurs both).
+11. RULE-13 VIOLATION — grid still shows STOCK apps (Chrome, Drive, Gmail,
+    Google×2, Maps, Safari, YouTube Music) + duplicate labels
+    (Calendar×2, Camera×2, Clock×2, Contacts×2, Files×2). STOCK_REPLACED
+    hide-list not effective on the home grid.
+12. ICON ART — our placeholders (Calendar shows overlapping "Tue 20"+grid;
+    Camera = plain white square). A15/A16 still queued.
+
+**RULE 14 (device truth):** band = 542x76px top-center = 0.502 ✓ (user ruling
+stands). FUNCTION MISSING — band is an inert black bar (no island, no live
+activity, no expand/contract).
+
+**A-LANE BLOCKERS (new, hard evidence):**
+- **LAUNCHER ANR**: `ActivityManager: ANR in com.appleux.launcher` —
+  "Input dispatching timed out ... Waited 5000ms for FocusEvent(hasFocus=true)",
+  "spent 6558ms processing FocusEvent", `Displayed ... +5s951ms` cold start,
+  "Completed ANR of com.appleux.launcher in 23256ms". Reproduced 1/1 on
+  force-stop + HOME. (This is also why my swipe-right hit the ANR dialog.)
+- **CAMERA APP DEAD**: never reaches foreground (process "freezing", top
+  ResumedActivity stays Photos). `CameraActivity.getCameraId()` returns null
+  (no back camera on this AVD) → toast "Camera not available" → `finish()`
+  (CameraActivity.kt:838-841). iOS 27 shows an unavailable STATE, not a silent
+  close — needs a placeholder screen.
+- **TODAY VIEW = GOOGLE PLAY CATEGORIES**: the Today View renders "Social /
+  Utilities / Creativity / Productivity & Finance" = Play Store categories, not
+  iOS 27 sections. iOS 27 = widgets + App Library suggestions + Recently Added.
+
+**SETTINGS ROOT (rebuild-5) — 6 deltas:** no big "Settings" title (GT 34pt
+bold); NO status bar at all (GT: 3:55 + icons) and content starts at y=0
+(account card collides with the 76px status band — A13 inset missing on
+this screen); account card FULL-BLEED 0..1080 (GT 16pt margins, photo
+avatar, "Apple Account, iCloud, and more"); EMPTY section headers
+NOTIFICATIONS + APPS (zero rows under them); row separator is BLUE-tinted
+(should be #C6C6C8 hairline); bottom search field ✓ architecture but no
+magnifier, no mic, placeholder only. Sub-page (Wi-Fi) title at y=0 → same
+inset collision. 15 stock-destination rows still omitted (A18 to land).
+
+**10 APPS (B4):** all 10 open, 0 crashes. Phone/Messages/Photos/Clock/Calendar/
+Files/Browser/Video render with iOS titles — BUT every app keeps a MATERIAL
+BOTTOM TAB BAR that iOS 27 has none of (Phone 5 tabs + stray ▶ button +
+"Export Call Log (CSV)" button; Messages 2 tabs + floating ≡; Photos 6 tabs
+incl. a trash "Deleted" tab). Accent = Material blue #2196F3 / olive, not
+iOS #007AFF. Phone switch = olive, not iOS green.
+
+**NEXT (B):** A's INSTALLED for A18 → B re-verifies dock glass (C3), band,
+the 6 new detail pages, Settings root rows; then dark-mode + p2/p3 + pill
+page-0 + CC check. Evidence: `docs/appleux/pass-0840/` (11 shots + dumps +
+1uiautomator XML). Detailed per-item rows in WORK_QUEUE (B8-B11).
+
+---
+# SESSION CHAT — DISCOVERY AUDIT SUMMARY (Session A, 2026-10-20)
+
+All three sessions: read this block before claiming new work. It replaces
+stale assumptions in PREVIOUS_WORK_DONE.md where they conflict with the
+verified tree.
+
+## Verified facts (read-only, tree + device + host inspected)
+
+### Repo / build state
+- Working tree: `/home/elfakiris/OsProject`, clean `main` at
+  `34409297` (A18 build fixes). Branch tracks `origin/main`.
+- AOSP tree is `android-16/` — **pinned to `android-16.0.0_r4` (BP4A)** in
+  `.repo/manifests/default.xml`; `android-latest-release` is NOT used. ✓ per Master Prompt §2.
+- `frameworks/base/` is a **nested git repo** — SystemUI edits commit there.
+- `.gitignore` ignores all of `android-16/` → `git add -f` for new tree
+  files (realized risk, already hit once).
+- `device/xiaomi/rock/` + `vendor/xiaomi/rock/` + `device/xiaomi/rock-kernel/`
+  all present. Rock lunch combos defined in `AndroidProducts.mk`.
+- `device/google/cuttlefish/vsoc_x86_64/phone/aosp_cf.mk` exists → target
+  `aosp_cf_x86_64_phone` (and variants) available for a framework-matched guest.
+- Host: Dell Latitude 5420, i5-1145G7 (4c/8t), 16 GB RAM, 50 GB swap,
+  Zorin OS, **no /dev/kvm** → Cuttlefish acceleration uncertain; disk 177 GB
+  free on `/`. Full AOSP build must use low `-j` + big swap (+ ccache).
+
+### Physical device (POCO M5 `rock`)
+- ADB serial `nb79nvba65tse6ug`, MT6789/Helio G99, stock MIUI 13 on Android 14
+  `V816.0.8.0.ULUINXM`, release-keys, **bootloader locked**, active slot _b.
+  Flash target only — **no flash yet**; unlock requires Xiaomi Mi Unlock
+  waiting period (+data wipe).
+- Measured panel: 1080×2408 px @ 440 dpi = 392.73×875.64 dp; top inset 76 px
+  (cutout); bottom 127 px; corners 106 px; 30/50/60/90 Hz (90 active).
+- Vendor manifest FCM target not yet read from tree (open question A7).
+- Kernel is prebuilt `Image.gz` + dtb + DTBO + modules (5.10 GKI-style,
+  301 MB). No kernel source tree checked out beyond prebuilts.
+
+### Built artifacts (Soong-verified, 0 errors)
+- `m SystemUI` **BUILT** (~32 min, 0 errors) →
+  `out/target/product/rock/system_ext/priv-app/SystemUI/SystemUI.apk` (179 MB,
+  11 dex). Chrome classes verified inside:
+  `AppleuxShadeHost`, `AppleuxShadeStatusBar`, `AppleuxNotchHost`,
+  `AppleuxPowerControl`, `AppleuxHomeIndicatorView`, `AppleuxChromeTokens`,
+  `AppleuxNotificationListener`/`AppleuxNotificationBus`.
+- `appleux-systemui-chrome` linked into SystemUI-core + SystemUI-application
+  (static_lib, one process — no overlay APK).
+- `appleux-design-system`, `appleux-performance-lib` as android_library
+  modules.
+- 14 SDK APKs built via `scripts/build-emulator-apks.sh` (design-system,
+  performance, launcher, settings + phone/messages/contacts/photos/files/
+  camera/clock/calendar/browser/video).
+
+### Critical runtime blocker (blocking ALL AppleUX runtime verification)
+- **Our Android 16-built SystemUI cannot run on the stock Android 17
+  Cuttlefish guest** — crash loop at
+  `SystemUIApplicationImpl.<init>`:
+  `NoSuchMethodError sysuiLargePerfettoShmemBuffer()Z` in
+  `android.tracing.Flags` (flag dropped after A16).
+- **Path forward (chosen):** build `aosp_cf_x86_64_phone` from OUR tree
+  (framework-matched by construction). The API 36 SDK emulator (`appleux36d`
+  AVD, userdebug, 3 GB, `-gpu host`, M5 geometry) remains valid for app-level
+  APK checks only.
+- Open defect #3 in TUNING_LOG: SystemUI needs SHUTDOWN privapp allowlist in
+  `/system_ext/etc/permissions/` (not `/system`) or it boot-loops
+  `system_server` — hits the rock device.
+
+### Docs state (all DRAFT, unverified claims to be folded in)
+- `ARCHITECTURE.md`, `DESIGN_SYSTEM.md`, `UI_COVERAGE_MATRIX.md`,
+  `IMPLEMENTATION_ROADMAP.md`, `BUILD_AND_TEST_STRATEGY.md`,
+  `ASSET_MANIFEST.md`, `PERFORMANCE_AND_POWER_TUNING.md`, `TUNING_LOG.md`,
+  `RISK_REGISTER.md` all exist as drafts. `PREVIOUS_WORK_DONE.md` is the
+  migrated history authority.
+- Per Master Prompt §5: licensed iOS 27 assets authorized from
+  `/home/elfakiris/IOS27licencework` and `/home/elfakiris/ios-ui-analysis`
+  (first preference .ipsw extracts). 81 SF font files + icon art + 366 IPSW
+  sounds verified on disk. Asset swap tasks queued (A14 font, A15 icon, A16
+  symbol).
+
+## Open questions / next steps by lane
+
+**A (platform):**
+1. A2 — build `aosp_cf_x86_64_phone` from our tree → framework-matched guest
+   (unlocks runtime verification of built SystemUI). Prerequisite for A1, A3.
+2. A1 — wire `AppleuxLockScreen` + `AppleuxPasscodeView` into keyguard
+   (top dead surface; design note before SystemUI keyguard touch).
+3. Fix SystemUI SHUTDOWN privapp allowlist (system_ext bucket) before device
+   boot.
+4. Read vendor manifest target FCM level; audit rock vendor/kernel quality.
+
+**B (implementation + visual QA):**
+- Re-verify after A18 install: dock glass (C3), band/function, Settings root
+  rows + 6 detail pages, dark mode, pill page-0, CC tile registry empty
+  (`AppleuxCCTileOrder` unused).
+- B7 — widget dark-mode refresh (Kotlin: re-push RemoteViews on dark-mode
+  change). B2–B6 visual QA pending emulator reinstall.
+
+**C (design, tokens/res only — no Kotlin):**
+- C4 — Dynamic Island width dimen 0.502 (542px = 50% screen) needs B verdict;
+  GT photos exclude notch region → unvalidatable from photos.
+- Typography tracking C1 (-0.0253em) done, A-approved; rendered-body verdict
+  pending from B.
+- Deviation ledger in DESIGN_SYSTEM.md §14 current through 2026-10-20.
+
+**No build or device flash in this phase.** Report blockers with exact error,
+source path, diagnostic attempted, next safe step.
+
+---
+# SESSION CHAT — COORDINATION STATUS (Session A, 2026-10-20, in sync A>B>C)
+
+## In flight (A)
+- `scripts/build-emulator-apks.sh` (PID 1129428) reinstalling the freshly rebuilt
+  14 APKs to `emulator-5554` (~6 min elapsed, 2400 s cap). Updated APKs at
+  08:56–08:58: design-system, launcher, settings, performance. All other APKs
+  built 07:23–07:38.
+- Emulator `emulator-5554` is UP (boot completed), 11 AppleUX packages installed
+  (incl. stale disabled `com.appleux.systemui` overlay). Shell `getprop`/`wm
+  size` temporarily sluggish mid-reinstall; `pm list packages` responds.
+
+## Once reinstall completes — lane hand-off
+**B (visual QA, native image analysis):** B2–B6 on `emulator-5554`:
+  home grid/dock/badges/labels; Settings grouped cards + Customization page;
+  each of the 10 apps (watch for AppCompat crash recurrence); volume capsule +
+  dark-mode toggle; side-by-side vs `design-reference/iphone11-ios27/` top 5
+  gaps. Evidence → `pass-*/` dirs + WORK_QUEUE rows.
+  Blocked on: reinstall done + dock glass (C3) root cause being a Kotlin/A lane
+  item (white base in `LauncherActivity.applyGlass()`).
+
+**C (design, tokens/res only — no Kotlin):** wait on B verdicts for C1
+  (typography rendered-body) and C4 (Dynamic Island width 0.502 unvalidatable
+  from photos). No new token work until B reports.
+
+**A (platform, next after reinstall):**
+  A2 — build `aosp_cf_x86_64_phone` from our tree → framework-matched guest
+  (unlocks runtime verification of built `SystemUI.apk`; stock A17 guest is a
+  dead end via `sysuiLargePerfettoShmemBuffer`).
+  Fix SystemUI SHUTDOWN privapp allowlist in `/system_ext/etc/permissions/`
+  (rock device boot-loop risk).
+  A1 — wire `AppleuxLockScreen` + `AppleuxPasscodeView` into keyguard (top dead
+  surface).
+  Read vendor manifest target FCM level; audit rock vendor/kernel quality.
+
+**No device flash.** Full `m` AOSP build deferred until host build feasibility
+confirmed (16 GB RAM, 50 GB swap, no /dev/kvm).
+
+---
+
+---
+
+## [B | 2026-10-20 09:05] B follow-up — page-dots ROOT CAUSE, App Library vs GT, Appearance→Display dup
+
+TL;DR: page dots are laid out INSIDE the dock band (drawn behind it) = found
+root cause, 1-token fix. App Library structure is actually CORRECT vs GT
+(2-col folder grid, same category names) — 6 visual deltas, no structural
+rewrite needed. Settings "Appearance" row opens the DISPLAY page (duplicate;
+no Appearance page exists).
+
+1. **PAGE DOTS ROOT CAUSE (B14 → A/launcher, 1 token).** The dots DO exist and
+   measure 21x30px at y2166..2196 — but the dock glass band is y2106..2337, so
+   they sit INSIDE it and the dock (added to the root AFTER the dots) draws
+   over them → invisible. `LauncherTokens.PAGE_DOTS_BOTTOM_DP = 146 - 8 - 60
+   = 78dp` puts them at 78dp from the bottom; the pill is at 162..206dp.
+   Fix: `PAGE_DOTS_BOTTOM_DP = SEARCH_PILL_BOTTOM_DP + SEARCH_PILL_HEIGHT_DP
+   + PAGE_DOTS_GAP_DP` (214dp) → dots land at 1838..1860px, clear of the pill
+   (1860) and of the grid labels (1625). Grid reserve (214dp) already covers
+   it. (A18 touched LauncherTokens — your call on who applies it.)
+2. **APP LIBRARY vs GT `drive/applibrary-light-p1.png` — structure PASS.**
+   Our 2-col folder grid + the exact iOS 27 category names (Suggestions,
+   Recently Added, Social, Utilities, Creativity, Productivity & Finance) =
+   GT. My earlier "Play Store categories" worry was WRONG — corrected.
+   Remaining deltas: (a) no badge counts on icons (GT: 2, 1, 36, 5, 175,
+   1,380, 10); (b) folder cards are almost invisible — GT folders are
+   DARKER translucent glass, ours have ~no scrim vs wallpaper; (c) folder
+   contents = 4 sparse icons vs GT's dense 4-8 real icons (A15/A16);
+   (d) search field = small, left-aligned, pale — GT = wide full-width
+   frosted capsule, white label; (e) our wallpaper stays SHARP behind the
+   library (GT blurs it); (f) the bottom "Search" pill is VISIBLE over the
+   library (GT has none there) — the pill gate is page-0-only, the library
+   is a separate view.
+3. **TODAY VIEW == APP LIBRARY.** Swipe right from p1 and swipe-left-past-last
+   both render the SAME screen (category folders). iOS 27's Today View is a
+   DISTINCT feed (widgets + App Library suggestions + Recently Added). Needs
+   a separate surface — no GT photo for it in our set, so @C owns the spec.
+4. **B6 PASS** — the home search pill is GONE on p2 (no "Search" node in the
+   p2 dump). Page-0-only gating works.
+5. **SETTINGS "Appearance" ROW OPENS THE DISPLAY PAGE** — `SettingsListActivity`
+   points both `appearance` and `display_nav` at
+   `display.DisplaySettingsActivity`. iOS 27 has Appearance (Light/Dark/Auto,
+   True Tone) separate from Display & Brightness. A18's 6 pages do NOT include
+   Appearance → row stays a duplicate. (Dark-mode toggle lives in
+   Customization today.)
+6. **Detail-page titles sit at y=0** (Display page title bounds [469,0][611,147];
+   Wi-Fi title likewise) → title collides with the 76px status band. The A13
+   inset is applied on the Settings ROOT only, not on detail pages.
+
+**NEXT (B):** app-layer (B's lane per §12b) — remove the Material residue in
+the 10 apps (Photos 6-tab bar vs C's 4, Messages Filters/Edit bar, Phone
+"Export Call Log (CSV)" + stray ▶, Material #2196F3/olive accents vs iOS
+#007AFF/#34C759) — CLAIM posted in the next message before I touch files.
+
+---
+
+## [C | 2026-10-20 09:20] DESIGN TRUTH IS NOW MULTI-SOURCE — 66 token conflicts found and closed by spec, not by eye
+
+TL;DR: C stopped validating only against screenshots. The truth base is now
+FOUR independent sources (live Apple HIG web, Apple's iOS 27 Figma UI Kit,
+the IPSW asset harvest, ground-truth screenshots) with a machine-checked
+precedence model. The first full cross-check found **66 conflicts in our
+tokens**. All 66 are now closed. The headline: **every translucent colour in
+the ROM was mis-decoded by Android**, and **six type-tracking values were
+wrong** — defects no screenshot could ever have localised.
+
+**New artefacts**
+- `scripts/design_truth.py` — the harness (`web` harvest, `cross` adjudicate,
+  `report` render). `cross` is offline and deterministic.
+- `design-reference/ios27/web/hig/` — **165/165** Apple HIG articles harvested
+  as DocC markdown from Apple's own collection tree, each with URL, HTTP
+  status, sha256 and byte count in `web/provenance.json`.
+- `design-truth/{facts,conflicts}.json` + `design-truth/CONFLICTS.md` — the
+  ledger.
+- `docs/appleux/DESIGN_TRUTH.md` — the authority model (scoped precedence,
+  what each source decides, the open questions).
+
+**Defect 1 — ENCODING: 26 literals, 5 files.** Apple publishes translucent
+colours `#RRGGBBAA`; Android reads `#AARRGGBB` with no rearrangement
+(verified against `frameworks/base/graphics/java/android/graphics/Color.java`
+IN THIS TREE). HIG values were copied across in CSS order, so **alpha landed
+in the red channel and the alpha byte in blue**. Rendered vs intended:
+
+| token | written | Android rendered | should be |
+|---|---|---|---|
+| secondaryLabel light | #3C3C4399 | A=0x3C RGB(60,67,153) | A=0x99 RGB(60,60,67) |
+| tertiaryLabel light | #3C3C434D | A=0x3C RGB(60,67,77) | A=0x4D RGB(60,60,67) |
+| quaternaryLabel light | #3C3C432E | A=0x3C RGB(60,67,46) | A=0x2E RGB(60,60,67) |
+| separator light | #545458A6 | A=0x54 RGB(84,88,166) | A=0x5C RGB(60,60,67) |
+| systemFillTertiary light | #7676801F | A=0x76 RGB(118,128,31) | A=0x1F RGB(118,118,128) |
+| secondaryLabel dark | #EBEBF599 | A=0xEB RGB(235,245,153) | A=0x99 RGB(235,235,245) |
+
+The dark label ramp was the worst: all three steps at **92% alpha with a
+yellow cast** instead of 70/30/16% near-white. The fill ramp rendered at
+47% alpha in olive instead of 8–20% neutral grey.
+Why no tool caught it: `tools/check-token-drift.py` compares Kotlin vs XML
+**as strings** and both sides carried the same transposition, so they
+"agreed". A screenshot would show "the secondary labels look slightly off"
+with no way to name the cause.
+
+**Defect 2 — VALUE: the separator ramp was inverted.** values/ (light) held
+#545458A6 and values-night/ (dark) held #3C3C435C — the two modes swapped.
+Each file's own comment stated the opposite of what the file contained. The
+Kotlin token had the same swap, so the drift tool saw agreement. Fixed.
+
+**Defect 3 — VALUE: the palette was two major versions stale.** The ROM
+carried the pre-iOS-26 UIKit tints (#007AFF blue, #FF3B30 red, #30B0C7
+teal, #5856D6 indigo, #AF52DE purple, #32ADE6 cyan, #5AC8FA teal) while the
+live HIG tint table AND the iOS 27 Figma kit **both** publish the iOS 26/27
+unified palette (#0088FF, #FF383C, #00C3D0, #6155F5, #CB30E0, #00C0E8,
+#00D2E0). The HIG's own changelog: "June 9, 2025 — Updated system color
+values". `ColorTokens.kt` claimed HIG provenance; that claim was false.
+All tints + the fill ramp + label-ramp alphas + dark tertiary grouped
+background are corrected. **@B: the blue/red/teal/purple accents will LOOK
+different on device after the next build — that is the correction, not a
+regression.**
+
+**Defect 4 — VALUE: six tracking values were wrong.** `TypographyTokens.kt`
+called its table the HIG table "transcribed verbatim". It was not. Against
+the live HIG SF Pro tracking table (kit agrees): Title 1 +0.34 → **+0.38**,
+Title 2 +0.26 → **−0.26 (SIGN INVERTED)**, Title 3 +0.24 → **−0.45**,
+Callout −0.32 → **−0.31**, Footnote −0.09 → **−0.08**, Caption 2 +0.07 →
+**+0.06**. Emphasised variants carried the same errors. C1 (body −0.0253em)
+is unaffected and still correct. A pixel diff cannot resolve a 0.04pt
+tracking difference or a sign error; a published table can.
+
+**Defect 5 — VALUE: our own design spec was stale.** `design/spec/ios27-baseline.md`
+claimed `"typography.largeTitle": {"source":"hig","inferred":false}` but held
+an OLD Apple table (0.374/0.364/0.352/0.38/−0.408) and the stale palette.
+Corrected + regenerated, and the harness now checks it as a subject so it
+cannot silently drift again.
+
+**State: 248 facts, 0 conflicts, 158 agreements, 61 unverified.** The 61 are
+ledgered in DESIGN_SYSTEM.md §14 (separator secondary/tertiary, background
+quaternary/quinary, gray7, bluePressed, the liquid-glass ramp, emphasised
+type metrics).
+
+**Scope note for A:** all edits are in C's lane — token/res/drawable values
+only. Files touched: `design-system/.../tokens/{ColorTokens,TypographyTokens}.kt`,
+`design-system/.../res/values{,-night}/colors.xml`,
+`settings/.../res/values{,-night}/colors.xml`,
+5 hardcoded-tint drawables (files/browser/photos/calendar icon backgrounds,
+launcher badge) + the stale badge provenance comment, and
+`design/spec/{ios27-baseline.md,corrections.json}` (C14, C15). **No Kotlin
+logic touched** — no view, no listener, no service.
+
+**@B — 3 asks:**
+1. After A's next build, confirm the label ramp reads as a proper 4-step
+   grey ramp and the tints match the iOS 27 palette (B6 side-by-side).
+2. Settle **Q1**: `separator` — HIG's rgba(60,60,67,0.36) semantic (what we
+   use) vs the iOS 27 kit's `separators.nonOpaque` #000000@0.12. Two Apple
+   sources, two different tokens; only a real iOS 27 list screenshot decides.
+3. Settle **Q3**: is the unified palette also the shipped UIKit system* set?
+   Same tiebreak.
+
+**@A:** the palette + label-ramp + separator changes are in the tree now; no
+rebuild is needed for me, but the next install will visibly change accent
+colours and label contrast. `scripts/design_truth.py cross` is offline and
+takes seconds — worth running after any future token edit.
+
+---
+
+## [A | 2026-10-20 09:11] LAUNCHER FAULT DIAGNOSIS (user faults 1/2/4) — fixes queued after this build
+
+1. NO PAGE MOTION — root cause FOUND: loadApps animate block runs
+   translationX(0f) FROM 0 = a no-op animation; content swaps instantly.
+   Fix: on page change set translationX = direction*width BEFORE submit,
+   then animate to 0 (MotionTokens.DURATION_SLIDE, easingIOSDefault).
+2. SWIPE-RIGHT "ERROR" (page 1) — openTodayView() constructs a NEW
+   AppleuxTodayView on EVERY swipe (stacking leak) and wires NO dismiss
+   gesture: the overlay traps the user. Fix: singleton instance +
+   swipe-left/click-outside/back dismiss + slide-out.
+4. SWIPE-FROM-2ND-PAGE — prevPage() logic is sound; no visible motion
+   (fault 1) + possible stacking overlay made it read as an error.
+   Same two fixes cover it.
+@B: after A's next build, verdict page-slide motion + TodayView
+enter/exit + trapped-state regression. @C: no token changes needed —
+MotionTokens.DURATION_SLIDE already correct for the slide.
