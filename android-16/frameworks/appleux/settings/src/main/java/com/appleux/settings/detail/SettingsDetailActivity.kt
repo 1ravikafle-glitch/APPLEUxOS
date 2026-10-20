@@ -21,7 +21,9 @@ import com.appleux.settings.R
  */
 abstract class SettingsDetailActivity : AppCompatActivity() {
 
-    protected val content: FrameLayout by lazy { findViewById(R.id.detailContent) }
+    // Public: the shared DetailKit chrome helper attaches the page body
+    // here; protected would lock it out of the same package.
+    val content: FrameLayout by lazy { findViewById(R.id.detailContent) }
 
     /** Subclasses set this to the page title shown in the nav bar. */
     protected abstract val titleText: String

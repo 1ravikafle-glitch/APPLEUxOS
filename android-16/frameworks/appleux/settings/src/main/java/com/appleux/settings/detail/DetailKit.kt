@@ -19,6 +19,9 @@ object DetailKit {
     fun dp(activity: Activity, v: Float): Int =
         (activity.resources.displayMetrics.density * v).toInt()
 
+    /** Int-literal convenience — same conversion, no call-site noise. */
+    fun dp(activity: Activity, v: Int): Int = dp(activity, v.toFloat())
+
     /** iOS section label: 13sp secondary label, 16dp side insets. */
     fun sectionLabel(activity: Activity, text: CharSequence): TextView =
         TextView(activity).apply {

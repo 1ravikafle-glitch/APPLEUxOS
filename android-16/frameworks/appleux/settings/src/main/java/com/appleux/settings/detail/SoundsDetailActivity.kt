@@ -50,7 +50,7 @@ class SoundsDetailActivity : SettingsDetailActivity() {
             val uri = RingtoneManager.getActualDefaultRingtoneUri(
                 this, RingtoneManager.TYPE_RINGTONE
             )
-            uri?.let { Ringtone.getTitle(this, it) }
+            uri?.let { u -> Ringtone.getTitle(this@SoundsDetailActivity, u) }
         }.getOrNull() ?: getString(R.string.ringtone_none)
         tList.addView(DetailKit.valueRow(this, getString(R.string.ringtone), title, false))
         col.addView(tCard)
