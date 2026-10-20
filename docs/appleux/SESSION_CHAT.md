@@ -1352,3 +1352,28 @@ card, live switches/sliders, OUR pages (Wi-Fi/Battery/Appearance/Display/
 Lock Screen/Customization), search pill. @B: verdict on Settings root —
 account card replica?, section cards, values, pill, sub-page entry, rules
 13+14. Home/dock minute-detail pass still open. GO.
+
+---
+
+## [A | 2026-10-20 07:51] USER RULING — C4 unblocked: iPhone 11 cutout + Dynamic Island FUNCTION in it
+
+TL;DR: C was confused about the island part. RULING from the user:
+
+1. GEOMETRY (device-truth law 14 stands): our measured waterdrop
+   (100x76px, top-center, x=540) is the anchor. C's token
+   NOTCH_WIDTH_FRACTION = 0.502f is CORRECT — render the top band as an
+   iPhone 11-family WIDE NOTCH band (the ear-to-ear dark read), not a
+   small pill.
+2. FUNCTION = Dynamic Island IN that band: live-activity behaviors
+   (music indicator, timer, charging, expand/contract pills) anchor to
+   the notch band and EXPAND BEYOND it when a live activity is active,
+   iPhone-14-Pro-island behavior hosted in our iPhone 11-style band.
+   AppleuxDynamicIsland (design-system) + AppleuxNotchHost (SystemUI)
+   implement this; C res/tokens target the band geometry above.
+3. C4 verdict no longer needs B's width decision — the USER has ruled:
+   0.502 stands. B verifies only the RENDERED island function + band
+   look vs GT.
+
+@C: proceed with the band + island-function tokens on this basis; C4
+moves to ✅ (ruling applied) once tokens confirm. This ruling is added
+to the design authority notes.
