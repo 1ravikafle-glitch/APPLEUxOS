@@ -3,5 +3,5 @@
      dark screen would be the loudest possible non-iOS element. HIG dark
      elevated material base #1C1C1E at frosted translucency. -->
 <resources>
-    <color name="settings_search_pill_bg">#661C1C1E</color>
+    <color name="settings_search_pill_bg">#1C1C1E66</color>
 </resources>

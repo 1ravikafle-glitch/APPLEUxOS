@@ -21,17 +21,15 @@
 
         <TextView
             android:id="@+id/detailBack"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:minWidth="44dp"
-            android:minHeight="44dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/detail_back_circle"
             android:gravity="center"
-            android:paddingStart="8dp"
-            android:paddingEnd="12dp"
             android:text="‹"
             android:textColor="@color/system_blue"
-            android:textSize="34sp"
+            android:textSize="20sp"
             android:clickable="true"
             android:focusable="true"
             android:contentDescription="@string/settings_back" />

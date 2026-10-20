@@ -52,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
-                android:letterSpacing="-0.02"
+                android:letterSpacing="@dimen/appleux_tracking_body"
                 android:textColor="@color/label" />
 
             <TextView
@@ -60,7 +60,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
-                android:letterSpacing="-0.01"
+                android:letterSpacing="@dimen/appleux_tracking_footnote"
                 android:textColor="@color/secondary_label" />
         </LinearLayout>
 
@@ -77,7 +77,7 @@
             android:maxLines="1"
             android:ellipsize="end"
             android:textSize="15sp"
-            android:letterSpacing="-0.01"
+            android:letterSpacing="@dimen/appleux_tracking_subheadline"
             android:textColor="@color/secondary_label"
             android:visibility="gone" />
 

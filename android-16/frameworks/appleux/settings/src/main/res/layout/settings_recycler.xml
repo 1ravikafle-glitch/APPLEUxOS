@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:textSize="15sp"
-            android:letterSpacing="-0.01"
+            android:letterSpacing="@dimen/appleux_tracking_subheadline"
             android:textColor="@color/secondary_label"
             android:text="Search" />
 

@@ -7,5 +7,5 @@
          LIGHT: translucent white over light content (HIG systemFill).
          The 0x59 alpha matches the frosted-material weight of the
          ground-truth capsule (Settings-root.png). -->
-    <color name="settings_search_pill_bg">#59FFFFFF</color>
+    <color name="settings_search_pill_bg">#FFFFFF59</color>
 </resources>

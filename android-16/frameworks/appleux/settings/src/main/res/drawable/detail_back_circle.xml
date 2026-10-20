@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- B25 (GT general-light-top-hero / bluetooth-dark): iOS 27 detail pages
+     carry the back chevron inside a round translucent circle, inset from
+     the screen edge — never a bare glyph at the corner. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/fill_tertiary" />
+</shape>

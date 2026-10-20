@@ -36,6 +36,10 @@ abstract class SettingsDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // B25: the nav bar must sit BELOW the status band (GT shows the
+        // inline title below it, and the measured old page had the title at
+        // y=0). This also hides the stock bar — one chrome, ours.
+        com.appleux.design.theme.AppleuxTheme.applySystemBars(this)
         setContentView(R.layout.settings_detail)
         findViewById<TextView>(R.id.detailTitle).text = titleText
 
