@@ -1,0 +1,253 @@
+{
+  "note": "Ground-truth LAYOUT GEOMETRY measured off the iOS 27 reference frames (iPhone 11, 828x1792 px @ 2x = 414x896 pt). A photo is a competent authority for a shipped geometry: the pixels are what Apple shipped. Each measurement may carry the GT reading (authority), the ROM's own layout derivation, and a live device read of the ROM. Units are iOS-pt on the 414 pt GT panel unless stated otherwise, so the ROM's dp values are converted with x 414/392.7.",
+  "measured_by": "B (live reads) and C (edge measurement of both GT frames; dock band re-measured 2026-10-20 by the 1px rim)",
+  "measurements": {
+    "layout.dock.bandInset": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 11.5,
+        "rom-xml": 12.65,
+        "device-read": 12.65
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20 (RE-MEASURED): the glass's own edge is a 1px DARK RIM STROKE, and in BOTH GT home frames (home-light-alt.png, home-light-widgets.png) it sits at x=23 (left) and x=804 (right). The glass interior (223,178,106) runs x=24..803; the wallpaper is uniform (240,194,117) from x=16 to x=22 and again from x=805. There is NO 'soft edge falloff beyond the glass' - that reading was wrong: the corner arc was truncated at y=1598 (x=32) and wrongly called the straight side, while the arc in fact runs on to x=23 at y=1636. So the glass is 782px = 391pt wide, 11.5pt inset per side (94.4% of the 414pt screen). CORRECTION of the earlier 16.0pt reading. NOTE (2026-10-21): the iOS 27 kit clone's home-screen PAGE RECIPE (iPhone 17 Pro, 402x874pt) describes a different dock shape - the full screen width, 83pt tall (icon 60 + 11.5pt padding), cornerRadius 40pt ('pill'). That is a DIFFERENT DEVICE CLASS, and the recipe is an example rather than Apple's published value (see DESIGN_TRUTH.md S5), so the photo stays the authority for our panel - our dock is the iPhone-11 class (392.7dp ~= 414pt). The divergence is recorded in DESIGN_SYSTEM.md section 14.",
+        "rom-xml": "derived from the CURRENT TREE: LauncherTokens.DOCK_BAND_INSET_H_DP = 12f and @dimen/appleux_space_dock_band_inset = 12dp (the GT's 11.5pt scaled to 10.9dp -> the nearest declared step, SpacingTokens.INSETS_LG). 12dp x 414/392.7 = 12.65 iOS-pt. The RENDERED band is still narrower: syncGlassSize() still sizes the glass from the icon strip, which is A's open item.",
+        "device-read": "B, 2026-10-21 (same device pass): implied by the band reading - 368.7 dp band means the inset is exactly the declared 12 dp on each side (392.7 - 2 x 12), which is the GT's 11.5 pt scaled to 10.9 dp and rounded to the nearest declared step."
+      }
+    },
+    "layout.dock.bandWidth": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 391.0,
+        "rom-xml": 388.7,
+        "device-read": 388.7
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20 (RE-MEASURED): the GT glass spans x=23..804px = 782px = 391pt of the 414pt screen (94.4%); top y=1556px (a 1px bright specular line), bottom y=1766px -> 105pt tall. CORRECTION of the earlier 381pt reading, which came from the truncated arc. NOTE (2026-10-21): the iOS 27 kit clone's home-screen PAGE RECIPE (iPhone 17 Pro, 402x874pt) describes a different dock shape - the full screen width, 83pt tall (icon 60 + 11.5pt padding), cornerRadius 40pt ('pill'). That is a DIFFERENT DEVICE CLASS, and the recipe is an example rather than Apple's published value (see DESIGN_TRUTH.md S5), so the photo stays the authority for our panel - our dock is the iPhone-11 class (392.7dp ~= 414pt). The divergence is recorded in DESIGN_SYSTEM.md section 14.",
+        "rom-xml": "derived from the CURRENT TREE: the band is an INPUT - panel - 2 x 12dp inset = 368.7dp = 388.7 iOS-pt (the GT's 391pt scaled = 370.9dp, so 2.2dp off, which is the 12dp step vs the measured 10.9dp). dock_view.xml declares dock_root match_parent with the 12dp inset, the launcher adds the DockView MATCH_PARENT (B) and syncGlassSize() takes the glass's size from the band root (B) - so the band is SIZED, and B's device pass reads exactly 368.7dp (below).",
+        "device-read": "B, 2026-10-21 (device pass, A16 image, the installed launcher byte-identical to out/ per B's md5 content check): the dock band measures 368.7 dp = 388.7 iOS-pt on the panel (1080x2408 @ 440 dpi, 2.75 px/dp). So the band is SIZED, not hugged, and the token chain lands: DOCK_BAND_INSET_H_DP 12 dp + DOCK_BAR_PADDING_H_DP 20 dp + the slot-derived gap. The residual against the GT (391.0) is 2.3 iOS-pt = 2.2 dp, and it is the declared STEP rounding (the GT's 11.5 pt inset is 10.9 dp, and the nearest declared spacing step is 12 dp) - not a defect. The gap and the outer-gap rows are the next read."
+      }
+    },
+    "layout.dock.baselineBandWidth": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "device-read": 258.0
+      },
+      "evidence": {
+        "device-read": "B, 2026-10-20 17:00: the live read of the OCT-19 BASELINE build (not our build) -> visible band x204..876 = 672px = 244dp = 258 iOS-pt wide, 78 iOS-pt inset. The baseline is not the current tree, so this is a yardstick, not a verdict; a screenshot of the CURRENT build settles it."
+      }
+    },
+    "layout.dock.bandHeight": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 104.0,
+        "rom-xml": 105.42
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20: the glass's top edge is the 1px bright specular line at y=1556px and the bottom fades out at y=1766px -> 210px = 105pt (the earlier 104pt reading is within the fade).",
+        "rom-xml": "derived from the CURRENT TREE: icon 60dp + 2 x DOCK_BAR_PADDING_V_DP (20dp) = 100dp = 105.4 iOS-pt."
+      }
+    },
+    "layout.dock.cornerExponent": {
+      "scope": "geometry",
+      "unit": "superellipse exponent n",
+      "values": {
+        "gt-photo": 2.0,
+        "rom-kt": 2.0
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20 (RE-FIT over the FULL arc): the corner runs from the top edge (x=74 at y=1560) to the straight side (x=23 at y=1636) - the earlier fit stopped it at y=1598. Fitting the whole outline (|x-L|^n + |y-(T+R)|^n = R^n, L=23, T=1556): n=2.0 -> R=71.0px (35.5pt = 33.7dp) RMS 0.96px; n=2.2 -> R=76.5px RMS 0.86px; n=2.4 -> R=81.5px (38.7dp) RMS 0.98px; n=4.4 -> R=129px RMS 2.62px. The exponent and the radius are COUPLED: with the radius fixed at the kit's 34dp the matching exponent is n=2.0 (RMS about 1px). CORRECTION of the earlier n=2.4, which paired with the truncated arc.",
+        "rom-kt": "LauncherTokens.DOCK_CORNER_EXPONENT = 2.0f (was 2.4f) and DOCK_CORNER_RADIUS_DP = 34dp (the kit's Regular glass radius, unchanged). The icon's own n=4.4 squircle is a different shape and does not apply to the band."
+      }
+    },
+    "layout.dock.outerPadding": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 21.25,
+        "rom-xml": 21.08,
+        "device-read": 21.08
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20 (RE-MEASURED): the gap from the glass's rim to the first icon's edge = 65 - 23 = 42px on the left, 804 - 761 = 43px on the right (the band is centred, so +/- 0.5px) = 21.25pt. CORRECTION of the earlier 17.0pt, which used the mislocated band edge (x=32) with the correctly measured icon edge (x=66).",
+        "rom-xml": "derived from the CURRENT TREE: LauncherTokens.DOCK_BAR_PADDING_H_DP = 20f and @dimen/appleux_space_dock_bar_padding_h = 20dp (the GT's 21.25pt scaled to 20.2dp -> the nearest declared step, SpacingTokens.INSETS_XXL). 20dp x 414/392.7 = 21.08 iOS-pt.",
+        "device-read": "B, 2026-10-21 (device pass): the gap from the band's rim to the first icon is 20 dp = 21.08 iOS-pt, against the GT's 21.25 iOS-pt (0.17 iOS-pt off - the nearest declared step)."
+      }
+    },
+    "layout.dock.iconGap": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 30.5,
+        "rom-kt": 31.16,
+        "device-read": 31.16
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20: the four GT icons' edges (gradient peaks) are x=65, 254, 444, 633 - each 128px wide - so the pitch is 189.33px and the inner gap 61.33px = 30.67pt.",
+        "rom-kt": "derived from the CURRENT TREE: the gap is DERIVED, not declared: (392.7 - 2 x 12 band inset - 2 x 20 bar padding - 4 x 60 icons) / 3 = 29.56dp = 31.16 iOS-pt. It is derived from the SLOT count (LauncherTokens.DOCK_SLOTS = 4), never from the icon count - invariant `dockGapIsSlotDerived`.",
+        "device-read": "B, 2026-10-21 (device pass, launcher FRESH by md5 against out/): the inner gap measures 29.56 dp = 31.16 iOS-pt. The GT's is 30.5-30.67 iOS-pt, so the derived gap is on the GT's value (the difference is the 60 dp icon's own rounding)."
+      }
+    },
+    "layout.dock.iconSize": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 64.0,
+        "rom-kt": 63.3,
+        "device-read": 63.25
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20: the GT frame's dock icons, segmented by hue (two green, one red), are 128 px wide = 64.0 pt and 126 px tall. B's 17:50 read of 126 px / 63.0 pt is the same measurement to within a pixel; 64.0 pt is the tighter reading.",
+        "rom-kt": "LauncherTokens.DOCK_ICON_SIZE_DP = HOME_ICON_SIZE_DP = 60dp = 63.3 iOS-pt, so our icon is 0.7 pt smaller than the GT's - inside one pixel of the measurement and inside the 4 dp grid step. The icon size needs NO change.",
+        "device-read": "B, 2026-10-21 (device pass): the dock icons measure 165 px = 60.0 dp = 63.3 iOS-pt, against the GT's 64.0 iOS-pt - the 60 dp token, unchanged."
+      }
+    },
+    "layout.dock.leadingGap": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 21.25,
+        "rom-xml": 21.08,
+        "device-read": 21.08
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20 (RE-MEASURED): the leading gap IS the outer padding - the glass's rim at x=23 and the first icon at x=65 = 42px = 21pt. Same quantity as layout.dock.outerPadding.",
+        "rom-xml": "derived from the CURRENT TREE: the RecyclerView's own horizontal padding (appleux_space_dock_bar_padding_h = 20dp) IS the leading gap; there is no per-item left offset any more (the item offset was replaced by the derived gap), so the first icon starts 12dp (band inset) + 20dp (padding) = 32dp from the screen edge = 33.7 iOS-pt.",
+        "device-read": "B, 2026-10-21 (device pass): the leading gap (the band's rim to the first icon) is 20 dp = 21.08 iOS-pt - the same quantity as layout.dock.outerPadding, now measured on the device rather than derived."
+      }
+    },
+    "layout.statusBar.clockLeft": {
+      "scope": "geometry",
+      "unit": "iOS-pt from the screen's left edge (the clock's left edge)",
+      "values": {
+        "gt-photo": 31.0,
+        "rom-kt": 182.2
+      },
+      "evidence": {
+        "gt-photo": "B, 2026-10-20 19:05 (SESSION_CHAT) | corroborated by C on the GT home frames, 2026-10-20: the status clock reads '3:31' in BOLD WHITE at the TOP LEFT, its ink spanning x 73..135 px of 828 (= 36.5..67.5 pt) and y 35..62 px (= 17.5..31 pt). iOS puts the time on the LEFT of the status bar; the right side carries the indicators.",
+        "rom-kt": "the ROM's status clock is CENTRED (B's 17:00 read: x=501 px = 182.2 dp = 192 iOS-pt, against the GT's 31..57 pt on the left), and on the 2026-10-20 11:58 shipping build B found NO clock ink at all - the status bar's left is plain wallpaper. So the deviation is two-staged: wrong side, then not drawn."
+      }
+    },
+    "layout.widget.cardHeight": {
+      "scope": "geometry",
+      "unit": "iOS-pt",
+      "values": {
+        "gt-photo": 165.0,
+        "rom-xml": 158.2
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20, from the GT home frame: the Clock widget's rounded card spans y 140..470 px of 1792 (= 70..235 pt) -> 165 pt tall, with the widget's name label centred BELOW it. Its width is 150 pt (x 60..360 px = 30..180 pt) - but the GT's widget holds ONE widget where ours holds a Clock|Battery PAIR (B5), so the WIDTH is not directly comparable and only the height and the margin are.",
+        "rom-xml": "B's 19:05 read of the shipping build: our widget card is x 55..540, y 172..584 px = 176 x 150 dp = 158.2 iOS-pt tall - 6.8 pt shorter than the GT's 165, and its left margin is 20 dp against the GT's 30 pt = 28.4 dp, so 8.4 dp too little."
+      }
+    },
+    "layout.widget.cardTop": {
+      "scope": "geometry",
+      "unit": "iOS-pt from the window top",
+      "values": {
+        "gt-photo": 70.0,
+        "device-read": 95.0
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20, from the GT home frame: the Clock widget's rounded card starts at y=140px of 1792 (2x) = 70.0 pt from the window top, i.e. 26 pt below the 44 pt status band.",
+        "device-read": "B, 2026-10-20 19:50, on the 12:06 build: the widget card's content reads at y~95..103 iOS-pt (it also moved 3/6 iOS-pt between the 11:58 and 12:06 builds), so our card sits ~25-33 pt lower than the GT's. A's lane to place; C states the target."
+      }
+    },
+    "layout.searchPill.bottom": {
+      "scope": "geometry",
+      "unit": "iOS-pt from the window bottom",
+      "values": {
+        "gt-photo": 139.5,
+        "rom-kt": 139.2
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20: the GT home frame's search pill, measured by cropping and reading the zone - the capsule spans x 300..493 px (150..246.5 pt) and y 1457..1513 px, i.e. **139.5..167.5 pt from the window bottom** (28 pt tall, 96.5 pt wide). Its label ink ('Search', the NEUTRAL light pixels, since the wallpaper is warm) sits at x 361..466 px = 180.5..233 pt, y 1479..1496 px = 148..156.5 pt from the bottom, with the magnifier glyph just left of it at ~170..186 pt.",
+        "rom-kt": "the ROM's SEARCH_PILL_BOTTOM_DP is now DERIVED from the band's own geometry - HOMESCREEN_DOCK_CLEARANCE_DP (itself = DOCK_BAND_MARGIN_B_DP + 2 x DOCK_BAR_PADDING_V_DP + DOCK_ICON_SIZE_DP = 12 + 40 + 60 = 112 dp) + SEARCH_PILL_GAP_DP (20 dp) = 132 dp = 139.2 iOS-pt, against the GT's 139.5 pt - a 0.3 pt difference, inside the measurement noise. The shipped 162 dp (the frozen 146 dp clearance + the old 16 dp gap) put the pill 30 dp too low, and the pill's height 44 dp made the capsule 16 dp too tall (now 28 dp, the GT's 26.6 dp)."
+      }
+    },
+    "layout.searchPill.width": {
+      "scope": "geometry",
+      "unit": "iOS-pt",
+      "values": {
+        "gt-photo": 96.5
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20: the GT home frame's search pill capsule spans x 300..493 px = 150..246.5 pt = **96.5 pt wide** (91.5 dp on our panel).",
+        "rom-kt": "not recorded: the pill's width is a CONSEQUENCE of its label and magnifier, not a declared value, so the ROM's width is whatever its label's font metrics produce. The GT's 96.5 pt (91.5 dp scaled) is the reference; if the ROM's rendered pill reads materially wider or narrower than that, the LABEL's type size is the value to look at, not the pill's width."
+      }
+    },
+    "layout.searchPill.height": {
+      "scope": "geometry",
+      "unit": "iOS-pt",
+      "values": {
+        "gt-photo": 28.0,
+        "rom-kt": 29.5
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-20: the GT home frame's search pill capsule spans y 1457..1513 px = **28 pt tall** (26.6 dp on our panel) - the ROM's 44 dp is 16 dp too tall.",
+        "rom-kt": "the ROM's SEARCH_PILL_HEIGHT_DP is 28 dp = 29.5 iOS-pt, the nearest declared step to the GT's 26.6 dp (so it overshoots the GT's 28.0 pt by 1.5 - the step ladder's 4 dp granularity, not a design difference). The shipped 44 dp was 16 dp too tall."
+      }
+    },
+    "layout.dock.iconPitch": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 94.67,
+        "device-read": 94.3
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-21: the four GT icons' edges are x = 65, 254, 444, 633 (each 128 px wide), so the pitch is 189.33 px = 94.67 iOS-pt.",
+        "device-read": "B, 2026-10-21 (device pass, read from the hierarchy by content-description): Phone x 88..253, Safari x 334..499, Messages x 580..745 -> pitch 246 px = 89.45 dp = 94.3 iOS-pt, against the GT's 94.67 (0.37 iOS-pt off). The pitch is the icon plus the derived gap (60 + 29.56 = 89.56 dp), so it is the tightest check the band can have."
+      }
+    },
+    "layout.dock.firstIconInset": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 32.5,
+        "device-read": 33.74
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-21: the first GT icon's left edge is x = 65 px = 32.5 iOS-pt from the screen edge (the band's rim at 23 px + the 21.25 pt outer gap).",
+        "device-read": "B, 2026-10-21 (device pass): the first icon starts at x = 88 px = 32.0 dp = 33.7 iOS-pt from the screen edge, i.e. the 12 dp band inset + the 20 dp bar padding - which is the SLOT rule made visible: the icon sits in the FIRST CELL, so an empty 4th cell leaves the band unstretched (a spread-to-fill distribution would have put it at ~18 dp)."
+      }
+    },
+    "layout.dock.filledSlots": {
+      "scope": "geometry",
+      "unit": "slots",
+      "values": {
+        "gt-photo": 4,
+        "device-read": 3
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-21: the GT home frame shows four dock icons in four cells.",
+        "device-read": "B, 2026-10-21 (device pass): the ROM's dock shows three icons (Phone, Safari, Messages) in the first three of the four cells, with the 4th empty - slot 4 is Music in Apple's provenance and the ROM ships no music app, so it resolves to nothing. The band and the pitch are unaffected by the empty cell (the slot rule), which is the whole point."
+      }
+    },
+    "layout.dock.trailingSpace": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "gt-photo": 21.25,
+        "device-read": 21.08
+      },
+      "evidence": {
+        "gt-photo": "C, 2026-10-21: with all four cells filled, the GT's trailing space IS the outer gap - the rim at x=804 and the last icon's edge at x=761 = 43 px = 21.5 pt. So the comparable quantity is the bar padding.",
+        "device-read": "B, 2026-10-21 (device pass, and a correction of B's own earlier claim): the RAW trailing space on the device is 109.8 dp = 115.8 iOS-pt, because the fourth cell is EMPTY and the icons do not spread - 20 dp of bar padding + one empty cell (60 dp icon + 29.45 dp gap = 89.45 dp) = 109.45 dp, and the device reads 109.8. The value recorded here is the COMPARABLE part (the padding, 20 dp = 21.08 iOS-pt); the empty-cell space is its own fact below. This is the slot rule made visible: the trailing space is a function of the EMPTY CELLS, not a fixed 20 dp."
+      }
+    },
+    "layout.dock.emptyCellSpace": {
+      "scope": "geometry",
+      "unit": "iOS-pt on the 414pt GT panel",
+      "values": {
+        "device-read": 94.3
+      },
+      "evidence": {
+        "device-read": "B, 2026-10-21: one EMPTY dock cell occupies 89.45 dp (a 60 dp icon + the 29.45 dp derived gap) - the space a fourth app would take. The GT has no empty cell (four apps, four cells), so there is nothing to compare it with; the number matters because it is what the dock's trailing space grows by when a slot is empty, and it is identical to the icon pitch."
+      }
+    }
+  }
+}
