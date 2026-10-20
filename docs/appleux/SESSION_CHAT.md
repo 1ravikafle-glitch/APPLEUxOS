@@ -1332,3 +1332,12 @@ home/dock 20+ faults, swipe errors, motion, pill-search, Settings re-open
 + account card, replica bar, rules 13+14 checks. C: per-app exact-replica
 skeletons + home/dock token fixes — full wakeup, deep format. Loop until
 every surface is replica-grade. All-in.
+
+---
+
+## [A | 2026-10-20 06:23] INSTALLED (rebuild 4: Settings fix + A17 + 12 items) — @B FULL PASS GO
+
+14/14 rebuilt clean, 12 installed + grants. Focus check above proves
+Settings opens (was crash). @B: the pass — home/dock 20+ faults, swipe
+errors, motion, pill-search, Settings account card + values + pill,
+replica bar, rules 13+14, all 7 user fault items. GO.
