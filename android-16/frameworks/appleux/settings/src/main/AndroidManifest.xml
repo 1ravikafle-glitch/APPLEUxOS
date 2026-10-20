@@ -17,6 +17,11 @@
          wires only its restart half. -->
     <uses-permission android:name="android.permission.REBOOT" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- A18 Bluetooth page: adapter state, on/off, bonded set. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <uses-permission
+        android:name="android.permission.BLUETOOTH"
+        android:maxSdkVersion="30" />
 
     <permission
         android:name="com.appleux.settings.permission.READ_APPLEUX_CONFIG"
@@ -95,6 +100,36 @@
             android:name=".detail.BatteryDetailActivity"
             android:exported="false"
             android:label="@string/battery"
+            android:parentActivityName=".ui.SettingsListActivity" />
+        <activity
+            android:name=".detail.GeneralDetailActivity"
+            android:exported="false"
+            android:label="@string/general"
+            android:parentActivityName=".ui.SettingsListActivity" />
+        <activity
+            android:name=".detail.AboutDetailActivity"
+            android:exported="false"
+            android:label="@string/about"
+            android:parentActivityName=".detail.GeneralDetailActivity" />
+        <activity
+            android:name=".detail.StorageDetailActivity"
+            android:exported="false"
+            android:label="@string/storage_title"
+            android:parentActivityName=".detail.GeneralDetailActivity" />
+        <activity
+            android:name=".detail.BluetoothDetailActivity"
+            android:exported="false"
+            android:label="@string/bluetooth"
+            android:parentActivityName=".ui.SettingsListActivity" />
+        <activity
+            android:name=".detail.SoundsDetailActivity"
+            android:exported="false"
+            android:label="@string/sounds"
+            android:parentActivityName=".ui.SettingsListActivity" />
+        <activity
+            android:name=".detail.FocusDetailActivity"
+            android:exported="false"
+            android:label="@string/focus"
             android:parentActivityName=".ui.SettingsListActivity" />
     </application>
 </manifest>

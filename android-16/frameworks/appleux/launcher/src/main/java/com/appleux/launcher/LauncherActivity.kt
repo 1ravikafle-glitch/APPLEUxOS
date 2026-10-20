@@ -1444,6 +1444,28 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         }
         if (this::homescreenGrid.isInitialized) homescreenGrid.setBackgroundColor(android.graphics.Color.TRANSPARENT)
         applyGlass()
+        // B7 (filed by C): widget providers own their RemoteViews colors and
+        // never hear about our theme swap — re-push so they redraw instead of
+        // staying stale until reboot.
+        repushWidgetProviders()
+    }
+
+    /** B7: ask every bound widget provider to redraw its RemoteViews. */
+    private fun repushWidgetProviders() {
+        for ((className, id) in loadWidgetSpecs()) {
+            try {
+                val intent = android.content.Intent(
+                    android.appwidget.AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                ).apply {
+                    component = android.content.ComponentName(packageName, className)
+                    putExtra(
+                        android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_IDS,
+                        intArrayOf(id)
+                    )
+                }
+                sendBroadcast(intent)
+            } catch (e: Exception) {}
+        }
     }
 
     /**
@@ -1461,12 +1483,19 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         if (this::dockView.isInitialized) {
             val density = resources.displayMetrics.density
             val radius = LauncherTokens.DOCK_CORNER_RADIUS_DP * density
-            val base = if (AppleuxTheme.isDarkMode) android.graphics.Color.BLACK
-                else android.graphics.Color.WHITE
-            val alpha = (
+            // C3 (measured): the light-mode dock reads DARKER than the
+            // wallpaper in GT — iOS uses a dark scrim, not a white lift.
+            // Light mode scales the measured scrim by glass level (0 at
+            // Reduce-Transparency); dark mode keeps the original blend.
+            val base = android.graphics.Color.BLACK
+            val alpha = if (AppleuxTheme.isDarkMode) (
                 LauncherTokens.DOCK_GLASS_ALPHA_BASE +
                     com.appleux.design.components.AppleuxGlass.level01(level) *
                     LauncherTokens.DOCK_GLASS_ALPHA_RANGE
+                ).toInt().coerceIn(0, 255)
+            else (
+                LauncherTokens.DOCK_LIGHT_SCRIM_ALPHA *
+                    com.appleux.design.components.AppleuxGlass.level01(level)
                 ).toInt().coerceIn(0, 255)
             // Tint + blur the background bar ONLY; the icons above it stay sharp.
             // The GradientDrawable carries the fill and a 1dp rim — a rim is
@@ -1499,8 +1528,8 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         }
         if (this::libraryScrim.isInitialized) {
             val dim = com.appleux.design.components.AppleuxGlass.scrimAlphaForLevel(level)
-            val base = if (AppleuxTheme.isDarkMode) android.graphics.Color.BLACK
-                else android.graphics.Color.WHITE
+            // C3: a dim must darken in both modes — black scrim, matching GT.
+            val base = android.graphics.Color.BLACK
             libraryScrim.setBackgroundColor((dim shl 24) or (base and 0x00FFFFFF))
             com.appleux.design.components.AppleuxGlass.applyBlur(libraryScrim, level)
         }

@@ -118,4 +118,31 @@
     <string name="customization_render_scale_summary">Lower for better performance, higher for sharper text</string>
     <string name="customization_monitoring">Monitoring Level</string>
     <string name="customization_monitoring_summary">How aggressively to watch for jank</string>
+    <!-- A18 owned detail pages (all values real; no stock handoffs) -->
+    <string name="about">About</string>
+    <string name="general_hero_summary">About this device, storage, and system information</string>
+    <string name="device_name">Name</string>
+    <string name="software_version">Software Version</string>
+    <string name="build_number">Build</string>
+    <string name="model_name">Model Name</string>
+    <string name="model_number">Model Number</string>
+    <string name="kernel">Kernel Version</string>
+    <string name="api_level">Platform</string>
+    <string name="storage_title">Storage</string>
+    <string name="storage_summary">%1$s of %2$s used</string>
+    <string name="storage_used">Used</string>
+    <string name="storage_available">Available</string>
+    <string name="storage_capacity">Capacity</string>
+    <string name="my_devices">My Devices</string>
+    <string name="devices_appear_here">Devices you pair appear here</string>
+    <string name="bluetooth_on">On</string>
+    <string name="bluetooth_not_connected">Not Connected</string>
+    <string name="bluetooth_unavailable">Not Available</string>
+    <string name="ringer_alerts">Ringer and Alerts</string>
+    <string name="media_volume">Media</string>
+    <string name="ringtone">Ringtone</string>
+    <string name="ringtone_none">None</string>
+    <string name="haptics">Haptics</string>
+    <string name="focus_dnd">Do Not Disturb</string>
+    <string name="focus_policy_hint">To let AppleUX Settings control Focus, grant it notification access from the app info page.</string>
 </resources>

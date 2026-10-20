@@ -325,6 +325,20 @@ object SettingsCatalog {
 
     // ---- LIVE value providers (iOS right-aligned gray; real state only) ----
 
+    /** A18: live adapter state — GT root shows "Not Connected" when off. */
+    private val bluetoothStateValue: (android.content.Context) -> String? = { c ->
+        runCatching {
+            val adapter = (c.getSystemService(
+                android.content.Context.BLUETOOTH_SERVICE
+            ) as? android.bluetooth.BluetoothManager)?.adapter
+            when {
+                adapter == null -> null
+                adapter.isEnabled -> c.getString(R.string.bluetooth_on)
+                else -> c.getString(R.string.bluetooth_not_connected)
+            }
+        }.getOrNull()
+    }
+
     /** Battery percentage from the sticky broadcast — real on every device. */
     private val batteryValue: (android.content.Context) -> String? = { c ->
         runCatching {
@@ -405,8 +419,32 @@ object SettingsCatalog {
                 target = internal(com.appleux.settings.detail.BatteryDetailActivity::class.java),
                 valueProvider = batteryValue
             ),
+            // A18: Bluetooth returns with OUR page (GT root position).
+            nav(
+                key = "bluetooth", titleRes = R.string.bluetooth,
+                iconKey = "system_bluetooth", badgeColor = ColorTokens.systemBlue,
+                target = internal(com.appleux.settings.detail.BluetoothDetailActivity::class.java),
+                valueProvider = bluetoothStateValue
+            ),
             header("section_notifications", R.string.notifications),
+            // A18: Sounds + Focus — our pages replace the stock handoffs.
+            nav(
+                key = "sounds", titleRes = R.string.sounds,
+                iconKey = "system_volume", badgeColor = ColorTokens.systemPink,
+                target = internal(com.appleux.settings.detail.SoundsDetailActivity::class.java)
+            ),
+            nav(
+                key = "focus", titleRes = R.string.focus,
+                iconKey = "system_focus", badgeColor = ColorTokens.systemIndigo,
+                target = internal(com.appleux.settings.detail.FocusDetailActivity::class.java)
+            ),
             header("section_general", R.string.section_general),
+            // A18: General — hero-card page (About, Storage) per GT.
+            nav(
+                key = "general", titleRes = R.string.general,
+                iconKey = "system_settings", badgeColor = ColorTokens.systemGray,
+                target = internal(com.appleux.settings.detail.GeneralDetailActivity::class.java)
+            ),
             nav(
                 key = "appearance", titleRes = R.string.appearance,
                 iconKey = "system_appearance", badgeColor = ColorTokens.systemIndigo,
@@ -429,7 +467,6 @@ object SettingsCatalog {
                     com.appleux.settings.security.SecuritySettingsActivity::class.java
                 )
             ),
-            header("section_apps", R.string.section_apps),
 
             // ---- AppleUX Customization (separate, clearly labelled) ----
             header("section_customization", R.string.customization),

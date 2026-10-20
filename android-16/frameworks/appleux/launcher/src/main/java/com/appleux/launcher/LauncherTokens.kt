@@ -85,11 +85,99 @@ object LauncherTokens {
     const val GRID_ROW_PITCH_DP: Float = 117f
 
     /**
+     * Measured height of a home icon's label line in the 12sp label style.
+     *
+     * The header above derives the rock row pitch from icon(60) + gap(4) +
+     * label(15) = 79 dp of row *content*, plus the two [SpacingTokens.INSETS_LG]
+     * margins the cell carries, giving 103 dp. That 103 is the number the grid
+     * actually has to fit, so it is named here rather than being re-derived at
+     * each call site.
+     */
+    const val ICON_LABEL_HEIGHT_DP: Float = 15f
+
+    /**
+     * Top inset of the home grid: the MEASURED 76 px waterdrop cutout = 27.6 dp.
+     *
+     * Held as a fallback only. At runtime [ui.HomescreenGrid.applyNotchInset]
+     * replaces the grid's real top padding with the window's own cutout inset,
+     * which is authoritative; this value only sizes the row count before the
+     * first layout pass.
+     */
+    const val HOME_TOP_INSET_DP: Float = 27.6f
+
+    /**
+     * The height one grid row actually occupies, in dp.
+     *
+     * icon + icon-to-label gap + label + the cell's top and bottom margins.
+     * Nothing in the layout code reads [GRID_ROW_PITCH_DP]; the rows are laid
+     * out at this natural height, and [GRID_ROW_PITCH_DP] is the *designed*
+     * pitch for the rock frame only. Use this for fit arithmetic.
+     */
+    val naturalRowPitchDp: Float
+        get() = HOME_ICON_SIZE_DP + ICON_LABEL_GAP_DP + ICON_LABEL_HEIGHT_DP +
+            2f * com.appleux.design.tokens.SpacingTokens.INSETS_LG
+
+    /**
      * Bottom padding on the homescreen grid: the last row must stop above the
      * floating dock instead of sliding underneath its glass bar. Re-derived in
      * the header at our ROM's frame (146 dp at 440 dpi).
      */
     const val HOMESCREEN_DOCK_CLEARANCE_DP: Float = 146f
+
+    /**
+     * Gap the search pill keeps above the dock.
+     *
+     * The pill lives INSIDE the dock clearance band — it is drawn over the
+     * wallpaper between the last grid row and the dock, which is where iOS puts
+     * it. Both the pill and the page dots used to sit at frozen offsets (196 dp
+     * and 100 dp) that only clear the dock on the rock panel; on a shorter frame
+     * the translucent pill showed through the grid icons behind it. Deriving
+     * both from the clearance keeps them in the band on every frame.
+     */
+    const val SEARCH_PILL_GAP_DP: Float = 16f
+
+    /** Page dots sit between the pill and the dock, as on iOS. */
+    const val PAGE_DOTS_GAP_DP: Float = 8f
+
+    /**
+     * Bottom offset of the search pill, measured up from the window bottom.
+     *
+     * The pill is drawn over the wallpaper inside the dock clearance band, which
+     * is where iOS puts it, so it must clear the dock on every frame. Derived
+     * rather than frozen: the shipped 196 dp happened to work on the rock panel
+     * only because the grid's own padding already reserved 146 dp underneath it,
+     * and on a shorter frame the translucent capsule showed through the icons.
+     */
+    const val SEARCH_PILL_BOTTOM_DP: Float = HOMESCREEN_DOCK_CLEARANCE_DP + SEARCH_PILL_GAP_DP
+
+    /**
+     * Height of the search pill capsule.
+     *
+     * Part of [HOMESCREEN_BOTTOM_RESERVE_DP] because the last grid row has to
+     * stop above the pill, not merely above the dock.
+     */
+    const val SEARCH_PILL_HEIGHT_DP: Float = 44f
+
+    /**
+     * Band the grid must leave clear below its last row.
+     *
+     * This is the ONE reservation. It used to be applied twice — once as the
+     * grid's LayoutParams bottomMargin and again as the grid's own padding, both
+     * [HOMESCREEN_DOCK_CLEARANCE_DP] — so 292 dp of a 640 dp screen went to the
+     * dock and the grid could only fit two rows, with a dead gap above the pill.
+     * The grid now pads by this value once, and carries no bottom margin.
+     *
+     * It covers the search pill, because the pill is drawn between the last grid
+     * row and the dock exactly as on iOS and must not sit on top of an icon.
+     */
+    const val HOMESCREEN_BOTTOM_RESERVE_DP: Float =
+        SEARCH_PILL_BOTTOM_DP + SEARCH_PILL_HEIGHT_DP + 8f
+
+    /**
+     * Bottom offset of the page dots. Above the dock bar (which occupies the top
+     * 84 dp of the clearance band) and below the search pill, matching iOS.
+     */
+    const val PAGE_DOTS_BOTTOM_DP: Float = HOMESCREEN_DOCK_CLEARANCE_DP - PAGE_DOTS_GAP_DP - 60f
 
     /**
      * Height of one pinned widget cell. Derived from the same cell pitch:
@@ -106,7 +194,10 @@ object LauncherTokens {
     const val WIDGET_SPAN_SMALL: Int = 2
 
     /** iOS shows the App Library as a 3-column grid, never a single-column list. */
-    const val APP_LIBRARY_COLUMNS: Int = 3
+    // iOS 27 App Library is a TWO-column folder grid (drive/applibrary-light-p1:
+    // two ~170dp glass tiles per row). At 3 the 170dp tiles overflowed their
+    // 124dp slots and every row overlapped its neighbours.
+    const val APP_LIBRARY_COLUMNS: Int = 2
 
     // ---- Dock -------------------------------------------------------------
 
@@ -140,6 +231,11 @@ object LauncherTokens {
     /** Dock bar fill alpha at glass level 0, and the extra alpha added at level 1. */
     const val DOCK_GLASS_ALPHA_BASE: Int = 88
     const val DOCK_GLASS_ALPHA_RANGE: Int = 48
+
+    /** C3 (measured): light-mode dock scrim at full glass — the GT dock
+     *  band reads ~8% darker than the wallpaper (222,179,106 vs
+     *  240,194,117). 20/255 = 7.8%. */
+    const val DOCK_LIGHT_SCRIM_ALPHA: Int = 20
 
     // ---- Home-screen legibility ------------------------------------------
 

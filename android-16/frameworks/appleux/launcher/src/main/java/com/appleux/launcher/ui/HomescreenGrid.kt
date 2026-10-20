@@ -35,9 +35,58 @@ class HomescreenGrid @JvmOverloads constructor(
             (LauncherTokens.GRID_SIDE_MARGIN_DP * density).toInt(),
             0,
             (LauncherTokens.GRID_SIDE_MARGIN_DP * density).toInt(),
-            (LauncherTokens.HOMESCREEN_DOCK_CLEARANCE_DP * density).toInt()
+            (LauncherTokens.HOMESCREEN_BOTTOM_RESERVE_DP * density).toInt()
         )
-        clipToPadding = false
+        // True, deliberately. The bottom padding IS the dock clearance band, and
+        // clipToPadding = false let rows render straight through it, so on any
+        // frame shorter than the rock panel the last row drew underneath the
+        // translucent dock glass and read as a double row. Callers size a page
+        // to whole rows with rowsThatFit(), so nothing belongs in that band.
+        clipToPadding = true
+        // iOS home screens never rubber-band or glow at the edge: with the
+        // widget-aware page fit in rowsThatFit() a page always holds its whole
+        // content, so there is nothing to overscroll — kill the affordance too.
+        overScrollMode = android.view.View.OVER_SCROLL_NEVER
+        isVerticalScrollBarEnabled = false
+    }
+
+    /**
+     * How many whole app rows fit between the notch and the dock on THIS frame.
+     *
+     * The grid used to assume [LauncherTokens.GRID_ROWS] and let the overflow
+     * render into the dock clearance. That only holds on the panel the tokens
+     * were derived for (1080x2408 @ 440 dpi = 392.73 x 875.64 dp). Cuttlefish is
+     * 720x1280 @ 320 dpi = 360 x 640 dp, where 6 rows of
+     * [LauncherTokens.naturalRowPitchDp] need ~618 dp and only ~320 dp is left
+     * after the notch and the dock band — so rows 4-6 landed under the dock.
+     *
+     * A page now holds only rows that genuinely fit and the remainder moves to
+     * the next page. That is what iOS does on a short device: it picks a row
+     * count for the screen rather than shrinking icons to fit a fixed count.
+     *
+     * Falls back to the designed row count before the first layout pass, when
+     * [getHeight] is still 0.
+     */
+    fun rowsThatFit(reservedTopPx: Int = 0): Int {
+        val pitchPx = LauncherTokens.naturalRowPitchDp * resources.displayMetrics.density
+        if (pitchPx <= 0f) return LauncherTokens.GRID_ROWS
+        val bandPx = when {
+            height > 0 -> (height - paddingTop - paddingBottom).toFloat()
+            // Pre-layout: rebuild the same band from the display, using the same
+            // single bottom reserve the grid pads with.
+            else -> (resources.displayMetrics.heightPixels - paddingTop - paddingBottom).toFloat()
+        }
+        if (bandPx <= 0f) return LauncherTokens.GRID_ROWS
+        // iOS home screens NEVER scroll vertically — a page must hold
+        // everything it is handed. Widgets live in this same grid above the
+        // app rows, so their block is subtracted from the band BEFORE rows are
+        // counted ([LauncherActivity.widgetBlockPx] measures it). Without this
+        // the widget rows pushed the app rows past the band and the grid
+        // scrolled — Android behaviour iOS never has.
+        val usablePx = bandPx - reservedTopPx
+        if (usablePx <= 0f) return MIN_ROWS_PER_PAGE
+        return (usablePx / pitchPx).toInt()
+            .coerceIn(MIN_ROWS_PER_PAGE, LauncherTokens.GRID_ROWS)
     }
 
     /**
@@ -118,6 +167,9 @@ class HomescreenGrid @JvmOverloads constructor(
 
     companion object {
         private const val ITEM_CACHE_SIZE = 16
+
+        /** Never fit a page below two rows; below that the icons stop reading. */
+        private const val MIN_ROWS_PER_PAGE = 2
     }
 }
 

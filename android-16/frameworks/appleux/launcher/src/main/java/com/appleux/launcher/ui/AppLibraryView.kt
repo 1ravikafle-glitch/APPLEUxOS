@@ -15,7 +15,6 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.appleux.design.components.AppleuxDialogs
 import com.appleux.design.components.AppleuxDisplayInsets
 import com.appleux.design.components.AppleuxText
 import com.appleux.design.tokens.ColorTokens
@@ -153,32 +152,72 @@ class AppLibraryView @JvmOverloads constructor(
             )
         }
         addView(wallpaperView, 0)
-        // Blur overlay for the wallpaper
+        // iOS App Library sits on a HEAVILY blurred wallpaper — this was a flat
+        // dark scrim over a sharp image, which read as "dimmed", not "blurred".
+        // RenderEffect is GPU/RenderThread and only costs anything while the
+        // view is visible (the library is GONE when closed).
+        if (android.os.Build.VERSION.SDK_INT >= 31) {
+            wallpaperView.setRenderEffect(
+                android.graphics.RenderEffect.createBlurEffect(
+                    26f, 26f, android.graphics.Shader.TileMode.CLAMP
+                )
+            )
+        }
+        // Lighter dim: the blur itself already softens; iOS keeps it bright.
         val blurOverlay = View(context).apply {
             layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-            setBackgroundColor(0x40000000)
+            setBackgroundColor(0x2E000000)
         }
         addView(blurOverlay, 1)
-        val search = EditText(context).apply {
-            hint = "Q  App Library"
-            isSingleLine = true
-            gravity = Gravity.CENTER
+        val d = resources.displayMetrics.density
+        // iOS 27 App Library search (applibrary-light-p1): a LIGHT frosted
+        // capsule carrying a magnifier + centered "App Library" placeholder.
+        // The old fill was a near-black 0x59000000 with a literal "Q" hint —
+        // an ASCII magnifier on a dark hole in the wallpaper.
+        val searchPill = LinearLayout(context).apply {
+            orientation = LinearLayout.HORIZONTAL
+            gravity = Gravity.CENTER_VERTICAL
             background = android.graphics.drawable.GradientDrawable().apply {
                 shape = android.graphics.drawable.GradientDrawable.RECTANGLE
-                cornerRadius = 48f * resources.displayMetrics.density
-                setColor((0x59 shl 24) or 0x000000)
+                cornerRadius = 44f * d
+                // Same Liquid-Glass fill as the home search pill so the two
+                // search surfaces track light/dark and the transparency slider.
+                setColor(androidx.core.graphics.ColorUtils.setAlphaComponent(
+                    ColorTokens.systemBackground,
+                    com.appleux.design.components.AppleuxGlass.scrimAlphaForLevel(
+                        com.appleux.design.components.AppleuxGlass.MAX_LEVEL
+                    )
+                ))
             }
-            val d = resources.displayMetrics.density
-            setPadding((24 * d).toInt(), (10 * d).toInt(), (24 * d).toInt(), (10 * d).toInt())
+            setPadding((18 * d).toInt(), (12 * d).toInt(), (18 * d).toInt(), (12 * d).toInt())
+        }
+        searchPill.addView(android.widget.ImageView(context).apply {
+            setImageResource(com.appleux.design.R.drawable.il_ic_search)
+            setColorFilter(ColorTokens.secondaryLabel, android.graphics.PorterDuff.Mode.SRC_IN)
+            layoutParams = LinearLayout.LayoutParams((15 * d).toInt(), (15 * d).toInt())
+        })
+        val search = EditText(context).apply {
+            hint = "App Library"
+            isSingleLine = true
+            background = null
+            gravity = Gravity.CENTER_VERTICAL
             setTextColor(ColorTokens.label)
             setHintTextColor(ColorTokens.secondaryLabel)
+            textSize = 15f
+            layoutParams = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+            ).apply {
+                leftMargin = (8 * d).toInt()
+                width = (140 * d).toInt()
+            }
         }
-        val d = resources.displayMetrics.density
-        col.addView(search, LinearLayout.LayoutParams(
+        searchPill.addView(search)
+        col.addView(searchPill, LinearLayout.LayoutParams(
             LinearLayout.LayoutParams.MATCH_PARENT,
             LinearLayout.LayoutParams.WRAP_CONTENT
         ).apply {
-            setMargins((20 * d).toInt(), (8 * d).toInt(), (20 * d).toInt(), (8 * d).toInt())
+            setMargins((16 * d).toInt(), (8 * d).toInt(), (16 * d).toInt(), (8 * d).toInt())
         })
         search.addTextChangedListener(object : android.text.TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, a: Int, b: Int, c: Int) = Unit
@@ -192,6 +231,24 @@ class AppLibraryView @JvmOverloads constructor(
             layoutManager = GridLayoutManager(context, LauncherTokens.APP_LIBRARY_COLUMNS)
             layoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f)
+            // iOS: folders breathe — 16dp page gutters, 14dp between the two
+            // columns, 22dp between rows (the old grid had zero spacing, which
+            // is why tiles crashed into their labels and each other).
+            val gut = (16 * d).toInt()
+            setPadding(gut, (6 * d).toInt(), gut, (40 * d).toInt())
+            clipToPadding = false
+            addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: android.graphics.Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    val hx = (7 * d).toInt()
+                    val vy = (11 * d).toInt()
+                    outRect.set(hx, vy, hx, vy)
+                }
+            })
         }
         recyclerView.adapter = adapter
         col.addView(recyclerView)
@@ -240,18 +297,35 @@ class AppLibraryView @JvmOverloads constructor(
     fun setQualityLevel(level: AppleuxQualityLevel) = Unit
 
     private fun categoryOf(pkg: String): String = when {
-        pkg.contains("camera") || pkg.contains("gallery") || pkg.contains("photo") -> "Creativity"
+        pkg.contains("camera") || pkg.contains("gallery") || pkg.contains("photo") ||
+            pkg.contains("image") || pkg.contains("draw") -> "Creativity"
         pkg.contains("message") || pkg.contains("sms") || pkg.contains("mail") ||
-            pkg.contains("dialer") || pkg.contains("phone") -> "Social"
+            pkg.contains("dialer") || pkg.contains("phone") || pkg.contains("chat") -> "Social"
         pkg.contains("clock") || pkg.contains("calendar") || pkg.contains("calc") ||
-            pkg.contains("note") -> "Productivity"
-        pkg.contains("music") || pkg.contains("video") || pkg.contains("game") -> "Entertainment"
+            pkg.contains("note") || pkg.contains("wallet") || pkg.contains("bank") ||
+            pkg.contains("doc") -> "Productivity & Finance"
+        pkg.contains("music") || pkg.contains("video") || pkg.contains("player") ||
+            pkg.contains("game") || pkg.contains("tv") -> "Entertainment"
+        pkg.contains("health") || pkg.contains("fit") || pkg.contains("medit") ||
+            pkg.contains("doctor") -> "Health & Fitness"
+        pkg.contains("travel") || pkg.contains("flight") || pkg.contains("hotel") ||
+            pkg.contains("taxi") || pkg.contains("maps") || pkg.contains("navi") -> "Travel"
+        pkg.contains("news") || pkg.contains("reader") || pkg.contains("book") ||
+            pkg.contains("browser") || pkg.contains("weather") || pkg.contains("wiki") ->
+            "Information & Reading"
         else -> "Utilities"
     }
 
-    /** iOS 27 App Library categories in order. */
+    /**
+     * iOS 27 App Library categories, in the order the reference photo shows
+     * them row by row: Suggestions | Recently Added, Social | Utilities,
+     * Creativity | Productivity & Finance, Entertainment | Information &
+     * Reading, Health & Fitness | Travel.
+     */
     private val ios27Categories = listOf(
-        "Suggestions", "Recently Added", "Social", "Utilities", "Creativity", "Productivity"
+        "Suggestions", "Recently Added", "Social", "Utilities", "Creativity",
+        "Productivity & Finance", "Entertainment", "Information & Reading",
+        "Health & Fitness", "Travel"
     )
 
     fun categories(): Map<String, List<AppIconItem>> = cached.groupBy { categoryOf(it.packageName) }
@@ -287,27 +361,83 @@ class AppLibraryView @JvmOverloads constructor(
             { app -> onAppClick?.invoke(app) })
     }
 
+    /**
+     * iOS App Library folder open: a full-screen page — large white category
+     * title over the blurred library, the category's whole grid with labels and
+     * badges, tap-outside (or back) closes. The old path was
+     * AppleuxDialogs.custom: a small-titled centered modal, i.e. an Android
+     * alert wearing our colors, not the iOS folder zoom.
+     */
     private fun openFolder(folder: Folder) {
-        AppleuxDialogs.custom(
-            context,
-            content = wrapFolderGrid(folder),
-            title = folder.name,
-        )
-    }
-
-    private fun wrapFolderGrid(folder: Folder): View {
-        val gl = GridLayout(context).apply { columnCount = 4 }
         val d = resources.displayMetrics.density
-        for (app in folder.apps) {
-            val v = AppIconView(context)
-            v.bind(app, 1f, AppleuxQualityLevel.QUALITY_100,
-                com.appleux.launcher.LauncherTokens.HOME_ICON_SIZE_DP, true)
-            v.onItemClick = onAppClick
-            gl.addView(v, ViewGroup.LayoutParams((80 * d).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT))
+        val dialog = android.app.Dialog(context, android.R.style.Theme_Translucent_NoTitleBar)
+        dialog.window?.setBackgroundDrawable(
+            android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT)
+        )
+        dialog.window?.setDimAmount(0f) // our own scrim, so the blur stays visible
+        val root = FrameLayout(context).apply {
+            background = android.graphics.drawable.ColorDrawable(0x59000000)
+            isClickable = true
+            setOnClickListener { dialog.dismiss() }
         }
-        val scroll = android.widget.ScrollView(context)
-        scroll.addView(gl)
-        return scroll
+        val col = LinearLayout(context).apply {
+            orientation = LinearLayout.VERTICAL
+            setPadding(
+                (20 * d).toInt(),
+                AppleuxDisplayInsets.topContentPaddingPx(context) + (20 * d).toInt(),
+                (20 * d).toInt(),
+                0
+            )
+        }
+        col.addView(AppleuxText(context).apply {
+            text = folder.name
+            textSize = 26f
+            setTextColor(android.graphics.Color.WHITE)
+            setTypeface(typeface, android.graphics.Typeface.BOLD)
+            setShadowLayer(8f, 0f, 2f, 0x99000000.toInt())
+            setPadding(0, 0, 0, (18 * d).toInt())
+        }, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.WRAP_CONTENT
+        ))
+        val gap = (16 * d).toInt()
+        val cellW = (resources.displayMetrics.widthPixels - (40 * d).toInt() - gap * 3) / 4
+        val grid = GridLayout(context).apply { columnCount = 4 }
+        for (app in folder.apps) {
+            val icon = AppIconView(context)
+            icon.onItemClick = { launched ->
+                dialog.dismiss()
+                onAppClick?.invoke(launched)
+            }
+            icon.bind(app, 1f, AppleuxQualityLevel.QUALITY_100,
+                com.appleux.launcher.LauncherTokens.HOME_ICON_SIZE_DP, true)
+            icon.setBadgeCount(AppleuxBadgeStore.countFor(context, app.packageName))
+            // GridLayout has NO (width, height) constructor — only specs and
+            // the copy ctors — so size the default LayoutParams fields instead.
+            grid.addView(icon, android.widget.GridLayout.LayoutParams().apply {
+                width = cellW
+                height = android.widget.GridLayout.LayoutParams.WRAP_CONTENT
+                rightMargin = gap
+                bottomMargin = gap
+            })
+        }
+        val scroll = android.widget.ScrollView(context).apply {
+            isVerticalScrollBarEnabled = false
+            isFillViewport = true
+            addView(grid)
+        }
+        col.addView(scroll, LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT, 0, 1f
+        ))
+        root.addView(col, FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT
+        ))
+        dialog.setContentView(root, android.view.ViewGroup.LayoutParams(
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT,
+            android.view.ViewGroup.LayoutParams.MATCH_PARENT
+        ))
+        dialog.show()
     }
 
     data class Folder(val name: String, val apps: List<AppIconItem>)
