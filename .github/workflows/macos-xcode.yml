@@ -33,9 +33,10 @@ permissions:
 jobs:
   xcode27:
     name: Xcode 27 (Apple silicon)
-    # xcode-27 = macOS 26 arm64 image with Xcode 27 (arm64). See
+    # xcode-27 = macOS 27 arm64 image with Xcode 27 (arm64). See
     # actions/runner-images for the label scheme. macos-26-intel would cap the
-    # toolchain at Xcode 26.x; macos-26 arm64 carries only Xcode 26.x.
+    # toolchain at Xcode 26.x, and macos-26 (arm64) also carries only Xcode
+    # 26.x — one Xcode major version is supported per macOS image.
     runs-on: xcode-27
     timeout-minutes: 45
 
@@ -75,11 +76,16 @@ jobs:
           xcodebuild -showsdks
           echo
           echo "### Simulator runtimes"
-          xcrun simctl list runtimes 2>/dev/null || true
+          xcrun simctl list runtimes || true
+          echo
+          echo "### Simulator device types"
+          xcrun simctl list devicetypes | head -10 || true
 
       - name: Build iOS 27 design system (iOS Simulator)
+        if: ${{ !cancelled() }}
         run: |
           set -euo pipefail
+          cd ios27-design-system
           xcodebuild \
             -scheme iOS27DesignSystem \
             -destination 'generic/platform=iOS Simulator' \
@@ -87,6 +93,7 @@ jobs:
             build
 
       - name: Build GlassProbe (Liquid Glass .glassEffect)
+        if: ${{ !cancelled() }}
         run: |
           set -euo pipefail
           SDK="$(xcrun --sdk iphonesimulator --show-sdk-path)"
@@ -97,7 +104,47 @@ jobs:
             ios27-design-system/Sources/GlassProbe/main.swift
           file "$RUNNER_TEMP/GlassProbe"
 
+      - name: Run GlassProbe on the iOS 27 Simulator
+        if: ${{ !cancelled() }}
+        env:
+          BUNDLE_ID: com.appleux.glassprobe
+        run: |
+          set -euo pipefail
+          APP="$RUNNER_TEMP/GlassProbe.app"
+          mkdir -p "$APP/Contents/MacOS"
+          cp "$RUNNER_TEMP/GlassProbe" "$APP/Contents/MacOS/GlassProbe"
+          cat > "$APP/Contents/Info.plist" <<PLIST
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>CFBundleExecutable</key><string>GlassProbe</string>
+            <key>CFBundleIdentifier</key><string>$BUNDLE_ID</string>
+            <key>CFBundleName</key><string>GlassProbe</string>
+            <key>CFBundleDisplayName</key><string>GlassProbe</string>
+            <key>CFBundlePackageType</key><string>APPL</string>
+            <key>CFBundleShortVersionString</key><string>1.0</string>
+            <key>CFBundleVersion</key><string>1</string>
+            <key>CFBundleSupportedPlatforms</key><array><string>iphonesimulator</string></array>
+            <key>DTPlatformName</key><string>iphonesimulator</string>
+            <key>MinimumOSVersion</key><string>26.0</string>
+            <key>LSRequiresIPhoneOS</key><true/>
+            <key>UILaunchScreen</key><dict/>
+          </dict></plist>
+          PLIST
+
+          DEVICE="$(xcrun simctl create 'AppleUX-Probe' 'com.apple.CoreSimulator.SimDeviceType.iPhone-17-Pro' 'com.apple.CoreSimulator.SimRuntime.iOS-27-0')"
+          echo "created simulator $DEVICE"
+          xcrun simctl boot "$DEVICE"
+          xcrun simctl bootstatus "$DEVICE" -b
+          xcrun simctl install "$DEVICE" "$APP"
+          xcrun simctl launch "$DEVICE" "$BUNDLE_ID"
+          sleep 6
+          xcrun simctl io "$DEVICE" screenshot "$RUNNER_TEMP/glass-probe.png"
+          xcrun simctl shutdown "$DEVICE"
+          echo "screenshot written"
+
       - name: Build rPlayHub.app (macOS)
+        if: ${{ !cancelled() }}
         run: |
           set -euo pipefail
           xcodebuild \
@@ -111,10 +158,13 @@ jobs:
             CODE_SIGN_IDENTITY="" \
             build
 
-      - name: Upload rPlayHub.app
+      - name: Upload artifacts
+        if: ${{ !cancelled() }}
         uses: actions/upload-artifact@v4
         with:
-          name: rPlayHub-app
-          path: ${{ env.RUNNER_TEMP }}/dd-rplay/Build/Products/Debug/rPlayHub.app
+          name: xcode27-artifacts
+          path: |
+            ${{ env.RUNNER_TEMP }}/glass-probe.png
+            ${{ env.RUNNER_TEMP }}/dd-rplay/Build/Products/Debug/rPlayHub.app
           if-no-files-found: warn
           retention-days: 14
