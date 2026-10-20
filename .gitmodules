@@ -1,0 +1,94 @@
+# Reconstructed 2026-10-20: the index carried 22 gitlinks (mode 160000) but this file was
+# missing, so every submodule path failed to resolve on a fresh clone
+# ("fatal: no submodule mapping found in .gitmodules"). URLs and pinned
+# commits below were recovered from each working tree's origin remote; every
+# pinned SHA was confirmed to equal that tree's HEAD.
+
+[submodule "Launcher-IOS-27"]
+	path = Launcher-IOS-27
+	url = https://github.com/kirikkirikon220-svg/Launcher-IOS-27
+
+[submodule "design-reference/Apple-App-Icons"]
+	path = design-reference/Apple-App-Icons
+	url = https://github.com/aroundsketch/Apple-App-Icons
+
+[submodule "design-reference/Delta-Icons-ios"]
+	path = design-reference/Delta-Icons-ios
+	url = https://github.com/Delta-Icons/ios
+
+[submodule "design-reference/Solid-Glass"]
+	path = design-reference/Solid-Glass
+	url = https://github.com/iVintageLover/Solid-Glass
+
+[submodule "design-reference/hig-skills"]
+	path = design-reference/hig-skills
+	url = https://github.com/raintree-technology/apple-hig-skills.git
+
+[submodule "design-reference/ios-icon-list"]
+	path = design-reference/ios-icon-list
+	url = https://github.com/SamVerschueren/ios-icon-list
+
+[submodule "design-reference/macOS-27-Icons"]
+	path = design-reference/macOS-27-Icons
+	url = https://github.com/zagnut531/macOS-27-Icons
+
+[submodule "design-reference/rPlayHub"]
+	path = design-reference/rPlayHub
+	url = https://github.com/rPlayAI/rPlayHub
+
+[submodule "figma-to-swiftui"]
+	path = figma-to-swiftui
+	url = https://github.com/uladluch/figma-to-swiftui
+
+[submodule "figma-to-swiftui-skill"]
+	path = figma-to-swiftui-skill
+	url = https://github.com/daetojemax/figma-to-swiftui-skill
+
+[submodule "kernel-tracking/src-oppo-mt6765"]
+	path = kernel-tracking/src-oppo-mt6765
+	url = https://github.com/oppo-source/android_kernel_oppo_mt6765.git
+
+[submodule "scrcpy"]
+	path = scrcpy
+	url = https://github.com/Genymobile/scrcpy
+
+[submodule "thirdparty/device_mediatek_sepolicy_vndr"]
+	path = thirdparty/device_mediatek_sepolicy_vndr
+	url = https://github.com/rock-dev-oss/android_device_mediatek_sepolicy_vndr.git
+
+[submodule "thirdparty/device_xiaomi_rock"]
+	path = thirdparty/device_xiaomi_rock
+	url = https://github.com/rexprjkt/android_device_xiaomi_rock.git
+
+[submodule "thirdparty/hardware_mediatek"]
+	path = thirdparty/hardware_mediatek
+	url = https://github.com/rock-dev-oss/hardware_mediatek.git
+
+[submodule "thirdparty/hardware_xiaomi"]
+	path = thirdparty/hardware_xiaomi
+	url = https://github.com/rock-dev-oss/hardware_xiaomi.git
+
+[submodule "thirdparty/kernel_xiaomi_rock"]
+	path = thirdparty/kernel_xiaomi_rock
+	url = https://github.com/rock-dev-oss/kernel_xiaomi_rock.git
+
+[submodule "thirdparty/picasso09/device_xiaomi_rock"]
+	path = thirdparty/picasso09/device_xiaomi_rock
+	url = https://github.com/picasso09/device_xiaomi_rock.git
+
+[submodule "thirdparty/picasso09/kernel_xiaomi_rock"]
+	path = thirdparty/picasso09/kernel_xiaomi_rock
+	url = https://github.com/picasso09/kernel_xiaomi_rock.git
+
+[submodule "thirdparty/picasso09/vendor_xiaomi_rock"]
+	path = thirdparty/picasso09/vendor_xiaomi_rock
+	url = https://github.com/picasso09/proprietary_vendor_xiaomi_rock.git
+
+[submodule "thirdparty/rock-kernel"]
+	path = thirdparty/rock-kernel
+	url = https://github.com/rexprjkt/android_device_xiaomi_rock-kernel.git
+
+[submodule "thirdparty/vendor_xiaomi_rock"]
+	path = thirdparty/vendor_xiaomi_rock
+	url = https://github.com/rexprjkt/android_vendor_xiaomi_rock.git
+
