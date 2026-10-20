@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:format12Hour="h:mm"
         android:format24Hour="H:mm"
-        android:letterSpacing="-0.02"
+        android:letterSpacing="@dimen/appleux_tracking_widget_numeral"
         android:textColor="#FFFFFFFF"
         android:textSize="44sp"
         android:textStyle="bold" />

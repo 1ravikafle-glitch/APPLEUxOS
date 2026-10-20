@@ -160,8 +160,8 @@ class AppIconView @JvmOverloads constructor(
     // screenshot in design-reference/iphone11-ios27/drive/ has these; the
     // audit found ZERO badge code before this.
     //
-    // PROVENANCE: badge fill is ColorTokens.systemRed (#FF3B30, Apple's own
-    // red from the Figma kit), white numerals, ~20dp circle for 1-2 digits
+    // PROVENANCE: badge fill is ColorTokens.systemRed (#FF383C, Apple's own
+    // red from the iOS 27 Figma kit 27.0.2), white numerals, ~20dp circle for 1-2 digits
     // growing slightly for 3+, sitting on the icon's top-right corner and
     // overlapping it — the iOS placement, not an in-app Android badge.
     //

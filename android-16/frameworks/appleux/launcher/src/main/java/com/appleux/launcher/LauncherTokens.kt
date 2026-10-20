@@ -174,10 +174,25 @@ object LauncherTokens {
         SEARCH_PILL_BOTTOM_DP + SEARCH_PILL_HEIGHT_DP + 8f
 
     /**
-     * Bottom offset of the page dots. Above the dock bar (which occupies the top
-     * 84 dp of the clearance band) and below the search pill, matching iOS.
+     * Bottom offset of the page dots: just above the search pill, matching iOS.
+     *
+     * Derived, not literal. The previous value was
+     * `HOMESCREEN_DOCK_CLEARANCE_DP - PAGE_DOTS_GAP_DP - 60f` = 78 dp, which
+     * contradicted the intent stated in this very comment: the dock bar
+     * occupies the top 84 dp of the clearance band (62 dp..146 dp from the
+     * window bottom), so 78 dp put the dots INSIDE the dock band. B measured
+     * the consequence on device: the dots existed at 21x30 px, y2166..2196,
+     * while the dock glass band is y2106..2337 — the dock is drawn after them
+     * and covered them completely, so the home screen showed no page
+     * indicator at all.
+     *
+     * The dots belong in the gap between the app grid and the search pill, so
+     * they are derived from the pill: pill bottom + pill height + the same
+     * 8 dp gap the pill keeps. That equals [HOMESCREEN_BOTTOM_RESERVE_DP],
+     * which is why the grid reserve already accounts for them.
      */
-    const val PAGE_DOTS_BOTTOM_DP: Float = HOMESCREEN_DOCK_CLEARANCE_DP - PAGE_DOTS_GAP_DP - 60f
+    const val PAGE_DOTS_BOTTOM_DP: Float =
+        SEARCH_PILL_BOTTOM_DP + SEARCH_PILL_HEIGHT_DP + PAGE_DOTS_GAP_DP
 
     /**
      * Height of one pinned widget cell. Derived from the same cell pitch:

@@ -793,9 +793,11 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
                 onSwipeDownAt(xFraction, downYFraction) },
             onLongPress = { x, y -> onLongPressAt(x, y) },
             onSwipeLeft = { yFrac ->
+                // Today View is home-minus-one: swiping left goes home.
+                if (todayView?.isAttachedToWindow == true) closeTodayView()
                 // Bottom edge: iOS recent-app switching. Anywhere else:
                 // next page (or the App Library past the last page).
-                if (yFrac > 0.85f) cycleRecentApp(forward = true) else nextPage()
+                else if (yFrac > 0.85f) cycleRecentApp(forward = true) else nextPage()
             },
             onSwipeRight = { yFrac ->
                 if (yFrac > 0.85f) cycleRecentApp(forward = false)
@@ -822,8 +824,12 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
      * the dock does not also occupy a grid cell.
      */
     private var pageCount = 1
+    /** Slide direction for the page-change animation (+1 forward, -1 back). */
+    private var pageDelta = 0
     private fun setHomePage(page: Int) {
-        homePage = page.coerceIn(0, maxOf(0, pageCount - 1))
+        val target = page.coerceIn(0, maxOf(0, pageCount - 1))
+        pageDelta = target - homePage
+        homePage = target
         pageDots?.setPages(maxOf(1, pageCount), homePage)
         // iOS shows no dots on a single page.
         pageDots?.visibility = if (pageCount > 1) View.VISIBLE else View.GONE
@@ -881,10 +887,22 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         // page recount flows through here.
         homeSearchPill?.visibility = if (homePage == 0) View.VISIBLE else View.GONE
         enableGridDrag(grid)
-        if (animate && !AppleuxRuntimeConfig.isReduceMotionEnabled) {
-            homescreenGrid.animate().translationX(0f).setDuration(com.appleux.design.tokens.MotionTokens.DURATION_SLIDE)
-                .setInterpolator(com.appleux.design.tokens.MotionTokens.easingIOSDefault).start()
+        if (animate && !AppleuxRuntimeConfig.isReduceMotionEnabled && pageDelta != 0) {
+            // iOS pages slide horizontally. The old block animated
+            // translationX(0) FROM 0 — a no-op, which is why pages felt
+            // instant and dead. Start one full width away in the swipe
+            // direction, then settle.
+            val w = if (homescreenGrid.width > 0) homescreenGrid.width else root.width
+            if (w > 0) {
+                homescreenGrid.translationX =
+                    pageDelta.coerceIn(-1, 1) * w.toFloat()
+                homescreenGrid.animate().translationX(0f)
+                    .setDuration(com.appleux.design.tokens.MotionTokens.DURATION_SLIDE)
+                    .setInterpolator(com.appleux.design.tokens.MotionTokens.easingIOSDefault)
+                    .start()
+            }
         }
+        pageDelta = 0
         // First page carries the widget block; every other page is icons
         // only (A11). Empty submit CLEARS the block when leaving page 0 —
         // submitWidgets replaces, so this also fixes the repeat-on-last-page.
@@ -1367,17 +1385,62 @@ class LauncherActivity : AppCompatActivity(), AppleuxPerformanceController.Perfo
         }
     }
 
+    private var todayView: com.appleux.design.components.AppleuxTodayView? = null
+
+    /**
+     * Today View = the page LEFT of home. The old body built a NEW view on
+     * every swipe (they stacked in root forever) and wired no way back —
+     * the overlay trapped the user, which is what the user reported as the
+     * swipe-right error. One instance, slide in, and dismiss by swipe-left
+     * or tap, matching the iOS 27 page order.
+     */
     private fun openTodayView() {
-        val todayView = com.appleux.design.components.AppleuxTodayView(this)
-        todayView.visibility = View.GONE
-        root.addView(todayView, FrameLayout.LayoutParams(
+        val existing = todayView
+        if (existing != null && existing.isAttachedToWindow) {
+            existing.visibility = View.VISIBLE
+            return
+        }
+        val v = com.appleux.design.components.AppleuxTodayView(this)
+        todayView = v
+        // Tap outside Today View content: back to home.
+        v.setOnClickListener { closeTodayView() }
+        root.addView(v, FrameLayout.LayoutParams(
             FrameLayout.LayoutParams.MATCH_PARENT,
             FrameLayout.LayoutParams.MATCH_PARENT
         ))
-        todayView.visibility = View.VISIBLE
-        // iOS page transition: slide from right
-        todayView.translationX = root.width.toFloat()
-        todayView.animate().translationX(0f).setDuration(300).start()
+        if (AppleuxRuntimeConfig.isReduceMotionEnabled) {
+            v.visibility = View.VISIBLE
+        } else {
+            // iOS page transition: slide from right.
+            v.translationX = root.width.toFloat()
+            v.visibility = View.VISIBLE
+            v.animate().translationX(0f)
+                .setDuration(com.appleux.design.tokens.MotionTokens.DURATION_SLIDE)
+                .setInterpolator(com.appleux.design.tokens.MotionTokens.easingIOSDefault)
+                .start()
+        }
+    }
+
+    private fun closeTodayView() {
+        val v = todayView ?: return
+        if (!v.isAttachedToWindow) {
+            todayView = null
+            return
+        }
+        val remove = Runnable {
+            root.removeView(v)
+            todayView = null
+        }
+        if (AppleuxRuntimeConfig.isReduceMotionEnabled) {
+            v.animate().cancel()
+            remove.run()
+        } else {
+            v.animate().cancel()
+            v.animate().translationX(root.width.toFloat())
+                .setDuration(com.appleux.design.tokens.MotionTokens.DURATION_SLIDE)
+                .setInterpolator(com.appleux.design.tokens.MotionTokens.easingIOSDefault)
+                .withEndAction(remove).start()
+        }
     }
 
     private fun closeLibrary() {
