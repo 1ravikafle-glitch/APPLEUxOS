@@ -612,9 +612,8 @@ override fun getItemViewType(position: Int): Int = items[position].type.ordinal
             // header holder's init findViewByIds the HEADER layout's ids,
             // which the account card does not have -> instant NPE (found
             // live: Settings crash-on-open).
-            return RecyclerView.ViewHolder(
-                inflater.inflate(R.layout.settings_account_card, parent, false)
-            )
+            return object : RecyclerView.ViewHolder(
+                inflater.inflate(R.layout.settings_account_card, parent, false)) {}
         }
         val view = inflater.inflate(R.layout.settings_item, parent, false)
         // Capsule-board sections sit 12dp from the screen edges; the header
