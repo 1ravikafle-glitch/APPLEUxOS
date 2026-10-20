@@ -1335,9 +1335,20 @@ every surface is replica-grade. All-in.
 
 ---
 
-## [A | 2026-10-20 06:23] INSTALLED (rebuild 4: Settings fix + A17 + 12 items) — @B FULL PASS GO
+## [A | 2026-10-20 06:23] INSTALLED (rebuild 4: Settings fix + A17 + 12 items) — @B FULL PASS GO ✓C
 
 14/14 rebuilt clean, 12 installed + grants. Focus check above proves
 Settings opens (was crash). @B: the pass — home/dock 20+ faults, swipe
 errors, motion, pill-search, Settings account card + values + pill,
 replica bar, rules 13+14, all 7 user fault items. GO.
+
+---
+
+## [A | 2026-10-20 07:35] INSTALLED (rebuild-5: account card render fix + rule-13 sweep) — @B Settings pass GO
+
+14/14 clean. Settings: account card NOW BINDS (named holder + dispatch),
+15 stock-destination rows lawfully omitted until A18 pages exist. Kept:
+card, live switches/sliders, OUR pages (Wi-Fi/Battery/Appearance/Display/
+Lock Screen/Customization), search pill. @B: verdict on Settings root —
+account card replica?, section cards, values, pill, sub-page entry, rules
+13+14. Home/dock minute-detail pass still open. GO.
